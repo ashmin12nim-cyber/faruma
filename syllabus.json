@@ -1,0 +1,3532 @@
+[
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Reasoning, Communication & Connection",
+    "out_code": "MPS401",
+    "out_stmt": "Recognise and use connections among mathematical procedures and concepts, between mathematical concepts and other disciplines and provide valid reasons by communicating mathematical thoughts using relevant vocabulary and tools.",
+    "ind_code": "MPS401a",
+    "indicator": "Uses appropriate terminology to carry out mathematical conversations and symbols to represent mathematical procedures and concepts.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Reasoning, Communication & Connection",
+    "out_code": "MPS401",
+    "out_stmt": "Recognise and use connections among mathematical procedures and concepts, between mathematical concepts and other disciplines and provide valid reasons by communicating mathematical thoughts using relevant vocabulary and tools.",
+    "ind_code": "MPS401b",
+    "indicator": "Compares strategies, procedures and explains reasons for supporting the strategies and solutions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Reasoning, Communication & Connection",
+    "out_code": "MPS401",
+    "out_stmt": "Recognise and use connections among mathematical procedures and concepts, between mathematical concepts and other disciplines and provide valid reasons by communicating mathematical thoughts using relevant vocabulary and tools.",
+    "ind_code": "MPS401c",
+    "indicator": "Makes connections among mathematical concepts, between mathematical concepts and other disciplines.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Problem Solving & Application",
+    "out_code": "MPS402",
+    "out_stmt": "Analyse, plan, carry out the plan and reflect on the process in problem solving situations.",
+    "ind_code": "MPS402a",
+    "indicator": "Analyses and selects the most suitable problem-solving strategies in solving problems in Mathematics and real life.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Problem Solving & Application",
+    "out_code": "MPS402",
+    "out_stmt": "Analyse, plan, carry out the plan and reflect on the process in problem solving situations.",
+    "ind_code": "MPS402b",
+    "indicator": "Explores and solves problems using suitable tools.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Problem Solving & Application",
+    "out_code": "MPS402",
+    "out_stmt": "Analyse, plan, carry out the plan and reflect on the process in problem solving situations.",
+    "ind_code": "MPS402c",
+    "indicator": "Reflects on the results, considering whether the results are reasonable and draws simple conclusions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Mathematical Thinking Skills",
+    "out_code": "MPS403",
+    "out_stmt": "Use mathematical thinking to solve non-routine problems systematically and efficiently in Mathematics and real-life contexts.",
+    "ind_code": "MPS403a",
+    "indicator": "Uses mathematical thinking to solve challenging or non-routine problems beyond daily routine questions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Mathematical Thinking Skills",
+    "out_code": "MPS403",
+    "out_stmt": "Use mathematical thinking to solve non-routine problems systematically and efficiently in Mathematics and real-life contexts.",
+    "ind_code": "MPS403b",
+    "indicator": "Identifies suitable problem-solving approaches and tools to solve challenging problems systematically and efficiently.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN404",
+    "out_stmt": "Recognize, read, represent, write and order up to 6-digit (5 digit & 6 digit) numbers in English and Dhivehi.",
+    "ind_code": "NAN404a",
+    "indicator": "Identifies the patterns of number names and writes numbers in figures and words in English and Dhivehi.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN404",
+    "out_stmt": "Recognize, read, represent, write and order up to 6-digit (5 digit & 6 digit) numbers in English and Dhivehi.",
+    "ind_code": "NAN404b",
+    "indicator": "Recognizes the value of numbers and demonstrates that the place value pattern is built on operations of multiplication or division of tens.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN404",
+    "out_stmt": "Recognize, read, represent, write and order up to 6-digit (5 digit & 6 digit) numbers in English and Dhivehi.",
+    "ind_code": "NAN404c",
+    "indicator": "Compares and orders numbers using symbols and related vocabulary (number lines, number cards, place value charts).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN404",
+    "out_stmt": "Recognize, read, represent, write and order up to 6-digit (5 digit & 6 digit) numbers in English and Dhivehi.",
+    "ind_code": "NAN404d",
+    "indicator": "Records numbers using expanded notation. E.g., 562,391 = 500,000+60,000+2,000+300+90+1.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN404",
+    "out_stmt": "Recognize, read, represent, write and order up to 6-digit (5 digit & 6 digit) numbers in English and Dhivehi.",
+    "ind_code": "NAN404e",
+    "indicator": "Uses the knowledge of number concepts in real life contexts and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN404",
+    "out_stmt": "Recognize, read, represent, write and order up to 6-digit (5 digit & 6 digit) numbers in English and Dhivehi.",
+    "ind_code": "NAN404f",
+    "indicator": "Plays games using number and word cards for number recognition, naming and comparison.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN405",
+    "out_stmt": "Make estimations and round numbers to a specified place value and use the appropriate vocabulary of estimation.",
+    "ind_code": "NAN405a",
+    "indicator": "Estimates numbers and explains how the estimation is done.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN405",
+    "out_stmt": "Make estimations and round numbers to a specified place value and use the appropriate vocabulary of estimation.",
+    "ind_code": "NAN405b",
+    "indicator": "Rounds numbers to a specified place value (e.g., round 646,289 to the nearest hundred thousand).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN405",
+    "out_stmt": "Make estimations and round numbers to a specified place value and use the appropriate vocabulary of estimation.",
+    "ind_code": "NAN405c",
+    "indicator": "Uses the knowledge of rounding in estimation contexts and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN406",
+    "out_stmt": "Recognize Arabic Indic (Hindu Arabic) numerals, including zero up to 30.",
+    "ind_code": "NAN406a",
+    "indicator": "Recognizes Arabic Indic numbers from zero to thirty.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN406",
+    "out_stmt": "Recognize Arabic Indic (Hindu Arabic) numerals, including zero up to 30.",
+    "ind_code": "NAN406b",
+    "indicator": "Reads the Hijri calendar to identify dates and timing of important religious observances (Ramadan, Hajj, Eid).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN406",
+    "out_stmt": "Recognize Arabic Indic (Hindu Arabic) numerals, including zero up to 30.",
+    "ind_code": "NAN406c",
+    "indicator": "Reads and writes dates in Arabic Indic numerals.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN407",
+    "out_stmt": "Recognize and write Roman numerals up to 12 and use Roman numerals in necessary situations.",
+    "ind_code": "NAN407a",
+    "indicator": "Recognizes and writes Roman numerals from zero to twelve.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN407",
+    "out_stmt": "Recognize and write Roman numerals up to 12 and use Roman numerals in necessary situations.",
+    "ind_code": "NAN407b",
+    "indicator": "Plays games using Roman number and word cards for recognition, naming and comparison.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN408",
+    "out_stmt": "Recognize everyday situations that use integers (e.g., temperature), the location of negative whole numbers in relation to zero and place them on a number line.",
+    "ind_code": "NAN408a",
+    "indicator": "Locates and represents integers on a number line and orders integers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN408",
+    "out_stmt": "Recognize everyday situations that use integers (e.g., temperature), the location of negative whole numbers in relation to zero and place them on a number line.",
+    "ind_code": "NAN408b",
+    "indicator": "Interprets integers in everyday contexts (e.g., temperature, sea level).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN408",
+    "out_stmt": "Recognize everyday situations that use integers (e.g., temperature), the location of negative whole numbers in relation to zero and place them on a number line.",
+    "ind_code": "NAN408c",
+    "indicator": "Creates simple patterns involving negative numbers and explains the rule.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO409",
+    "out_stmt": "Solve problems involving addition (up to 4-digit numerals) and the corresponding subtraction by using personal strategies and explain the process.",
+    "ind_code": "NAO409a",
+    "indicator": "Uses mental and written strategies for addition and subtraction and explains the process (complements, jump strategy, place value partitioning).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO409",
+    "out_stmt": "Solve problems involving addition (up to 4-digit numerals) and the corresponding subtraction by using personal strategies and explain the process.",
+    "ind_code": "NAO409b",
+    "indicator": "Uses number lines, part-whole and comparison models to solve problems.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO409",
+    "out_stmt": "Solve problems involving addition (up to 4-digit numerals) and the corresponding subtraction by using personal strategies and explain the process.",
+    "ind_code": "NAO409c",
+    "indicator": "Plays games involving addition and subtraction to achieve mastery.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO409",
+    "out_stmt": "Solve problems involving addition (up to 4-digit numerals) and the corresponding subtraction by using personal strategies and explain the process.",
+    "ind_code": "NAO409d",
+    "indicator": "Applies the knowledge of addition and subtraction in daily life (role-play shopping, transactions, saving resources).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO410",
+    "out_stmt": "Multiply up to 4 digits by 1 digit, 2 digits by 2 digits and 3 digits by 2 digits using personal strategies and explain the process.",
+    "ind_code": "NAO410a",
+    "indicator": "Uses mental and written strategies for multiplication (area model, splitting strategy) and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO410",
+    "out_stmt": "Multiply up to 4 digits by 1 digit, 2 digits by 2 digits and 3 digits by 2 digits using personal strategies and explain the process.",
+    "ind_code": "NAO410b",
+    "indicator": "Multiplies by 10, 100 and 1000 mentally.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO410",
+    "out_stmt": "Multiply up to 4 digits by 1 digit, 2 digits by 2 digits and 3 digits by 2 digits using personal strategies and explain the process.",
+    "ind_code": "NAO410c",
+    "indicator": "Uses commutative property for multiplication to aid recall of multiplication facts.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO410",
+    "out_stmt": "Multiply up to 4 digits by 1 digit, 2 digits by 2 digits and 3 digits by 2 digits using personal strategies and explain the process.",
+    "ind_code": "NAO410d",
+    "indicator": "Uses related facts and doubling or halving to assist calculations.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO410",
+    "out_stmt": "Multiply up to 4 digits by 1 digit, 2 digits by 2 digits and 3 digits by 2 digits using personal strategies and explain the process.",
+    "ind_code": "NAO410e",
+    "indicator": "Uses number lines, part-whole and comparison models to solve problems.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO410",
+    "out_stmt": "Multiply up to 4 digits by 1 digit, 2 digits by 2 digits and 3 digits by 2 digits using personal strategies and explain the process.",
+    "ind_code": "NAO410f",
+    "indicator": "Applies the knowledge of multiplication in daily life (recipes, calculating money, planning a party).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO410",
+    "out_stmt": "Multiply up to 4 digits by 1 digit, 2 digits by 2 digits and 3 digits by 2 digits using personal strategies and explain the process.",
+    "ind_code": "NAO410g",
+    "indicator": "Plays games involving multiplication to achieve mastery.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO411",
+    "out_stmt": "Divide up to 3 digits by 1 digit and 4 digits by 1 digit (with remainders) using personal strategies and explain the process.",
+    "ind_code": "NAO411a",
+    "indicator": "Uses written strategies for division (long division method) and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO411",
+    "out_stmt": "Divide up to 3 digits by 1 digit and 4 digits by 1 digit (with remainders) using personal strategies and explain the process.",
+    "ind_code": "NAO411b",
+    "indicator": "Divides by 10, 100 and 1000 mentally.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO411",
+    "out_stmt": "Divide up to 3 digits by 1 digit and 4 digits by 1 digit (with remainders) using personal strategies and explain the process.",
+    "ind_code": "NAO411c",
+    "indicator": "Applies the inverse relationship of multiplication and division to justify answers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO411",
+    "out_stmt": "Divide up to 3 digits by 1 digit and 4 digits by 1 digit (with remainders) using personal strategies and explain the process.",
+    "ind_code": "NAO411d",
+    "indicator": "Applies the knowledge of division in daily life (sharing situations).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO411",
+    "out_stmt": "Divide up to 3 digits by 1 digit and 4 digits by 1 digit (with remainders) using personal strategies and explain the process.",
+    "ind_code": "NAO411e",
+    "indicator": "Plays games involving division to achieve mastery.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO412",
+    "out_stmt": "Apply the relationships of odd or even number pairs to check accuracy of calculations and use estimation and rounding to check reasonableness of answers.",
+    "ind_code": "NAO412a",
+    "indicator": "Predicts whether the answer to a calculation will be even or odd using the properties of the numbers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO412",
+    "out_stmt": "Apply the relationships of odd or even number pairs to check accuracy of calculations and use estimation and rounding to check reasonableness of answers.",
+    "ind_code": "NAO412b",
+    "indicator": "Rounds numbers appropriately when obtaining estimates to numerical calculations.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO412",
+    "out_stmt": "Apply the relationships of odd or even number pairs to check accuracy of calculations and use estimation and rounding to check reasonableness of answers.",
+    "ind_code": "NAO412c",
+    "indicator": "Uses rounding to estimate numbers and calculations in daily life.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAF413",
+    "out_stmt": "Explore number patterns resulting from performing multiplication and division and create and describe patterns.",
+    "ind_code": "NAF413a",
+    "indicator": "Explores and describes number patterns resulting from performing multiplication.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAF413",
+    "out_stmt": "Explore number patterns resulting from performing multiplication and division and create and describe patterns.",
+    "ind_code": "NAF413b",
+    "indicator": "Analyses, creates and continues patterns that involve multiplication, division and explains the patterns.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF414",
+    "out_stmt": "Recognise and use diagrams to show families of common equivalent fractions (denominators 2\u201312) and explain the role of the numerator and denominator.",
+    "ind_code": "NAF414a",
+    "indicator": "Uses strip diagrams, number lines or other models to investigate and record equivalent fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF414",
+    "out_stmt": "Recognise and use diagrams to show families of common equivalent fractions (denominators 2\u201312) and explain the role of the numerator and denominator.",
+    "ind_code": "NAF414b",
+    "indicator": "Explores patterns in respect of equivalent fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF414",
+    "out_stmt": "Recognise and use diagrams to show families of common equivalent fractions (denominators 2\u201312) and explain the role of the numerator and denominator.",
+    "ind_code": "NAF414c",
+    "indicator": "Analyses, creates and continues patterns that involve equivalent fractions and explains the patterns.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF414",
+    "out_stmt": "Recognise and use diagrams to show families of common equivalent fractions (denominators 2\u201312) and explain the role of the numerator and denominator.",
+    "ind_code": "NAF414d",
+    "indicator": "Plays games to identify, match and generate equivalent fractions using fraction models and number lines.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF415",
+    "out_stmt": "Represent and compare two unit fractions and two like fractions and explain the role of numerators and denominators in comparing fractions.",
+    "ind_code": "NAF415a",
+    "indicator": "Compares fractions in terms of size and places fractions in order on a number line.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF415",
+    "out_stmt": "Represent and compare two unit fractions and two like fractions and explain the role of numerators and denominators in comparing fractions.",
+    "ind_code": "NAF415b",
+    "indicator": "Makes mathematical statements using relevant symbols and vocabulary (e.g., \u00bd > \u2153).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF415",
+    "out_stmt": "Represent and compare two unit fractions and two like fractions and explain the role of numerators and denominators in comparing fractions.",
+    "ind_code": "NAF415c",
+    "indicator": "Plays games to compare fractions using fraction cards, models and number lines.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF416",
+    "out_stmt": "Perform addition and subtraction of fractions (including mixed fractions) with same denominators and simplify the fractions.",
+    "ind_code": "NAF416a",
+    "indicator": "Identifies mixed numbers and explains that mixed numbers are greater than 1.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF416",
+    "out_stmt": "Perform addition and subtraction of fractions (including mixed fractions) with same denominators and simplify the fractions.",
+    "ind_code": "NAF416b",
+    "indicator": "Adds and subtracts fractions with same denominators and simplifies the fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF416",
+    "out_stmt": "Perform addition and subtraction of fractions (including mixed fractions) with same denominators and simplify the fractions.",
+    "ind_code": "NAF416c",
+    "indicator": "Solves word problems related to real life involving addition and subtraction of fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF416",
+    "out_stmt": "Perform addition and subtraction of fractions (including mixed fractions) with same denominators and simplify the fractions.",
+    "ind_code": "NAF416d",
+    "indicator": "Creates simple sequences involving fractions and explains the rule.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF417",
+    "out_stmt": "Calculate fractions of a quantity and apply the concept in solving real-life problems and explain the process.",
+    "ind_code": "NAF417a",
+    "indicator": "Calculates fractions of a quantity using concrete materials, diagrams or models.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF417",
+    "out_stmt": "Calculate fractions of a quantity and apply the concept in solving real-life problems and explain the process.",
+    "ind_code": "NAF417b",
+    "indicator": "Applies the concept of calculating fractions of a quantity in solving real-life problems and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF418",
+    "out_stmt": "Recognise that the place value system can be extended to tenths and hundredths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF418a",
+    "indicator": "Explores decimal place value, recognises and applies decimal notation to express tenths and hundredths as decimals (e.g., 0.2 = 2/10).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF418",
+    "out_stmt": "Recognise that the place value system can be extended to tenths and hundredths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF418b",
+    "indicator": "Uses place values to partition decimals of up to two decimal places (e.g., 6.25 = 6 + 2/10 + 5/100).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF418",
+    "out_stmt": "Recognise that the place value system can be extended to tenths and hundredths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF418c",
+    "indicator": "Uses models to show equivalence between fractions and decimals.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF418",
+    "out_stmt": "Recognise that the place value system can be extended to tenths and hundredths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF418d",
+    "indicator": "Represents, models and compares commonly used fractions and decimals.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF418",
+    "out_stmt": "Recognise that the place value system can be extended to tenths and hundredths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF418e",
+    "indicator": "Plays games based on equivalence between fractions and decimals and decimal bonds.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF419",
+    "out_stmt": "Represent decimals on a number line and compare decimals up to 2 decimal places.",
+    "ind_code": "NAF419a",
+    "indicator": "Compares and orders decimals on a number line.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF419",
+    "out_stmt": "Represent decimals on a number line and compare decimals up to 2 decimal places.",
+    "ind_code": "NAF419b",
+    "indicator": "Solves problems related to real life involving comparing decimals and explains the problem-solving process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF420",
+    "out_stmt": "Explore and recognize decimal number bonds of 1.",
+    "ind_code": "NAF420a",
+    "indicator": "Uses pictorial representations to find the decimal number bonds to 1.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF420",
+    "out_stmt": "Explore and recognize decimal number bonds of 1.",
+    "ind_code": "NAF420b",
+    "indicator": "Plays games based on decimal bonds in groups.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF421",
+    "out_stmt": "Express the amount of money using decimal notations and record remainders (division) as fractions and decimals.",
+    "ind_code": "NAF421a",
+    "indicator": "Writes amounts of money using fractions and decimal notations.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF421",
+    "out_stmt": "Express the amount of money using decimal notations and record remainders (division) as fractions and decimals.",
+    "ind_code": "NAF421b",
+    "indicator": "Discusses the relevance of value for money and best buys and explains the reasons.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF421",
+    "out_stmt": "Express the amount of money using decimal notations and record remainders (division) as fractions and decimals.",
+    "ind_code": "NAF421c",
+    "indicator": "Discusses the ways in which Islam emphasises on spending resources and money.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF421",
+    "out_stmt": "Express the amount of money using decimal notations and record remainders (division) as fractions and decimals.",
+    "ind_code": "NAF421d",
+    "indicator": "Applies math concepts such as transactions, price comparisons and estimation in real life.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM422",
+    "out_stmt": "Connect decimal representations to the metric system.",
+    "ind_code": "MGM422a",
+    "indicator": "Expresses measurements using decimal notation (e.g., 150 cm = 1.50 m).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM422",
+    "out_stmt": "Connect decimal representations to the metric system.",
+    "ind_code": "MGM422b",
+    "indicator": "Recognises the equivalence of whole-number and decimal representations of measurements (e.g., 165 cm = 1.65 m).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM422",
+    "out_stmt": "Connect decimal representations to the metric system.",
+    "ind_code": "MGM422c",
+    "indicator": "Records measurements using combinations of metric units (e.g., 1 km 200 m).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM422",
+    "out_stmt": "Connect decimal representations to the metric system.",
+    "ind_code": "MGM422d",
+    "indicator": "Recognises the equivalence of whole-number and decimal representations of capacities (e.g., 375 ml = 0.375 L).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM423",
+    "out_stmt": "Measures, records, compares and estimates areas and perimeters using cm and m.",
+    "ind_code": "MGM423a",
+    "indicator": "Recognises the need for standard units as a formal unit to measure area.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM423",
+    "out_stmt": "Measures, records, compares and estimates areas and perimeters using cm and m.",
+    "ind_code": "MGM423b",
+    "indicator": "Recognises appropriate situations where square centimetres and square metres are used.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM423",
+    "out_stmt": "Measures, records, compares and estimates areas and perimeters using cm and m.",
+    "ind_code": "MGM423c",
+    "indicator": "Finds the area and perimeter of composite figures made up of rectangles and squares.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM423",
+    "out_stmt": "Measures, records, compares and estimates areas and perimeters using cm and m.",
+    "ind_code": "MGM423d",
+    "indicator": "Creates models using different shapes for given measurements.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM423",
+    "out_stmt": "Measures, records, compares and estimates areas and perimeters using cm and m.",
+    "ind_code": "MGM423e",
+    "indicator": "Determines through investigation the relationship between side lengths of a shape and its perimeter and area.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM423",
+    "out_stmt": "Measures, records, compares and estimates areas and perimeters using cm and m.",
+    "ind_code": "MGM423f",
+    "indicator": "Solves problems related to real life involving area of common 2D shapes (squares, rectangles, triangles).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM424",
+    "out_stmt": "Selects and uses the appropriate unit and tools and measures perimeters of basic shapes.",
+    "ind_code": "MGM424a",
+    "indicator": "Investigates and recognises that shapes with the same perimeter may have different dimensions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM424",
+    "out_stmt": "Selects and uses the appropriate unit and tools and measures perimeters of basic shapes.",
+    "ind_code": "MGM424b",
+    "indicator": "Recognises appropriate situations where square centimetres and square metres are used for measuring perimeter.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM424",
+    "out_stmt": "Selects and uses the appropriate unit and tools and measures perimeters of basic shapes.",
+    "ind_code": "MGM424c",
+    "indicator": "Creates models using different shapes for given measurements.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGT425",
+    "out_stmt": "Apply 24-hour time and am and pm notation in real-life situations, convert them and construct timelines.",
+    "ind_code": "MGT425a",
+    "indicator": "Compares 12- and 24-hour time systems and converts between them.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGT425",
+    "out_stmt": "Apply 24-hour time and am and pm notation in real-life situations, convert them and construct timelines.",
+    "ind_code": "MGT425b",
+    "indicator": "Determines and compares the duration of events and makes timelines.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGT425",
+    "out_stmt": "Apply 24-hour time and am and pm notation in real-life situations, convert them and construct timelines.",
+    "ind_code": "MGT425c",
+    "indicator": "Develops time consciousness; follows a sequence of activities and completes day-to-day activities on time.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGT426",
+    "out_stmt": "Explore the relationship between units of time. Carry out conversions of hours to minutes to seconds and vice versa (multiples of 60), solve problems related to time.",
+    "ind_code": "MGT426a",
+    "indicator": "Identifies and uses the correct operation for converting units of time.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGT426",
+    "out_stmt": "Explore the relationship between units of time. Carry out conversions of hours to minutes to seconds and vice versa (multiples of 60), solve problems related to time.",
+    "ind_code": "MGT426b",
+    "indicator": "Solves problems related to time and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM427",
+    "out_stmt": "Estimate lengths, masses, capacity, area, perimeter and time using appropriate units and explain the estimation process.",
+    "ind_code": "MGM427a",
+    "indicator": "Develops a sense of 1 km, 1 ml, 1 minute by relating to familiar real-life references.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM427",
+    "out_stmt": "Estimate lengths, masses, capacity, area, perimeter and time using appropriate units and explain the estimation process.",
+    "ind_code": "MGM427b",
+    "indicator": "Estimates the area and perimeter of a figure drawn on a square grid by counting whole and partial squares.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM427",
+    "out_stmt": "Estimate lengths, masses, capacity, area, perimeter and time using appropriate units and explain the estimation process.",
+    "ind_code": "MGM427c",
+    "indicator": "Develops a sense of time (prayer times, estimation, timeframes, and general time-related terms).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS428",
+    "out_stmt": "Compare and describe features of quadrilaterals and create models using different shapes.",
+    "ind_code": "MGS428a",
+    "indicator": "Identifies right angles in quadrilaterals.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS428",
+    "out_stmt": "Compare and describe features of quadrilaterals and create models using different shapes.",
+    "ind_code": "MGS428b",
+    "indicator": "Groups parallelograms, rectangles, rhombuses, squares, trapeziums and kites using one or more attributes.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS428",
+    "out_stmt": "Compare and describe features of quadrilaterals and create models using different shapes.",
+    "ind_code": "MGS428c",
+    "indicator": "Creates, identifies, and extends numeric and geometric patterns using a variety of tools.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS428",
+    "out_stmt": "Compare and describe features of quadrilaterals and create models using different shapes.",
+    "ind_code": "MGS428d",
+    "indicator": "Creates models in groups using different types of shapes and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS429",
+    "out_stmt": "Identify and describe the line symmetry of triangles and quadrilaterals.",
+    "ind_code": "MGS429a",
+    "indicator": "Identifies line symmetry by cutting, folding and turning shapes and justifies that the figure is symmetric about the line of symmetry.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS429",
+    "out_stmt": "Identify and describe the line symmetry of triangles and quadrilaterals.",
+    "ind_code": "MGS429b",
+    "indicator": "Sorts triangles and quadrilaterals according to the number of lines of symmetry through investigations.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS429",
+    "out_stmt": "Identify and describe the line symmetry of triangles and quadrilaterals.",
+    "ind_code": "MGS429c",
+    "indicator": "Creates designs using symmetric shapes in groups and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP430",
+    "out_stmt": "Identify and name types of angles (exclude reflex), estimate, measure, compare using degrees and draw angles using a protractor.",
+    "ind_code": "MGP430a",
+    "indicator": "Identifies types of angles in the environment.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP430",
+    "out_stmt": "Identify and name types of angles (exclude reflex), estimate, measure, compare using degrees and draw angles using a protractor.",
+    "ind_code": "MGP430b",
+    "indicator": "Uses notations \u2220ABC and \u2220a to name angles.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP430",
+    "out_stmt": "Identify and name types of angles (exclude reflex), estimate, measure, compare using degrees and draw angles using a protractor.",
+    "ind_code": "MGP430c",
+    "indicator": "Draws an angle for a given size using a protractor.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP430",
+    "out_stmt": "Identify and name types of angles (exclude reflex), estimate, measure, compare using degrees and draw angles using a protractor.",
+    "ind_code": "MGP430d",
+    "indicator": "Relates quarter, half and complete turns to angles in degrees (\u00bc turn = 90\u00b0, \u00bd = 180\u00b0, \u00be = 270\u00b0, full = 360\u00b0).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP430",
+    "out_stmt": "Identify and name types of angles (exclude reflex), estimate, measure, compare using degrees and draw angles using a protractor.",
+    "ind_code": "MGP430e",
+    "indicator": "Explores and discusses real-life applications of angles (carpenters, pilots, engineers, artists, athletes).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP431",
+    "out_stmt": "Use simple maps and grids to represent position and follow routes, using compass directions.",
+    "ind_code": "MGP431a",
+    "indicator": "Uses NE, SE, SW and NW to indicate compass directions on a compass rose.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP431",
+    "out_stmt": "Use simple maps and grids to represent position and follow routes, using compass directions.",
+    "ind_code": "MGP431b",
+    "indicator": "Finds Qibla direction using compass and digital technologies.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP431",
+    "out_stmt": "Use simple maps and grids to represent position and follow routes, using compass directions.",
+    "ind_code": "MGP431c",
+    "indicator": "Uses NE, SE, SW and NW to describe the location of an object on simple maps, given a compass rose.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP431",
+    "out_stmt": "Use simple maps and grids to represent position and follow routes, using compass directions.",
+    "ind_code": "MGP431d",
+    "indicator": "Finds the position of a point on a grid of squares where the lines are numbered.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP431",
+    "out_stmt": "Use simple maps and grids to represent position and follow routes, using compass directions.",
+    "ind_code": "MGP431e",
+    "indicator": "Creates a 3D map or draws a map of the island/neighbourhood/school, marks Qibla direction and explains the map.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH432",
+    "out_stmt": "Gather and organise data, display data in bar charts and interpret the results and solve the related problems.",
+    "ind_code": "CDH432a",
+    "indicator": "Collects data by conducting a simple survey about general issues in the school or community and displays data.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH432",
+    "out_stmt": "Gather and organise data, display data in bar charts and interpret the results and solve the related problems.",
+    "ind_code": "CDH432b",
+    "indicator": "Interprets information presented in bar charts.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH432",
+    "out_stmt": "Gather and organise data, display data in bar charts and interpret the results and solve the related problems.",
+    "ind_code": "CDH432c",
+    "indicator": "Brainstorms solutions and discusses individual roles and responsibilities in addressing issues.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH433",
+    "out_stmt": "Gather and organise data, display data in line graphs and interpret the results and solve the related problems.",
+    "ind_code": "CDH433a",
+    "indicator": "Recognises that line graphs are used to represent data that shows continuous change.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH433",
+    "out_stmt": "Gather and organise data, display data in line graphs and interpret the results and solve the related problems.",
+    "ind_code": "CDH433b",
+    "indicator": "Interprets information presented in line graphs.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH433",
+    "out_stmt": "Gather and organise data, display data in line graphs and interpret the results and solve the related problems.",
+    "ind_code": "CDH433c",
+    "indicator": "Collects data by conducting simple surveys and draws line graphs to show the information.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH433",
+    "out_stmt": "Gather and organise data, display data in line graphs and interpret the results and solve the related problems.",
+    "ind_code": "CDH433d",
+    "indicator": "Brainstorms solutions and discusses individual roles and responsibilities in addressing issues.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Reasoning, Communication & Connection",
+    "out_code": "MPS501",
+    "out_stmt": "Recognise and use connections among mathematical procedures and concepts, between mathematical concepts and other disciplines and provide valid reasons by communicating mathematical thoughts using relevant vocabulary and tools.",
+    "ind_code": "MPS501a",
+    "indicator": "Uses appropriate terminology to carry out mathematical conversations and symbols to represent mathematical procedures and concepts.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Reasoning, Communication & Connection",
+    "out_code": "MPS501",
+    "out_stmt": "Recognise and use connections among mathematical procedures and concepts, between mathematical concepts and other disciplines and provide valid reasons by communicating mathematical thoughts using relevant vocabulary and tools.",
+    "ind_code": "MPS501b",
+    "indicator": "Compares strategies, procedures and explains reasons for supporting the strategies and solutions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Reasoning, Communication & Connection",
+    "out_code": "MPS501",
+    "out_stmt": "Recognise and use connections among mathematical procedures and concepts, between mathematical concepts and other disciplines and provide valid reasons by communicating mathematical thoughts using relevant vocabulary and tools.",
+    "ind_code": "MPS501c",
+    "indicator": "Makes connections among mathematical concepts, between mathematical concepts and other disciplines.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Problem Solving & Application",
+    "out_code": "MPS502",
+    "out_stmt": "Analyse, plan, carry out the plan and reflect on the process in problem solving situations.",
+    "ind_code": "MPS502a",
+    "indicator": "Analyses and selects the most suitable problem-solving strategies in solving problems in Mathematics and real life.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Problem Solving & Application",
+    "out_code": "MPS502",
+    "out_stmt": "Analyse, plan, carry out the plan and reflect on the process in problem solving situations.",
+    "ind_code": "MPS502b",
+    "indicator": "Explores and solves problems using suitable tools.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Problem Solving & Application",
+    "out_code": "MPS502",
+    "out_stmt": "Analyse, plan, carry out the plan and reflect on the process in problem solving situations.",
+    "ind_code": "MPS502c",
+    "indicator": "Reflects on the results, considers whether they are reasonable and draws simple conclusions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Mathematical Thinking Skills",
+    "out_code": "MPS503",
+    "out_stmt": "Use mathematical thinking to solve non-routine problems systematically and efficiently in Mathematics and real-life contexts.",
+    "ind_code": "MPS503a",
+    "indicator": "Uses mathematical thinking to solve challenging or non-routine problems beyond daily routine questions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Mathematical Process Skills",
+    "substrand": "Mathematical Thinking Skills",
+    "out_code": "MPS503",
+    "out_stmt": "Use mathematical thinking to solve non-routine problems systematically and efficiently in Mathematics and real-life contexts.",
+    "ind_code": "MPS503b",
+    "indicator": "Identifies suitable problem-solving approaches and tools to solve challenging problems systematically and efficiently.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN504",
+    "out_stmt": "Recognize, read, represent, write and order up to 8-digit numbers in English and Dhivehi.",
+    "ind_code": "NAN504a",
+    "indicator": "Identifies the patterns of number names in figures and words in English and Dhivehi.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN504",
+    "out_stmt": "Recognize, read, represent, write and order up to 8-digit numbers in English and Dhivehi.",
+    "ind_code": "NAN504b",
+    "indicator": "Recognizes the value of numbers and demonstrates that the place value pattern is built on operations of multiplication or division of tens.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN504",
+    "out_stmt": "Recognize, read, represent, write and order up to 8-digit numbers in English and Dhivehi.",
+    "ind_code": "NAN504c",
+    "indicator": "Compares and orders numbers using symbols and related vocabulary (number lines, number cards, place value charts).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN504",
+    "out_stmt": "Recognize, read, represent, write and order up to 8-digit numbers in English and Dhivehi.",
+    "ind_code": "NAN504d",
+    "indicator": "Uses the knowledge of number concepts in real life contexts and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN504",
+    "out_stmt": "Recognize, read, represent, write and order up to 8-digit numbers in English and Dhivehi.",
+    "ind_code": "NAN504e",
+    "indicator": "Records numbers using expanded notation (e.g., 21,652,291 = 20,000,000 + 1,000,000 + \u2026).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN504",
+    "out_stmt": "Recognize, read, represent, write and order up to 8-digit numbers in English and Dhivehi.",
+    "ind_code": "NAN504f",
+    "indicator": "Plays games using number and word cards for recognition, naming and comparison.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN505",
+    "out_stmt": "Make estimations and round numbers to a specified place value and use the appropriate vocabulary of estimation.",
+    "ind_code": "NAN505a",
+    "indicator": "Estimates numbers and explains how estimation is done.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN505",
+    "out_stmt": "Make estimations and round numbers to a specified place value and use the appropriate vocabulary of estimation.",
+    "ind_code": "NAN505b",
+    "indicator": "Rounds numbers to a specified place value (e.g., 4,562,145 rounded to the nearest million is 5,000,000).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN506",
+    "out_stmt": "Recognize Arabic Indic (Hindu Arabic) numerals, including zero up to 30 and beyond.",
+    "ind_code": "NAN506a",
+    "indicator": "Recognizes Arabic Indic numbers from zero to thirty and beyond.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN506",
+    "out_stmt": "Recognize Arabic Indic (Hindu Arabic) numerals, including zero up to 30 and beyond.",
+    "ind_code": "NAN506b",
+    "indicator": "Reads the Hijri calendar to identify dates and timing of important religious observances.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN506",
+    "out_stmt": "Recognize Arabic Indic (Hindu Arabic) numerals, including zero up to 30 and beyond.",
+    "ind_code": "NAN506c",
+    "indicator": "Reads and writes dates in Arabic Indic numerals and applies this knowledge in real life.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN507",
+    "out_stmt": "Recognize and write Roman numerals up to 30 and use Roman numerals in necessary real-life situations.",
+    "ind_code": "NAN507a",
+    "indicator": "Recognizes and writes Roman numerals up to 30.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN507",
+    "out_stmt": "Recognize and write Roman numerals up to 30 and use Roman numerals in necessary real-life situations.",
+    "ind_code": "NAN507b",
+    "indicator": "Plays games using Roman numerals and word cards for number recognition, naming and comparison.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN508",
+    "out_stmt": "Identify and describe properties of square numbers.",
+    "ind_code": "NAN508a",
+    "indicator": "Models square numbers and records each number group in numerical and diagrammatic form (arrays, grid paper).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN508",
+    "out_stmt": "Identify and describe properties of square numbers.",
+    "ind_code": "NAN508b",
+    "indicator": "Creates geometric and numerical patterns that involve square numbers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN509",
+    "out_stmt": "Identify and describe properties of triangular numbers.",
+    "ind_code": "NAN509a",
+    "indicator": "Models triangular numbers and records each number group in numerical and diagrammatic form.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN509",
+    "out_stmt": "Identify and describe properties of triangular numbers.",
+    "ind_code": "NAN509b",
+    "indicator": "Creates geometric and numerical patterns that involve triangular numbers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN510",
+    "out_stmt": "Use divisibility rules to recognize prime and composite numbers.",
+    "ind_code": "NAN510a",
+    "indicator": "Determines and applies tests of divisibility for 2, 3, 4, 5, 6 and 10.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN510",
+    "out_stmt": "Use divisibility rules to recognize prime and composite numbers.",
+    "ind_code": "NAN510b",
+    "indicator": "Identifies prime numbers, prime factors and composite numbers using divisibility rules.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN510",
+    "out_stmt": "Use divisibility rules to recognize prime and composite numbers.",
+    "ind_code": "NAN510c",
+    "indicator": "Creates patterns and solves problems involving prime and composite numbers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN511",
+    "out_stmt": "Find the highest common factor (HCF) and lowest common multiple (LCM) of whole numbers and use them to solve problems.",
+    "ind_code": "NAN511a",
+    "indicator": "Uses factors and common multiples to solve problems (e.g., factorising the larger number).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN511",
+    "out_stmt": "Find the highest common factor (HCF) and lowest common multiple (LCM) of whole numbers and use them to solve problems.",
+    "ind_code": "NAN511b",
+    "indicator": "Uses Venn diagrams and tree diagrams to find HCF and LCM of 2 given numbers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Number Concept",
+    "out_code": "NAN511",
+    "out_stmt": "Find the highest common factor (HCF) and lowest common multiple (LCM) of whole numbers and use them to solve problems.",
+    "ind_code": "NAN511c",
+    "indicator": "Solves problems using knowledge of factors and multiples.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO512",
+    "out_stmt": "Multiply up to 4 digits by 2 digits using personal strategies.",
+    "ind_code": "NAO512a",
+    "indicator": "Uses mental and written strategies for multiplication and division and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO512",
+    "out_stmt": "Multiply up to 4 digits by 2 digits using personal strategies.",
+    "ind_code": "NAO512b",
+    "indicator": "Creates patterns and solves problems involving multiplication and division.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO513",
+    "out_stmt": "Divide up to 3 digits by 2 digits using personal strategies.",
+    "ind_code": "NAO513a",
+    "indicator": "Uses mental and written strategies for division and explains the process.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO513",
+    "out_stmt": "Divide up to 3 digits by 2 digits using personal strategies.",
+    "ind_code": "NAO513b",
+    "indicator": "Creates patterns and solves problems involving division.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO514",
+    "out_stmt": "Explore the use of brackets and the order of operations to write number sentences.",
+    "ind_code": "NAO514a",
+    "indicator": "Recognises that grouping symbols () and [] are used in number sentences to indicate operations that must be performed first.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO514",
+    "out_stmt": "Explore the use of brackets and the order of operations to write number sentences.",
+    "ind_code": "NAO514b",
+    "indicator": "Applies the order of operations to perform calculations involving mixed operations and grouping symbols.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO515",
+    "out_stmt": "Use efficient strategies to add and subtract integers.",
+    "ind_code": "NAO515a",
+    "indicator": "Uses models to explain why addition or subtraction of integers has a positive or negative effect.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO515",
+    "out_stmt": "Use efficient strategies to add and subtract integers.",
+    "ind_code": "NAO515b",
+    "indicator": "Recognises that negative whole numbers can result from subtraction.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO515",
+    "out_stmt": "Use efficient strategies to add and subtract integers.",
+    "ind_code": "NAO515c",
+    "indicator": "Explores number patterns created when counting backwards.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO515",
+    "out_stmt": "Use efficient strategies to add and subtract integers.",
+    "ind_code": "NAO515d",
+    "indicator": "Describes and creates patterns with integers resulting from addition and subtraction.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO516",
+    "out_stmt": "Apply mental and written strategies of arithmetic in daily life situations.",
+    "ind_code": "NAO516a",
+    "indicator": "Uses arithmetic in daily life (role play of shopping, transactions, value for money, saving resources).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Four Operations",
+    "out_code": "NAO516",
+    "out_stmt": "Apply mental and written strategies of arithmetic in daily life situations.",
+    "ind_code": "NAO516b",
+    "indicator": "Solves real life problems related to addition, subtraction, division and multiplication (money, measurements).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF517",
+    "out_stmt": "Identify the relationship between mixed numbers and improper fractions and use models and number lines to represent fractions.",
+    "ind_code": "NAF517a",
+    "indicator": "Gives examples of mixed numbers and improper fractions in daily life (e.g., 2\u00bd litres, \u00bd kg).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF517",
+    "out_stmt": "Identify the relationship between mixed numbers and improper fractions and use models and number lines to represent fractions.",
+    "ind_code": "NAF517b",
+    "indicator": "Uses number lines to represent mixed numbers and improper fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF517",
+    "out_stmt": "Identify the relationship between mixed numbers and improper fractions and use models and number lines to represent fractions.",
+    "ind_code": "NAF517c",
+    "indicator": "Converts improper fractions into mixed numbers and vice versa.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF518",
+    "out_stmt": "Compare and order fractions (denominators of given fractions not exceeding 12).",
+    "ind_code": "NAF518a",
+    "indicator": "Uses mathematical language to compare fractions (>, <, =).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF518",
+    "out_stmt": "Compare and order fractions (denominators of given fractions not exceeding 12).",
+    "ind_code": "NAF518b",
+    "indicator": "Uses bar models to compare and order fractions whose denominators are all multiples of the same number.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF518",
+    "out_stmt": "Compare and order fractions (denominators of given fractions not exceeding 12).",
+    "ind_code": "NAF518c",
+    "indicator": "Finds a common denominator and orders fractions including mixed numbers.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF518",
+    "out_stmt": "Compare and order fractions (denominators of given fractions not exceeding 12).",
+    "ind_code": "NAF518d",
+    "indicator": "Plays games to compare fractions using cards, models and number lines.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF519",
+    "out_stmt": "Solve problems involving addition and subtraction of fractions (denominators not exceeding 12; not more than 2 different denominators).",
+    "ind_code": "NAF519a",
+    "indicator": "Finds the LCM to find the same denominators and adds the fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF519",
+    "out_stmt": "Solve problems involving addition and subtraction of fractions (denominators not exceeding 12; not more than 2 different denominators).",
+    "ind_code": "NAF519b",
+    "indicator": "Finds the LCM to find the same denominators and subtracts the fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF519",
+    "out_stmt": "Solve problems involving addition and subtraction of fractions (denominators not exceeding 12; not more than 2 different denominators).",
+    "ind_code": "NAF519c",
+    "indicator": "Solves word problems related to real life involving addition and subtraction of fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF519",
+    "out_stmt": "Solve problems involving addition and subtraction of fractions (denominators not exceeding 12; not more than 2 different denominators).",
+    "ind_code": "NAF519d",
+    "indicator": "Creates simple sequences involving fractions and explains the rule.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF520",
+    "out_stmt": "Solve problems involving multiplication of fractions (2 proper, 2 improper, proper and improper, mixed number and whole number).",
+    "ind_code": "NAF520a",
+    "indicator": "Uses repeated addition, bar model, number line to multiply fractions by a whole number and gives answers in simplest forms.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF520",
+    "out_stmt": "Solve problems involving multiplication of fractions (2 proper, 2 improper, proper and improper, mixed number and whole number).",
+    "ind_code": "NAF520b",
+    "indicator": "Uses models and number lines to divide fractions by a whole number and gives answers in simplest forms.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF520",
+    "out_stmt": "Solve problems involving multiplication of fractions (2 proper, 2 improper, proper and improper, mixed number and whole number).",
+    "ind_code": "NAF520c",
+    "indicator": "Discusses the advantages of doing cancellation before multiplying out the fractions.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF521",
+    "out_stmt": "Recognise that the place value system can be extended to tenths, hundredths and thousandths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF521a",
+    "indicator": "Expresses and models thousandths as decimals.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF521",
+    "out_stmt": "Recognise that the place value system can be extended to tenths, hundredths and thousandths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF521b",
+    "indicator": "Interprets decimal notation for thousandths (e.g., 0.369 = 369/1000).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF521",
+    "out_stmt": "Recognise that the place value system can be extended to tenths, hundredths and thousandths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF521c",
+    "indicator": "Uses place values to partition decimals up to 3 decimal places.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF521",
+    "out_stmt": "Recognise that the place value system can be extended to tenths, hundredths and thousandths and make connections between fractions and decimal notation.",
+    "ind_code": "NAF521d",
+    "indicator": "Uses part-whole models to partition decimals.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF522",
+    "out_stmt": "Compare and order decimals up to 3 decimal places using visual models.",
+    "ind_code": "NAF522a",
+    "indicator": "Compares and orders decimals using visual models such as models, charts, diene blocks and number lines.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF523",
+    "out_stmt": "Solve problems involving addition and subtraction of decimals up to 2 decimal places and use estimation and rounding to check the reasonableness of answers.",
+    "ind_code": "NAF523a",
+    "indicator": "Uses pictorial representations to find the decimal number bonds to 1.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF523",
+    "out_stmt": "Solve problems involving addition and subtraction of decimals up to 2 decimal places and use estimation and rounding to check the reasonableness of answers.",
+    "ind_code": "NAF523b",
+    "indicator": "Adds and subtracts decimals with the same number of decimal places.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF523",
+    "out_stmt": "Solve problems involving addition and subtraction of decimals up to 2 decimal places and use estimation and rounding to check the reasonableness of answers.",
+    "ind_code": "NAF523c",
+    "indicator": "Adds and subtracts decimals with a different number of decimal places.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF523",
+    "out_stmt": "Solve problems involving addition and subtraction of decimals up to 2 decimal places and use estimation and rounding to check the reasonableness of answers.",
+    "ind_code": "NAF523d",
+    "indicator": "Rounds a number to the given number of decimal places and to the nearest whole number.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF523",
+    "out_stmt": "Solve problems involving addition and subtraction of decimals up to 2 decimal places and use estimation and rounding to check the reasonableness of answers.",
+    "ind_code": "NAF523e",
+    "indicator": "Solves problems related to real life situations where decimals are used (money, measurements).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF524",
+    "out_stmt": "Apply the knowledge of decimals to create, describe and continue number sequences.",
+    "ind_code": "NAF524a",
+    "indicator": "Writes missing decimals in number sequences involving decimals.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Numbers & Algebra",
+    "substrand": "Fractions & Decimals",
+    "out_code": "NAF524",
+    "out_stmt": "Apply the knowledge of decimals to create, describe and continue number sequences.",
+    "ind_code": "NAF524b",
+    "indicator": "Creates simple sequences involving decimals and explains the rule (e.g., 0.2, 0.4, 0.6, 0.8, 1.0\u2026).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM525",
+    "out_stmt": "Select and use the appropriate unit to estimate, measure and solve problems involving length, mass, temperature and convert between metric units.",
+    "ind_code": "MGM525a",
+    "indicator": "Converts metric units (length, mass, capacity) from smaller to larger and vice versa.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM525",
+    "out_stmt": "Select and use the appropriate unit to estimate, measure and solve problems involving length, mass, temperature and convert between metric units.",
+    "ind_code": "MGM525b",
+    "indicator": "Measures length, mass and solves related problems (including addition/subtraction with decimals).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM525",
+    "out_stmt": "Select and use the appropriate unit to estimate, measure and solve problems involving length, mass, temperature and convert between metric units.",
+    "ind_code": "MGM525c",
+    "indicator": "Measures temperature and solves related problems (including addition/subtraction with decimals).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM526",
+    "out_stmt": "Select and use the appropriate unit to estimate, measure and solve problems involving volumes and capacities of cubes and cuboids.",
+    "ind_code": "MGM526a",
+    "indicator": "Finds volume by counting cubes.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM526",
+    "out_stmt": "Select and use the appropriate unit to estimate, measure and solve problems involving volumes and capacities of cubes and cuboids.",
+    "ind_code": "MGM526b",
+    "indicator": "Connects volume and capacity and their units of measurement.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM526",
+    "out_stmt": "Select and use the appropriate unit to estimate, measure and solve problems involving volumes and capacities of cubes and cuboids.",
+    "ind_code": "MGM526c",
+    "indicator": "Builds solids (3D figures) with unit cubes and finds the volume in cubic units.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM526",
+    "out_stmt": "Select and use the appropriate unit to estimate, measure and solve problems involving volumes and capacities of cubes and cuboids.",
+    "ind_code": "MGM526d",
+    "indicator": "Uses repeated addition to find the volumes of rectangular prisms.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM527",
+    "out_stmt": "Select and use appropriate units to estimate, measure, and solve problems involving perimeters of polygons and areas of composite figures.",
+    "ind_code": "MGM527a",
+    "indicator": "Finds the perimeter of regular and irregular polygons.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM527",
+    "out_stmt": "Select and use appropriate units to estimate, measure, and solve problems involving perimeters of polygons and areas of composite figures.",
+    "ind_code": "MGM527b",
+    "indicator": "Finds the area and perimeter of composite figures.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Measurement",
+    "out_code": "MGM527",
+    "out_stmt": "Select and use appropriate units to estimate, measure, and solve problems involving perimeters of polygons and areas of composite figures.",
+    "ind_code": "MGM527c",
+    "indicator": "Estimates areas and perimeters using metric units.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGM528",
+    "out_stmt": "Select and use appropriate units to estimate, measure, and solve problems involving time, mentally and using written methods.",
+    "ind_code": "MGM528a",
+    "indicator": "Calculates time intervals (e.g., from 3:45 to 6:00 = 2 hours 15 minutes).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGM528",
+    "out_stmt": "Select and use appropriate units to estimate, measure, and solve problems involving time, mentally and using written methods.",
+    "ind_code": "MGM528b",
+    "indicator": "Converts units of time (hours to minutes to seconds and vice versa).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGM528",
+    "out_stmt": "Select and use appropriate units to estimate, measure, and solve problems involving time, mentally and using written methods.",
+    "ind_code": "MGM528c",
+    "indicator": "Develops time consciousness, makes schedules and completes tasks on time.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Time",
+    "out_code": "MGM528",
+    "out_stmt": "Select and use appropriate units to estimate, measure, and solve problems involving time, mentally and using written methods.",
+    "ind_code": "MGM528d",
+    "indicator": "Shows a sense of responsibility for their own time management.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS529",
+    "out_stmt": "Compare, describe and draw different types of quadrilaterals and triangles and solve the related problems.",
+    "ind_code": "MGS529a",
+    "indicator": "Groups quadrilaterals and triangles according to their properties and draws different types of triangles on a square grid.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS529",
+    "out_stmt": "Compare, describe and draw different types of quadrilaterals and triangles and solve the related problems.",
+    "ind_code": "MGS529b",
+    "indicator": "Identifies and justifies angle properties of quadrilaterals and triangles.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS529",
+    "out_stmt": "Compare, describe and draw different types of quadrilaterals and triangles and solve the related problems.",
+    "ind_code": "MGS529c",
+    "indicator": "Draws triangles and quadrilaterals for the given measurements.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS530",
+    "out_stmt": "Identify, draw and describe the line and rotational symmetry of shapes, create designs using symmetrical patterns.",
+    "ind_code": "MGS530a",
+    "indicator": "Uses graph paper to assist in creating and drawing symmetrical shapes, designs and reflections.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS530",
+    "out_stmt": "Identify, draw and describe the line and rotational symmetry of shapes, create designs using symmetrical patterns.",
+    "ind_code": "MGS530b",
+    "indicator": "Identifies line and rotational symmetry by cutting, folding and turning shapes.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS530",
+    "out_stmt": "Identify, draw and describe the line and rotational symmetry of shapes, create designs using symmetrical patterns.",
+    "ind_code": "MGS530c",
+    "indicator": "Sorts triangles and quadrilaterals according to the number of lines of symmetry and order of rotational symmetry.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Shapes",
+    "out_code": "MGS530",
+    "out_stmt": "Identify, draw and describe the line and rotational symmetry of shapes, create designs using symmetrical patterns.",
+    "ind_code": "MGS530d",
+    "indicator": "Draws and creates designs using various types of shapes and discusses them among groups.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP531",
+    "out_stmt": "Measure and draw angles up to 360\u00b0 using a protractor, and classify them as acute, right, obtuse, reflex or straight angles.",
+    "ind_code": "MGP531a",
+    "indicator": "Measures angles using a protractor and names them; uses notations \u2220ABC and \u2220a.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP531",
+    "out_stmt": "Measure and draw angles up to 360\u00b0 using a protractor, and classify them as acute, right, obtuse, reflex or straight angles.",
+    "ind_code": "MGP531b",
+    "indicator": "Draws an angle for the given size using a protractor.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP531",
+    "out_stmt": "Measure and draw angles up to 360\u00b0 using a protractor, and classify them as acute, right, obtuse, reflex or straight angles.",
+    "ind_code": "MGP531c",
+    "indicator": "Draws acute, right, obtuse, reflex or straight angles using protractors.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP531",
+    "out_stmt": "Measure and draw angles up to 360\u00b0 using a protractor, and classify them as acute, right, obtuse, reflex or straight angles.",
+    "ind_code": "MGP531d",
+    "indicator": "Explores and discusses the real-life applications of angles (carpenters, pilots, engineers, artists, athletes).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP532",
+    "out_stmt": "Read and plot coordinates in the first quadrant of the Cartesian plane.",
+    "ind_code": "MGP532a",
+    "indicator": "Recognises that the number plane consists of a horizontal axis (x-axis) and a vertical axis (y-axis).",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP532",
+    "out_stmt": "Read and plot coordinates in the first quadrant of the Cartesian plane.",
+    "ind_code": "MGP532b",
+    "indicator": "Recognises that the horizontal and vertical axes meet at right angles.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Measurement & Geometry",
+    "substrand": "Positions & Directions",
+    "out_code": "MGP532",
+    "out_stmt": "Read and plot coordinates in the first quadrant of the Cartesian plane.",
+    "ind_code": "MGP532c",
+    "indicator": "Plots and labels co-ordinates in the first quadrant of the plane.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Chance & Handling Data",
+    "substrand": "Chance",
+    "out_code": "CDH533",
+    "out_stmt": "Identify outcomes of familiar events involving chance and describe them using everyday language.",
+    "ind_code": "CDH533a",
+    "indicator": "Justifies that some events are certain or impossible, likely or unlikely.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Chance & Handling Data",
+    "substrand": "Chance",
+    "out_code": "CDH533",
+    "out_stmt": "Identify outcomes of familiar events involving chance and describe them using everyday language.",
+    "ind_code": "CDH533b",
+    "indicator": "Orders events from least likely to most likely to occur.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Chance & Handling Data",
+    "substrand": "Chance",
+    "out_code": "CDH533",
+    "out_stmt": "Identify outcomes of familiar events involving chance and describe them using everyday language.",
+    "ind_code": "CDH533c",
+    "indicator": "Uses simple predictive statements in real life situations using the language related to chance.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH534",
+    "out_stmt": "Gather and organise data, display data in appropriate graphs (bar graphs, line graphs and Venn diagrams), interpret the results and solve the related problems.",
+    "ind_code": "CDH534a",
+    "indicator": "Interprets information presented in lists, tables and graphs.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH534",
+    "out_stmt": "Gather and organise data, display data in appropriate graphs (bar graphs, line graphs and Venn diagrams), interpret the results and solve the related problems.",
+    "ind_code": "CDH534b",
+    "indicator": "Collects data by conducting simple surveys in the school or community and displays data using appropriate graphs/diagrams.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH534",
+    "out_stmt": "Gather and organise data, display data in appropriate graphs (bar graphs, line graphs and Venn diagrams), interpret the results and solve the related problems.",
+    "ind_code": "CDH534c",
+    "indicator": "Discusses and justifies the choice of data display used.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Chance & Handling Data",
+    "substrand": "Handling Data",
+    "out_code": "CDH534",
+    "out_stmt": "Gather and organise data, display data in appropriate graphs (bar graphs, line graphs and Venn diagrams), interpret the results and solve the related problems.",
+    "ind_code": "CDH534d",
+    "indicator": "Brainstorms results of surveys/problems, solutions and discusses individual roles and responsibilities in addressing issues.",
+    "subject": "Mathematics"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 401",
+    "out_stmt": "Students will demonstrate an understanding of the developmental milestones; positive and negative self-image; healthful choice regarding digestive system and recognize the multiple dimensions of health.",
+    "ind_code": "GDH 401a",
+    "indicator": "Identify bodily changes that occur at the onset of puberty (gender-specific body changes).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 401",
+    "out_stmt": "Students will demonstrate an understanding of the developmental milestones; positive and negative self-image; healthful choice regarding digestive system and recognize the multiple dimensions of health.",
+    "ind_code": "GDH 401b",
+    "indicator": "Identify the factors that influence body shape and size (diet, exercise, hereditary).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 401",
+    "out_stmt": "Students will demonstrate an understanding of the developmental milestones; positive and negative self-image; healthful choice regarding digestive system and recognize the multiple dimensions of health.",
+    "ind_code": "GDH 401c",
+    "indicator": "Identifies changes in roles and responsibilities marked by developmental transitions.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 401",
+    "out_stmt": "Students will demonstrate an understanding of the developmental milestones; positive and negative self-image; healthful choice regarding digestive system and recognize the multiple dimensions of health.",
+    "ind_code": "GDH 401d",
+    "indicator": "Recognize the multiple dimensions of health (physical, mental, emotional, environmental, social and spiritual health).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 401",
+    "out_stmt": "Students will demonstrate an understanding of the developmental milestones; positive and negative self-image; healthful choice regarding digestive system and recognize the multiple dimensions of health.",
+    "ind_code": "GDH 401e",
+    "indicator": "Explain that sensory nerve carries messages from sense organ to the brain, and that motor nerve carry messages from the brain to the body (e.g., eyes see a stranger \u2013 tell muscles to run).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401a",
+    "indicator": "Identify at least one key nutrient provided by recommended food groups: Grains (B Vitamins, fiber), Fruits (Vitamin C, potassium), Vegetables (Vitamin A, Vitamin C), Dairy (Calcium, Vitamin D), Protein (Iron, zinc).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401b",
+    "indicator": "Describe how each nutrient contributes to a healthy body.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401c",
+    "indicator": "Discuss the importance of hydration for physical activity.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401d",
+    "indicator": "Describe safe food handling and preparation practices.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401e",
+    "indicator": "Use a nutrition label to identify the ingredients in foods.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401f",
+    "indicator": "Define a Calorie and describe how it is used by the body.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401g",
+    "indicator": "Identify how many calories they need in a day.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 401",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 401h",
+    "indicator": "Develops a healthy eating goal.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 401",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 401a",
+    "indicator": "List ways to prevent life-threatening diseases.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 401",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 401b",
+    "indicator": "Identify prescription and over-the-counter medicine.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 401",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 401c",
+    "indicator": "Discuss safe procedures for using prescription and over-the-counter medicine.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 401",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 401d",
+    "indicator": "Discuss the long-term effects of a health-related choice.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Self-Concept",
+    "out_code": "PSS 401",
+    "out_stmt": "Students will demonstrate a deeper understanding of self-concept, individual characteristics, values, interests and self-expression, recognizing their significance in personal growth and identity development.",
+    "ind_code": "PSS 401a",
+    "indicator": "Define self-concept and its importance in personal growth and development.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Self-Concept",
+    "out_code": "PSS 401",
+    "out_stmt": "Students will demonstrate a deeper understanding of self-concept, individual characteristics, values, interests and self-expression, recognizing their significance in personal growth and identity development.",
+    "ind_code": "PSS 401b",
+    "indicator": "Engage in a group discussion on individual characteristics, values, and interests.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Self-Concept",
+    "out_code": "PSS 401",
+    "out_stmt": "Students will demonstrate a deeper understanding of self-concept, individual characteristics, values, interests and self-expression, recognizing their significance in personal growth and identity development.",
+    "ind_code": "PSS 401c",
+    "indicator": "Explore the concept of self-expression and its role in shaping identity.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Interpersonal Skills",
+    "out_code": "PSI 401",
+    "out_stmt": "Demonstrate effective communication skills, including clear expression and active listening.",
+    "ind_code": "PSI 401a",
+    "indicator": "Define interpersonal skills and their importance in building positive relationships.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Interpersonal Skills",
+    "out_code": "PSI 401",
+    "out_stmt": "Demonstrate effective communication skills, including clear expression and active listening.",
+    "ind_code": "PSI 401b",
+    "indicator": "Discuss the qualities of effective communication and active listening.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Interpersonal Skills",
+    "out_code": "PSI 401",
+    "out_stmt": "Demonstrate effective communication skills, including clear expression and active listening.",
+    "ind_code": "PSI 401c",
+    "indicator": "Engage in interactive activities to practice communication skills.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Interpersonal Skills",
+    "out_code": "PSI 401",
+    "out_stmt": "Demonstrate effective communication skills, including clear expression and active listening.",
+    "ind_code": "PSI 401d",
+    "indicator": "Discuss the role of respectful communication in fostering a positive classroom environment.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Resilience",
+    "out_code": "GDR 401",
+    "out_stmt": "Understand the concept of resilience and its importance in personal development.",
+    "ind_code": "GDR 401a",
+    "indicator": "Define resilience and its importance in everyday life.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Resilience",
+    "out_code": "GDR 401",
+    "out_stmt": "Understand the concept of resilience and its importance in personal development.",
+    "ind_code": "GDR 401b",
+    "indicator": "Identify and discuss real-life examples of resilient individuals from history, literature, or contemporary figures.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Personality and Social Development",
+    "substrand": "Resilience",
+    "out_code": "GDR 401",
+    "out_stmt": "Understand the concept of resilience and its importance in personal development.",
+    "ind_code": "GDR 401c",
+    "indicator": "Talk about the concept of growth mindset and its connection to resilience.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 401",
+    "out_stmt": "Student will understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 401a",
+    "indicator": "Identify safety rules and procedures to avoid injury (e.g., swimming, driving, falls, burns).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 401",
+    "out_stmt": "Student will understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 401b",
+    "indicator": "Discuss ways to be a safe pedestrian.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 401",
+    "out_stmt": "Student will understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 401c",
+    "indicator": "Talk about consequences of risky behaviors.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 401",
+    "out_stmt": "Student will understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 401d",
+    "indicator": "Identify personal information and the importance of keeping it private.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 401",
+    "out_stmt": "Student will understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 401e",
+    "indicator": "Explain responsible uses of technology and digital information and describe potential consequences of inappropriate use.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Health of Individual and Community",
+    "substrand": "Personal Body Safety Skills",
+    "out_code": "HIP 401",
+    "out_stmt": "Students will recognize and practice health-enhancing behaviors to reduce health risks.",
+    "ind_code": "HIP 401a",
+    "indicator": "Talk about different strategies to avoid or reduce harmful situations.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Health of Individual and Community",
+    "substrand": "Personal Body Safety Skills",
+    "out_code": "HIP 401",
+    "out_stmt": "Students will recognize and practice health-enhancing behaviors to reduce health risks.",
+    "ind_code": "HIP 401b",
+    "indicator": "Identify sources to report abuse, bullying, violence, and injury (e.g., teachers, counselor, parent, leading teacher).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401a",
+    "indicator": "Performs locomotor movement skills with agility and strength.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401b",
+    "indicator": "Use overarm throw in game situations (e.g., cricket).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401c",
+    "indicator": "Catches using one hand, preferred and non-preferred.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401d",
+    "indicator": "Kicks with either foot to a target.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401e",
+    "indicator": "Hit backhand.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401f",
+    "indicator": "Perform complex skipping routines (e.g., shifting from forward to backward and crossing arms) using a short rope.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401g",
+    "indicator": "Passes to a moving target from a stationary position (e.g., with hand, foot or equipment).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 401",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 401h",
+    "indicator": "Dribbles with preferred hand and foot whilst changing directions (e.g., basketball, football).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401a",
+    "indicator": "Perform a fall-in entry.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401b",
+    "indicator": "Demonstrate sculling feet first on the back.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401c",
+    "indicator": "Demonstrate rotation of the body while keeping the face above the water.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401d",
+    "indicator": "Swim continuously 50 meters with above water arm recovery.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401e",
+    "indicator": "Swim continuously 25 meters with underwater arm recovery.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401f",
+    "indicator": "Perform butterfly arm action for a distance of 5 meters.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401g",
+    "indicator": "Perform sculling, floating or treading water for 2 minutes.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 401",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 401h",
+    "indicator": "Perform a surface dive, swim underwater, search for and recover an object from water of depth equivalent to the child's height.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401a",
+    "indicator": "Identify and participate in age-appropriate activities that develop cardiovascular endurance.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401b",
+    "indicator": "Identify the location of the heart.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401c",
+    "indicator": "Describe that nutritious food provides energy for physical activity.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401d",
+    "indicator": "Hang on monkey bars for a short period of time.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401e",
+    "indicator": "Climb ladders, jungle gym.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401f",
+    "indicator": "Describe that strong muscles help to climb and hang.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401g",
+    "indicator": "Do simple stretching such as posing as different alphabets.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401h",
+    "indicator": "Name the body parts involved in stretching.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401i",
+    "indicator": "Engage in uninterrupted movement activities (games such as tag or follow the leader).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401j",
+    "indicator": "Explain that the body is composed of muscles, bones, fats and different organs.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 401",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 401k",
+    "indicator": "Participate in recognised health fitness assessment: cardiovascular endurance, muscular strength and endurance, flexibility and body composition.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 401",
+    "out_stmt": "Perform without assistance the DMPs (dominant movement patterns) of educational gymnastics.",
+    "ind_code": "PFE 401a",
+    "indicator": "Explore different inverted static balances (e.g., shoulder stand, tripod stand, hand stand).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 401",
+    "out_stmt": "Perform without assistance the DMPs (dominant movement patterns) of educational gymnastics.",
+    "ind_code": "PFE 401b",
+    "indicator": "Perform co-operative balances, counterbalance, showing space and body awareness, and relationships.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 401",
+    "out_stmt": "Perform without assistance the DMPs (dominant movement patterns) of educational gymnastics.",
+    "ind_code": "PFE 401c",
+    "indicator": "Refine jump, land and balancing skills.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 401",
+    "out_stmt": "Perform without assistance the DMPs (dominant movement patterns) of educational gymnastics.",
+    "ind_code": "PFE 401d",
+    "indicator": "Change weight bearing to different parts of the body, moving towards mini cartwheel.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 4",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 401",
+    "out_stmt": "Perform without assistance the DMPs (dominant movement patterns) of educational gymnastics.",
+    "ind_code": "PFE 401e",
+    "indicator": "Refines jumping and landing and balancing skills (spring).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 501",
+    "out_stmt": "Demonstrate an understanding of physical, social and emotional changes during puberty and the importance of personal hygiene and responsibilities associated with puberty.",
+    "ind_code": "GDH 501a",
+    "indicator": "Identify the physical changes associated with puberty (growth of body hair, changes in body shape, acne) and the importance of personal hygiene practices.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 501",
+    "out_stmt": "Demonstrate an understanding of physical, social and emotional changes during puberty and the importance of personal hygiene and responsibilities associated with puberty.",
+    "ind_code": "GDH 501b",
+    "indicator": "Identify the social and emotional changes associated with puberty (mood fluctuation, body image, insecurities).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 501",
+    "out_stmt": "Demonstrate an understanding of physical, social and emotional changes during puberty and the importance of personal hygiene and responsibilities associated with puberty.",
+    "ind_code": "GDH 501c",
+    "indicator": "Identify the responsibilities associated with physical, social and emotional changes during puberty.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 501",
+    "out_stmt": "Demonstrate an understanding of physical, social and emotional changes during puberty and the importance of personal hygiene and responsibilities associated with puberty.",
+    "ind_code": "GDH 501d",
+    "indicator": "Identify healthy behaviors necessary for the development of multiple dimensions of health (e.g., harmful effects of tobacco on heart & lung). Understand that prevention is better than cure.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Healthy Body Awareness",
+    "out_code": "GDH 501",
+    "out_stmt": "Demonstrate an understanding of physical, social and emotional changes during puberty and the importance of personal hygiene and responsibilities associated with puberty.",
+    "ind_code": "GDH 501e",
+    "indicator": "Describe the basic functions of the immune system.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501a",
+    "indicator": "Select food from different levels of the food pyramid to prepare a healthy and balanced meal/breakfast.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501b",
+    "indicator": "Explain why some food groups have a greater number of recommended portions than others.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501c",
+    "indicator": "Select a diet plan from a popular magazine and evaluate it according to its nutritional information.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501d",
+    "indicator": "Differentiate between portion and serving size.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501e",
+    "indicator": "Identify the process of food contamination and spoilage.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501f",
+    "indicator": "Describe the importance of calorie balance in managing weight.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501g",
+    "indicator": "Discuss the number of calories that different age groups need.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501h",
+    "indicator": "Explain how energy is obtained and expended during physical activity.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Nutrition",
+    "out_code": "GDN 501",
+    "out_stmt": "Students will demonstrate an understanding of key nutrition concepts including nutrient identification, daily calorie needs, hydration for physical activity, safe food handling and goal setting for healthy eating.",
+    "ind_code": "GDN 501i",
+    "indicator": "Identify resources that can help achieve healthy eating.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 501",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 501a",
+    "indicator": "Understand relationship between disease prevention and quality of life.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 501",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 501b",
+    "indicator": "List and describe appropriate uses for prescription and over-the-counter medicine.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 501",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 501c",
+    "indicator": "Explain why following directions is important when using medicine.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 501",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 501d",
+    "indicator": "Describe how heredity can affect personal health (e.g., Thalassemia).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Growth, Development & Body Awareness",
+    "substrand": "Common Disease & Disease Prevention",
+    "out_code": "GDC 501",
+    "out_stmt": "Demonstrate behavior that promotes health and disease prevention.",
+    "ind_code": "GDC 501e",
+    "indicator": "Apply decision-making skills to make a health-enhancing choice.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Self-Concept",
+    "out_code": "PSS 501",
+    "out_stmt": "Students will be able to recognize and value their own unique qualities, strengths, and talents.",
+    "ind_code": "PSS 501a",
+    "indicator": "Identify and appreciate their unique qualities, strengths, and talents.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Self-Concept",
+    "out_code": "PSS 501",
+    "out_stmt": "Students will be able to recognize and value their own unique qualities, strengths, and talents.",
+    "ind_code": "PSS 501b",
+    "indicator": "Engage in activities that highlight individual achievements and contributions.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Self-Concept",
+    "out_code": "PSS 501",
+    "out_stmt": "Students will be able to recognize and value their own unique qualities, strengths, and talents.",
+    "ind_code": "PSS 501c",
+    "indicator": "Self-reflect on personal areas of growth and improvement.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Interpersonal Skills",
+    "out_code": "PSI 501",
+    "out_stmt": "Demonstrate empathy and understanding towards others' perspectives and emotions.",
+    "ind_code": "PSI 501a",
+    "indicator": "Explore the concept of empathy and its role in understanding others' feelings.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Interpersonal Skills",
+    "out_code": "PSI 501",
+    "out_stmt": "Demonstrate empathy and understanding towards others' perspectives and emotions.",
+    "ind_code": "PSI 501b",
+    "indicator": "Engage in role-playing activities to develop empathy and perspective-taking skills.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Interpersonal Skills",
+    "out_code": "PSI 501",
+    "out_stmt": "Demonstrate empathy and understanding towards others' perspectives and emotions.",
+    "ind_code": "PSI 501c",
+    "indicator": "Engage in a group project that promotes teamwork and cooperation.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Resilience",
+    "out_code": "GDR 501",
+    "out_stmt": "Apply resilience skills to academic, social, and personal contexts.",
+    "ind_code": "GDR 501a",
+    "indicator": "Identify the importance of self-belief in developing resilience.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Resilience",
+    "out_code": "GDR 501",
+    "out_stmt": "Apply resilience skills to academic, social, and personal contexts.",
+    "ind_code": "GDR 501b",
+    "indicator": "Practice positive self-talk and challenging negative thoughts.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Personality and Social Development",
+    "substrand": "Resilience",
+    "out_code": "GDR 501",
+    "out_stmt": "Apply resilience skills to academic, social, and personal contexts.",
+    "ind_code": "GDR 501c",
+    "indicator": "Identify healthy coping strategies, such as mindfulness exercises, deep breathing, and physical activities.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 501",
+    "out_stmt": "Understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 501a",
+    "indicator": "Identify environmental hazards outside the home (e.g., playgrounds, parks, school grounds).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 501",
+    "out_stmt": "Understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 501b",
+    "indicator": "Identify risky situations that may need a decision and predict the potential outcomes.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 501",
+    "out_stmt": "Understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 501c",
+    "indicator": "Talk about a variety of health behaviors (exercise, proper hygiene, diet, helmet use) that promote injury prevention.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 501",
+    "out_stmt": "Understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 501d",
+    "indicator": "Identify the possible dangers of using networked digital environments (internet, mobile phones, wireless networks) and disclosing personal information.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Health of Individual and Community",
+    "substrand": "Injury Prevention",
+    "out_code": "HII 501",
+    "out_stmt": "Understand and learn specific behaviors that promote injury prevention and personal safety.",
+    "ind_code": "HII 501e",
+    "indicator": "Talk about instances and dangers of cyberbullying and prevention strategies.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Health of Individual and Community",
+    "substrand": "Personal Body Safety Skills",
+    "out_code": "HIP 501",
+    "out_stmt": "Students will recognize and practice health-enhancing behaviors to reduce health risks.",
+    "ind_code": "HIP 501a",
+    "indicator": "Identify violent, verbal and nonverbal behaviors such as abuse, assault, harassment, and bullying (verbal, physical, emotional).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Health of Individual and Community",
+    "substrand": "Personal Body Safety Skills",
+    "out_code": "HIP 501",
+    "out_stmt": "Students will recognize and practice health-enhancing behaviors to reduce health risks.",
+    "ind_code": "HIP 501b",
+    "indicator": "Identify individuals and other sources to help and report abuse (e.g., parent, counselor, teacher, leading teacher).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 501",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 501a",
+    "indicator": "Performs locomotor movement skills with agility and strength.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 501",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 501b",
+    "indicator": "Use overarm throw in game situations (e.g., cricket).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 501",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 501c",
+    "indicator": "Catches using one hand, preferred and non-preferred.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 501",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 501d",
+    "indicator": "Kicks with either foot to a target.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 501",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 501e",
+    "indicator": "Hit backhand.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 501",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 501f",
+    "indicator": "Perform complex skipping routines (e.g., shifting from forward to backward and crossing arms) using a short rope.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Fundamental Movement Skills",
+    "out_code": "PFL 501",
+    "out_stmt": "Perform a broad range of fundamental movement skills and demonstrate how the body can move in relation to other objects and people.",
+    "ind_code": "PFL 501g",
+    "indicator": "Passes to a moving target from a stationary position (e.g., with hand, foot or equipment).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501a",
+    "indicator": "Perform a dive-in entry.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501b",
+    "indicator": "Rotate the body about the vertical and horizontal axes with and without arm and leg action.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501c",
+    "indicator": "Perform an egg beater kick.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501d",
+    "indicator": "Swim continuously 25m freestyle, 25m survival backstroke or side stroke, 25m back crawl, 25m breaststroke.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501e",
+    "indicator": "Swim butterfly for 10 meters demonstrating a recognizable stroke and using correct breathing technique.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501f",
+    "indicator": "Perform survival sculling, floating or treading water for 4 minutes.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501g",
+    "indicator": "Perform a feet-first surface dive and swim underwater for a short distance.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501h",
+    "indicator": "Swim slowly for 6 minutes using three survival strokes, changing after each minute from one stroke to another.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Swimming",
+    "out_code": "PFS 501",
+    "out_stmt": "Perform basic swimming strokes, underwater skills and survival techniques.",
+    "ind_code": "PFS 501i",
+    "indicator": "Perform a surface dive, swim underwater, search for and recover an object from water of depth equivalent to the child's height.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501a",
+    "indicator": "Participate 2\u20133 days each week in continuous moderate to vigorous physical activity to improve cardiovascular endurance.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501b",
+    "indicator": "Identify that the heart is the most important muscle in the body and that increasing heart rate during physical activity strengthens the heart muscles.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501c",
+    "indicator": "Perform a 'V' sit for an extended period of time with arms stretched forward.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501d",
+    "indicator": "Move from a sitting to a standing position and from a lying to a sitting position without using arms.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501e",
+    "indicator": "Explain that strong muscles help prevent injury and produce more force.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501f",
+    "indicator": "Do simple stretching exercises without hyperflexing or hyperextending the joints.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501g",
+    "indicator": "Understand that proper body position while stretching will help prevent injury.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501h",
+    "indicator": "Engage in uninterrupted movement activities (games such as tag or follow the leader).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501i",
+    "indicator": "Identify body components (e.g., bones, muscles, fats, organs and tissues).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501j",
+    "indicator": "Understand the body needs correct portions of food and water to function.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Health and Skill-Related Fitness",
+    "out_code": "PFF 501",
+    "out_stmt": "Perform physical activities that enhance fitness and fitness knowledge.",
+    "ind_code": "PFF 501k",
+    "indicator": "Participate in recognised health fitness assessment: cardiovascular endurance, muscular strength and endurance, flexibility and body composition.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 501",
+    "out_stmt": "Refine DMPs of educational gymnastics.",
+    "ind_code": "PFE 501a",
+    "indicator": "Perform balance shapes (e.g., knee scale, lunge, arabesque, V-sit).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 501",
+    "out_stmt": "Refine DMPs of educational gymnastics.",
+    "ind_code": "PFE 501b",
+    "indicator": "Perform landing from an apparatus (e.g., beam/bench).",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 501",
+    "out_stmt": "Refine DMPs of educational gymnastics.",
+    "ind_code": "PFE 501c",
+    "indicator": "Perform a sequence of cartwheels.",
+    "subject": "H.PE"
+  },
+  {
+    "grade": "Grade 5",
+    "strand": "Physical Fitness",
+    "substrand": "Educational Gymnastics",
+    "out_code": "PFE 501",
+    "out_stmt": "Refine DMPs of educational gymnastics.",
+    "ind_code": "PFE 501d",
+    "indicator": "Bunny hop from beat board to soft vault jump and land.",
+    "subject": "H.PE"
+  }
+]

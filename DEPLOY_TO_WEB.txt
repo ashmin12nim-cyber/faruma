@@ -1,0 +1,71 @@
+HOW TO DEPLOY TO THE WEB (Railway)
+====================================
+Free hosting. Takes about 5 minutes. You get a permanent web address
+like: https://seenu-atoll-lesson-planner.up.railway.app
+
+
+WHAT YOU NEED
+--------------
+- A free GitHub account (github.com)
+- A free Railway account (railway.app)
+- The lessonplanner folder (this folder)
+
+
+STEP 1 — CREATE A GITHUB REPOSITORY
+--------------------------------------
+1. Go to github.com and sign in (or create a free account)
+2. Click the + button (top right) → "New repository"
+3. Name it: seenu-atoll-lesson-planner
+4. Make it Private (recommended)
+5. Click "Create repository"
+6. On the next page, click "uploading an existing file"
+7. Drag ALL files from this folder into the upload area:
+   - server.js
+   - index.html
+   - package.json
+   - syllabus.json
+   - school_logo.png
+   - railway.toml
+   - nixpacks.toml
+   - .gitignore
+8. Click "Commit changes"
+
+
+STEP 2 — DEPLOY ON RAILWAY
+-----------------------------
+1. Go to railway.app and sign in with your GitHub account
+2. Click "New Project"
+3. Click "Deploy from GitHub repo"
+4. Select "seenu-atoll-lesson-planner"
+5. Railway will automatically detect it's a Node.js app and deploy it
+6. Wait about 2 minutes for deployment to finish
+7. Click "Settings" → "Networking" → "Generate Domain"
+8. You get a permanent URL like: https://seenu-atoll-lesson-planner.up.railway.app
+
+
+STEP 3 — OPEN YOUR WEB APP
+----------------------------
+Go to your Railway URL in any browser, on any device.
+Bookmark it. Share it with colleagues.
+
+Your API key is entered once in the app and saved in the browser.
+
+
+COST
+-----
+Railway free tier includes $5/month of free credits.
+This app uses almost no resources — it will run free indefinitely
+on the free tier for normal school use.
+
+
+UPDATING THE APP
+-----------------
+If you get an updated index.html or syllabus.json from Claude:
+1. Go to your GitHub repository
+2. Click on the file you want to update
+3. Click the pencil (edit) icon
+4. Replace the content and commit
+5. Railway automatically re-deploys within 1-2 minutes
+
+
+Seenu Atoll School · S. Meedhoo, Addu · 2026

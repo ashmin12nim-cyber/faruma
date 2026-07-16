@@ -1,0 +1,17 @@
+{
+  "name": "hiyaa-lesson-planner",
+  "version": "2.0.0",
+  "description": "Hiyaa Lesson Planner",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "mammoth": "^1.7.0",
+    "pdf-parse": "^1.1.1",
+    "busboy": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
