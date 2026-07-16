@@ -1,0 +1,129 @@
+<!-- ============================================================
+FARUMA — front-end auth (paste into your single HTML file)
+
+1. Add the CDN script in <head>, next to your docx/JSZip includes.
+2. Paste the login overlay markup just inside <body>.
+3. Paste the JS at the bottom of your existing <script> section.
+4. Replace SUPABASE_URL + SUPABASE_ANON_KEY with yours
+   (Dashboard > Settings > API). The ANON key is safe to expose —
+   it is public by design; the service role key is the secret one.
+============================================================ -->
+
+<!-- (1) In <head> -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- (2) Just inside <body>: full-screen login overlay, hidden once signed in -->
+<div id="authOverlay" style="position:fixed;inset:0;background:#0f2740;display:flex;
+     align-items:center;justify-content:center;z-index:9999;font-family:inherit;">
+  <div style="background:#fff;border-radius:12px;padding:32px;max-width:360px;width:90%;
+       text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.3);">
+    <h2 style="margin:0 0 8px;">FARUMA</h2>
+    <p style="color:#555;margin:0 0 20px;">Sign in with your email — we'll send you a login link. No password needed.</p>
+    <input id="authEmail" type="email" placeholder="you@school.edu.mv"
+           style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;
+                  box-sizing:border-box;margin-bottom:12px;font-size:15px;">
+    <button id="authSendLink"
+            style="width:100%;padding:11px;border:none;border-radius:8px;background:#0f2740;
+                   color:#fff;font-size:15px;cursor:pointer;">Send login link</button>
+    <p id="authStatus" style="color:#0a7a3d;min-height:20px;margin:12px 0 0;font-size:14px;"></p>
+  </div>
+</div>
+
+<!-- Small credit badge — place inside your existing header/nav -->
+<span id="creditBadge" style="display:none;background:#e8f1fb;border-radius:14px;
+      padding:4px 12px;font-size:14px;font-weight:600;color:#0f2740;">… credits</span>
+
+<!-- (3) At the bottom of your <script> -->
+<script>
+// ---------- Supabase client ----------
+const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co";     // <-- replace
+const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";            // <-- replace
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ---------- Magic-link login flow ----------
+document.getElementById("authSendLink").addEventListener("click", async () => {
+  const email = document.getElementById("authEmail").value.trim();
+  const status = document.getElementById("authStatus");
+  if (!email) { status.textContent = "Please enter your email."; return; }
+
+  status.textContent = "Sending…";
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: window.location.origin }, // back to FARUMA after click
+  });
+  status.textContent = error
+    ? "Could not send link — check the address and try again."
+    : "Check your email and click the link to sign in.";
+});
+
+// ---------- Session handling ----------
+let currentSession = null;
+
+sb.auth.onAuthStateChange((_event, session) => {
+  currentSession = session;
+  const overlay = document.getElementById("authOverlay");
+  const badge = document.getElementById("creditBadge");
+  if (session) {
+    overlay.style.display = "none";
+    badge.style.display = "inline-block";
+    refreshCreditBadge();
+  } else {
+    overlay.style.display = "flex";
+    badge.style.display = "none";
+  }
+});
+
+// ---------- Authenticated fetch wrapper ----------
+// Use this instead of plain fetch() for ALL calls to your Express API.
+// It attaches the JWT that the server's requireAuth middleware verifies.
+async function apiFetch(path, options = {}) {
+  if (!currentSession) throw new Error("NOT_SIGNED_IN");
+  const headers = {
+    ...(options.headers || {}),
+    "Authorization": "Bearer " + currentSession.access_token,
+    "Content-Type": "application/json",
+  };
+  const res = await fetch(path, { ...options, headers });
+
+  if (res.status === 402) {           // INSUFFICIENT_CREDITS from the server
+    showTopUpPrompt();
+    throw new Error("INSUFFICIENT_CREDITS");
+  }
+  return res;
+}
+
+// ---------- Example: converting an existing generation call ----------
+// BEFORE:
+//   const res = await fetch("/api/generate", { method:"POST", body: JSON.stringify(payload) });
+// AFTER:
+//   payload.generationType = "lesson_plan";        // one of the server's CREDIT_COSTS keys
+//   payload.hasAttachments = attachments.length > 0;
+//   const res = await apiFetch("/api/generate", { method:"POST", body: JSON.stringify(payload) });
+//   const data = await res.json();
+//   if (data.credits) updateCreditBadge(data.credits.balance);   // server returns new balance
+
+// ---------- Credit badge ----------
+async function refreshCreditBadge() {
+  try {
+    const res = await apiFetch("/api/credits");
+    const { balance } = await res.json();
+    updateCreditBadge(balance);
+  } catch (e) { /* badge is cosmetic; fail quietly */ }
+}
+
+function updateCreditBadge(balance) {
+  const badge = document.getElementById("creditBadge");
+  badge.textContent = balance + " credit" + (balance === 1 ? "" : "s");
+  badge.style.background = balance <= 5 ? "#fdecea" : "#e8f1fb"; // red-ish when low
+  badge.style.color = balance <= 5 ? "#a12622" : "#0f2740";
+}
+
+function showTopUpPrompt() {
+  // Placeholder until BML Connect purchase flow is built:
+  alert("You've run out of credits. Top-up packs coming soon — contact the FARUMA admin to add credits.");
+}
+
+// Optional sign-out hook — wire to a button if you add one:
+// await sb.auth.signOut();
+</script>
