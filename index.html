@@ -2282,12 +2282,19 @@ function updateUserBar() {
   document.getElementById('user-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
   document.getElementById('user-name-display').textContent = currentUser.name;
   document.getElementById('user-plan-display').textContent = currentUser.plan === 'pro' ? '⭐ Pro' : 'Free plan';
-  // Show per-device usage
-  var deviceUsage = parseInt(localStorage.getItem('boli_device_usage') || '0');
-  var deviceLimit = 100;
   var pill = document.getElementById('usage-pill');
-  pill.textContent = deviceUsage + '/' + deviceLimit + ' plans';
-  pill.className = 'usage-pill' + (deviceUsage >= deviceLimit * 0.8 ? ' warn' : '');
+  if (typeof currentUser.credits !== 'undefined' && currentUser.credits !== null) {
+    // Credit system active: show remaining credits, warn when low
+    var cr = currentUser.credits;
+    pill.textContent = cr + ' credit' + (cr === 1 ? '' : 's');
+    pill.className = 'usage-pill' + (cr <= 5 ? ' warn' : '');
+  } else {
+    // Fallback: per-device usage
+    var deviceUsage = parseInt(localStorage.getItem('boli_device_usage') || '0');
+    var deviceLimit = 100;
+    pill.textContent = deviceUsage + '/' + deviceLimit + ' plans';
+    pill.className = 'usage-pill' + (deviceUsage >= deviceLimit * 0.8 ? ' warn' : '');
+  }
 }
 
 
@@ -2611,6 +2618,11 @@ async function callAPI(key, prompt, maxTokens, attachment) {
   }
   var data = await resp.json();
   if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+  if (data.faruma_credits && currentUser) {
+    currentUser.credits = data.faruma_credits.balance;
+    currentUser.limit = data.faruma_credits.balance;
+    if (typeof updateUserBar === 'function') updateUserBar();
+  }
   if (!data.content) throw new Error('Unexpected API response (status ' + resp.status + ')');
   var text = data.content.map(function(b) { return b.text || ''; }).join('').trim();
   text = text.replace(/^```json\s*/,'').replace(/\s*```$/,'').trim();
