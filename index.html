@@ -610,6 +610,8 @@ body::before {
         <div class="user-plan" id="user-plan-display">free</div>
       </div>
       <div class="usage-pill" id="usage-pill">0/10</div>
+      <button class="logout-btn" style="background:#0f7a3d;border-color:#0f7a3d;color:#fff;" onclick="openTopup()">Top Up</button>
+      <button class="logout-btn" onclick="openHelp()">Help</button>
       <button class="logout-btn" onclick="doLogout()">Sign out</button>
     </div>
   </div>
@@ -668,6 +670,21 @@ body::before {
       <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+      <div style="text-align:center;margin-top:10px;"><a onclick="showForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Forgot password?</a></div>
+    </div>
+    <!-- Forgot password form -->
+    <div id="form-forgot" style="display:none;">
+      <p style="font-size:13px;margin:0 0 12px;">Enter your email and we'll send you a link to reset your password.</p>
+      <div class="auth-field"><label>Email</label><input type="email" id="forgot-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doForgot()"></div>
+      <button class="auth-btn" id="forgot-btn" onclick="doForgot()">Send Reset Link</button>
+      <div style="text-align:center;margin-top:10px;"><a onclick="hideForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Back to sign in</a></div>
+    </div>
+    <!-- Reset password form (shown when arriving from a reset email link) -->
+    <div id="form-reset" style="display:none;">
+      <p style="font-size:13px;margin:0 0 12px;">Choose a new password for your account.</p>
+      <div class="auth-field"><label>New Password</label><input type="password" id="reset-pass" placeholder="Min. 6 characters"></div>
+      <div class="auth-field"><label>Confirm Password</label><input type="password" id="reset-pass2" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')doReset()"></div>
+      <button class="auth-btn" id="reset-btn" onclick="doReset()">Set New Password</button>
     </div>
     <!-- Register form -->
     <div id="form-register" style="display:none;">
@@ -677,7 +694,101 @@ body::before {
       <button class="auth-btn" id="reg-btn" onclick="doRegister()">Create Account</button>
     </div>
     <div class="auth-demo">
-      Try demo account: &nbsp;<a onclick="useDemoAccount()">demo@hiyaa.mv / demo123</a>
+      New here? You get <b>15 free credits</b> when you register. &nbsp;·&nbsp; <a onclick="showPrivacy()" style="cursor:pointer;text-decoration:underline;">Privacy</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ PRIVACY NOTICE MODAL ════════ -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:14px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h3 style="margin:0;font-size:18px;">Privacy Notice</h3>
+      <button onclick="hidePrivacy()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div style="font-size:13px;line-height:1.7;color:#333;">
+      <p><b>What we collect.</b> When you create a FARUMA account we store your name, email address, and a securely hashed password. As you use the app we keep a record of your credit balance and credit transactions (when credits were used or added).</p>
+      <p><b>What we do with it.</b> This information is used only to run your account, track your credits, and improve FARUMA. We do not sell or share your personal information with anyone.</p>
+      <p><b>Where it is stored.</b> Account data is stored securely with Supabase. The text you type when generating lesson plans is processed by Anthropic's Claude API to produce your documents and is not used to identify you.</p>
+      <p><b>Generated documents.</b> Lesson plans, schemes of work and other documents you generate are saved in your own browser on your device, not on our servers.</p>
+      <p><b>Your choices.</b> You can ask for your account and its data to be deleted at any time by contacting the FARUMA administrator at your school.</p>
+      <p style="color:#777;font-size:12px;margin-bottom:0;">FARUMA · Seenu Atoll School, S. Hulhudhoo-Meedhoo · Last updated July 2026</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ TOP UP MODAL ════════ -->
+<div id="topup-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <h3 style="margin:0;font-size:18px;">Top Up Credits</h3>
+      <button onclick="closeTopup()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div id="topup-step1">
+      <p style="font-size:13px;color:#555;margin:0 0 14px;">Choose a credit pack. You'll pay by bank transfer and credits are added once the transfer is confirmed.</p>
+      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(50)">50 credits — MVR 90</button>
+      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(150)">150 credits — MVR 240</button>
+      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(400)">400 credits — MVR 560 <span style="font-weight:400;">(best value)</span></button>
+      <div id="topup-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:6px;"></div>
+      <div id="topup-history" style="margin-top:14px;font-size:12px;color:#555;"></div>
+    </div>
+    <div id="topup-step2" style="display:none;">
+      <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;font-size:13px;line-height:1.7;margin-bottom:12px;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Request created ✓</div>
+        <div>Pack: <b id="topup-pack-label"></b></div>
+        <div>Amount to transfer: <b id="topup-amount-label"></b></div>
+        <div>Reference code: <b id="topup-ref-label" style="font-size:16px;letter-spacing:1px;"></b></div>
+      </div>
+      <div style="font-size:13px;line-height:1.8;">
+        <b>How to pay:</b>
+        <ol style="margin:6px 0 10px;padding-left:20px;">
+          <li>Transfer the amount to:<br><b id="topup-bank-label"></b></li>
+          <li>Put the reference code <b>in the transfer remarks</b>.</li>
+          <li id="topup-contact-line" style="display:none;">Send the receipt to: <b id="topup-contact-label"></b></li>
+        </ol>
+        Your credits are added as soon as the transfer is confirmed — you'll see the balance update in the top bar.
+      </div>
+      <button class="auth-btn" style="margin-top:10px;" onclick="closeTopup()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ HELP / CONTACT MODAL ════════ -->
+<div id="help-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <h3 style="margin:0;font-size:18px;">Contact FARUMA Admin</h3>
+      <button onclick="closeHelp()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <p style="font-size:13px;color:#555;margin:0 0 10px;">Question, problem, or a top-up that hasn't arrived? Write it here.</p>
+    <textarea id="help-text" rows="5" style="width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:8px;padding:10px;font-size:13px;font-family:inherit;resize:vertical;" placeholder="Type your message..."></textarea>
+    <div id="help-status" style="display:none;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
+    <button class="auth-btn" id="help-send-btn" style="margin-top:10px;" onclick="sendHelp()">Send Message</button>
+  </div>
+</div>
+
+<!-- ════════ ADMIN PANEL ════════ -->
+<div id="admin-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.7);z-index:10001;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;">
+  <div style="background:#fff;border-radius:14px;max-width:680px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.4);margin:20px 0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h3 style="margin:0;font-size:18px;">FARUMA Admin</h3>
+      <button onclick="closeAdmin()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div id="admin-login">
+      <div class="auth-field"><label>Admin password</label><input type="password" id="admin-pass" onkeydown="if(event.key==='Enter')adminLoad()"></div>
+      <button class="auth-btn" onclick="adminLoad()">Open Admin Panel</button>
+      <div id="admin-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
+    </div>
+    <div id="admin-body" style="display:none;">
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="logout-btn" onclick="adminLoad()">↻ Refresh</button>
+      </div>
+      <h4 style="margin:0 0 8px;font-size:15px;">Pending top-ups <span id="admin-pending-count" style="background:#fdecea;color:#a12622;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
+      <div id="admin-pending" style="font-size:13px;"></div>
+      <h4 style="margin:18px 0 8px;font-size:15px;">Messages from teachers <span id="admin-msg-count" style="background:#e8f1fb;color:#0f2740;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
+      <div id="admin-messages" style="font-size:13px;"></div>
+      <h4 style="margin:18px 0 8px;font-size:15px;">Recently resolved</h4>
+      <div id="admin-recent" style="font-size:12px;color:#666;"></div>
     </div>
   </div>
 </div>
@@ -2187,12 +2298,247 @@ async function doRegister() {
   btn.disabled = false; btn.textContent = 'Create Account';
 }
 
-function useDemoAccount() {
-  document.getElementById('login-email').value = 'demo@hiyaa.mv';
-  document.getElementById('login-pass').value = 'demo123';
-  switchAuthTab('login');
-  doLogin();
+/* ── Forgot / reset password ── */
+function showForgot() {
+  document.getElementById('form-login').style.display = 'none';
+  document.getElementById('form-forgot').style.display = 'block';
+  document.getElementById('forgot-email').value = document.getElementById('login-email').value || '';
+  document.getElementById('auth-err').style.display = 'none';
 }
+function hideForgot() {
+  document.getElementById('form-forgot').style.display = 'none';
+  document.getElementById('form-reset').style.display = 'none';
+  document.getElementById('form-login').style.display = 'block';
+  document.getElementById('auth-err').style.display = 'none';
+}
+async function doForgot() {
+  var email = document.getElementById('forgot-email').value.trim();
+  if (!email) { showAuthError('Please enter your email address.'); return; }
+  var btn = document.getElementById('forgot-btn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    var resp = await fetch('/api/auth/forgot', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email: email })
+    });
+    var data = await resp.json();
+    if (!resp.ok) { showAuthError(data.error || 'Could not send reset link.'); }
+    else {
+      var el = document.getElementById('auth-err');
+      el.textContent = data.message || 'Reset link sent. Check your email.';
+      el.style.display = 'block';
+      el.style.background = '#e8f5e9'; el.style.color = '#1b5e20'; el.style.borderColor = '#a5d6a7';
+    }
+  } catch(e) { showAuthError('Connection error. Please try again.'); }
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+}
+var recoveryToken = null;
+function detectRecoveryLink() {
+  // Supabase reset emails land back here with #access_token=...&type=recovery
+  var h = window.location.hash || '';
+  if (h.indexOf('type=recovery') < 0) return;
+  var m = h.match(/access_token=([^&]+)/);
+  if (!m) return;
+  recoveryToken = decodeURIComponent(m[1]);
+  try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
+  if (typeof openAuth === 'function') openAuth('login');
+  document.getElementById('auth-overlay').style.display = 'flex';
+  document.getElementById('form-login').style.display = 'none';
+  document.getElementById('form-register').style.display = 'none';
+  document.getElementById('form-forgot').style.display = 'none';
+  document.getElementById('form-reset').style.display = 'block';
+}
+async function doReset() {
+  var p1 = document.getElementById('reset-pass').value;
+  var p2 = document.getElementById('reset-pass2').value;
+  if (!p1 || p1.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+  if (p1 !== p2) { showAuthError('Passwords do not match.'); return; }
+  if (!recoveryToken) { showAuthError('Reset link expired. Please request a new one.'); hideForgot(); return; }
+  var btn = document.getElementById('reset-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try {
+    var resp = await fetch('/api/auth/reset', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ token: recoveryToken, password: p1 })
+    });
+    var data = await resp.json();
+    if (!resp.ok) { showAuthError(data.error || 'Could not reset password.'); }
+    else {
+      recoveryToken = null;
+      hideForgot();
+      var el = document.getElementById('auth-err');
+      el.textContent = 'Password updated! Sign in with your new password.';
+      el.style.display = 'block';
+      el.style.background = '#e8f5e9'; el.style.color = '#1b5e20'; el.style.borderColor = '#a5d6a7';
+    }
+  } catch(e) { showAuthError('Connection error. Please try again.'); }
+  btn.disabled = false; btn.textContent = 'Set New Password';
+}
+document.addEventListener('DOMContentLoaded', detectRecoveryLink);
+
+/* ── Privacy notice ── */
+function showPrivacy() { document.getElementById('privacy-modal').style.display = 'flex'; }
+function hidePrivacy() { document.getElementById('privacy-modal').style.display = 'none'; }
+
+/* ── Top Up ── */
+function openTopup() {
+  document.getElementById('topup-step1').style.display = 'block';
+  document.getElementById('topup-step2').style.display = 'none';
+  document.getElementById('topup-err').style.display = 'none';
+  document.getElementById('topup-modal').style.display = 'flex';
+  loadTopupHistory();
+}
+function closeTopup() { document.getElementById('topup-modal').style.display = 'none'; }
+async function loadTopupHistory() {
+  var box = document.getElementById('topup-history');
+  box.innerHTML = '';
+  try {
+    var token = localStorage.getItem('boli_token');
+    var resp = await fetch('/api/topup/mine', { headers: { 'Authorization': 'Bearer ' + token } });
+    var data = await resp.json();
+    if (resp.ok && data.requests && data.requests.length) {
+      box.innerHTML = '<b>Your recent requests:</b><br>' + data.requests.map(function(r){
+        var badge = r.status === 'approved' ? '<span style="color:#0f7a3d;">✓ approved</span>'
+                  : r.status === 'rejected' ? '<span style="color:#a12622;">✗ rejected</span>'
+                  : '<span style="color:#b07a00;">… pending</span>';
+        return r.ref_code + ' — ' + r.pack_credits + ' credits (MVR ' + r.pack_price_mvr + ') ' + badge;
+      }).join('<br>');
+    }
+  } catch(e) {}
+}
+async function requestTopup(pack) {
+  var err = document.getElementById('topup-err');
+  err.style.display = 'none';
+  try {
+    var token = localStorage.getItem('boli_token');
+    var resp = await fetch('/api/topup/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ pack: pack })
+    });
+    var data = await resp.json();
+    if (!resp.ok) { err.textContent = data.error || 'Could not create request.'; err.style.display = 'block'; return; }
+    document.getElementById('topup-pack-label').textContent = data.pack_credits + ' credits';
+    document.getElementById('topup-amount-label').textContent = 'MVR ' + data.pack_price_mvr;
+    document.getElementById('topup-ref-label').textContent = data.ref_code;
+    document.getElementById('topup-bank-label').textContent = data.bank_account;
+    if (data.admin_contact) {
+      document.getElementById('topup-contact-label').textContent = data.admin_contact;
+      document.getElementById('topup-contact-line').style.display = 'list-item';
+    }
+    document.getElementById('topup-step1').style.display = 'none';
+    document.getElementById('topup-step2').style.display = 'block';
+    if(typeof gaTrack==='function') gaTrack('topup_request',{pack:pack});
+  } catch(e) { err.textContent = 'Connection error. Please try again.'; err.style.display = 'block'; }
+}
+
+/* ── Help / contact admin ── */
+function openHelp() {
+  document.getElementById('help-status').style.display = 'none';
+  document.getElementById('help-text').value = '';
+  document.getElementById('help-modal').style.display = 'flex';
+}
+function closeHelp() { document.getElementById('help-modal').style.display = 'none'; }
+async function sendHelp() {
+  var msg = document.getElementById('help-text').value.trim();
+  var st = document.getElementById('help-status');
+  var btn = document.getElementById('help-send-btn');
+  if (msg.length < 3) { st.textContent = 'Please write a message first.'; st.style.display='block'; st.style.background='#fdecea'; st.style.color='#a12622'; return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    var token = localStorage.getItem('boli_token');
+    var resp = await fetch('/api/support', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ message: msg })
+    });
+    var data = await resp.json();
+    st.textContent = resp.ok ? (data.message || 'Message sent!') : (data.error || 'Could not send.');
+    st.style.background = resp.ok ? '#e8f5e9' : '#fdecea';
+    st.style.color = resp.ok ? '#1b5e20' : '#a12622';
+    st.style.display = 'block';
+    if (resp.ok) document.getElementById('help-text').value = '';
+  } catch(e) { st.textContent='Connection error.'; st.style.display='block'; st.style.background='#fdecea'; st.style.color='#a12622'; }
+  btn.disabled = false; btn.textContent = 'Send Message';
+}
+
+/* ── Admin panel (open with #admin in the URL) ── */
+function openAdmin() {
+  document.getElementById('admin-login').style.display = 'block';
+  document.getElementById('admin-body').style.display = 'none';
+  document.getElementById('admin-err').style.display = 'none';
+  document.getElementById('admin-modal').style.display = 'flex';
+  var saved = sessionStorage.getItem('faruma_admin_pass');
+  if (saved) { document.getElementById('admin-pass').value = saved; adminLoad(); }
+}
+function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+async function adminLoad() {
+  var pass = document.getElementById('admin-pass').value;
+  var err = document.getElementById('admin-err');
+  err.style.display = 'none';
+  try {
+    var resp = await fetch('/api/admin/overview', { headers: { 'x-admin-pass': pass } });
+    var data = await resp.json();
+    if (!resp.ok) { err.textContent = data.error || 'Failed.'; err.style.display = 'block'; sessionStorage.removeItem('faruma_admin_pass'); return; }
+    sessionStorage.setItem('faruma_admin_pass', pass);
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-body').style.display = 'block';
+
+    var p = data.pending || [];
+    document.getElementById('admin-pending-count').textContent = p.length;
+    document.getElementById('admin-pending').innerHTML = p.length ? p.map(function(r){
+      return '<div style="border:1px solid #ddd;border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
+        + '<div style="flex:1;min-width:180px;"><b>' + escHtml(r.name || r.email) + '</b><br>'
+        + '<span style="color:#666;">' + escHtml(r.email) + '</span><br>'
+        + r.pack_credits + ' credits · MVR ' + r.pack_price_mvr + ' · ref <b>' + escHtml(r.ref_code) + '</b></div>'
+        + '<button class="logout-btn" style="background:#0f7a3d;border-color:#0f7a3d;color:#fff;" onclick="adminApprove(' + r.id + ')">Approve</button>'
+        + '<button class="logout-btn" style="color:#a12622;border-color:#e0a0a0;" onclick="adminReject(' + r.id + ')">Reject</button>'
+        + '</div>';
+    }).join('') : '<div style="color:#888;">No pending requests. 🎉</div>';
+
+    var m = data.messages || [];
+    var newCount = m.filter(function(x){return x.status==='new';}).length;
+    document.getElementById('admin-msg-count').textContent = newCount + ' new';
+    document.getElementById('admin-messages').innerHTML = m.length ? m.map(function(x){
+      var isNew = x.status === 'new';
+      return '<div style="border:1px solid ' + (isNew?'#b3d4f5':'#eee') + ';background:' + (isNew?'#f2f8ff':'#fafafa') + ';border-radius:10px;padding:10px 12px;margin-bottom:8px;">'
+        + '<b>' + escHtml(x.name || x.email) + '</b> <span style="color:#888;">(' + escHtml(x.email) + ') · ' + new Date(x.created_at).toLocaleString() + '</span>'
+        + (isNew ? ' <button class="logout-btn" style="float:right;font-size:11px;padding:2px 8px;" onclick="adminMarkRead(' + x.id + ')">Mark read</button>' : '')
+        + '<div style="margin-top:6px;white-space:pre-wrap;">' + escHtml(x.message) + '</div></div>';
+    }).join('') : '<div style="color:#888;">No messages yet.</div>';
+
+    var rec = data.recent || [];
+    document.getElementById('admin-recent').innerHTML = rec.length ? rec.map(function(r){
+      return escHtml(r.ref_code) + ' · ' + escHtml(r.email) + ' · ' + r.pack_credits + 'cr · ' + r.status;
+    }).join('<br>') : '—';
+  } catch(e) { err.textContent = 'Connection error.'; err.style.display = 'block'; }
+}
+async function adminApprove(id) {
+  if (!confirm('Approve this top-up? Only do this AFTER checking the bank transfer arrived with the matching reference code.')) return;
+  await adminAction('/api/admin/topup/approve', id);
+}
+async function adminReject(id) {
+  if (!confirm('Reject this top-up request?')) return;
+  await adminAction('/api/admin/topup/reject', id);
+}
+async function adminMarkRead(id) { await adminAction('/api/admin/message/read', id); }
+async function adminAction(path, id) {
+  var pass = sessionStorage.getItem('faruma_admin_pass') || document.getElementById('admin-pass').value;
+  try {
+    var resp = await fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-pass': pass },
+      body: JSON.stringify({ id: id })
+    });
+    var data = await resp.json();
+    if (!resp.ok) alert(data.error || 'Action failed.');
+  } catch(e) { alert('Connection error.'); }
+  adminLoad();
+}
+document.addEventListener('DOMContentLoaded', function(){
+  if ((window.location.hash || '').indexOf('admin') >= 0) openAdmin();
+});
 
 function onAuthSuccess(token, user) {
   currentUser = user;

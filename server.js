@@ -8,50 +8,37 @@ const busboy = require('busboy');
 const PORT = parseInt(process.env.PORT) || 3579;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
 const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'boli2026';
+// Shown to teachers in the Top Up panel. Set on Railway, e.g.:
+// BANK_ACCOUNT = "BML MVR account 7730-XXXXXXX-101 — Hawwa Nimsha"
+const BANK_ACCOUNT = process.env.BANK_ACCOUNT || 'Bank account details not configured yet — please contact the FARUMA admin.';
+// Optional contact line shown with the bank details, e.g. "Viber/WhatsApp: 7XXXXXX"
+const ADMIN_CONTACT = process.env.ADMIN_CONTACT || '';
 
-// ── Supabase configuration (credit system) ──────────────────────────
-// Set these on Railway > Variables. If SUPABASE_URL is missing, the app
-// falls back to the old in-memory user store so nothing breaks.
+// ── Supabase configuration (required) ───────────────────────────────
 const SUPA_URL = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
 const SUPA_ANON = process.env.SUPABASE_ANON_KEY || '';
 const SUPA_SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const SUPA_ON = !!(SUPA_URL && SUPA_ANON && SUPA_SERVICE);
 
-console.log('=== Boli Lesson Planner ===');
+// Credit packs: credits -> price in MVR
+const PACKS = { 50: 90, 150: 240, 400: 560 };
+
+console.log('=== FARUMA server ===');
 console.log('Port:', PORT);
 console.log('API Key configured:', ANTHROPIC_KEY ? 'YES' : 'NO');
-console.log('Supabase credits:', SUPA_ON ? 'ENABLED' : 'DISABLED (in-memory fallback)');
-
-// ── Legacy in-memory store (fallback only) ──────────────────────────
-const USERS = {};
-const SESSIONS = {};
-function hashPass(pass) {
-  return crypto.createHash('sha256').update(pass + 'hiyaa_salt_2026').digest('hex');
-}
-function makeToken() { return crypto.randomBytes(32).toString('hex'); }
-function getLegacySession(req) {
-  const auth = req.headers['authorization'] || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || !SESSIONS[token]) return null;
-  const s = SESSIONS[token];
-  if (Date.now() > s.expires) { delete SESSIONS[token]; return null; }
-  return USERS[s.email] || null;
-}
-USERS['demo@hiyaa.mv'] = {
-  name: 'Demo Teacher', email: 'demo@hiyaa.mv', passHash: hashPass('demo123'),
-  plan: 'free', usage: 0, limit: 10, createdAt: new Date().toISOString()
-};
+console.log('Supabase:', SUPA_ON ? 'ENABLED' : 'MISSING ENV VARS — auth will not work!');
+if (ADMIN_PASS === 'boli2026') console.log('WARNING: ADMIN_PASSWORD is still the default. Set a strong one on Railway.');
 
 // ── Supabase REST helper ────────────────────────────────────────────
-function supaFetch(pathname, { method = 'GET', token = null, service = false, body = null } = {}) {
+function supaFetch(pathname, { method = 'GET', token = null, service = false, body = null, headers: extra = {} } = {}) {
   return new Promise((resolve, reject) => {
     const payload = body ? JSON.stringify(body) : null;
     const key = service ? SUPA_SERVICE : SUPA_ANON;
-    const headers = {
+    const headers = Object.assign({
       'apikey': key,
       'Authorization': 'Bearer ' + (token || key),
       'Content-Type': 'application/json'
-    };
+    }, extra);
     if (payload) headers['Content-Length'] = Buffer.byteLength(payload);
     const u = new URL(SUPA_URL + pathname);
     const req = https.request({
@@ -73,7 +60,6 @@ function supaFetch(pathname, { method = 'GET', token = null, service = false, bo
   });
 }
 
-// Verify a Supabase access token -> returns { id, email, name } or null
 async function supaGetUser(req) {
   const auth = req.headers['authorization'] || '';
   const token = auth.replace('Bearer ', '').trim();
@@ -97,7 +83,6 @@ async function supaGetCredits(userId) {
 }
 
 async function supaDeduct(userId, amount, reason) {
-  // returns { ok, balance } or { ok:false, insufficient:true }
   const r = await supaFetch('/rest/v1/rpc/deduct_credits', {
     method: 'POST', service: true,
     body: { p_user_id: userId, p_amount: amount, p_reason: reason }
@@ -109,22 +94,35 @@ async function supaDeduct(userId, amount, reason) {
   return { ok: false };
 }
 
-async function supaRefund(userId, amount, reason) {
+async function supaAddCredits(userId, amount, reason, txn) {
   const r = await supaFetch('/rest/v1/rpc/add_credits', {
     method: 'POST', service: true,
-    body: { p_user_id: userId, p_amount: amount, p_reason: 'refund:' + reason, p_bml_txn: null }
+    body: { p_user_id: userId, p_amount: amount, p_reason: reason, p_bml_txn: txn || null }
   });
-  if (r.status !== 200) console.error('REFUND FAILED - fix manually:', userId, amount, r.status, JSON.stringify(r.data));
+  if (r.status !== 200) {
+    console.error('add_credits failed:', userId, amount, r.status, JSON.stringify(r.data));
+    return null;
+  }
+  return r.data; // new balance
 }
 
-// Build the user object the front end expects
 function userPayload(name, email, credits) {
   return { name: name, email: email, plan: 'free', usage: 0, limit: credits, credits: credits };
 }
 
-// ── Credit pricing (inferred from the request itself) ───────────────
-// haiku helper calls: free. Attachments (+1). Heavy generations >5000
-// max_tokens e.g. SOW / Thaana (+1). Base 1. Max 3.
+function isAdmin(req) {
+  return (req.headers['x-admin-pass'] || '') === ADMIN_PASS;
+}
+
+function makeRefCode() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let s = '';
+  const bytes = crypto.randomBytes(5);
+  for (let i = 0; i < 5; i++) s += chars[bytes[i] % chars.length];
+  return 'FRM-' + s;
+}
+
+// ── Credit pricing (inferred from the request) ──────────────────────
 function creditCost(body) {
   try {
     const model = String(body.model || '').toLowerCase();
@@ -210,7 +208,7 @@ function serveStatic(req, res) {
 // ── Router ───────────────────────────────────────────────────────────
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-api-key, anthropic-version, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-api-key, anthropic-version, Authorization, x-admin-pass');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
@@ -224,81 +222,53 @@ const server = http.createServer(async (req, res) => {
 
     // ── POST /api/auth/register ──────────────────────────────────
     if (req.method === 'POST' && url === '/api/auth/register') {
+      if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured. Contact the FARUMA admin.' });
       const body = JSON.parse((await readBody(req)).toString());
       const { name, email, password } = body;
       if (!name || !email || !password) return jsonRes(res, 400, { error: 'Name, email and password required' });
       if (password.length < 6) return jsonRes(res, 400, { error: 'Password must be at least 6 characters' });
       const emailLower = email.toLowerCase().trim();
 
-      if (SUPA_ON) {
-        const r = await supaFetch('/auth/v1/signup', {
-          method: 'POST',
-          body: { email: emailLower, password: password, data: { name: name.trim() } }
-        });
-        if (r.status !== 200) {
-          const msg = (r.data && (r.data.msg || r.data.message || r.data.error_description)) || 'Registration failed';
-          return jsonRes(res, 400, { error: msg });
-        }
-        if (!r.data.access_token) {
-          // Email confirmation is switched ON in Supabase — session not issued yet.
-          return jsonRes(res, 400, { error: 'Account created. Please check your email to confirm, then sign in. (Admin: to skip this step, disable "Confirm email" in Supabase Auth settings.)' });
-        }
-        const uid = r.data.user.id;
-        const credits = (await supaGetCredits(uid));
-        console.log('New user registered (Supabase):', emailLower);
-        return jsonRes(res, 200, { token: r.data.access_token, user: userPayload(name.trim(), emailLower, credits === null ? 15 : credits) });
+      const r = await supaFetch('/auth/v1/signup', {
+        method: 'POST',
+        body: { email: emailLower, password: password, data: { name: name.trim() } }
+      });
+      if (r.status !== 200) {
+        const msg = (r.data && (r.data.msg || r.data.message || r.data.error_description)) || 'Registration failed';
+        return jsonRes(res, 400, { error: msg });
       }
-
-      // Legacy fallback
-      if (USERS[emailLower]) return jsonRes(res, 400, { error: 'An account with this email already exists' });
-      USERS[emailLower] = { name: name.trim(), email: emailLower, passHash: hashPass(password), plan: 'free', usage: 0, limit: 10, createdAt: new Date().toISOString() };
-      const token = makeToken();
-      SESSIONS[token] = { email: emailLower, expires: Date.now() + 7 * 24 * 60 * 60 * 1000 };
+      if (!r.data.access_token) {
+        return jsonRes(res, 400, { error: 'Account created. Please check your email to confirm, then sign in.' });
+      }
+      const uid = r.data.user.id;
+      const credits = await supaGetCredits(uid);
       console.log('New user registered:', emailLower);
-      return jsonRes(res, 200, { token, user: { name: USERS[emailLower].name, email: emailLower, plan: 'free', usage: 0, limit: 10 } });
+      return jsonRes(res, 200, { token: r.data.access_token, user: userPayload(name.trim(), emailLower, credits === null ? 0 : credits) });
     }
 
     // ── POST /api/auth/login ─────────────────────────────────────
     if (req.method === 'POST' && url === '/api/auth/login') {
+      if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured. Contact the FARUMA admin.' });
       const body = JSON.parse((await readBody(req)).toString());
-      const { email, password } = body;
-      const emailLower = (email || '').toLowerCase().trim();
-
-      if (SUPA_ON) {
-        if (emailLower === 'demo@hiyaa.mv') {
-          return jsonRes(res, 401, { error: 'The demo account has been retired. Create a free account — you get 15 free credits.' });
-        }
-        const r = await supaFetch('/auth/v1/token?grant_type=password', {
-          method: 'POST', body: { email: emailLower, password: password }
-        });
-        if (r.status !== 200 || !r.data.access_token) {
-          return jsonRes(res, 401, { error: 'Incorrect email or password' });
-        }
-        const u = r.data.user;
-        const nm = (u.user_metadata && u.user_metadata.name) || emailLower;
-        const credits = await supaGetCredits(u.id);
-        return jsonRes(res, 200, { token: r.data.access_token, user: userPayload(nm, emailLower, credits === null ? 0 : credits) });
+      const emailLower = ((body.email || '') + '').toLowerCase().trim();
+      const r = await supaFetch('/auth/v1/token?grant_type=password', {
+        method: 'POST', body: { email: emailLower, password: body.password }
+      });
+      if (r.status !== 200 || !r.data.access_token) {
+        return jsonRes(res, 401, { error: 'Incorrect email or password' });
       }
-
-      // Legacy fallback
-      const user = USERS[emailLower];
-      if (!user || user.passHash !== hashPass(password)) return jsonRes(res, 401, { error: 'Incorrect email or password' });
-      const token = makeToken();
-      SESSIONS[token] = { email: emailLower, expires: Date.now() + 7 * 24 * 60 * 60 * 1000 };
-      return jsonRes(res, 200, { token, user: { name: user.name, email: emailLower, plan: user.plan, usage: user.usage, limit: user.limit } });
+      const u = r.data.user;
+      const nm = (u.user_metadata && u.user_metadata.name) || emailLower;
+      const credits = await supaGetCredits(u.id);
+      return jsonRes(res, 200, { token: r.data.access_token, user: userPayload(nm, emailLower, credits === null ? 0 : credits) });
     }
 
     // ── GET /api/auth/me ─────────────────────────────────────────
     if (req.method === 'GET' && url === '/api/auth/me') {
-      if (SUPA_ON) {
-        const su = await supaGetUser(req);
-        if (!su) return jsonRes(res, 401, { error: 'Not logged in' });
-        const credits = await supaGetCredits(su.id);
-        return jsonRes(res, 200, { user: userPayload(su.name, su.email, credits === null ? 0 : credits) });
-      }
-      const user = getLegacySession(req);
-      if (!user) return jsonRes(res, 401, { error: 'Not logged in' });
-      return jsonRes(res, 200, { user: { name: user.name, email: user.email, plan: user.plan, usage: user.usage, limit: user.limit } });
+      const su = await supaGetUser(req);
+      if (!su) return jsonRes(res, 401, { error: 'Not logged in' });
+      const credits = await supaGetCredits(su.id);
+      return jsonRes(res, 200, { user: userPayload(su.name, su.email, credits === null ? 0 : credits) });
     }
 
     // ── POST /api/auth/logout ────────────────────────────────────
@@ -307,7 +277,155 @@ const server = http.createServer(async (req, res) => {
       if (SUPA_ON && auth) {
         try { await supaFetch('/auth/v1/logout', { method: 'POST', token: auth }); } catch (e) {}
       }
-      if (auth) delete SESSIONS[auth];
+      return jsonRes(res, 200, { ok: true });
+    }
+
+    // ── POST /api/auth/forgot ────────────────────────────────────
+    if (req.method === 'POST' && url === '/api/auth/forgot') {
+      if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
+      const body = JSON.parse((await readBody(req)).toString());
+      const emailLower = ((body.email || '') + '').toLowerCase().trim();
+      if (!emailLower) return jsonRes(res, 400, { error: 'Please enter your email address.' });
+      try {
+        await supaFetch('/auth/v1/recover', { method: 'POST', body: { email: emailLower } });
+      } catch (e) { console.error('recover failed:', e.message); }
+      return jsonRes(res, 200, { ok: true, message: 'If an account exists for that email, a reset link has been sent. Check your inbox (and spam folder).' });
+    }
+
+    // ── POST /api/auth/reset ─────────────────────────────────────
+    if (req.method === 'POST' && url === '/api/auth/reset') {
+      if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
+      const body = JSON.parse((await readBody(req)).toString());
+      const token = (body.token || '') + '';
+      const password = (body.password || '') + '';
+      if (!token) return jsonRes(res, 400, { error: 'Reset link is missing or expired. Please request a new one.' });
+      if (password.length < 6) return jsonRes(res, 400, { error: 'Password must be at least 6 characters' });
+      const r = await supaFetch('/auth/v1/user', { method: 'PUT', token: token, body: { password: password } });
+      if (r.status !== 200) {
+        const msg = (r.data && (r.data.msg || r.data.message)) || 'Reset link expired. Please request a new one.';
+        return jsonRes(res, 400, { error: msg });
+      }
+      return jsonRes(res, 200, { ok: true, message: 'Password updated. You can now sign in with your new password.' });
+    }
+
+    // ── POST /api/topup/request — teacher requests a credit pack ─
+    if (req.method === 'POST' && url === '/api/topup/request') {
+      if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
+      const su = await supaGetUser(req);
+      if (!su) return jsonRes(res, 401, { error: 'Please log in first.' });
+      const body = JSON.parse((await readBody(req)).toString());
+      const pack = parseInt(body.pack);
+      if (!PACKS[pack]) return jsonRes(res, 400, { error: 'Unknown credit pack.' });
+
+      // Limit: max 3 open pending requests per user
+      const pend = await supaFetch('/rest/v1/topup_requests?user_id=eq.' + su.id + '&status=eq.pending&select=id', { service: true });
+      if (pend.status === 200 && Array.isArray(pend.data) && pend.data.length >= 3) {
+        return jsonRes(res, 400, { error: 'You already have pending top-up requests. Please wait for them to be approved.' });
+      }
+
+      const ref = makeRefCode();
+      const ins = await supaFetch('/rest/v1/topup_requests', {
+        method: 'POST', service: true,
+        headers: { 'Prefer': 'return=representation' },
+        body: {
+          user_id: su.id, email: su.email, name: su.name,
+          pack_credits: pack, pack_price_mvr: PACKS[pack], ref_code: ref
+        }
+      });
+      if (ins.status !== 201) {
+        console.error('topup insert failed:', ins.status, JSON.stringify(ins.data));
+        return jsonRes(res, 500, { error: 'Could not create top-up request. Please try again.' });
+      }
+      return jsonRes(res, 200, {
+        ok: true, ref_code: ref, pack_credits: pack, pack_price_mvr: PACKS[pack],
+        bank_account: BANK_ACCOUNT, admin_contact: ADMIN_CONTACT
+      });
+    }
+
+    // ── GET /api/topup/mine — teacher's own requests ─────────────
+    if (req.method === 'GET' && url === '/api/topup/mine') {
+      if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
+      const su = await supaGetUser(req);
+      if (!su) return jsonRes(res, 401, { error: 'Please log in first.' });
+      const r = await supaFetch('/rest/v1/topup_requests?user_id=eq.' + su.id + '&select=ref_code,pack_credits,pack_price_mvr,status,created_at&order=created_at.desc&limit=10', { service: true });
+      return jsonRes(res, 200, { requests: (r.status === 200 && Array.isArray(r.data)) ? r.data : [] });
+    }
+
+    // ── POST /api/support — teacher sends a message to admin ─────
+    if (req.method === 'POST' && url === '/api/support') {
+      if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
+      const su = await supaGetUser(req);
+      if (!su) return jsonRes(res, 401, { error: 'Please log in first.' });
+      const body = JSON.parse((await readBody(req)).toString());
+      const msg = ((body.message || '') + '').trim().slice(0, 2000);
+      if (msg.length < 3) return jsonRes(res, 400, { error: 'Please write a message.' });
+      const ins = await supaFetch('/rest/v1/support_messages', {
+        method: 'POST', service: true,
+        body: { user_id: su.id, email: su.email, name: su.name, message: msg }
+      });
+      if (ins.status !== 201) return jsonRes(res, 500, { error: 'Could not send message. Please try again.' });
+      return jsonRes(res, 200, { ok: true, message: 'Message sent. The FARUMA admin will get back to you.' });
+    }
+
+    // ── ADMIN: GET /api/admin/overview ───────────────────────────
+    if (req.method === 'GET' && url === '/api/admin/overview') {
+      if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
+      const [pending, recent, msgs] = await Promise.all([
+        supaFetch('/rest/v1/topup_requests?status=eq.pending&select=id,email,name,pack_credits,pack_price_mvr,ref_code,created_at&order=created_at.asc', { service: true }),
+        supaFetch('/rest/v1/topup_requests?status=neq.pending&select=id,email,pack_credits,ref_code,status,resolved_at&order=resolved_at.desc&limit=15', { service: true }),
+        supaFetch('/rest/v1/support_messages?select=id,email,name,message,status,created_at&order=created_at.desc&limit=50', { service: true })
+      ]);
+      return jsonRes(res, 200, {
+        pending: (pending.status === 200 && Array.isArray(pending.data)) ? pending.data : [],
+        recent: (recent.status === 200 && Array.isArray(recent.data)) ? recent.data : [],
+        messages: (msgs.status === 200 && Array.isArray(msgs.data)) ? msgs.data : []
+      });
+    }
+
+    // ── ADMIN: POST /api/admin/topup/approve ─────────────────────
+    if (req.method === 'POST' && url === '/api/admin/topup/approve') {
+      if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
+      const body = JSON.parse((await readBody(req)).toString());
+      const id = parseInt(body.id);
+      if (!id) return jsonRes(res, 400, { error: 'Missing request id.' });
+      const g = await supaFetch('/rest/v1/topup_requests?id=eq.' + id + '&select=*', { service: true });
+      const reqRow = (g.status === 200 && Array.isArray(g.data)) ? g.data[0] : null;
+      if (!reqRow) return jsonRes(res, 404, { error: 'Request not found.' });
+      if (reqRow.status !== 'pending') return jsonRes(res, 400, { error: 'Request already ' + reqRow.status + '.' });
+
+      const newBal = await supaAddCredits(reqRow.user_id, reqRow.pack_credits, 'purchase', reqRow.ref_code);
+      if (newBal === null) return jsonRes(res, 500, { error: 'Crediting failed — check server logs.' });
+
+      await supaFetch('/rest/v1/topup_requests?id=eq.' + id, {
+        method: 'PATCH', service: true,
+        body: { status: 'approved', resolved_at: new Date().toISOString() }
+      });
+      console.log('Top-up approved:', reqRow.ref_code, reqRow.email, '+' + reqRow.pack_credits);
+      return jsonRes(res, 200, { ok: true, new_balance: newBal });
+    }
+
+    // ── ADMIN: POST /api/admin/topup/reject ──────────────────────
+    if (req.method === 'POST' && url === '/api/admin/topup/reject') {
+      if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
+      const body = JSON.parse((await readBody(req)).toString());
+      const id = parseInt(body.id);
+      if (!id) return jsonRes(res, 400, { error: 'Missing request id.' });
+      const r = await supaFetch('/rest/v1/topup_requests?id=eq.' + id + '&status=eq.pending', {
+        method: 'PATCH', service: true,
+        body: { status: 'rejected', resolved_at: new Date().toISOString() }
+      });
+      return jsonRes(res, 200, { ok: true });
+    }
+
+    // ── ADMIN: POST /api/admin/message/read ──────────────────────
+    if (req.method === 'POST' && url === '/api/admin/message/read') {
+      if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
+      const body = JSON.parse((await readBody(req)).toString());
+      const id = parseInt(body.id);
+      if (!id) return jsonRes(res, 400, { error: 'Missing message id.' });
+      await supaFetch('/rest/v1/support_messages?id=eq.' + id, {
+        method: 'PATCH', service: true, body: { status: 'read' }
+      });
       return jsonRes(res, 200, { ok: true });
     }
 
@@ -322,40 +440,32 @@ const server = http.createServer(async (req, res) => {
         return jsonRes(res, result.error ? 400 : 200, result);
       }
 
-      if (SUPA_ON) {
-        const su = await supaGetUser(req);
-        if (!su) return jsonRes(res, 401, { error: { message: 'Please log in to generate lesson plans.' } });
+      if (!SUPA_ON) return jsonRes(res, 500, { error: { message: 'Server is not configured. Contact the FARUMA admin.' } });
+      const su = await supaGetUser(req);
+      if (!su) return jsonRes(res, 401, { error: { message: 'Please log in to generate lesson plans.' } });
 
-        const cost = creditCost(body);
-        if (cost > 0) {
-          const d = await supaDeduct(su.id, cost, 'generation');
-          if (!d.ok) {
-            if (d.insufficient) {
-              return jsonRes(res, 402, { error: { message: 'You have run out of credits. Please top up to keep generating. (Top-up packs coming soon — contact your FARUMA admin.)' } });
-            }
-            return jsonRes(res, 500, { error: { message: 'Credit check failed. Please try again.' } });
+      const cost = creditCost(body);
+      if (cost > 0) {
+        const d = await supaDeduct(su.id, cost, 'generation');
+        if (!d.ok) {
+          if (d.insufficient) {
+            return jsonRes(res, 402, { error: { message: 'You have run out of credits. Tap "Top Up" in the top bar to buy a credit pack.' } });
           }
-          try {
-            const result = await callAnthropic(body, apiKey);
-            if (result.error) {
-              await supaRefund(su.id, cost, 'api_error');
-              return jsonRes(res, 400, result);
-            }
-            result.faruma_credits = { spent: cost, balance: d.balance };
-            return jsonRes(res, 200, result);
-          } catch (err) {
-            await supaRefund(su.id, cost, 'network_error');
-            throw err;
-          }
+          return jsonRes(res, 500, { error: { message: 'Credit check failed. Please try again.' } });
         }
-        // Free helper call (haiku)
-        const result = await callAnthropic(body, apiKey);
-        return jsonRes(res, result.error ? 400 : 200, result);
+        try {
+          const result = await callAnthropic(body, apiKey);
+          if (result.error) {
+            await supaAddCredits(su.id, cost, 'refund:api_error', null);
+            return jsonRes(res, 400, result);
+          }
+          result.faruma_credits = { spent: cost, balance: d.balance };
+          return jsonRes(res, 200, result);
+        } catch (err) {
+          await supaAddCredits(su.id, cost, 'refund:network_error', null);
+          throw err;
+        }
       }
-
-      // Legacy: require login when server key is set
-      const user = getLegacySession(req);
-      if (!user) return jsonRes(res, 401, { error: { message: 'Please log in to generate lesson plans.' } });
       const result = await callAnthropic(body, apiKey);
       return jsonRes(res, result.error ? 400 : 200, result);
     }
@@ -394,5 +504,5 @@ const server = http.createServer(async (req, res) => {
 
 server.on('error', e => { console.error('FATAL:', e.message); process.exit(1); });
 server.listen(PORT, '0.0.0.0', () => {
-  console.log('Boli ready at http://0.0.0.0:' + PORT);
+  console.log('FARUMA ready at http://0.0.0.0:' + PORT);
 });
