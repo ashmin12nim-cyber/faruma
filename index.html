@@ -17,6 +17,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FARUMA</title>
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 
@@ -610,8 +611,6 @@ body::before {
         <div class="user-plan" id="user-plan-display">free</div>
       </div>
       <div class="usage-pill" id="usage-pill">0/10</div>
-      <button class="logout-btn" style="background:#0f7a3d;border-color:#0f7a3d;color:#fff;" onclick="openTopup()">Top Up</button>
-      <button class="logout-btn" onclick="openHelp()">Help</button>
       <button class="logout-btn" onclick="doLogout()">Sign out</button>
     </div>
   </div>
@@ -645,6 +644,10 @@ body::before {
       <span class="tab-ic" style="color:#cf9526"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 8h18M8 8v13"/></svg></span>
       <span class="tab-label">Templates</span>
     </div>
+    <div class="tab" data-page="slides">
+      <span class="tab-ic" style="color:#7c4dbe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><rect x="4" y="3" width="16" height="12" rx="1"/><path d="M12 15v4M8 21l4-2 4 2"/></svg></span>
+      <span class="tab-label">Slides</span>
+    </div>
     <div class="tab" data-page="history">
       <span class="tab-ic" style="color:#df6d3c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v4l3 2"/></svg></span>
       <span class="tab-label">History</span>
@@ -670,21 +673,6 @@ body::before {
       <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign In</button>
-      <div style="text-align:center;margin-top:10px;"><a onclick="showForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Forgot password?</a></div>
-    </div>
-    <!-- Forgot password form -->
-    <div id="form-forgot" style="display:none;">
-      <p style="font-size:13px;margin:0 0 12px;">Enter your email and we'll send you a link to reset your password.</p>
-      <div class="auth-field"><label>Email</label><input type="email" id="forgot-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doForgot()"></div>
-      <button class="auth-btn" id="forgot-btn" onclick="doForgot()">Send Reset Link</button>
-      <div style="text-align:center;margin-top:10px;"><a onclick="hideForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Back to sign in</a></div>
-    </div>
-    <!-- Reset password form (shown when arriving from a reset email link) -->
-    <div id="form-reset" style="display:none;">
-      <p style="font-size:13px;margin:0 0 12px;">Choose a new password for your account.</p>
-      <div class="auth-field"><label>New Password</label><input type="password" id="reset-pass" placeholder="Min. 6 characters"></div>
-      <div class="auth-field"><label>Confirm Password</label><input type="password" id="reset-pass2" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')doReset()"></div>
-      <button class="auth-btn" id="reset-btn" onclick="doReset()">Set New Password</button>
     </div>
     <!-- Register form -->
     <div id="form-register" style="display:none;">
@@ -694,101 +682,7 @@ body::before {
       <button class="auth-btn" id="reg-btn" onclick="doRegister()">Create Account</button>
     </div>
     <div class="auth-demo">
-      New here? You get <b>15 free credits</b> when you register. &nbsp;·&nbsp; <a onclick="showPrivacy()" style="cursor:pointer;text-decoration:underline;">Privacy</a>
-    </div>
-  </div>
-</div>
-
-<!-- ════════ PRIVACY NOTICE MODAL ════════ -->
-<div id="privacy-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
-  <div style="background:#fff;border-radius:14px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <h3 style="margin:0;font-size:18px;">Privacy Notice</h3>
-      <button onclick="hidePrivacy()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
-    </div>
-    <div style="font-size:13px;line-height:1.7;color:#333;">
-      <p><b>What we collect.</b> When you create a FARUMA account we store your name, email address, and a securely hashed password. As you use the app we keep a record of your credit balance and credit transactions (when credits were used or added).</p>
-      <p><b>What we do with it.</b> This information is used only to run your account, track your credits, and improve FARUMA. We do not sell or share your personal information with anyone.</p>
-      <p><b>Where it is stored.</b> Account data is stored securely with Supabase. The text you type when generating lesson plans is processed by Anthropic's Claude API to produce your documents and is not used to identify you.</p>
-      <p><b>Generated documents.</b> Lesson plans, schemes of work and other documents you generate are saved in your own browser on your device, not on our servers.</p>
-      <p><b>Your choices.</b> You can ask for your account and its data to be deleted at any time by contacting the FARUMA administrator at your school.</p>
-      <p style="color:#777;font-size:12px;margin-bottom:0;">FARUMA · Seenu Atoll School, S. Hulhudhoo-Meedhoo · Last updated July 2026</p>
-    </div>
-  </div>
-</div>
-
-<!-- ════════ TOP UP MODAL ════════ -->
-<div id="topup-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
-  <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <h3 style="margin:0;font-size:18px;">Top Up Credits</h3>
-      <button onclick="closeTopup()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
-    </div>
-    <div id="topup-step1">
-      <p style="font-size:13px;color:#555;margin:0 0 14px;">Choose a credit pack. You'll pay by bank transfer and credits are added once the transfer is confirmed.</p>
-      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(50)">50 credits — MVR 90</button>
-      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(150)">150 credits — MVR 240</button>
-      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(400)">400 credits — MVR 560 <span style="font-weight:400;">(best value)</span></button>
-      <div id="topup-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:6px;"></div>
-      <div id="topup-history" style="margin-top:14px;font-size:12px;color:#555;"></div>
-    </div>
-    <div id="topup-step2" style="display:none;">
-      <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;font-size:13px;line-height:1.7;margin-bottom:12px;">
-        <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Request created ✓</div>
-        <div>Pack: <b id="topup-pack-label"></b></div>
-        <div>Amount to transfer: <b id="topup-amount-label"></b></div>
-        <div>Reference code: <b id="topup-ref-label" style="font-size:16px;letter-spacing:1px;"></b></div>
-      </div>
-      <div style="font-size:13px;line-height:1.8;">
-        <b>How to pay:</b>
-        <ol style="margin:6px 0 10px;padding-left:20px;">
-          <li>Transfer the amount to:<br><b id="topup-bank-label"></b></li>
-          <li>Put the reference code <b>in the transfer remarks</b>.</li>
-          <li id="topup-contact-line" style="display:none;">Send the receipt to: <b id="topup-contact-label"></b></li>
-        </ol>
-        Your credits are added as soon as the transfer is confirmed — you'll see the balance update in the top bar.
-      </div>
-      <button class="auth-btn" style="margin-top:10px;" onclick="closeTopup()">Done</button>
-    </div>
-  </div>
-</div>
-
-<!-- ════════ HELP / CONTACT MODAL ════════ -->
-<div id="help-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
-  <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <h3 style="margin:0;font-size:18px;">Contact FARUMA Admin</h3>
-      <button onclick="closeHelp()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
-    </div>
-    <p style="font-size:13px;color:#555;margin:0 0 10px;">Question, problem, or a top-up that hasn't arrived? Write it here.</p>
-    <textarea id="help-text" rows="5" style="width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:8px;padding:10px;font-size:13px;font-family:inherit;resize:vertical;" placeholder="Type your message..."></textarea>
-    <div id="help-status" style="display:none;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
-    <button class="auth-btn" id="help-send-btn" style="margin-top:10px;" onclick="sendHelp()">Send Message</button>
-  </div>
-</div>
-
-<!-- ════════ ADMIN PANEL ════════ -->
-<div id="admin-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.7);z-index:10001;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;">
-  <div style="background:#fff;border-radius:14px;max-width:680px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.4);margin:20px 0;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <h3 style="margin:0;font-size:18px;">FARUMA Admin</h3>
-      <button onclick="closeAdmin()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
-    </div>
-    <div id="admin-login">
-      <div class="auth-field"><label>Admin password</label><input type="password" id="admin-pass" onkeydown="if(event.key==='Enter')adminLoad()"></div>
-      <button class="auth-btn" onclick="adminLoad()">Open Admin Panel</button>
-      <div id="admin-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
-    </div>
-    <div id="admin-body" style="display:none;">
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <button class="logout-btn" onclick="adminLoad()">↻ Refresh</button>
-      </div>
-      <h4 style="margin:0 0 8px;font-size:15px;">Pending top-ups <span id="admin-pending-count" style="background:#fdecea;color:#a12622;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
-      <div id="admin-pending" style="font-size:13px;"></div>
-      <h4 style="margin:18px 0 8px;font-size:15px;">Messages from teachers <span id="admin-msg-count" style="background:#e8f1fb;color:#0f2740;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
-      <div id="admin-messages" style="font-size:13px;"></div>
-      <h4 style="margin:18px 0 8px;font-size:15px;">Recently resolved</h4>
-      <div id="admin-recent" style="font-size:12px;color:#666;"></div>
+      Try demo account: &nbsp;<a onclick="useDemoAccount()">demo@hiyaa.mv / demo123</a>
     </div>
   </div>
 </div>
@@ -908,6 +802,10 @@ body::before {
       <article class="home-card t-green" onclick="openTool('assessment')">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></div>
         <h3>Assessment</h3><p>Create assessments from outcomes</p>
+      </article>
+      <article class="home-card t-lilac" onclick="openTool('slides')">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><rect x="4" y="3" width="16" height="12" rx="1"/><path d="M12 15v4M8 21l4-2 4 2"/></svg></div>
+        <h3>Slides</h3><p>Curriculum-aligned slide decks</p>
       </article>
       <article class="home-card t-peach" onclick="openTool('calendar')">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
@@ -1134,6 +1032,57 @@ body::before {
 </div></div>
 
 <!-- CALENDAR -->
+<!-- SLIDES -->
+<div class="page" id="page-slides">
+<div class="card">
+  <div class="card-title">Create Slide Deck</div>
+  <div style="font-size:13px;color:var(--text-mid);margin:-6px 0 14px;">Build a presentation aligned to a National Curriculum outcome, or from your own topic.</div>
+
+  <div class="stabs" id="sl-stabs">
+    <div class="stab on" data-slsub="Mathematics">Mathematics</div>
+    <div class="stab" data-slsub="English">English</div>
+    <div class="stab" data-slsub="Science">Science</div>
+    <div class="stab" data-slsub="Social Studies">Social Studies</div>
+    <div class="stab" data-slsub="H.PE">H.PE</div>
+    <div class="stab" data-slsub="Creative Arts">Creative Arts</div>
+    <div class="stab" data-slsub="Islam">Islam</div>
+    <div class="stab" data-slsub="Quran">Quran</div>
+    <div class="stab" data-slsub="Dhivehi">Dhivehi</div>
+  </div>
+
+  <div class="g2">
+    <div class="field"><label>Grade</label><select id="sl-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+    <div class="field"><label>Outcome</label><select id="sl-outcome"><option value="">-- Select outcome --</option></select></div>
+  </div>
+  <div class="field"><label>Outcome Statement</label><textarea id="sl-outstmt" rows="2" readonly style="background:#f5f5f5;color:#555;"></textarea></div>
+  <div class="field"><label>Indicators (optional &mdash; leave blank to cover the whole outcome)</label><select id="sl-indicators" multiple style="height:100px;width:100%;border:1.5px solid #dde2e8;border-radius:7px;padding:5px;font-size:12px;font-family:inherit;"><option disabled>Select an Outcome above</option></select></div>
+  <div class="field"><label>Topic / Focus (optional)</label><input type="text" id="sl-topic" placeholder="e.g. Comparing unit fractions with paper strips"></div>
+  <div class="field"><label>Additional instructions (optional)</label><textarea id="sl-extra" rows="2" placeholder="Audience level, activities, preferred slide style..."></textarea></div>
+
+  <div class="g2">
+    <div class="field"><label>Number of slides</label><select id="sl-count"><option value="8">Below 10</option><option value="12">10&ndash;15</option><option value="18">15&ndash;20</option></select></div>
+    <div class="field"><label>Output language</label><select id="sl-lang"><option value="en">English</option><option value="dv">Dhivehi (&#1931;&#1960;&#1928;&#1962;&#1920;&#1960;)</option></select></div>
+  </div>
+
+  <div class="field"><label>Theme</label>
+    <div id="sl-themes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;"></div>
+  </div>
+
+  <div id="sl-tokens" style="background:#f7f9f7;border:1px solid #e0e6e0;border-radius:9px;padding:12px 14px;margin:14px 0;font-size:12.5px;color:#41504a;line-height:1.6;"></div>
+
+  <button class="btn btn-blue" id="sl-btn" onclick="doSlides()">&#9889; Generate Slide Deck</button>
+  <div id="sl-status" style="margin-top:10px;font-size:13px;color:var(--text-mid);"></div>
+
+  <div id="sl-result" style="display:none;margin-top:18px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+      <div style="font-weight:800;font-size:15px;" id="sl-deck-title"></div>
+      <button class="btn btn-blue" onclick="downloadSlidesPptx()">&#11015; Download PowerPoint (.pptx)</button>
+    </div>
+    <div id="sl-preview" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
+  </div>
+</div>
+</div>
+
 <div class="page" id="page-calendar">
 <div class="card">
   <div class="card-title">School Calendar 2026</div>
@@ -2298,247 +2247,12 @@ async function doRegister() {
   btn.disabled = false; btn.textContent = 'Create Account';
 }
 
-/* ── Forgot / reset password ── */
-function showForgot() {
-  document.getElementById('form-login').style.display = 'none';
-  document.getElementById('form-forgot').style.display = 'block';
-  document.getElementById('forgot-email').value = document.getElementById('login-email').value || '';
-  document.getElementById('auth-err').style.display = 'none';
+function useDemoAccount() {
+  document.getElementById('login-email').value = 'demo@hiyaa.mv';
+  document.getElementById('login-pass').value = 'demo123';
+  switchAuthTab('login');
+  doLogin();
 }
-function hideForgot() {
-  document.getElementById('form-forgot').style.display = 'none';
-  document.getElementById('form-reset').style.display = 'none';
-  document.getElementById('form-login').style.display = 'block';
-  document.getElementById('auth-err').style.display = 'none';
-}
-async function doForgot() {
-  var email = document.getElementById('forgot-email').value.trim();
-  if (!email) { showAuthError('Please enter your email address.'); return; }
-  var btn = document.getElementById('forgot-btn');
-  btn.disabled = true; btn.textContent = 'Sending...';
-  try {
-    var resp = await fetch('/api/auth/forgot', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email: email })
-    });
-    var data = await resp.json();
-    if (!resp.ok) { showAuthError(data.error || 'Could not send reset link.'); }
-    else {
-      var el = document.getElementById('auth-err');
-      el.textContent = data.message || 'Reset link sent. Check your email.';
-      el.style.display = 'block';
-      el.style.background = '#e8f5e9'; el.style.color = '#1b5e20'; el.style.borderColor = '#a5d6a7';
-    }
-  } catch(e) { showAuthError('Connection error. Please try again.'); }
-  btn.disabled = false; btn.textContent = 'Send Reset Link';
-}
-var recoveryToken = null;
-function detectRecoveryLink() {
-  // Supabase reset emails land back here with #access_token=...&type=recovery
-  var h = window.location.hash || '';
-  if (h.indexOf('type=recovery') < 0) return;
-  var m = h.match(/access_token=([^&]+)/);
-  if (!m) return;
-  recoveryToken = decodeURIComponent(m[1]);
-  try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
-  if (typeof openAuth === 'function') openAuth('login');
-  document.getElementById('auth-overlay').style.display = 'flex';
-  document.getElementById('form-login').style.display = 'none';
-  document.getElementById('form-register').style.display = 'none';
-  document.getElementById('form-forgot').style.display = 'none';
-  document.getElementById('form-reset').style.display = 'block';
-}
-async function doReset() {
-  var p1 = document.getElementById('reset-pass').value;
-  var p2 = document.getElementById('reset-pass2').value;
-  if (!p1 || p1.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
-  if (p1 !== p2) { showAuthError('Passwords do not match.'); return; }
-  if (!recoveryToken) { showAuthError('Reset link expired. Please request a new one.'); hideForgot(); return; }
-  var btn = document.getElementById('reset-btn');
-  btn.disabled = true; btn.textContent = 'Saving...';
-  try {
-    var resp = await fetch('/api/auth/reset', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ token: recoveryToken, password: p1 })
-    });
-    var data = await resp.json();
-    if (!resp.ok) { showAuthError(data.error || 'Could not reset password.'); }
-    else {
-      recoveryToken = null;
-      hideForgot();
-      var el = document.getElementById('auth-err');
-      el.textContent = 'Password updated! Sign in with your new password.';
-      el.style.display = 'block';
-      el.style.background = '#e8f5e9'; el.style.color = '#1b5e20'; el.style.borderColor = '#a5d6a7';
-    }
-  } catch(e) { showAuthError('Connection error. Please try again.'); }
-  btn.disabled = false; btn.textContent = 'Set New Password';
-}
-document.addEventListener('DOMContentLoaded', detectRecoveryLink);
-
-/* ── Privacy notice ── */
-function showPrivacy() { document.getElementById('privacy-modal').style.display = 'flex'; }
-function hidePrivacy() { document.getElementById('privacy-modal').style.display = 'none'; }
-
-/* ── Top Up ── */
-function openTopup() {
-  document.getElementById('topup-step1').style.display = 'block';
-  document.getElementById('topup-step2').style.display = 'none';
-  document.getElementById('topup-err').style.display = 'none';
-  document.getElementById('topup-modal').style.display = 'flex';
-  loadTopupHistory();
-}
-function closeTopup() { document.getElementById('topup-modal').style.display = 'none'; }
-async function loadTopupHistory() {
-  var box = document.getElementById('topup-history');
-  box.innerHTML = '';
-  try {
-    var token = localStorage.getItem('boli_token');
-    var resp = await fetch('/api/topup/mine', { headers: { 'Authorization': 'Bearer ' + token } });
-    var data = await resp.json();
-    if (resp.ok && data.requests && data.requests.length) {
-      box.innerHTML = '<b>Your recent requests:</b><br>' + data.requests.map(function(r){
-        var badge = r.status === 'approved' ? '<span style="color:#0f7a3d;">✓ approved</span>'
-                  : r.status === 'rejected' ? '<span style="color:#a12622;">✗ rejected</span>'
-                  : '<span style="color:#b07a00;">… pending</span>';
-        return r.ref_code + ' — ' + r.pack_credits + ' credits (MVR ' + r.pack_price_mvr + ') ' + badge;
-      }).join('<br>');
-    }
-  } catch(e) {}
-}
-async function requestTopup(pack) {
-  var err = document.getElementById('topup-err');
-  err.style.display = 'none';
-  try {
-    var token = localStorage.getItem('boli_token');
-    var resp = await fetch('/api/topup/request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ pack: pack })
-    });
-    var data = await resp.json();
-    if (!resp.ok) { err.textContent = data.error || 'Could not create request.'; err.style.display = 'block'; return; }
-    document.getElementById('topup-pack-label').textContent = data.pack_credits + ' credits';
-    document.getElementById('topup-amount-label').textContent = 'MVR ' + data.pack_price_mvr;
-    document.getElementById('topup-ref-label').textContent = data.ref_code;
-    document.getElementById('topup-bank-label').textContent = data.bank_account;
-    if (data.admin_contact) {
-      document.getElementById('topup-contact-label').textContent = data.admin_contact;
-      document.getElementById('topup-contact-line').style.display = 'list-item';
-    }
-    document.getElementById('topup-step1').style.display = 'none';
-    document.getElementById('topup-step2').style.display = 'block';
-    if(typeof gaTrack==='function') gaTrack('topup_request',{pack:pack});
-  } catch(e) { err.textContent = 'Connection error. Please try again.'; err.style.display = 'block'; }
-}
-
-/* ── Help / contact admin ── */
-function openHelp() {
-  document.getElementById('help-status').style.display = 'none';
-  document.getElementById('help-text').value = '';
-  document.getElementById('help-modal').style.display = 'flex';
-}
-function closeHelp() { document.getElementById('help-modal').style.display = 'none'; }
-async function sendHelp() {
-  var msg = document.getElementById('help-text').value.trim();
-  var st = document.getElementById('help-status');
-  var btn = document.getElementById('help-send-btn');
-  if (msg.length < 3) { st.textContent = 'Please write a message first.'; st.style.display='block'; st.style.background='#fdecea'; st.style.color='#a12622'; return; }
-  btn.disabled = true; btn.textContent = 'Sending...';
-  try {
-    var token = localStorage.getItem('boli_token');
-    var resp = await fetch('/api/support', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ message: msg })
-    });
-    var data = await resp.json();
-    st.textContent = resp.ok ? (data.message || 'Message sent!') : (data.error || 'Could not send.');
-    st.style.background = resp.ok ? '#e8f5e9' : '#fdecea';
-    st.style.color = resp.ok ? '#1b5e20' : '#a12622';
-    st.style.display = 'block';
-    if (resp.ok) document.getElementById('help-text').value = '';
-  } catch(e) { st.textContent='Connection error.'; st.style.display='block'; st.style.background='#fdecea'; st.style.color='#a12622'; }
-  btn.disabled = false; btn.textContent = 'Send Message';
-}
-
-/* ── Admin panel (open with #admin in the URL) ── */
-function openAdmin() {
-  document.getElementById('admin-login').style.display = 'block';
-  document.getElementById('admin-body').style.display = 'none';
-  document.getElementById('admin-err').style.display = 'none';
-  document.getElementById('admin-modal').style.display = 'flex';
-  var saved = sessionStorage.getItem('faruma_admin_pass');
-  if (saved) { document.getElementById('admin-pass').value = saved; adminLoad(); }
-}
-function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
-function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-async function adminLoad() {
-  var pass = document.getElementById('admin-pass').value;
-  var err = document.getElementById('admin-err');
-  err.style.display = 'none';
-  try {
-    var resp = await fetch('/api/admin/overview', { headers: { 'x-admin-pass': pass } });
-    var data = await resp.json();
-    if (!resp.ok) { err.textContent = data.error || 'Failed.'; err.style.display = 'block'; sessionStorage.removeItem('faruma_admin_pass'); return; }
-    sessionStorage.setItem('faruma_admin_pass', pass);
-    document.getElementById('admin-login').style.display = 'none';
-    document.getElementById('admin-body').style.display = 'block';
-
-    var p = data.pending || [];
-    document.getElementById('admin-pending-count').textContent = p.length;
-    document.getElementById('admin-pending').innerHTML = p.length ? p.map(function(r){
-      return '<div style="border:1px solid #ddd;border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
-        + '<div style="flex:1;min-width:180px;"><b>' + escHtml(r.name || r.email) + '</b><br>'
-        + '<span style="color:#666;">' + escHtml(r.email) + '</span><br>'
-        + r.pack_credits + ' credits · MVR ' + r.pack_price_mvr + ' · ref <b>' + escHtml(r.ref_code) + '</b></div>'
-        + '<button class="logout-btn" style="background:#0f7a3d;border-color:#0f7a3d;color:#fff;" onclick="adminApprove(' + r.id + ')">Approve</button>'
-        + '<button class="logout-btn" style="color:#a12622;border-color:#e0a0a0;" onclick="adminReject(' + r.id + ')">Reject</button>'
-        + '</div>';
-    }).join('') : '<div style="color:#888;">No pending requests. 🎉</div>';
-
-    var m = data.messages || [];
-    var newCount = m.filter(function(x){return x.status==='new';}).length;
-    document.getElementById('admin-msg-count').textContent = newCount + ' new';
-    document.getElementById('admin-messages').innerHTML = m.length ? m.map(function(x){
-      var isNew = x.status === 'new';
-      return '<div style="border:1px solid ' + (isNew?'#b3d4f5':'#eee') + ';background:' + (isNew?'#f2f8ff':'#fafafa') + ';border-radius:10px;padding:10px 12px;margin-bottom:8px;">'
-        + '<b>' + escHtml(x.name || x.email) + '</b> <span style="color:#888;">(' + escHtml(x.email) + ') · ' + new Date(x.created_at).toLocaleString() + '</span>'
-        + (isNew ? ' <button class="logout-btn" style="float:right;font-size:11px;padding:2px 8px;" onclick="adminMarkRead(' + x.id + ')">Mark read</button>' : '')
-        + '<div style="margin-top:6px;white-space:pre-wrap;">' + escHtml(x.message) + '</div></div>';
-    }).join('') : '<div style="color:#888;">No messages yet.</div>';
-
-    var rec = data.recent || [];
-    document.getElementById('admin-recent').innerHTML = rec.length ? rec.map(function(r){
-      return escHtml(r.ref_code) + ' · ' + escHtml(r.email) + ' · ' + r.pack_credits + 'cr · ' + r.status;
-    }).join('<br>') : '—';
-  } catch(e) { err.textContent = 'Connection error.'; err.style.display = 'block'; }
-}
-async function adminApprove(id) {
-  if (!confirm('Approve this top-up? Only do this AFTER checking the bank transfer arrived with the matching reference code.')) return;
-  await adminAction('/api/admin/topup/approve', id);
-}
-async function adminReject(id) {
-  if (!confirm('Reject this top-up request?')) return;
-  await adminAction('/api/admin/topup/reject', id);
-}
-async function adminMarkRead(id) { await adminAction('/api/admin/message/read', id); }
-async function adminAction(path, id) {
-  var pass = sessionStorage.getItem('faruma_admin_pass') || document.getElementById('admin-pass').value;
-  try {
-    var resp = await fetch(path, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-admin-pass': pass },
-      body: JSON.stringify({ id: id })
-    });
-    var data = await resp.json();
-    if (!resp.ok) alert(data.error || 'Action failed.');
-  } catch(e) { alert('Connection error.'); }
-  adminLoad();
-}
-document.addEventListener('DOMContentLoaded', function(){
-  if ((window.location.hash || '').indexOf('admin') >= 0) openAdmin();
-});
 
 function onAuthSuccess(token, user) {
   currentUser = user;
@@ -4024,5 +3738,266 @@ async function generateLessonAssessment(){
   }
 }
 </script>
+
+<script>
+/* ================= SLIDE DECK TOOL ================= */
+var slCurrentSub = "Mathematics";
+var slDeck = null;       // parsed deck JSON from API
+var slDeckTheme = "light";
+
+var SL_THEMES = [
+  {id:"light",    name:"Light",      desc:"Clean white",          bg:"FFFFFF", title:"1E2620", text:"3A443D", accent:"145C50", prevBg:"#f5f4ef", prevTx:"#1E2620"},
+  {id:"dark",     name:"Dark",       desc:"Sleek dark",           bg:"191E1B", title:"FFFFFF", text:"C8D0CA", accent:"56C4A8", prevBg:"#191E1B", prevTx:"#fff"},
+  {id:"chalk",    name:"Chalkboard", desc:"Schoolroom vibe",      bg:"26332E", title:"F1EFE6", text:"C9D4CC", accent:"8FB3A3", prevBg:"#26332E", prevTx:"#F1EFE6"},
+  {id:"lagoon",   name:"Lagoon",     desc:"Turquoise island blue",bg:"0E7490", title:"FFFFFF", text:"D5F6FD", accent:"FDE68A", prevBg:"#0E7490", prevTx:"#fff"},
+  {id:"coral",    name:"Coral",      desc:"Warm sunset",          bg:"F97362", title:"5C1D10", text:"6E2A18", accent:"FFF7ED", prevBg:"#F97362", prevTx:"#5C1D10"},
+  {id:"sandbank", name:"Sandbank",   desc:"Soft sand neutrals",   bg:"EFE7D6", title:"5C4F35", text:"6E6046", accent:"B5673B", prevBg:"#EFE7D6", prevTx:"#5C4F35"},
+  {id:"monsoon",  name:"Monsoon",    desc:"Rain-cloud blues",     bg:"1E293B", title:"E2E8F0", text:"AEB9C8", accent:"7DD3FC", prevBg:"#1E293B", prevTx:"#E2E8F0"},
+  {id:"daydream", name:"Daydream",   desc:"Pastel clouds",        bg:"E3DFF5", title:"4C4368", text:"5D5480", accent:"B45309", prevBg:"#E3DFF5", prevTx:"#4C4368"},
+  {id:"palm",     name:"Palm",       desc:"Tropical greens",      bg:"14532D", title:"ECFCCB", text:"C4E5A8", accent:"FACC15", prevBg:"#14532D", prevTx:"#ECFCCB"},
+  {id:"boduberu", name:"Boduberu",   desc:"Bold festive red",     bg:"B91C1C", title:"FEF3C7", text:"FDE0C0", accent:"FDE047", prevBg:"#B91C1C", prevTx:"#FEF3C7"}
+];
+
+function slInit(){
+  // theme grid
+  var grid = document.getElementById("sl-themes");
+  if(!grid || grid.children.length) return;
+  SL_THEMES.forEach(function(t){
+    var d = document.createElement("div");
+    d.style.cssText = "height:70px;border-radius:10px;border:2px solid "+(t.id===slDeckTheme?"#0c8a86":"#dde2e8")+";cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 10px;background:"+t.prevBg+";color:"+t.prevTx+";";
+    d.innerHTML = "<div style='font-weight:800;font-size:13px;'>"+t.name+"</div><div style='font-size:10px;opacity:.75;'>"+t.desc+"</div>";
+    d.setAttribute("data-theme", t.id);
+    d.onclick = function(){
+      slDeckTheme = t.id;
+      Array.prototype.forEach.call(grid.children, function(c){ c.style.borderColor = "#dde2e8"; });
+      d.style.borderColor = "#0c8a86";
+      gaTrack("slides_theme", {theme:t.id});
+    };
+    grid.appendChild(d);
+  });
+  // subject stabs
+  document.querySelectorAll("#sl-stabs .stab").forEach(function(st){
+    st.addEventListener("click", function(){
+      document.querySelectorAll("#sl-stabs .stab").forEach(function(s){ s.classList.remove("on"); });
+      this.classList.add("on");
+      slCurrentSub = this.getAttribute("data-slsub");
+      slUpdateOutcomes();
+    });
+  });
+  document.getElementById("sl-grade").addEventListener("change", slUpdateOutcomes);
+  document.getElementById("sl-outcome").addEventListener("change", slUpdateIndicators);
+  ["sl-count","sl-lang"].forEach(function(id){ document.getElementById(id).addEventListener("change", slUpdateTokens); });
+  ["sl-extra","sl-topic"].forEach(function(id){ document.getElementById(id).addEventListener("input", slUpdateTokens); });
+  document.getElementById("sl-indicators").addEventListener("change", slUpdateTokens);
+  slUpdateOutcomes();
+}
+
+function slUpdateOutcomes(){
+  var grade = document.getElementById("sl-grade").value;
+  var data = getSyl(grade, slCurrentSub);
+  var sel = document.getElementById("sl-outcome");
+  var stmt = document.getElementById("sl-outstmt");
+  var ind = document.getElementById("sl-indicators");
+  stmt.value = ""; ind.innerHTML = "<option disabled>Select an Outcome above</option>";
+  if(!data.length){
+    sel.innerHTML = "<option value=''>&mdash; no syllabus data; just enter a Topic below &mdash;</option>";
+    slUpdateTokens();
+    return;
+  }
+  // unique outcomes grouped by strand via optgroups
+  var seen = {}, groups = {};
+  data.forEach(function(d){
+    if(seen[d.out_code]) return;
+    seen[d.out_code] = d;
+    var g = d.strand + (d.substrand ? " \u00b7 " + d.substrand : "");
+    (groups[g] = groups[g] || []).push(d);
+  });
+  var htmlOpts = "<option value=''>-- Select outcome ("+Object.keys(seen).length+") --</option>";
+  Object.keys(groups).forEach(function(g){
+    htmlOpts += "<optgroup label=\"" + g.replace(/"/g,"&quot;") + "\">";
+    groups[g].forEach(function(d){
+      var short = d.out_stmt.length > 80 ? d.out_stmt.slice(0,80) + "\u2026" : d.out_stmt;
+      htmlOpts += "<option value=\"" + d.out_code.replace(/"/g,"&quot;") + "\">" + d.out_code + " \u2014 " + short.replace(/</g,"&lt;") + "</option>";
+    });
+    htmlOpts += "</optgroup>";
+  });
+  sel.innerHTML = htmlOpts;
+  slUpdateTokens();
+}
+
+function slUpdateIndicators(){
+  var grade = document.getElementById("sl-grade").value;
+  var code = document.getElementById("sl-outcome").value;
+  var stmt = document.getElementById("sl-outstmt");
+  var ind = document.getElementById("sl-indicators");
+  ind.innerHTML = "";
+  if(!code){ stmt.value=""; ind.innerHTML="<option disabled>Select an Outcome above</option>"; slUpdateTokens(); return; }
+  var rows = SYLLABUS.filter(function(d){ return d.grade===grade && d.subject===slCurrentSub && d.out_code===code; });
+  if(rows.length){
+    stmt.value = rows[0].out_stmt;
+    rows.forEach(function(r){
+      var o = document.createElement("option");
+      o.value = r.ind_code; o.textContent = r.ind_code + " \u2014 " + r.indicator;
+      ind.appendChild(o);
+    });
+  }
+  slUpdateTokens();
+}
+
+function slSelectedIndicators(){
+  var out = [];
+  var ind = document.getElementById("sl-indicators");
+  for(var i=0;i<ind.options.length;i++){ if(ind.options[i].selected && !ind.options[i].disabled) out.push(ind.options[i]); }
+  return out;
+}
+
+/* Token estimate: ~4 chars/token English, Thaana ~4x output; base prompt ~700; ~170 content + 40 JSON tokens per slide */
+function slEstimateTokens(){
+  var slides = Number(document.getElementById("sl-count").value);
+  var isDv = document.getElementById("sl-lang").value === "dv" || isThaanaSubject(slCurrentSub);
+  var input = 700;
+  input += Math.ceil((document.getElementById("sl-extra").value.length + document.getElementById("sl-topic").value.length) / 4);
+  var stmt = document.getElementById("sl-outstmt").value || "";
+  var chars = stmt.length + 60;
+  var sel = slSelectedIndicators();
+  if(sel.length){ sel.forEach(function(o){ chars += o.textContent.length; }); }
+  else {
+    var ind = document.getElementById("sl-indicators");
+    for(var i=0;i<ind.options.length;i++){ if(!ind.options[i].disabled) chars += ind.options[i].textContent.length; }
+  }
+  input += Math.ceil(chars / 4);
+  var perSlide = 170 * (isDv ? 4 : 1) + 40;
+  var output = slides * perSlide + 120;
+  return {input:input, output:output, total:input+output, slides:slides, isDv:isDv};
+}
+
+function slUpdateTokens(){
+  var box = document.getElementById("sl-tokens");
+  if(!box) return;
+  var e = slEstimateTokens();
+  var fmt = function(n){ return n.toLocaleString("en-US"); };
+  var msg = "&#9889; <b>Estimated tokens: ~" + fmt(e.total) + "</b> &nbsp;(input ~" + fmt(e.input) + " \u00b7 output ~" + fmt(e.output) + ") \u00b7 " + e.slides + " slides \u00b7 \u2248" + fmt(Math.round(e.output/e.slides)) + " output tokens per slide.";
+  if(e.isDv) msg += "<br><span style='color:#a16207;font-weight:700;'>Thaana output costs \u22484\u00d7 more tokens than English.</span>";
+  if(e.output > 6000) msg += "<br><span style='color:#a16207;font-weight:700;'>Large deck \u2014 max_tokens will be raised to 8,000 to avoid truncation.</span>";
+  box.innerHTML = msg;
+}
+
+async function doSlides(){
+  var status = document.getElementById("sl-status");
+  var btn = document.getElementById("sl-btn");
+  var grade = document.getElementById("sl-grade").value;
+  var code = document.getElementById("sl-outcome").value;
+  var stmt = document.getElementById("sl-outstmt").value.trim();
+  var topic = document.getElementById("sl-topic").value.trim();
+  var extra = document.getElementById("sl-extra").value.trim();
+  var isDv = document.getElementById("sl-lang").value === "dv" || isThaanaSubject(slCurrentSub);
+  var e = slEstimateTokens();
+
+  if(!code && !topic){
+    status.innerHTML = "<span style='color:#b4453a;'>Select an Outcome, or type a Topic.</span>";
+    return;
+  }
+
+  var inds = slSelectedIndicators().map(function(o){ return o.textContent; });
+  if(!inds.length){
+    var ind = document.getElementById("sl-indicators");
+    for(var i=0;i<ind.options.length;i++){ if(!ind.options[i].disabled) inds.push(ind.options[i].textContent); }
+  }
+
+  var prompt = "You are an expert Maldivian teacher creating a classroom presentation aligned to the Maldives National Curriculum.\n\n" +
+    "CONTEXT:\n" +
+    "- Grade: " + grade + "\n" +
+    "- Subject: " + slCurrentSub + "\n" +
+    (code ? "- Outcome (" + code + "): " + stmt + "\n" : "") +
+    (inds.length ? "- Indicators to cover:\n" + inds.map(function(s){ return "  \u2022 " + s; }).join("\n") + "\n" : "") +
+    (topic ? "- Topic / focus: " + topic + "\n" : "") +
+    (extra ? "- Additional instructions: " + extra + "\n" : "") +
+    "- Number of slides: exactly " + e.slides + "\n" +
+    "- Language: " + (isDv ? "Dhivehi written in Thaana script (natural, idiomatic, age-appropriate)" : "English (simple, age-appropriate for the grade)") + "\n\n" +
+    "Create an engaging, teachable slide deck: a title slide, clear concept slides building from simple to complex, at least one activity or discussion slide, and a recap slide. Content must stay faithful to the outcome and indicators \u2014 do not invent curriculum content beyond them.\n\n" +
+    "Respond with ONLY valid JSON, no markdown fences, in exactly this shape:\n" +
+    "{\"deckTitle\":\"...\",\"slides\":[{\"title\":\"...\",\"bullets\":[\"...\",\"...\"],\"notes\":\"one short teacher note\"}]}\n" +
+    "Each slide: 3-5 concise bullets. Keep bullets short enough to fit a slide.";
+
+  var maxTok = Math.min(8000, Math.max(3000, e.output + 800));
+  var key = localStorage.getItem("sas_key") || "";
+
+  btn.disabled = true;
+  status.innerHTML = "\u23f3 Generating " + e.slides + " slides\u2026 (~" + e.total.toLocaleString() + " tokens)";
+  document.getElementById("sl-result").style.display = "none";
+  gaTrack("slides_generate", {grade:grade, subject:slCurrentSub, outcome:code||"topic", slides:e.slides, lang:isDv?"dv":"en", theme:slDeckTheme});
+
+  try {
+    var deck = await callAPI(key, prompt, maxTok);
+    if(!deck || !deck.slides || !deck.slides.length) throw new Error("The AI response did not contain slides. Please try again.");
+    slDeck = deck;
+    slRenderPreview(deck, isDv);
+    status.innerHTML = "\u2705 Done \u2014 " + deck.slides.length + " slides ready.";
+    gaTrack("slides_success", {slides:deck.slides.length});
+  } catch(err) {
+    status.innerHTML = "<span style='color:#b4453a;'>\u274c " + (err.message || err) + "</span>";
+    gaTrack("slides_error", {message:String(err.message||err).slice(0,80)});
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function slRenderPreview(deck, isDv){
+  var t = SL_THEMES.find(function(x){ return x.id===slDeckTheme; }) || SL_THEMES[0];
+  document.getElementById("sl-deck-title").textContent = deck.deckTitle || "Slide Deck";
+  var prev = document.getElementById("sl-preview");
+  prev.innerHTML = "";
+  var dir = isDv ? "rtl" : "ltr";
+  var fam = isDv ? "'Faruma','MV Boli',sans-serif" : "inherit";
+  deck.slides.forEach(function(s, i){
+    var card = document.createElement("div");
+    card.style.cssText = "border-radius:10px;padding:14px 16px;min-height:150px;background:"+t.prevBg+";color:"+t.prevTx+";border:1px solid rgba(0,0,0,.12);direction:"+dir+";font-family:"+fam+";";
+    var bullets = (s.bullets||[]).map(function(b){ return "<li style='margin:3px 0;font-size:12.5px;line-height:1.5;'>"+String(b).replace(/</g,"&lt;")+"</li>"; }).join("");
+    card.innerHTML =
+      "<div style='font-size:10px;opacity:.6;margin-bottom:4px;direction:ltr;'>Slide " + (i+1) + "</div>" +
+      "<div style='font-weight:800;font-size:14.5px;margin-bottom:7px;'>" + String(s.title||"").replace(/</g,"&lt;") + "</div>" +
+      "<ul style='margin:0;padding-" + (isDv?"right":"left") + ":18px;'>" + bullets + "</ul>" +
+      (s.notes ? "<div style='margin-top:8px;font-size:10.5px;opacity:.65;border-top:1px dashed rgba(128,128,128,.4);padding-top:5px;'>\ud83d\udcdd " + String(s.notes).replace(/</g,"&lt;") + "</div>" : "");
+    prev.appendChild(card);
+  });
+  document.getElementById("sl-result").style.display = "block";
+}
+
+function downloadSlidesPptx(){
+  if(!slDeck){ return; }
+  var t = SL_THEMES.find(function(x){ return x.id===slDeckTheme; }) || SL_THEMES[0];
+  var isDv = document.getElementById("sl-lang").value === "dv" || isThaanaSubject(slCurrentSub);
+  var pptx = new PptxGenJS();
+  pptx.defineLayout({ name:"WIDE", width:13.33, height:7.5 });
+  pptx.layout = "WIDE";
+  var fontFace = isDv ? "MV Boli" : "Calibri";
+  var alignBody = isDv ? "right" : "left";
+
+  // Title slide
+  var s0 = pptx.addSlide();
+  s0.background = { color: t.bg };
+  s0.addText(slDeck.deckTitle || "Slide Deck", { x:0.7, y:2.4, w:11.9, h:1.6, fontSize:40, bold:true, color:t.title, align:"center", fontFace:fontFace, rtlMode:isDv });
+  s0.addText(document.getElementById("sl-grade").value + " \u00b7 " + slCurrentSub, { x:0.7, y:4.1, w:11.9, h:0.6, fontSize:18, color:t.accent, align:"center", fontFace:fontFace });
+  var oc = document.getElementById("sl-outcome").value;
+  if(oc) s0.addText("Outcome: " + oc, { x:0.7, y:4.8, w:11.9, h:0.5, fontSize:13, color:t.text, align:"center" });
+
+  slDeck.slides.forEach(function(sl){
+    var s = pptx.addSlide();
+    s.background = { color: t.bg };
+    s.addText(String(sl.title||""), { x:0.6, y:0.4, w:12.1, h:0.9, fontSize:28, bold:true, color:t.title, align:alignBody, fontFace:fontFace, rtlMode:isDv });
+    s.addShape(pptx.ShapeType.rect, { x:0.6, y:1.35, w:2.2, h:0.07, fill:{color:t.accent} });
+    var bullets = (sl.bullets||[]).map(function(b){ return { text:String(b), options:{ bullet:true, fontSize:18, color:t.text, breakLine:true, fontFace:fontFace, align:alignBody, rtlMode:isDv } }; });
+    if(bullets.length) s.addText(bullets, { x:0.8, y:1.7, w:11.7, h:5.0, valign:"top" });
+    if(sl.notes) s.addNotes(String(sl.notes));
+  });
+
+  var fname = (slDeck.deckTitle || "slide-deck").replace(/[^\w\u0780-\u07BF -]/g,"").slice(0,60) || "slide-deck";
+  pptx.writeFile({ fileName: fname + ".pptx" });
+  gaTrack("slides_download", {slides:slDeck.slides.length, theme:slDeckTheme});
+}
+
+document.addEventListener("DOMContentLoaded", slInit);
+</script>
+
 </body>
 </html>
