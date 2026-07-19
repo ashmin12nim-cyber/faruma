@@ -17,7 +17,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FARUMA</title>
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 
@@ -611,6 +610,8 @@ body::before {
         <div class="user-plan" id="user-plan-display">free</div>
       </div>
       <div class="usage-pill" id="usage-pill">0/10</div>
+      <button class="logout-btn" style="background:#0f7a3d;border-color:#0f7a3d;color:#fff;" onclick="openTopup()">Top Up</button>
+      <button class="logout-btn" onclick="openHelp()">Help</button>
       <button class="logout-btn" onclick="doLogout()">Sign out</button>
     </div>
   </div>
@@ -644,10 +645,6 @@ body::before {
       <span class="tab-ic" style="color:#cf9526"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 8h18M8 8v13"/></svg></span>
       <span class="tab-label">Templates</span>
     </div>
-    <div class="tab" data-page="slides">
-      <span class="tab-ic" style="color:#7c4dbe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><rect x="4" y="3" width="16" height="12" rx="1"/><path d="M12 15v4M8 21l4-2 4 2"/></svg></span>
-      <span class="tab-label">Slides</span>
-    </div>
     <div class="tab" data-page="history">
       <span class="tab-ic" style="color:#df6d3c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v4l3 2"/></svg></span>
       <span class="tab-label">History</span>
@@ -673,6 +670,21 @@ body::before {
       <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+      <div style="text-align:center;margin-top:10px;"><a onclick="showForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Forgot password?</a></div>
+    </div>
+    <!-- Forgot password form -->
+    <div id="form-forgot" style="display:none;">
+      <p style="font-size:13px;margin:0 0 12px;">Enter your email and we'll send you a link to reset your password.</p>
+      <div class="auth-field"><label>Email</label><input type="email" id="forgot-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doForgot()"></div>
+      <button class="auth-btn" id="forgot-btn" onclick="doForgot()">Send Reset Link</button>
+      <div style="text-align:center;margin-top:10px;"><a onclick="hideForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Back to sign in</a></div>
+    </div>
+    <!-- Reset password form (shown when arriving from a reset email link) -->
+    <div id="form-reset" style="display:none;">
+      <p style="font-size:13px;margin:0 0 12px;">Choose a new password for your account.</p>
+      <div class="auth-field"><label>New Password</label><input type="password" id="reset-pass" placeholder="Min. 6 characters"></div>
+      <div class="auth-field"><label>Confirm Password</label><input type="password" id="reset-pass2" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')doReset()"></div>
+      <button class="auth-btn" id="reset-btn" onclick="doReset()">Set New Password</button>
     </div>
     <!-- Register form -->
     <div id="form-register" style="display:none;">
@@ -682,7 +694,101 @@ body::before {
       <button class="auth-btn" id="reg-btn" onclick="doRegister()">Create Account</button>
     </div>
     <div class="auth-demo">
-      Try demo account: &nbsp;<a onclick="useDemoAccount()">demo@hiyaa.mv / demo123</a>
+      New here? You get <b>15 free credits</b> when you register. &nbsp;·&nbsp; <a onclick="showPrivacy()" style="cursor:pointer;text-decoration:underline;">Privacy</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ PRIVACY NOTICE MODAL ════════ -->
+<div id="privacy-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:14px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h3 style="margin:0;font-size:18px;">Privacy Notice</h3>
+      <button onclick="hidePrivacy()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div style="font-size:13px;line-height:1.7;color:#333;">
+      <p><b>What we collect.</b> When you create a FARUMA account we store your name, email address, and a securely hashed password. As you use the app we keep a record of your credit balance and credit transactions (when credits were used or added).</p>
+      <p><b>What we do with it.</b> This information is used only to run your account, track your credits, and improve FARUMA. We do not sell or share your personal information with anyone.</p>
+      <p><b>Where it is stored.</b> Account data is stored securely with Supabase. The text you type when generating lesson plans is processed by Anthropic's Claude API to produce your documents and is not used to identify you.</p>
+      <p><b>Generated documents.</b> Lesson plans, schemes of work and other documents you generate are saved in your own browser on your device, not on our servers.</p>
+      <p><b>Your choices.</b> You can ask for your account and its data to be deleted at any time by contacting the FARUMA administrator at your school.</p>
+      <p style="color:#777;font-size:12px;margin-bottom:0;">FARUMA · Seenu Atoll School, S. Hulhudhoo-Meedhoo · Last updated July 2026</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ TOP UP MODAL ════════ -->
+<div id="topup-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <h3 style="margin:0;font-size:18px;">Top Up Credits</h3>
+      <button onclick="closeTopup()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div id="topup-step1">
+      <p style="font-size:13px;color:#555;margin:0 0 14px;">Choose a credit pack. You'll pay by bank transfer and credits are added once the transfer is confirmed.</p>
+      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(50)">50 credits — MVR 90</button>
+      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(150)">150 credits — MVR 240</button>
+      <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(400)">400 credits — MVR 560 <span style="font-weight:400;">(best value)</span></button>
+      <div id="topup-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:6px;"></div>
+      <div id="topup-history" style="margin-top:14px;font-size:12px;color:#555;"></div>
+    </div>
+    <div id="topup-step2" style="display:none;">
+      <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;font-size:13px;line-height:1.7;margin-bottom:12px;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Request created ✓</div>
+        <div>Pack: <b id="topup-pack-label"></b></div>
+        <div>Amount to transfer: <b id="topup-amount-label"></b></div>
+        <div>Reference code: <b id="topup-ref-label" style="font-size:16px;letter-spacing:1px;"></b></div>
+      </div>
+      <div style="font-size:13px;line-height:1.8;">
+        <b>How to pay:</b>
+        <ol style="margin:6px 0 10px;padding-left:20px;">
+          <li>Transfer the amount to:<br><b id="topup-bank-label"></b></li>
+          <li>Put the reference code <b>in the transfer remarks</b>.</li>
+          <li id="topup-contact-line" style="display:none;">Send the receipt to: <b id="topup-contact-label"></b></li>
+        </ol>
+        Your credits are added as soon as the transfer is confirmed — you'll see the balance update in the top bar.
+      </div>
+      <button class="auth-btn" style="margin-top:10px;" onclick="closeTopup()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ HELP / CONTACT MODAL ════════ -->
+<div id="help-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <h3 style="margin:0;font-size:18px;">Contact FARUMA Admin</h3>
+      <button onclick="closeHelp()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <p style="font-size:13px;color:#555;margin:0 0 10px;">Question, problem, or a top-up that hasn't arrived? Write it here.</p>
+    <textarea id="help-text" rows="5" style="width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:8px;padding:10px;font-size:13px;font-family:inherit;resize:vertical;" placeholder="Type your message..."></textarea>
+    <div id="help-status" style="display:none;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
+    <button class="auth-btn" id="help-send-btn" style="margin-top:10px;" onclick="sendHelp()">Send Message</button>
+  </div>
+</div>
+
+<!-- ════════ ADMIN PANEL ════════ -->
+<div id="admin-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.7);z-index:10001;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;">
+  <div style="background:#fff;border-radius:14px;max-width:680px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.4);margin:20px 0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h3 style="margin:0;font-size:18px;">FARUMA Admin</h3>
+      <button onclick="closeAdmin()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div id="admin-login">
+      <div class="auth-field"><label>Admin password</label><input type="password" id="admin-pass" onkeydown="if(event.key==='Enter')adminLoad()"></div>
+      <button class="auth-btn" onclick="adminLoad()">Open Admin Panel</button>
+      <div id="admin-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
+    </div>
+    <div id="admin-body" style="display:none;">
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="logout-btn" onclick="adminLoad()">↻ Refresh</button>
+      </div>
+      <h4 style="margin:0 0 8px;font-size:15px;">Pending top-ups <span id="admin-pending-count" style="background:#fdecea;color:#a12622;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
+      <div id="admin-pending" style="font-size:13px;"></div>
+      <h4 style="margin:18px 0 8px;font-size:15px;">Messages from teachers <span id="admin-msg-count" style="background:#e8f1fb;color:#0f2740;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
+      <div id="admin-messages" style="font-size:13px;"></div>
+      <h4 style="margin:18px 0 8px;font-size:15px;">Recently resolved</h4>
+      <div id="admin-recent" style="font-size:12px;color:#666;"></div>
     </div>
   </div>
 </div>
@@ -802,10 +908,6 @@ body::before {
       <article class="home-card t-green" onclick="openTool('assessment')">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></div>
         <h3>Assessment</h3><p>Create assessments from outcomes</p>
-      </article>
-      <article class="home-card t-lilac" onclick="openTool('slides')">
-        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><rect x="4" y="3" width="16" height="12" rx="1"/><path d="M12 15v4M8 21l4-2 4 2"/></svg></div>
-        <h3>Slides</h3><p>Curriculum-aligned slide decks</p>
       </article>
       <article class="home-card t-peach" onclick="openTool('calendar')">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
@@ -1025,6 +1127,22 @@ body::before {
     <div class="field"><label>Topic</label><input type="text" id="as-topic" placeholder="e.g. Fractions"></div>
     <div class="field"><label>No. of Questions</label><input type="number" id="as-num" value="10" min="3" max="30"></div>
   </div>
+
+  <!-- Curriculum outcome/indicator picker (optional; maps every question to MNC codes) -->
+  <div style="border:1px solid var(--ocean-pale);border-radius:12px;padding:14px 16px;margin:14px 0;background:#fbfdfe;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:12px;font-weight:800;color:var(--ocean-mid);text-transform:uppercase;letter-spacing:.06em;">Curriculum mapping <span style="font-weight:500;text-transform:none;color:var(--text-mid);">(optional)</span></div>
+        <div style="font-size:11.5px;color:var(--text-mid);margin-top:2px;">Pick outcomes &amp; indicators — every question will be mapped to the codes you select.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="as-cov" style="font-size:11.5px;color:var(--text-mid);"></span>
+        <button class="btn btn-sm btn-navy" type="button" onclick="asLoadOutcomes()">Load outcomes</button>
+      </div>
+    </div>
+    <div id="as-curr" style="margin-top:10px;max-height:300px;overflow-y:auto;"></div>
+  </div>
+
   <button class="btn btn-orange" id="as-btn" onclick="doAssessment()">&#9889; Generate</button>
   <div class="prog" id="as-prog"><div class="prog-bar" id="as-bar" style="width:0%"></div></div>
   <div class="status" id="as-status"></div>
@@ -1032,64 +1150,6 @@ body::before {
 </div></div>
 
 <!-- CALENDAR -->
-<!-- SLIDES -->
-<div class="page" id="page-slides">
-<div class="card">
-  <div class="card-title">Create Slide Deck</div>
-  <div style="font-size:13px;color:var(--text-mid);margin:-6px 0 14px;">Build a presentation aligned to a National Curriculum outcome, or from your own topic.</div>
-
-  <div class="stabs" id="sl-stabs">
-    <div class="stab on" data-slsub="Mathematics">Mathematics</div>
-    <div class="stab" data-slsub="English">English</div>
-    <div class="stab" data-slsub="Science">Science</div>
-    <div class="stab" data-slsub="Social Studies">Social Studies</div>
-    <div class="stab" data-slsub="H.PE">H.PE</div>
-    <div class="stab" data-slsub="Creative Arts">Creative Arts</div>
-    <div class="stab" data-slsub="Islam">Islam</div>
-    <div class="stab" data-slsub="Quran">Quran</div>
-    <div class="stab" data-slsub="Dhivehi">Dhivehi</div>
-  </div>
-
-  <div class="g2">
-    <div class="field"><label>Grade</label><select id="sl-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
-    <div class="field"><label>Outcome</label><select id="sl-outcome"><option value="">-- Select outcome --</option></select></div>
-  </div>
-  <div class="field"><label>Outcome Statement</label><textarea id="sl-outstmt" rows="2" readonly style="background:#f5f5f5;color:#555;"></textarea></div>
-  <div class="field"><label>Indicators (optional &mdash; leave blank to cover the whole outcome)</label><select id="sl-indicators" multiple style="height:100px;width:100%;border:1.5px solid #dde2e8;border-radius:7px;padding:5px;font-size:12px;font-family:inherit;"><option disabled>Select an Outcome above</option></select></div>
-  <div class="field"><label>Topic / Focus (optional)</label><input type="text" id="sl-topic" placeholder="e.g. Comparing unit fractions with paper strips"></div>
-  <div class="field"><label>Additional instructions (optional)</label><textarea id="sl-extra" rows="2" placeholder="Audience level, activities, preferred slide style..."></textarea></div>
-
-  <div class="g2">
-    <div class="field"><label>Number of slides</label><select id="sl-count"><option value="8">Below 10</option><option value="12">10&ndash;15</option><option value="18">15&ndash;20</option></select></div>
-    <div class="field"><label>Output language</label><select id="sl-lang"><option value="en">English</option><option value="dv">Dhivehi (&#1931;&#1960;&#1928;&#1962;&#1920;&#1960;)</option></select></div>
-  </div>
-
-  <div class="field" style="margin-top:2px;">
-    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;">
-      <input type="checkbox" id="sl-images" checked style="width:16px;height:16px;accent-color:#0c8a86;">
-      Include AI-generated pictures on slides <span style="font-weight:400;color:#8a978f;font-size:11.5px;">(free &mdash; no API tokens, adds ~5&ndash;20s after generation)</span>
-    </label>
-  </div>
-
-  <div class="field"><label>Theme</label>
-    <div id="sl-themes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;"></div>
-  </div>
-
-  <div id="sl-tokens" style="background:#f7f9f7;border:1px solid #e0e6e0;border-radius:9px;padding:12px 14px;margin:14px 0;font-size:12.5px;color:#41504a;line-height:1.6;"></div>
-
-  <button class="btn btn-blue" id="sl-btn" onclick="doSlides()">&#9889; Generate Slide Deck</button>
-  <div id="sl-status" style="margin-top:10px;font-size:13px;color:var(--text-mid);"></div>
-
-  <div id="sl-result" style="display:none;margin-top:18px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
-      <div style="font-weight:800;font-size:15px;" id="sl-deck-title"></div>
-      <button class="btn btn-blue" onclick="downloadSlidesPptx()">&#11015; Download PowerPoint (.pptx)</button>
-    </div>
-    <div id="sl-preview" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;"></div>
-  </div>
-</div>
-</div>
-
 <div class="page" id="page-calendar">
 <div class="card">
   <div class="card-title">School Calendar 2026</div>
@@ -2254,12 +2314,247 @@ async function doRegister() {
   btn.disabled = false; btn.textContent = 'Create Account';
 }
 
-function useDemoAccount() {
-  document.getElementById('login-email').value = 'demo@hiyaa.mv';
-  document.getElementById('login-pass').value = 'demo123';
-  switchAuthTab('login');
-  doLogin();
+/* ── Forgot / reset password ── */
+function showForgot() {
+  document.getElementById('form-login').style.display = 'none';
+  document.getElementById('form-forgot').style.display = 'block';
+  document.getElementById('forgot-email').value = document.getElementById('login-email').value || '';
+  document.getElementById('auth-err').style.display = 'none';
 }
+function hideForgot() {
+  document.getElementById('form-forgot').style.display = 'none';
+  document.getElementById('form-reset').style.display = 'none';
+  document.getElementById('form-login').style.display = 'block';
+  document.getElementById('auth-err').style.display = 'none';
+}
+async function doForgot() {
+  var email = document.getElementById('forgot-email').value.trim();
+  if (!email) { showAuthError('Please enter your email address.'); return; }
+  var btn = document.getElementById('forgot-btn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    var resp = await fetch('/api/auth/forgot', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email: email })
+    });
+    var data = await resp.json();
+    if (!resp.ok) { showAuthError(data.error || 'Could not send reset link.'); }
+    else {
+      var el = document.getElementById('auth-err');
+      el.textContent = data.message || 'Reset link sent. Check your email.';
+      el.style.display = 'block';
+      el.style.background = '#e8f5e9'; el.style.color = '#1b5e20'; el.style.borderColor = '#a5d6a7';
+    }
+  } catch(e) { showAuthError('Connection error. Please try again.'); }
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+}
+var recoveryToken = null;
+function detectRecoveryLink() {
+  // Supabase reset emails land back here with #access_token=...&type=recovery
+  var h = window.location.hash || '';
+  if (h.indexOf('type=recovery') < 0) return;
+  var m = h.match(/access_token=([^&]+)/);
+  if (!m) return;
+  recoveryToken = decodeURIComponent(m[1]);
+  try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
+  if (typeof openAuth === 'function') openAuth('login');
+  document.getElementById('auth-overlay').style.display = 'flex';
+  document.getElementById('form-login').style.display = 'none';
+  document.getElementById('form-register').style.display = 'none';
+  document.getElementById('form-forgot').style.display = 'none';
+  document.getElementById('form-reset').style.display = 'block';
+}
+async function doReset() {
+  var p1 = document.getElementById('reset-pass').value;
+  var p2 = document.getElementById('reset-pass2').value;
+  if (!p1 || p1.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+  if (p1 !== p2) { showAuthError('Passwords do not match.'); return; }
+  if (!recoveryToken) { showAuthError('Reset link expired. Please request a new one.'); hideForgot(); return; }
+  var btn = document.getElementById('reset-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try {
+    var resp = await fetch('/api/auth/reset', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ token: recoveryToken, password: p1 })
+    });
+    var data = await resp.json();
+    if (!resp.ok) { showAuthError(data.error || 'Could not reset password.'); }
+    else {
+      recoveryToken = null;
+      hideForgot();
+      var el = document.getElementById('auth-err');
+      el.textContent = 'Password updated! Sign in with your new password.';
+      el.style.display = 'block';
+      el.style.background = '#e8f5e9'; el.style.color = '#1b5e20'; el.style.borderColor = '#a5d6a7';
+    }
+  } catch(e) { showAuthError('Connection error. Please try again.'); }
+  btn.disabled = false; btn.textContent = 'Set New Password';
+}
+document.addEventListener('DOMContentLoaded', detectRecoveryLink);
+
+/* ── Privacy notice ── */
+function showPrivacy() { document.getElementById('privacy-modal').style.display = 'flex'; }
+function hidePrivacy() { document.getElementById('privacy-modal').style.display = 'none'; }
+
+/* ── Top Up ── */
+function openTopup() {
+  document.getElementById('topup-step1').style.display = 'block';
+  document.getElementById('topup-step2').style.display = 'none';
+  document.getElementById('topup-err').style.display = 'none';
+  document.getElementById('topup-modal').style.display = 'flex';
+  loadTopupHistory();
+}
+function closeTopup() { document.getElementById('topup-modal').style.display = 'none'; }
+async function loadTopupHistory() {
+  var box = document.getElementById('topup-history');
+  box.innerHTML = '';
+  try {
+    var token = localStorage.getItem('boli_token');
+    var resp = await fetch('/api/topup/mine', { headers: { 'Authorization': 'Bearer ' + token } });
+    var data = await resp.json();
+    if (resp.ok && data.requests && data.requests.length) {
+      box.innerHTML = '<b>Your recent requests:</b><br>' + data.requests.map(function(r){
+        var badge = r.status === 'approved' ? '<span style="color:#0f7a3d;">✓ approved</span>'
+                  : r.status === 'rejected' ? '<span style="color:#a12622;">✗ rejected</span>'
+                  : '<span style="color:#b07a00;">… pending</span>';
+        return r.ref_code + ' — ' + r.pack_credits + ' credits (MVR ' + r.pack_price_mvr + ') ' + badge;
+      }).join('<br>');
+    }
+  } catch(e) {}
+}
+async function requestTopup(pack) {
+  var err = document.getElementById('topup-err');
+  err.style.display = 'none';
+  try {
+    var token = localStorage.getItem('boli_token');
+    var resp = await fetch('/api/topup/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ pack: pack })
+    });
+    var data = await resp.json();
+    if (!resp.ok) { err.textContent = data.error || 'Could not create request.'; err.style.display = 'block'; return; }
+    document.getElementById('topup-pack-label').textContent = data.pack_credits + ' credits';
+    document.getElementById('topup-amount-label').textContent = 'MVR ' + data.pack_price_mvr;
+    document.getElementById('topup-ref-label').textContent = data.ref_code;
+    document.getElementById('topup-bank-label').textContent = data.bank_account;
+    if (data.admin_contact) {
+      document.getElementById('topup-contact-label').textContent = data.admin_contact;
+      document.getElementById('topup-contact-line').style.display = 'list-item';
+    }
+    document.getElementById('topup-step1').style.display = 'none';
+    document.getElementById('topup-step2').style.display = 'block';
+    if(typeof gaTrack==='function') gaTrack('topup_request',{pack:pack});
+  } catch(e) { err.textContent = 'Connection error. Please try again.'; err.style.display = 'block'; }
+}
+
+/* ── Help / contact admin ── */
+function openHelp() {
+  document.getElementById('help-status').style.display = 'none';
+  document.getElementById('help-text').value = '';
+  document.getElementById('help-modal').style.display = 'flex';
+}
+function closeHelp() { document.getElementById('help-modal').style.display = 'none'; }
+async function sendHelp() {
+  var msg = document.getElementById('help-text').value.trim();
+  var st = document.getElementById('help-status');
+  var btn = document.getElementById('help-send-btn');
+  if (msg.length < 3) { st.textContent = 'Please write a message first.'; st.style.display='block'; st.style.background='#fdecea'; st.style.color='#a12622'; return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    var token = localStorage.getItem('boli_token');
+    var resp = await fetch('/api/support', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ message: msg })
+    });
+    var data = await resp.json();
+    st.textContent = resp.ok ? (data.message || 'Message sent!') : (data.error || 'Could not send.');
+    st.style.background = resp.ok ? '#e8f5e9' : '#fdecea';
+    st.style.color = resp.ok ? '#1b5e20' : '#a12622';
+    st.style.display = 'block';
+    if (resp.ok) document.getElementById('help-text').value = '';
+  } catch(e) { st.textContent='Connection error.'; st.style.display='block'; st.style.background='#fdecea'; st.style.color='#a12622'; }
+  btn.disabled = false; btn.textContent = 'Send Message';
+}
+
+/* ── Admin panel (open with #admin in the URL) ── */
+function openAdmin() {
+  document.getElementById('admin-login').style.display = 'block';
+  document.getElementById('admin-body').style.display = 'none';
+  document.getElementById('admin-err').style.display = 'none';
+  document.getElementById('admin-modal').style.display = 'flex';
+  var saved = sessionStorage.getItem('faruma_admin_pass');
+  if (saved) { document.getElementById('admin-pass').value = saved; adminLoad(); }
+}
+function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+async function adminLoad() {
+  var pass = document.getElementById('admin-pass').value;
+  var err = document.getElementById('admin-err');
+  err.style.display = 'none';
+  try {
+    var resp = await fetch('/api/admin/overview', { headers: { 'x-admin-pass': pass } });
+    var data = await resp.json();
+    if (!resp.ok) { err.textContent = data.error || 'Failed.'; err.style.display = 'block'; sessionStorage.removeItem('faruma_admin_pass'); return; }
+    sessionStorage.setItem('faruma_admin_pass', pass);
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-body').style.display = 'block';
+
+    var p = data.pending || [];
+    document.getElementById('admin-pending-count').textContent = p.length;
+    document.getElementById('admin-pending').innerHTML = p.length ? p.map(function(r){
+      return '<div style="border:1px solid #ddd;border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
+        + '<div style="flex:1;min-width:180px;"><b>' + escHtml(r.name || r.email) + '</b><br>'
+        + '<span style="color:#666;">' + escHtml(r.email) + '</span><br>'
+        + r.pack_credits + ' credits · MVR ' + r.pack_price_mvr + ' · ref <b>' + escHtml(r.ref_code) + '</b></div>'
+        + '<button class="logout-btn" style="background:#0f7a3d;border-color:#0f7a3d;color:#fff;" onclick="adminApprove(' + r.id + ')">Approve</button>'
+        + '<button class="logout-btn" style="color:#a12622;border-color:#e0a0a0;" onclick="adminReject(' + r.id + ')">Reject</button>'
+        + '</div>';
+    }).join('') : '<div style="color:#888;">No pending requests. 🎉</div>';
+
+    var m = data.messages || [];
+    var newCount = m.filter(function(x){return x.status==='new';}).length;
+    document.getElementById('admin-msg-count').textContent = newCount + ' new';
+    document.getElementById('admin-messages').innerHTML = m.length ? m.map(function(x){
+      var isNew = x.status === 'new';
+      return '<div style="border:1px solid ' + (isNew?'#b3d4f5':'#eee') + ';background:' + (isNew?'#f2f8ff':'#fafafa') + ';border-radius:10px;padding:10px 12px;margin-bottom:8px;">'
+        + '<b>' + escHtml(x.name || x.email) + '</b> <span style="color:#888;">(' + escHtml(x.email) + ') · ' + new Date(x.created_at).toLocaleString() + '</span>'
+        + (isNew ? ' <button class="logout-btn" style="float:right;font-size:11px;padding:2px 8px;" onclick="adminMarkRead(' + x.id + ')">Mark read</button>' : '')
+        + '<div style="margin-top:6px;white-space:pre-wrap;">' + escHtml(x.message) + '</div></div>';
+    }).join('') : '<div style="color:#888;">No messages yet.</div>';
+
+    var rec = data.recent || [];
+    document.getElementById('admin-recent').innerHTML = rec.length ? rec.map(function(r){
+      return escHtml(r.ref_code) + ' · ' + escHtml(r.email) + ' · ' + r.pack_credits + 'cr · ' + r.status;
+    }).join('<br>') : '—';
+  } catch(e) { err.textContent = 'Connection error.'; err.style.display = 'block'; }
+}
+async function adminApprove(id) {
+  if (!confirm('Approve this top-up? Only do this AFTER checking the bank transfer arrived with the matching reference code.')) return;
+  await adminAction('/api/admin/topup/approve', id);
+}
+async function adminReject(id) {
+  if (!confirm('Reject this top-up request?')) return;
+  await adminAction('/api/admin/topup/reject', id);
+}
+async function adminMarkRead(id) { await adminAction('/api/admin/message/read', id); }
+async function adminAction(path, id) {
+  var pass = sessionStorage.getItem('faruma_admin_pass') || document.getElementById('admin-pass').value;
+  try {
+    var resp = await fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-pass': pass },
+      body: JSON.stringify({ id: id })
+    });
+    var data = await resp.json();
+    if (!resp.ok) alert(data.error || 'Action failed.');
+  } catch(e) { alert('Connection error.'); }
+  adminLoad();
+}
+document.addEventListener('DOMContentLoaded', function(){
+  if ((window.location.hash || '').indexOf('admin') >= 0) openAdmin();
+});
 
 function onAuthSuccess(token, user) {
   currentUser = user;
@@ -3530,12 +3825,107 @@ function buildAssessmentPrompt(cfg){
   var typeHint = cfg.atype==='exit_ticket' ? '3-4 quick check-for-understanding questions'
     : cfg.atype==='project' ? ('a short project brief plus '+cfg.num+' guiding/assessment questions')
     : (cfg.num+' questions');
+  var selOuts = (typeof asSelectedOutcomes==='function') ? asSelectedOutcomes() : [];
+  if(selOuts.length){
+    var currBlock = 'Assess ONLY the following Maldives National Curriculum outcomes and indicators. Every question MUST be mapped to exactly one of these indicator codes:\n' +
+      selOuts.map(function(o){ return '['+o.code+'] '+o.stmt+'\n'+o.inds.map(function(x){return '   - '+x.code+': '+x.text;}).join('\n'); }).join('\n') + '\n\n';
+    return 'You are an expert '+cfg.sub+' teacher in the Maldives writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'". '+
+      "Bloom's focus: "+cfg.blooms+'. Produce '+typeHint+'.\n'+currBlock+
+      'Spread questions across the selected indicators (cover as many as sensible). Use a MIX of question types: mcq, short, structured, essay, practical. For EACH question provide: the question, (for mcq) four options labelled A-D, the correct answer / model answer, the marks, difficulty (Easy/Medium/Hard), Bloom level (Remember/Understand/Apply/Analyse/Evaluate/Create), the outcome code and indicator code it assesses, and the assessment objective. Number questions sequentially. Make questions specific, not generic.\n'+
+      (cfg.atype==='project'?'Also include a one-paragraph "brief".\n':'')+
+      'Return ONLY JSON (no markdown, no commentary): {"title":"'+cfg.title+'","instructions":"...","brief":"","totalMarks":0,"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"B. ...","marks":1,"difficulty":"Medium","bloom":"Apply","outcomeCode":"...","indicatorCode":"...","objective":"..."}]}';
+  }
   return 'You are an expert '+cfg.sub+' teacher in the Maldives writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'". '+
     "Bloom's focus: "+cfg.blooms+'. Produce '+typeHint+', aligned to the Maldives National Curriculum.\n'+ctx+
     'Use an appropriate MIX of question types: mcq, short, structured, essay, practical. For EACH question provide: the question, (for mcq) four options labelled A-D, the correct answer / model answer, the marks, and the assessment objective (skill assessed). Vary difficulty sensibly and number questions sequentially. Make questions specific to the topic, not generic.\n'+
     (cfg.atype==='project'?'Also include a one-paragraph "brief".\n':'')+
     'Return ONLY JSON (no markdown, no commentary): {"title":"'+cfg.title+'","instructions":"...","brief":"","totalMarks":0,"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"B. ...","marks":1,"objective":"..."}]}';
 }
+
+/* ---- Curriculum outcome/indicator picker (Assessment tab) ---- */
+var asSel = { outs:{}, inds:{} };   /* outs[code]=true, inds[indCode]=true */
+var asOutcomeCache = [];            /* grouped outcomes for current grade/subject */
+
+function asLoadOutcomes(){
+  var grade=(document.getElementById('as-grade')||{}).value||'';
+  var sub=(document.getElementById('as-sub')||{}).value||'';
+  var box=document.getElementById('as-curr'); if(!box) return;
+  asSel={outs:{},inds:{}}; asOutcomeCache=[];
+  var rows=(typeof getSyl==='function'?(getSyl(grade,sub)||[]):[]);
+  if(!rows.length){ box.innerHTML='<div style="font-size:12px;color:var(--text-mid);padding:8px 0;">No syllabus data found for '+aEsc(grade)+' '+aEsc(sub)+'.</div>'; asUpdateCov(); return; }
+  var map={}, order=[];
+  rows.forEach(function(r){
+    var k=r.out_code||'';
+    if(!map[k]){ map[k]={code:k,stmt:r.out_stmt||'',strand:r.strand||'',sub:r.substrand||'',inds:[]}; order.push(k); }
+    map[k].inds.push({code:r.ind_code||'',text:r.indicator||''});
+  });
+  asOutcomeCache=order.map(function(k){return map[k];});
+  var h='';
+  asOutcomeCache.forEach(function(o,i){
+    h+='<div style="border:1px solid #e4edf2;border-radius:9px;margin-bottom:7px;background:#fff;">';
+    h+='<div style="display:flex;align-items:flex-start;gap:9px;padding:9px 11px;cursor:pointer;" onclick="asToggleExpand('+i+')">';
+    h+='<input type="checkbox" id="as-oc-'+i+'" onclick="event.stopPropagation();asToggleOut('+i+')" style="margin-top:3px;accent-color:var(--ocean-mid);">';
+    h+='<div style="flex:1;min-width:0;"><span style="display:inline-block;background:var(--ocean-pale);color:var(--ocean-mid);font-size:10.5px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:6px;">'+aEsc(o.code)+'</span>';
+    h+='<span style="font-size:10.5px;color:var(--text-light);">'+aEsc(o.strand)+' &middot; '+aEsc(o.sub)+'</span>';
+    h+='<div style="font-size:12.5px;color:var(--text-dark);margin-top:3px;line-height:1.45;">'+aEsc(o.stmt)+'</div></div>';
+    h+='<span id="as-oarrow-'+i+'" style="color:#b9c8d0;font-size:13px;margin-top:2px;">&#9662;</span></div>';
+    h+='<div id="as-oinds-'+i+'" style="display:none;border-top:1px solid #eef4f7;background:#f8fbfc;padding:8px 12px 8px 34px;">';
+    o.inds.forEach(function(ind,j){
+      h+='<label style="display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--text-dark);padding:3px 0;cursor:pointer;">';
+      h+='<input type="checkbox" id="as-ic-'+i+'-'+j+'" onclick="asToggleInd('+i+','+j+')" style="margin-top:2px;accent-color:var(--ocean-mid);">';
+      h+='<span><b style="color:var(--ocean-mid);">'+aEsc(ind.code)+'</b> &mdash; '+aEsc(ind.text)+'</span></label>';
+    });
+    h+='</div></div>';
+  });
+  box.innerHTML=h;
+  asUpdateCov();
+}
+function asToggleExpand(i){
+  var d=document.getElementById('as-oinds-'+i), a=document.getElementById('as-oarrow-'+i);
+  if(!d) return; var open=d.style.display!=='none';
+  d.style.display=open?'none':'block'; if(a) a.innerHTML=open?'&#9662;':'&#9652;';
+}
+function asToggleOut(i){
+  var o=asOutcomeCache[i]; if(!o) return;
+  var on=!!document.getElementById('as-oc-'+i).checked;
+  asSel.outs[o.code]=on;
+  o.inds.forEach(function(ind,j){
+    asSel.inds[ind.code]=on;
+    var cb=document.getElementById('as-ic-'+i+'-'+j); if(cb) cb.checked=on;
+  });
+  asUpdateCov();
+}
+function asToggleInd(i,j){
+  var o=asOutcomeCache[i]; if(!o) return;
+  var ind=o.inds[j]; var cb=document.getElementById('as-ic-'+i+'-'+j);
+  asSel.inds[ind.code]=!!(cb&&cb.checked);
+  var any=o.inds.some(function(x){return asSel.inds[x.code];});
+  asSel.outs[o.code]=any;
+  var oc=document.getElementById('as-oc-'+i); if(oc) oc.checked=any;
+  asUpdateCov();
+}
+function asSelectedOutcomes(){
+  return asOutcomeCache.filter(function(o){return asSel.outs[o.code];}).map(function(o){
+    return {code:o.code,stmt:o.stmt,inds:o.inds.filter(function(x){return asSel.inds[x.code];})};
+  }).filter(function(o){return o.inds.length;});
+}
+function asUpdateCov(){
+  var el=document.getElementById('as-cov'); if(!el) return;
+  var sel=asSelectedOutcomes();
+  var nOut=sel.length, nInd=sel.reduce(function(s,o){return s+o.inds.length;},0);
+  el.textContent = nInd ? (nOut+' outcomes, '+nInd+' indicators selected') : '';
+}
+(function(){
+  ['as-grade','as-sub'].forEach(function(id){
+    document.addEventListener('change', function(e){
+      if(e.target && e.target.id===id){
+        asSel={outs:{},inds:{}}; asOutcomeCache=[];
+        var box=document.getElementById('as-curr'); if(box) box.innerHTML='';
+        asUpdateCov();
+      }
+    });
+  });
+})();
 
 async function doAssessment(){
   var key=(document.getElementById('as-key')||{}).value||'';
@@ -3584,6 +3974,12 @@ function renderAssessment(data, el, cfg){
   h+='<ol class="as-qlist">';
   qs.forEach(function(q){
     h+='<li class="as-q"><div class="as-qtext">'+aEsc(q.question)+' <span class="as-marks">['+aEsc(q.marks)+']</span></div>';
+    var badges='';
+    if(q.difficulty) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:'+(q.difficulty==='Hard'?'#fce8e4;color:#bf3b2c':(q.difficulty==='Easy'?'#e2f2e5;color:#2f7d4f':'#fdf3dc;color:#b07d12'))+';">'+aEsc(q.difficulty)+'</span>';
+    if(q.bloom) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:#ece6f7;color:#6b4fa8;">'+aEsc(q.bloom)+'</span>';
+    if(q.outcomeCode) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:var(--ocean-pale);color:var(--ocean-mid);">'+aEsc(q.outcomeCode)+'</span>';
+    if(q.indicatorCode) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:#eef2f4;color:#4a6370;">'+aEsc(q.indicatorCode)+'</span>';
+    if(badges) h+='<div style="margin:4px 0 2px;">'+badges+'</div>';
     if(q.options&&q.options.length){ h+='<ul class="as-opts">'+q.options.map(function(o){return '<li>'+aEsc(o)+'</li>';}).join('')+'</ul>'; }
     if(q.parts&&q.parts.length){ h+='<ul class="as-opts">'+q.parts.map(function(p){return '<li>'+aEsc(p.q||p.question||'')+' <span class="as-marks">['+aEsc(p.marks)+']</span></li>';}).join('')+'</ul>'; }
     h+='</li>';
@@ -3594,8 +3990,48 @@ function renderAssessment(data, el, cfg){
     var ans=q.answer||''; if(q.parts&&q.parts.length){ ans=q.parts.map(function(p){return (p.q||'')+' → '+(p.answer||'');}).join('; '); }
     h+='<tr><td>'+aEsc(q.num)+'</td><td>'+aEsc(ans)+'</td><td>'+aEsc(q.marks)+'</td><td>'+aEsc(q.objective||'')+'</td></tr>';
   });
-  h+='</tbody></table>'+(data.totalMarks?('<div class="as-total">Total: '+aEsc(data.totalMarks)+' marks</div>'):'')+'</div></div>';
+  h+='</tbody></table>'+(data.totalMarks?('<div class="as-total">Total: '+aEsc(data.totalMarks)+' marks</div>'):'')+'</div>';
+  h+=asBuildMappingHTML(qs);
+  h+='</div>';
   el.innerHTML=h;
+}
+
+/* ---- Outcome mapping & coverage report (from generated questions vs selected indicators) ---- */
+function asBuildMappingHTML(qs){
+  var sel=(typeof asSelectedOutcomes==='function')?asSelectedOutcomes():[];
+  if(!sel.length) return '';
+  var byOut={};
+  sel.forEach(function(o){ byOut[o.code]={code:o.code,stmt:o.stmt,total:o.inds.length,hit:{},qnums:[],marks:0,blooms:{}}; });
+  qs.forEach(function(q){
+    var m=byOut[q.outcomeCode]; if(!m) return;
+    if(q.indicatorCode) m.hit[q.indicatorCode]=true;
+    m.qnums.push(q.num); m.marks+=(parseFloat(q.marks)||0);
+    if(q.bloom) m.blooms[q.bloom]=true;
+  });
+  var warns=[]; var bloomAll={};
+  qs.forEach(function(q){ if(q.bloom) bloomAll[q.bloom]=true; });
+  var h='<div style="margin-top:18px;border-top:2px solid var(--ocean-pale);padding-top:14px;">';
+  h+='<div style="font-size:13px;font-weight:800;color:var(--ocean-deep);margin-bottom:10px;">Outcome Mapping &amp; Coverage</div>';
+  sel.forEach(function(o){
+    var m=byOut[o.code]; var nHit=Object.keys(m.hit).length;
+    var pct=m.total?Math.round(nHit/m.total*100):0;
+    var col=pct===0?'#c9d3d8':(pct<50?'#e8624a':(pct<90?'#c8852a':'#1f9e5a'));
+    if(pct===0) warns.push('Outcome '+o.code+' has no questions mapped to it.');
+    h+='<div style="margin-bottom:10px;">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:3px;">';
+    h+='<span><b style="color:var(--ocean-mid);">'+aEsc(o.code)+'</b> <span style="color:var(--text-mid);">Qs: '+(m.qnums.join(', ')||'&mdash;')+' &middot; '+m.marks+' marks'+(Object.keys(m.blooms).length?(' &middot; '+Object.keys(m.blooms).join(', ')):'')+'</span></span>';
+    h+='<b>'+pct+'%</b></div>';
+    h+='<div style="height:8px;border-radius:6px;background:#eef2f4;overflow:hidden;"><div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:6px;"></div></div>';
+    h+='</div>';
+  });
+  if(!bloomAll['Evaluate']&&!bloomAll['Create']) warns.push('No higher-order (Evaluate/Create) questions generated.');
+  if(warns.length){
+    h+='<div style="margin-top:10px;background:#fdf6e6;border:1px solid #eeddb3;border-radius:9px;padding:9px 12px;">';
+    warns.forEach(function(w){ h+='<div style="font-size:12px;color:#8a6a1c;">&#9888; '+aEsc(w)+'</div>'; });
+    h+='</div>';
+  }
+  h+='</div>';
+  return h;
 }
 function renderRubric(data, el, cfg){
   var h='<div class="as-card"><div class="as-actions"><button class="btn btn-sm btn-navy" onclick="assessmentDocx()">&#8681; Word</button><button class="btn btn-sm btn-orange" onclick="assessmentPrintPdf()">&#8681; PDF</button></div>';
@@ -3645,7 +4081,8 @@ async function assessmentDocx(){
     (d.questions||[]).forEach(function(q){
       var ans=q.answer||''; if(q.parts) ans=q.parts.map(function(p){return (p.q||'')+' → '+(p.answer||'');}).join('; ');
       kids.push(P([R(q.num+'. ',{bold:true}),R(ans),R('  ['+q.marks+' marks]',{italics:true,color:'555555'})],{after:20}));
-      if(q.objective) kids.push(P(R('     Objective: '+q.objective,{italics:true,size:18,color:'777777'}),{after:60}));
+      var mapStr=(q.outcomeCode?('['+q.outcomeCode+(q.indicatorCode?(' / '+q.indicatorCode):'')+'] '):'');
+      if(q.objective||mapStr) kids.push(P(R('     '+mapStr+'Objective: '+(q.objective||''),{italics:true,size:18,color:'777777'}),{after:60}));
     });
     if(d.totalMarks) kids.push(P(R('Total: '+d.totalMarks+' marks',{bold:true}),{after:0}));
   }
@@ -3745,383 +4182,5 @@ async function generateLessonAssessment(){
   }
 }
 </script>
-
-<script>
-/* ================= SLIDE DECK TOOL ================= */
-var slCurrentSub = "Mathematics";
-var slDeck = null;       // parsed deck JSON from API
-var slDeckTheme = "light";
-
-var SL_THEMES = [
-  {id:"light",    name:"Light",      desc:"Clean white",          bg:"FFFFFF", title:"1E2620", text:"3A443D", accent:"145C50", prevBg:"#f5f4ef", prevTx:"#1E2620"},
-  {id:"dark",     name:"Dark",       desc:"Sleek dark",           bg:"191E1B", title:"FFFFFF", text:"C8D0CA", accent:"56C4A8", prevBg:"#191E1B", prevTx:"#fff"},
-  {id:"chalk",    name:"Chalkboard", desc:"Schoolroom vibe",      bg:"26332E", title:"F1EFE6", text:"C9D4CC", accent:"8FB3A3", prevBg:"#26332E", prevTx:"#F1EFE6"},
-  {id:"lagoon",   name:"Lagoon",     desc:"Turquoise island blue",bg:"0E7490", title:"FFFFFF", text:"D5F6FD", accent:"FDE68A", prevBg:"#0E7490", prevTx:"#fff"},
-  {id:"coral",    name:"Coral",      desc:"Warm sunset",          bg:"F97362", title:"5C1D10", text:"6E2A18", accent:"FFF7ED", prevBg:"#F97362", prevTx:"#5C1D10"},
-  {id:"sandbank", name:"Sandbank",   desc:"Soft sand neutrals",   bg:"EFE7D6", title:"5C4F35", text:"6E6046", accent:"B5673B", prevBg:"#EFE7D6", prevTx:"#5C4F35"},
-  {id:"monsoon",  name:"Monsoon",    desc:"Rain-cloud blues",     bg:"1E293B", title:"E2E8F0", text:"AEB9C8", accent:"7DD3FC", prevBg:"#1E293B", prevTx:"#E2E8F0"},
-  {id:"daydream", name:"Daydream",   desc:"Pastel clouds",        bg:"E3DFF5", title:"4C4368", text:"5D5480", accent:"B45309", prevBg:"#E3DFF5", prevTx:"#4C4368"},
-  {id:"palm",     name:"Palm",       desc:"Tropical greens",      bg:"14532D", title:"ECFCCB", text:"C4E5A8", accent:"FACC15", prevBg:"#14532D", prevTx:"#ECFCCB"},
-  {id:"boduberu", name:"Boduberu",   desc:"Bold festive red",     bg:"B91C1C", title:"FEF3C7", text:"FDE0C0", accent:"FDE047", prevBg:"#B91C1C", prevTx:"#FEF3C7"}
-];
-
-function slInit(){
-  // theme grid
-  var grid = document.getElementById("sl-themes");
-  if(!grid || grid.children.length) return;
-  SL_THEMES.forEach(function(t){
-    var d = document.createElement("div");
-    d.style.cssText = "height:70px;border-radius:10px;border:2px solid "+(t.id===slDeckTheme?"#0c8a86":"#dde2e8")+";cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 10px;background:"+t.prevBg+";color:"+t.prevTx+";";
-    d.innerHTML = "<div style='font-weight:800;font-size:13px;'>"+t.name+"</div><div style='font-size:10px;opacity:.75;'>"+t.desc+"</div>";
-    d.setAttribute("data-theme", t.id);
-    d.onclick = function(){
-      slDeckTheme = t.id;
-      Array.prototype.forEach.call(grid.children, function(c){ c.style.borderColor = "#dde2e8"; });
-      d.style.borderColor = "#0c8a86";
-      gaTrack("slides_theme", {theme:t.id});
-    };
-    grid.appendChild(d);
-  });
-  // subject stabs
-  document.querySelectorAll("#sl-stabs .stab").forEach(function(st){
-    st.addEventListener("click", function(){
-      document.querySelectorAll("#sl-stabs .stab").forEach(function(s){ s.classList.remove("on"); });
-      this.classList.add("on");
-      slCurrentSub = this.getAttribute("data-slsub");
-      slUpdateOutcomes();
-    });
-  });
-  document.getElementById("sl-grade").addEventListener("change", slUpdateOutcomes);
-  document.getElementById("sl-outcome").addEventListener("change", slUpdateIndicators);
-  ["sl-count","sl-lang"].forEach(function(id){ document.getElementById(id).addEventListener("change", slUpdateTokens); });
-  ["sl-extra","sl-topic"].forEach(function(id){ document.getElementById(id).addEventListener("input", slUpdateTokens); });
-  document.getElementById("sl-indicators").addEventListener("change", slUpdateTokens);
-  slUpdateOutcomes();
-}
-
-function slUpdateOutcomes(){
-  var grade = document.getElementById("sl-grade").value;
-  var data = getSyl(grade, slCurrentSub);
-  var sel = document.getElementById("sl-outcome");
-  var stmt = document.getElementById("sl-outstmt");
-  var ind = document.getElementById("sl-indicators");
-  stmt.value = ""; ind.innerHTML = "<option disabled>Select an Outcome above</option>";
-  if(!data.length){
-    sel.innerHTML = "<option value=''>&mdash; no syllabus data; just enter a Topic below &mdash;</option>";
-    slUpdateTokens();
-    return;
-  }
-  // unique outcomes grouped by strand via optgroups
-  var seen = {}, groups = {};
-  data.forEach(function(d){
-    if(seen[d.out_code]) return;
-    seen[d.out_code] = d;
-    var g = d.strand + (d.substrand ? " \u00b7 " + d.substrand : "");
-    (groups[g] = groups[g] || []).push(d);
-  });
-  var htmlOpts = "<option value=''>-- Select outcome ("+Object.keys(seen).length+") --</option>";
-  Object.keys(groups).forEach(function(g){
-    htmlOpts += "<optgroup label=\"" + g.replace(/"/g,"&quot;") + "\">";
-    groups[g].forEach(function(d){
-      var short = d.out_stmt.length > 80 ? d.out_stmt.slice(0,80) + "\u2026" : d.out_stmt;
-      htmlOpts += "<option value=\"" + d.out_code.replace(/"/g,"&quot;") + "\">" + d.out_code + " \u2014 " + short.replace(/</g,"&lt;") + "</option>";
-    });
-    htmlOpts += "</optgroup>";
-  });
-  sel.innerHTML = htmlOpts;
-  slUpdateTokens();
-}
-
-function slUpdateIndicators(){
-  var grade = document.getElementById("sl-grade").value;
-  var code = document.getElementById("sl-outcome").value;
-  var stmt = document.getElementById("sl-outstmt");
-  var ind = document.getElementById("sl-indicators");
-  ind.innerHTML = "";
-  if(!code){ stmt.value=""; ind.innerHTML="<option disabled>Select an Outcome above</option>"; slUpdateTokens(); return; }
-  var rows = SYLLABUS.filter(function(d){ return d.grade===grade && d.subject===slCurrentSub && d.out_code===code; });
-  if(rows.length){
-    stmt.value = rows[0].out_stmt;
-    rows.forEach(function(r){
-      var o = document.createElement("option");
-      o.value = r.ind_code; o.textContent = r.ind_code + " \u2014 " + r.indicator;
-      ind.appendChild(o);
-    });
-  }
-  slUpdateTokens();
-}
-
-function slSelectedIndicators(){
-  var out = [];
-  var ind = document.getElementById("sl-indicators");
-  for(var i=0;i<ind.options.length;i++){ if(ind.options[i].selected && !ind.options[i].disabled) out.push(ind.options[i]); }
-  return out;
-}
-
-/* Token estimate: ~4 chars/token English, Thaana ~4x output; base prompt ~700; ~170 content + 40 JSON tokens per slide */
-function slEstimateTokens(){
-  var slides = Number(document.getElementById("sl-count").value);
-  var isDv = document.getElementById("sl-lang").value === "dv" || isThaanaSubject(slCurrentSub);
-  var input = 700;
-  input += Math.ceil((document.getElementById("sl-extra").value.length + document.getElementById("sl-topic").value.length) / 4);
-  var stmt = document.getElementById("sl-outstmt").value || "";
-  var chars = stmt.length + 60;
-  var sel = slSelectedIndicators();
-  if(sel.length){ sel.forEach(function(o){ chars += o.textContent.length; }); }
-  else {
-    var ind = document.getElementById("sl-indicators");
-    for(var i=0;i<ind.options.length;i++){ if(!ind.options[i].disabled) chars += ind.options[i].textContent.length; }
-  }
-  input += Math.ceil(chars / 4);
-  var perSlide = 170 * (isDv ? 4 : 1) + 70;
-  var output = slides * perSlide + 120;
-  return {input:input, output:output, total:input+output, slides:slides, isDv:isDv};
-}
-
-function slUpdateTokens(){
-  var box = document.getElementById("sl-tokens");
-  if(!box) return;
-  var e = slEstimateTokens();
-  var fmt = function(n){ return n.toLocaleString("en-US"); };
-  var msg = "&#9889; <b>Estimated tokens: ~" + fmt(e.total) + "</b> &nbsp;(input ~" + fmt(e.input) + " \u00b7 output ~" + fmt(e.output) + ") \u00b7 " + e.slides + " slides \u00b7 \u2248" + fmt(Math.round(e.output/e.slides)) + " output tokens per slide.";
-  if(e.isDv) msg += "<br><span style='color:#a16207;font-weight:700;'>Thaana output costs \u22484\u00d7 more tokens than English.</span>";
-  if(e.output > 6000) msg += "<br><span style='color:#a16207;font-weight:700;'>Large deck \u2014 max_tokens will be raised to 8,000 to avoid truncation.</span>";
-  box.innerHTML = msg;
-}
-
-async function doSlides(){
-  var status = document.getElementById("sl-status");
-  var btn = document.getElementById("sl-btn");
-  var grade = document.getElementById("sl-grade").value;
-  var code = document.getElementById("sl-outcome").value;
-  var stmt = document.getElementById("sl-outstmt").value.trim();
-  var topic = document.getElementById("sl-topic").value.trim();
-  var extra = document.getElementById("sl-extra").value.trim();
-  var isDv = document.getElementById("sl-lang").value === "dv" || isThaanaSubject(slCurrentSub);
-  var e = slEstimateTokens();
-
-  if(!code && !topic){
-    status.innerHTML = "<span style='color:#b4453a;'>Select an Outcome, or type a Topic.</span>";
-    return;
-  }
-
-  var inds = slSelectedIndicators().map(function(o){ return o.textContent; });
-  if(!inds.length){
-    var ind = document.getElementById("sl-indicators");
-    for(var i=0;i<ind.options.length;i++){ if(!ind.options[i].disabled) inds.push(ind.options[i].textContent); }
-  }
-
-  var prompt = "You are an expert Maldivian teacher and presentation designer creating a classroom slide deck aligned to the Maldives National Curriculum.\n\n" +
-    "CONTEXT:\n" +
-    "- Grade: " + grade + "\n" +
-    "- Subject: " + slCurrentSub + "\n" +
-    (code ? "- Outcome (" + code + "): " + stmt + "\n" : "") +
-    (inds.length ? "- Indicators to cover:\n" + inds.map(function(s){ return "  \u2022 " + s; }).join("\n") + "\n" : "") +
-    (topic ? "- Topic / focus: " + topic + "\n" : "") +
-    (extra ? "- Additional instructions: " + extra + "\n" : "") +
-    "- Number of slides: exactly " + e.slides + " (excluding the title slide, which is added automatically)\n" +
-    "- Language: " + (isDv ? "Dhivehi written in Thaana script (natural, idiomatic, age-appropriate)" : "English (simple, age-appropriate for the grade)") + "\n\n" +
-    "Create an engaging, teachable deck: concept slides building from simple to complex, at least one activity slide and one quick-check/discussion slide, ending with a recap. Content must stay faithful to the outcome and indicators \u2014 do not invent curriculum content beyond them.\n\n" +
-    "For EACH slide also choose:\n" +
-    "- layout: one of \"content\" (bullets + picture), \"twocol\" (two labelled columns, e.g. compare/contrast), \"bigfact\" (one large statement or number as the hero), \"activity\" (numbered steps for a class activity), \"recap\" (summary)\n" +
-    "- keyPoint: ONE short memorable sentence for a highlight box (or empty string)\n" +
-    "- imagePrompt: a short ENGLISH description (6-12 words) of a simple, classroom-appropriate, child-friendly illustration for this slide, e.g. \"colourful fraction bars comparing one half and one quarter, flat illustration\". Always in English even for Dhivehi decks. Never include people\u0027s faces or text in the image description.\n\n" +
-    "Respond with ONLY valid JSON, no markdown fences, exactly this shape:\n" +
-    "{\"deckTitle\":\"...\",\"slides\":[{\"layout\":\"content\",\"title\":\"...\",\"bullets\":[\"...\"],\"col1Title\":\"\",\"col1\":[],\"col2Title\":\"\",\"col2\":[],\"keyPoint\":\"...\",\"imagePrompt\":\"...\",\"notes\":\"one short teacher note\"}]}\n" +
-    "Rules: content/activity/recap slides use bullets (3-5, short). twocol slides use col1Title/col1/col2Title/col2 (2-4 items each) and empty bullets. bigfact slides put the hero statement as the ONLY bullet.";
-
-  var maxTok = Math.min(8000, Math.max(3000, e.output + 800));
-  var key = localStorage.getItem("sas_key") || "";
-
-  btn.disabled = true;
-  status.innerHTML = "\u23f3 Generating " + e.slides + " slides\u2026 (~" + e.total.toLocaleString() + " tokens)";
-  document.getElementById("sl-result").style.display = "none";
-  gaTrack("slides_generate", {grade:grade, subject:slCurrentSub, outcome:code||"topic", slides:e.slides, lang:isDv?"dv":"en", theme:slDeckTheme});
-
-  try {
-    var deck = await callAPI(key, prompt, maxTok);
-    if(!deck || !deck.slides || !deck.slides.length) throw new Error("The AI response did not contain slides. Please try again.");
-    slDeck = deck;
-    slRenderPreview(deck, isDv);
-    status.innerHTML = "\u2705 Done \u2014 " + deck.slides.length + " slides ready.";
-    gaTrack("slides_success", {slides:deck.slides.length});
-    if(document.getElementById("sl-images").checked){
-      status.innerHTML = "\u2705 " + deck.slides.length + " slides ready \u00b7 \ud83c\udfa8 fetching pictures\u2026";
-      await slPrefetchImages(deck, status);
-      slRenderPreview(deck, isDv);
-      status.innerHTML = "\u2705 Done \u2014 " + deck.slides.length + " slides ready with pictures.";
-    }
-  } catch(err) {
-    status.innerHTML = "<span style='color:#b4453a;'>\u274c " + (err.message || err) + "</span>";
-    gaTrack("slides_error", {message:String(err.message||err).slice(0,80)});
-  } finally {
-    btn.disabled = false;
-  }
-}
-
-async function slFetchImage(promptText){
-  try {
-    var url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(promptText + ", flat vector illustration, bright colors, educational, no text") + "?width=800&height=600&nologo=true&seed=" + Math.floor(Math.random()*99999);
-    var ctrl = new AbortController();
-    var timer = setTimeout(function(){ ctrl.abort(); }, 25000);
-    var resp = await fetch(url, { signal: ctrl.signal });
-    clearTimeout(timer);
-    if(!resp.ok) return null;
-    var blob = await resp.blob();
-    if(!blob.type || blob.type.indexOf("image") !== 0) return null;
-    return await new Promise(function(res){
-      var r = new FileReader();
-      r.onload = function(){ res(r.result); };
-      r.onerror = function(){ res(null); };
-      r.readAsDataURL(blob);
-    });
-  } catch(e){ return null; }
-}
-
-async function slPrefetchImages(deck, statusEl){
-  var targets = deck.slides.filter(function(s){ return s.imagePrompt && s.layout !== "bigfact"; });
-  var done = 0;
-  await Promise.allSettled(targets.map(async function(s){
-    s._img = await slFetchImage(s.imagePrompt);
-    done++;
-    if(statusEl) statusEl.innerHTML = "\u2705 Slides ready \u00b7 \ud83c\udfa8 pictures " + done + "/" + targets.length + "\u2026";
-  }));
-}
-
-function slRenderPreview(deck, isDv){
-  var t = SL_THEMES.find(function(x){ return x.id===slDeckTheme; }) || SL_THEMES[0];
-  document.getElementById("sl-deck-title").textContent = deck.deckTitle || "Slide Deck";
-  var prev = document.getElementById("sl-preview");
-  prev.innerHTML = "";
-  var dir = isDv ? "rtl" : "ltr";
-  var fam = isDv ? "'Faruma','MV Boli',sans-serif" : "inherit";
-  var ps = dir==="rtl" ? "right" : "left";
-  function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
-  var accentHex = /^[0-9A-Fa-f]{6}$/.test(t.accent) ? "#"+t.accent : t.accent;
-
-  deck.slides.forEach(function(s, i){
-    var layout = s.layout || "content";
-    var hasImg = s._img && layout !== "bigfact";
-    var card = document.createElement("div");
-    card.style.cssText = "border-radius:10px;overflow:hidden;min-height:170px;background:"+t.prevBg+";color:"+t.prevTx+";border:2px solid rgba(0,0,0,.10);direction:"+dir+";font-family:"+fam+";display:flex;flex-direction:column;";
-
-    var hdr = "<div style='background:"+accentHex+";padding:9px 14px 8px;display:flex;justify-content:space-between;align-items:center;'>" +
-      "<span style='font-weight:900;font-size:13.5px;color:#fff;flex:1;'>"+esc(s.title)+"</span>" +
-      "<span style='font-size:10px;color:rgba(255,255,255,.75);white-space:nowrap;padding-"+ps+":8px;'>Slide "+(i+1)+"</span></div>";
-
-    var body = "<div style='flex:1;display:flex;gap:10px;padding:10px 14px 8px;'>";
-    if(layout === "bigfact"){
-      var hero = (s.bullets && s.bullets[0]) || s.keyPoint || "";
-      body += "<div style='flex:1;display:flex;align-items:center;justify-content:center;text-align:center;'><span style='font-size:22px;font-weight:900;line-height:1.25;'>"+esc(hero)+"</span></div>";
-    } else if(layout === "twocol"){
-      var c1 = s.col1||[], c2 = s.col2||[];
-      var colStyle = "flex:1;font-size:11.5px;line-height:1.5;";
-      body += "<div style='"+colStyle+"'><div style='font-weight:800;font-size:12px;margin-bottom:4px;opacity:.8;'>"+esc(s.col1Title||"")+"</div><ul style='margin:0;padding-"+ps+":14px;'>"+c1.map(function(b){ return "<li>"+esc(b)+"</li>"; }).join("")+"</ul></div>";
-      body += "<div style='width:1px;background:rgba(128,128,128,.18);margin:0 4px;'></div>";
-      body += "<div style='"+colStyle+"'><div style='font-weight:800;font-size:12px;margin-bottom:4px;opacity:.8;'>"+esc(s.col2Title||"")+"</div><ul style='margin:0;padding-"+ps+":14px;'>"+c2.map(function(b){ return "<li>"+esc(b)+"</li>"; }).join("")+"</ul></div>";
-    } else {
-      var bullets = layout==="activity"
-        ? (s.bullets||[]).map(function(b,n){ return "<div style='display:flex;gap:5px;margin:3px 0;font-size:12px;'><span style='font-weight:800;min-width:16px;color:"+accentHex+";'>"+(n+1)+".</span><span>"+esc(b)+"</span></div>"; }).join("")
-        : "<ul style='margin:0;padding-"+ps+":16px;'>"+((s.bullets||[]).map(function(b){ return "<li style='font-size:12px;line-height:1.5;margin:2px 0;'>"+esc(b)+"</li>"; }).join(""))+"</ul>";
-      body += "<div style='flex:1;'>" + bullets + "</div>";
-      if(hasImg) body += "<img src='"+s._img+"' style='width:100px;height:80px;object-fit:cover;border-radius:7px;flex-shrink:0;align-self:flex-start;' alt='slide image'>";
-    }
-    body += "</div>";
-
-    var kp = s.keyPoint ? "<div style='margin:0 14px 8px;background:rgba(0,0,0,.10);border-left:3px solid "+accentHex+";border-radius:0 6px 6px 0;padding:6px 10px;font-size:11.5px;font-weight:700;'>"+esc(s.keyPoint)+"</div>" : "";
-    var notes = s.notes ? "<div style='padding:5px 14px 8px;font-size:10px;opacity:.6;border-top:1px dashed rgba(128,128,128,.25);}>\ud83d\udcdd "+esc(s.notes)+"</div>" : "";
-    card.innerHTML = hdr + body + kp + notes;
-    prev.appendChild(card);
-  });
-  document.getElementById("sl-result").style.display = "block";
-}
-
-function downloadSlidesPptx(){
-  if(!slDeck){ return; }
-  var t = SL_THEMES.find(function(x){ return x.id===slDeckTheme; }) || SL_THEMES[0];
-  var isDv = document.getElementById("sl-lang").value === "dv" || isThaanaSubject(slCurrentSub);
-  var grade = document.getElementById("sl-grade").value;
-  var oc = document.getElementById("sl-outcome").value;
-  var pptx = new PptxGenJS();
-  pptx.defineLayout({ name:"WIDE", width:13.33, height:7.5 });
-  pptx.layout = "WIDE";
-  var fontFace = isDv ? "MV Boli" : "Calibri";
-  var bodyAlign = isDv ? "right" : "left";
-  var accentHex = /^[0-9A-Fa-f]{6}$/.test(t.accent) ? t.accent : t.accent.replace("#","");
-  var bgHex = /^[0-9A-Fa-f]{6}$/.test(t.bg) ? t.bg : t.bg.replace("#","");
-  var titleHex = /^[0-9A-Fa-f]{6}$/.test(t.title) ? t.title : t.title.replace("#","");
-  var textHex = /^[0-9A-Fa-f]{6}$/.test(t.text) ? t.text : t.text.replace("#","");
-
-  // ---- Title slide ----
-  var s0 = pptx.addSlide();
-  s0.background = { color: bgHex };
-  s0.addShape(pptx.ShapeType.rect, { x:0, y:0, w:13.33, h:0.18, fill:{color:accentHex} });
-  s0.addShape(pptx.ShapeType.rect, { x:0, y:7.32, w:13.33, h:0.18, fill:{color:accentHex} });
-  s0.addText(slDeck.deckTitle || "Slide Deck", { x:0.8, y:1.8, w:11.73, h:2.0, fontSize:44, bold:true, color:titleHex, align:"center", fontFace:fontFace, rtlMode:isDv, wrap:true });
-  s0.addText(grade + " \u00b7 " + slCurrentSub, { x:0.8, y:4.0, w:11.73, h:0.65, fontSize:22, color:accentHex, align:"center", fontFace:fontFace });
-  if(oc) s0.addText("Outcome: " + oc, { x:0.8, y:4.7, w:11.73, h:0.45, fontSize:14, color:textHex, align:"center" });
-
-  slDeck.slides.forEach(function(sl){
-    var s = pptx.addSlide();
-    s.background = { color: bgHex };
-    var layout = sl.layout || "content";
-    var hasImg = sl._img && layout !== "bigfact";
-    var imgW = 4.5, imgX = 8.3;
-    var textW = hasImg ? 7.4 : 12.1;
-
-    // Accent header band
-    s.addShape(pptx.ShapeType.rect, { x:0, y:0, w:13.33, h:1.2, fill:{color:accentHex} });
-    // Slide number (always LTR, top-right corner inside band)
-    s.addText(String(slDeck.slides.indexOf(sl)+1), { x:12.1, y:0.05, w:1.0, h:0.4, fontSize:11, color:"FFFFFF", align:"right", opacity:0.7 });
-    // Title in band
-    s.addText(String(sl.title||""), { x:0.4, y:0.15, w:11.6, h:0.9, fontSize:28, bold:true, color:"FFFFFF", align:bodyAlign, fontFace:fontFace, rtlMode:isDv, wrap:true });
-
-    if(layout === "bigfact"){
-      var hero = (sl.bullets && sl.bullets[0]) || sl.keyPoint || "";
-      s.addText(String(hero), { x:0.8, y:1.6, w:11.73, h:4.0, fontSize:54, bold:true, color:titleHex, align:"center", fontFace:fontFace, rtlMode:isDv, wrap:true, valign:"middle" });
-    } else if(layout === "twocol"){
-      var col1 = sl.col1||[], col2 = sl.col2||[];
-      s.addText(String(sl.col1Title||""), { x:0.5, y:1.35, w:5.8, h:0.55, fontSize:17, bold:true, color:accentHex, align:bodyAlign, fontFace:fontFace });
-      if(col1.length) s.addText(col1.map(function(b){ return { text:"• " + b, options:{breakLine:true} }; }), { x:0.5, y:1.95, w:5.8, h:4.8, fontSize:17, color:textHex, align:bodyAlign, fontFace:fontFace, rtlMode:isDv, valign:"top" });
-      s.addShape(pptx.ShapeType.rect, { x:6.6, y:1.3, w:0.07, h:5.7, fill:{color:accentHex}, opacity:0.4 });
-      s.addText(String(sl.col2Title||""), { x:6.8, y:1.35, w:5.8, h:0.55, fontSize:17, bold:true, color:accentHex, align:bodyAlign, fontFace:fontFace });
-      if(col2.length) s.addText(col2.map(function(b){ return { text:"• " + b, options:{breakLine:true} }; }), { x:6.8, y:1.95, w:5.8, h:4.8, fontSize:17, color:textHex, align:bodyAlign, fontFace:fontFace, rtlMode:isDv, valign:"top" });
-    } else {
-      // content / activity / recap
-      var items = (sl.bullets||[]).map(function(b, n){
-        if(layout === "activity") return { text:(n+1) + ".  " + b, options:{breakLine:true} };
-        return { text:"• " + b, options:{breakLine:true} };
-      });
-      if(items.length) s.addText(items, { x:0.5, y:1.4, w:textW, h:5.1, fontSize:19, color:textHex, align:bodyAlign, fontFace:fontFace, rtlMode:isDv, valign:"top" });
-      if(hasImg){
-        try {
-          s.addImage({ data: sl._img, x:imgX, y:1.35, w:imgW, h:3.5, rounding:true });
-        } catch(e){}
-      }
-    }
-
-    // keyPoint callout box
-    if(sl.keyPoint){
-      var kpY = hasImg ? 5.1 : 6.35;
-      var kpW = hasImg ? textW : 12.1;
-      s.addShape(pptx.ShapeType.roundRect, { x:0.5, y:kpY, w:kpW, h:0.75, fill:{color:accentHex}, line:{color:accentHex}, rectRadius:0.12, opacity:0.18 });
-      s.addText("\u2605  " + String(sl.keyPoint), { x:0.65, y:kpY+0.04, w:kpW-0.3, h:0.67, fontSize:15, bold:true, color:titleHex, align:bodyAlign, fontFace:fontFace, rtlMode:isDv });
-    }
-
-    // Footer: grade · subject + slide number
-    s.addText(grade + "  \u00b7  " + slCurrentSub, { x:0.4, y:7.15, w:9, h:0.28, fontSize:10, color:textHex, align:bodyAlign, opacity:0.55 });
-    s.addText(String(slDeck.slides.indexOf(sl)+1) + " / " + slDeck.slides.length, { x:11.0, y:7.15, w:2.2, h:0.28, fontSize:10, color:textHex, align:"right", opacity:0.55 });
-
-    if(sl.notes) s.addNotes(String(sl.notes));
-  });
-
-  var fname = (slDeck.deckTitle || "slide-deck").replace(/[^\w\u0780-\u07BF \-]/g,"").trim().slice(0,60) || "slide-deck";
-  pptx.writeFile({ fileName: fname + ".pptx" });
-  gaTrack("slides_download", {slides:slDeck.slides.length, theme:slDeckTheme});
-}
-
-document.addEventListener("DOMContentLoaded", slInit);
-</script>
-
 </body>
 </html>
