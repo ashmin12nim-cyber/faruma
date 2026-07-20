@@ -1118,29 +1118,89 @@ body::before {
     <div class="atab" data-atype="exit_ticket">Exit Ticket</div>
     <div class="atab" data-atype="project">Project Brief</div>
   </div>
-  <div class="g3">
-    <div class="field"><label>Grade</label><select id="as-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
-    <div class="field"><label>Subject</label><select id="as-sub"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
-    <div class="field"><label>Bloom's Focus</label><select id="as-blooms"><option value="remember">Remember</option><option value="understand">Understand</option><option value="apply" selected>Apply</option><option value="analyze">Analyze</option><option value="evaluate">Evaluate</option><option value="create">Create</option><option value="mixed">Mixed</option></select></div>
-  </div>
-  <div class="g2">
-    <div class="field"><label>Topic</label><input type="text" id="as-topic" placeholder="e.g. Fractions"></div>
-    <div class="field"><label>No. of Questions</label><input type="number" id="as-num" value="10" min="3" max="30"></div>
+  <!-- National Curriculum highlight panel -->
+  <div style="border:2px solid var(--coral,#e8624a);border-radius:14px;padding:16px 18px;margin:4px 0 16px;background:linear-gradient(135deg,#fff6f3,#fdfcfa);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:14px;font-weight:800;color:var(--coral,#e8624a);letter-spacing:.01em;">&#128218; Select National Curriculum Standard</div>
+        <div style="font-size:11.5px;color:var(--text-mid);margin-top:3px;">Choose grade, subject, outcomes &amp; indicators &mdash; every question is generated from and mapped to these codes.</div>
+      </div>
+      <button class="btn btn-orange" type="button" onclick="asOpenCurr()">Select standards</button>
+    </div>
+    <div id="as-chip" style="margin-top:10px;"></div>
   </div>
 
-  <!-- Curriculum outcome/indicator picker (optional; maps every question to MNC codes) -->
-  <div style="border:1px solid var(--ocean-pale);border-radius:12px;padding:14px 16px;margin:14px 0;background:#fbfdfe;">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--ocean-mid);text-transform:uppercase;letter-spacing:.06em;">Curriculum mapping <span style="font-weight:500;text-transform:none;color:var(--text-mid);">(optional)</span></div>
-        <div style="font-size:11.5px;color:var(--text-mid);margin-top:2px;">Pick outcomes &amp; indicators — every question will be mapped to the codes you select.</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span id="as-cov" style="font-size:11.5px;color:var(--text-mid);"></span>
-        <button class="btn btn-sm btn-navy" type="button" onclick="asLoadOutcomes()">Load outcomes</button>
+  <!-- Classic options (rubric / exit ticket / project) -->
+  <div id="as-classic" style="display:none;">
+    <div class="g3">
+      <div class="field"><label>Grade</label><select id="as-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+      <div class="field"><label>Subject</label><select id="as-sub"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
+      <div class="field"><label>Topic / Objective</label><input type="text" id="as-topic" placeholder="e.g. Fractions"></div>
+    </div>
+    <div class="g2">
+      <div class="field"><label>Bloom's Focus</label><select id="as-blooms"><option value="remember">Remember</option><option value="understand">Understand</option><option value="apply" selected>Apply</option><option value="analyze">Analyze</option><option value="evaluate">Evaluate</option><option value="create">Create</option><option value="mixed">Mixed</option></select></div>
+      <div class="field"><label>No. of Questions</label><input type="number" id="as-num" value="10" min="3" max="30"></div>
+    </div>
+  </div>
+
+  <!-- Blueprint builder (worksheet / quiz) -->
+  <div id="as-builder">
+    <!-- Gallery -->
+    <div id="as-gallery">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-mid);text-transform:uppercase;margin:6px 0 10px;">Start with a template</div>
+      <div id="as-bp-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;"></div>
+      <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-mid);text-transform:uppercase;margin:16px 0 10px;">Or build your own</div>
+      <div onclick="asStartCustom()" style="border:2px dashed #cfdce3;border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;background:#fdfefe;">
+        <div style="width:40px;height:40px;border:2px dashed #cfdce3;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#9db3bf;">+</div>
+        <div><div style="font-size:13.5px;font-weight:700;color:var(--text-dark);">Create Custom Assessment</div>
+        <div style="font-size:12px;color:var(--text-mid);">Start with an empty blueprint and choose your own question sections</div></div>
       </div>
     </div>
-    <div id="as-curr" style="margin-top:10px;max-height:300px;overflow-y:auto;"></div>
+
+    <!-- Configure -->
+    <div id="as-config" style="display:none;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <button class="btn btn-sm" type="button" onclick="asShowGallery()" style="background:#eef2f4;color:var(--text-dark);">&#8592; Templates</button>
+        <span style="font-size:12px;color:var(--text-mid);">Assessment Builder &rsaquo; <b style="color:var(--text-dark);">Configure</b></span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="flex:0 0 190px;min-width:170px;border:1px solid #e4edf2;border-radius:12px;background:#fbfdfe;padding:12px;">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--text-mid);text-transform:uppercase;margin-bottom:8px;">Add questions</div>
+          <div id="as-tiles" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;"></div>
+        </div>
+        <div style="flex:1;min-width:280px;">
+          <div id="as-sections"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border:1px solid #e4edf2;border-radius:12px;background:#fbfdfe;padding:10px 14px;margin-top:8px;">
+            <span id="as-totals" style="font-size:12px;color:var(--text-mid);"></span>
+          </div>
+        </div>
+        <div style="flex:0 0 252px;min-width:230px;border:1px solid #e4edf2;border-radius:12px;background:#fbfdfe;padding:12px;" id="as-tos-wrap">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--text-mid);text-transform:uppercase;margin-bottom:2px;">Table of Specification</div>
+          <div style="font-size:10.5px;color:var(--text-light);margin-bottom:9px;">Weightage of each outcome in this paper</div>
+          <div id="as-tos"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Curriculum modal -->
+  <div id="as-modal" style="display:none;position:fixed;inset:0;background:rgba(10,30,45,.45);z-index:9000;align-items:center;justify-content:center;padding:18px;">
+    <div style="background:#fff;border-radius:16px;max-width:720px;width:100%;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #eef2f4;">
+        <div style="font-size:14px;font-weight:800;color:var(--ocean-deep);">Select curriculum outcomes</div>
+        <button type="button" onclick="asCloseCurr()" style="border:none;background:none;font-size:20px;color:#9db3bf;cursor:pointer;line-height:1;">&#10005;</button>
+      </div>
+      <div style="padding:12px 18px;border-bottom:1px solid #eef2f4;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+        <div class="field" style="margin:0;flex:1;min-width:130px;"><label>Grade</label><select id="as-m-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+        <div class="field" style="margin:0;flex:1;min-width:150px;"><label>Subject</label><select id="as-m-sub"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
+        <button class="btn btn-sm btn-navy" type="button" onclick="asLoadOutcomes()">Load outcomes</button>
+      </div>
+      <div id="as-curr" style="flex:1;overflow-y:auto;padding:12px 18px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid #eef2f4;">
+        <span id="as-cov" style="font-size:12px;color:var(--text-mid);"></span>
+        <button class="btn btn-sm btn-orange" type="button" onclick="asCloseCurr()">Done</button>
+      </div>
+    </div>
   </div>
 
   <button class="btn btn-orange" id="as-btn" onclick="doAssessment()">&#9889; Generate</button>
@@ -1400,6 +1460,7 @@ document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll(".atab").forEach(function(t){t.classList.remove("on");});
       this.classList.add("on");
       currentAtype=this.getAttribute("data-atype");
+      if(typeof asSyncModeUI==='function') asSyncModeUI();
     });
   });
 
@@ -3826,6 +3887,29 @@ function buildAssessmentPrompt(cfg){
     : cfg.atype==='project' ? ('a short project brief plus '+cfg.num+' guiding/assessment questions')
     : (cfg.num+' questions');
   var selOuts = (typeof asSelectedOutcomes==='function') ? asSelectedOutcomes() : [];
+  var currBlockBP = selOuts.length ? ('Assess ONLY the following Maldives National Curriculum outcomes and indicators. Every question MUST be mapped to exactly one of these indicator codes:\n' +
+      selOuts.map(function(o){ return '['+o.code+'] '+o.stmt+'\n'+o.inds.map(function(x){return '   - '+x.code+': '+x.text;}).join('\n'); }).join('\n') + '\n\n') : '';
+  if((cfg.atype==='worksheet'||cfg.atype==='quiz') && typeof asBP!=='undefined' && asBP.length){
+    var secLines = asBP.map(function(s,i){
+      var q=AS_QTYPES[s.type], d=asDistCounts(s), letter=String.fromCharCode(65+i);
+      return 'Section '+letter+' — '+q.label+': '+s.count+' questions, '+s.marks+' mark(s) each. Difficulty mix: '+d.e+' easy (Bloom Remember/Understand), '+d.m+' medium (Apply/Analyse), '+d.h+' hard (Evaluate/Create).';
+    }).join('\n');
+    var tosBlock='';
+    if(selOuts.length && typeof asWeights!=='undefined'){
+      var ptsAll=asBP.reduce(function(s,x){return s+x.count*x.marks;},0);
+      var wLines=selOuts.map(function(o){
+        var w=parseInt(asWeights[o.code],10)||0;
+        return '- '+o.code+': '+w+' of '+ptsAll+' marks ('+(ptsAll?Math.round(w/ptsAll*100):0)+'%)';
+      }).join('\n');
+      tosBlock='Table of Specification — allocate questions and marks across the outcomes to match this mark allocation as closely as the blueprint allows:\n'+wLines+'\n\n';
+    }
+    return 'You are an expert '+cfg.sub+' teacher in the Maldives writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'".\n'+
+      currBlockBP+tosBlock+(currBlockBP?'':ctx)+
+      'Follow this EXACT blueprint — generate every section, in order, with exactly the stated number of questions and marks:\n'+secLines+'\n\n'+
+      'Type rules: "mcq" needs four options A-D with one correct; "multiselect" needs five options A-E with 2-3 correct (state all correct letters in answer); "tf" is a statement answered True or False; "matching" needs a "pairs" array of {"left":"...","right":"..."} (5 pairs unless count differs) — the question field introduces the task; "fitb" uses ___ for the blank; "short" needs a model answer; "scenario" embeds a realistic context; "multipart" uses a "parts" array of {"q":"...","marks":N} sub-questions whose marks sum to the item marks; "essay" needs a model answer outline.\n'+
+      'For EVERY question include: "section" (letter), "num" (sequential across the whole paper), "type", "question", "marks", "difficulty" (Easy/Medium/Hard), "bloom" (Remember/Understand/Apply/Analyse/Evaluate/Create)'+(selOuts.length?', "outcomeCode", "indicatorCode"':'')+', "answer", "objective". Make questions specific to the topic, never generic.\n'+
+      'Return ONLY JSON (no markdown, no commentary): {"title":"'+cfg.title+'","instructions":"...","totalMarks":0,"questions":[{"section":"A","num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"pairs":[],"parts":[],"answer":"B","marks":1,"difficulty":"Medium","bloom":"Apply"'+(selOuts.length?',"outcomeCode":"...","indicatorCode":"..."':'')+',"objective":"..."}]}';
+  }
   if(selOuts.length){
     var currBlock = 'Assess ONLY the following Maldives National Curriculum outcomes and indicators. Every question MUST be mapped to exactly one of these indicator codes:\n' +
       selOuts.map(function(o){ return '['+o.code+'] '+o.stmt+'\n'+o.inds.map(function(x){return '   - '+x.code+': '+x.text;}).join('\n'); }).join('\n') + '\n\n';
@@ -3842,13 +3926,275 @@ function buildAssessmentPrompt(cfg){
     'Return ONLY JSON (no markdown, no commentary): {"title":"'+cfg.title+'","instructions":"...","brief":"","totalMarks":0,"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"B. ...","marks":1,"objective":"..."}]}';
 }
 
+/* ==== Blueprint Assessment Builder ==== */
+var AS_QTYPES = {
+  mcq:        {label:'Multiple Choice',  icon:'&#9776;',  bg:'#e3f0fb', fg:'#2a6db5', min:1},
+  multiselect:{label:'Multi-Select',     icon:'&#9745;',  bg:'#e9e4f9', fg:'#6b4fa8', min:1.5},
+  tf:         {label:'True/False',       icon:'&#8644;',  bg:'#e2f4ea', fg:'#2f7d4f', min:0.5},
+  matching:   {label:'Matching',         icon:'&#8646;',  bg:'#fdeee0', fg:'#b3661f', min:1},
+  fitb:       {label:'Fill in the Blank',icon:'&#9998;',  bg:'#fdf6dc', fg:'#a08312', min:1},
+  short:      {label:'Short Answer',     icon:'&#128269;',bg:'#e0f2f4', fg:'#1f7f8c', min:2},
+  scenario:   {label:'Scenario-Based',   icon:'&#128196;',bg:'#fbe5ec', fg:'#b13b63', min:3},
+  multipart:  {label:'Multi-Part',       icon:'&#9863;',  bg:'#e4e9fb', fg:'#3b53b1', min:4},
+  essay:      {label:'Essay',            icon:'&#128172;',bg:'#f6e3f6', fg:'#8c3b8c', min:10}
+};
+var AS_PRESETS = {
+  foundational:{label:'Foundational', e:70,m:30,h:0},
+  easy:       {label:'Easy',          e:60,m:30,h:10},
+  medium:     {label:'Medium',        e:30,m:50,h:20},
+  hard:       {label:'Hard',          e:10,m:50,h:40},
+  challenging:{label:'Challenging',   e:10,m:30,h:60}
+};
+var AS_BLUEPRINTS = [
+  {name:'Multiple-Choice Quiz', icon:'&#9776;', color:'#5cbf8a', desc:'Quick multiple-choice quiz to check key content.', best:'Quick content checks',
+   secs:[{type:'mcq',count:10,marks:1,preset:'medium'}]},
+  {name:'True/False Quick Check', icon:'&#8644;', color:'#5aa7dd', desc:'Short end-of-lesson check with true/false questions and short answers.', best:'End-of-lesson checks',
+   secs:[{type:'tf',count:5,marks:1,preset:'foundational'},{type:'short',count:3,marks:2,preset:'medium'}]},
+  {name:'Vocabulary & Concepts Practice', icon:'&#8646;', color:'#e69544', desc:'Practice key terms and concepts with matching and fill-in-the-blank questions.', best:'Vocabulary and concept reinforcement',
+   secs:[{type:'matching',count:5,marks:1,preset:'foundational'},{type:'fitb',count:5,marks:1,preset:'easy'}]},
+  {name:'Mixed-Format Knowledge Check', icon:'&#9744;', color:'#5aa7dd', desc:'A mix of multiple choice, multi-select, true/false, and fill-in-the-blank questions.', best:'General mixed skill checks',
+   secs:[{type:'mcq',count:5,marks:1,preset:'medium'},{type:'multiselect',count:5,marks:1,preset:'medium'},{type:'tf',count:5,marks:1,preset:'easy'},{type:'fitb',count:5,marks:1,preset:'medium'}]},
+  {name:'Scenario-Based Application Quiz', icon:'&#128196;', color:'#a06fd6', desc:'Scenario questions with multi-part and short-answer responses to assess knowledge application.', best:'Application and reasoning checks',
+   secs:[{type:'scenario',count:6,marks:2,preset:'challenging'},{type:'multipart',count:4,marks:4,preset:'challenging'},{type:'short',count:5,marks:2,preset:'medium'}]},
+  {name:'Constructed Response Assessment', icon:'&#9998;', color:'#e0607e', desc:'Short-answer questions plus a final essay to assess written explanations.', best:'Writing and explanation-heavy checks',
+   secs:[{type:'short',count:6,marks:2,preset:'medium'},{type:'essay',count:1,marks:8,preset:'challenging'}]},
+  {name:'Unit Test / Diagnostic Test', icon:'&#127891;', color:'#6b7f8c', desc:'Full unit or diagnostic assessment with a Table of Specification: set outcome weightage before generating.', best:'Unit tests, diagnostics, term papers',
+   secs:[{type:'mcq',count:15,marks:1,preset:'medium'},{type:'multiselect',count:5,marks:1,preset:'medium'},{type:'matching',count:5,marks:1,preset:'easy'},{type:'scenario',count:4,marks:2,preset:'challenging'},{type:'short',count:6,marks:2,preset:'medium'}]}
+];
+var asBP = [];   /* current sections: {type,count,marks,preset} */
+
+function asRenderGallery(){
+  var box=document.getElementById('as-bp-cards'); if(!box) return;
+  var h='';
+  AS_BLUEPRINTS.forEach(function(b,i){
+    var items=b.secs.reduce(function(s,x){return s+x.count;},0);
+    var bars=b.secs.map(function(x){var w=Math.max(14,Math.round(x.count/items*100));return '<span style="display:inline-block;height:7px;border-radius:5px;background:'+b.color+';opacity:.85;width:'+w+'px;margin-right:4px;"></span>';}).join('');
+    h+='<div onclick="asApplyBP('+i+')" style="border:1px solid #eee4d9;border-radius:12px;background:#fdf9f4;padding:14px;cursor:pointer;">';
+    h+='<div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;"><span style="width:32px;height:32px;border-radius:9px;background:'+b.color+';color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:15px;">'+b.icon+'</span><b style="font-size:13px;color:var(--text-dark);">'+b.name+'</b></div>';
+    h+='<div style="font-size:11.5px;color:var(--text-mid);line-height:1.5;min-height:33px;">'+b.desc+'</div>';
+    h+='<div style="margin:8px 0 5px;">'+bars+'</div>';
+    h+='<div style="font-size:10.5px;color:var(--text-light);">'+b.secs.length+' section'+(b.secs.length>1?'s':'')+' &middot; '+items+' items</div>';
+    h+='<div style="font-size:10.5px;color:var(--text-mid);margin-top:3px;"><b>Best for:</b> '+b.best+'</div>';
+    h+='</div>';
+  });
+  box.innerHTML=h;
+  var tiles=document.getElementById('as-tiles');
+  if(tiles){
+    var t='';
+    Object.keys(AS_QTYPES).forEach(function(k){
+      var q=AS_QTYPES[k];
+      t+='<div onclick="asAddSection(\''+k+'\')" style="border:1px solid #e4edf2;border-radius:10px;background:'+q.bg+';padding:8px 4px;text-align:center;cursor:pointer;">';
+      t+='<div style="font-size:16px;color:'+q.fg+';">'+q.icon+'</div>';
+      t+='<div style="font-size:9.5px;font-weight:700;color:'+q.fg+';line-height:1.25;margin-top:3px;">'+q.label+'</div></div>';
+    });
+    tiles.innerHTML=t;
+  }
+}
+function asApplyBP(i){
+  asBP = AS_BLUEPRINTS[i].secs.map(function(s){return {type:s.type,count:s.count,marks:s.marks,preset:s.preset};});
+  asShowConfig();
+  gaTrack('assessment_blueprint_select',{blueprint:AS_BLUEPRINTS[i].name});
+}
+function asStartCustom(){ asBP=[]; asShowConfig(); }
+function asShowConfig(){
+  var g=document.getElementById('as-gallery'), cf=document.getElementById('as-config');
+  if(g) g.style.display='none'; if(cf) cf.style.display='block';
+  asRenderSections();
+}
+function asShowGallery(){
+  var g=document.getElementById('as-gallery'), cf=document.getElementById('as-config');
+  if(cf) cf.style.display='none'; if(g) g.style.display='block';
+}
+function asAddSection(type){
+  asBP.push({type:type,count:type==='essay'?1:5,marks:type==='essay'?8:(type==='multipart'?4:(type==='short'||type==='scenario'?2:1)),preset:type==='essay'?'stretch':'balanced'});
+  asRenderSections();
+}
+function asRemoveSection(i){ asBP.splice(i,1); asRenderSections(); }
+function asMoveSection(i,d){
+  var j=i+d; if(j<0||j>=asBP.length) return;
+  var t=asBP[i]; asBP[i]=asBP[j]; asBP[j]=t; asRenderSections();
+}
+function asSecSet(i,f,v){
+  if(f==='count'||f==='marks'){ v=parseInt(v,10)||1; if(v<1)v=1; if(f==='count'&&v>25)v=25; }
+  asBP[i][f]=v; asRenderSections();
+}
+function asDistCounts(sec){
+  var p=AS_PRESETS[sec.preset]||AS_PRESETS.medium;
+  var e=Math.round(sec.count*p.e/100), h=Math.round(sec.count*p.h/100);
+  var m=sec.count-e-h; if(m<0){m=0;}
+  return {e:e,m:m,h:h};
+}
+function asRenderSections(){
+  var box=document.getElementById('as-sections'); if(!box) return;
+  if(!asBP.length){
+    box.innerHTML='<div style="border:2px dashed #cfdce3;border-radius:12px;padding:26px;text-align:center;font-size:12.5px;color:var(--text-mid);">No sections yet &mdash; click a question type on the left to add one.</div>';
+  } else {
+    var h='';
+    asBP.forEach(function(s,i){
+      var q=AS_QTYPES[s.type], d=asDistCounts(s), letter=String.fromCharCode(65+i);
+      var tot=s.count*s.marks, mins=Math.ceil(s.count*q.min);
+      var pw=function(n){return s.count?Math.round(n/s.count*100):0;};
+      h+='<div style="border:1px solid #e4edf2;border-radius:12px;background:#fff;padding:12px 14px;margin-bottom:9px;">';
+      h+='<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">';
+      h+='<span style="width:28px;height:28px;border-radius:8px;background:'+q.bg+';color:'+q.fg+';display:inline-flex;align-items:center;justify-content:center;font-size:13px;">'+q.icon+'</span>';
+      h+='<b style="font-size:13px;color:var(--text-dark);">Section '+letter+': '+q.label+'</b>';
+      h+='<span style="font-size:11px;color:var(--text-mid);">'+tot+' pts &middot; ~'+mins+' min</span>';
+      h+='<span style="flex:1;"></span>';
+      h+='<button type="button" onclick="asMoveSection('+i+',-1)" style="border:none;background:#eef2f4;border-radius:6px;width:24px;height:24px;cursor:pointer;color:#5a7181;">&#9650;</button>';
+      h+='<button type="button" onclick="asMoveSection('+i+',1)" style="border:none;background:#eef2f4;border-radius:6px;width:24px;height:24px;cursor:pointer;color:#5a7181;">&#9660;</button>';
+      h+='<button type="button" onclick="asRemoveSection('+i+')" style="border:none;background:#fce8e4;border-radius:6px;width:24px;height:24px;cursor:pointer;color:#bf3b2c;">&#10005;</button>';
+      h+='</div>';
+      h+='<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:9px;align-items:flex-end;">';
+      h+='<div class="field" style="margin:0;width:92px;"><label style="font-size:10px;">Items</label><input type="number" min="1" max="25" value="'+s.count+'" onchange="asSecSet('+i+',\'count\',this.value)"></div>';
+      h+='<div class="field" style="margin:0;width:92px;"><label style="font-size:10px;">Marks/item</label><input type="number" min="1" value="'+s.marks+'" onchange="asSecSet('+i+',\'marks\',this.value)"></div>';
+      h+='<div class="field" style="margin:0;flex:1;min-width:150px;"><label style="font-size:10px;">Cognitive demand</label><select onchange="asSecSet('+i+',\'preset\',this.value)">';
+      Object.keys(AS_PRESETS).forEach(function(k){
+        var p=AS_PRESETS[k];
+        h+='<option value="'+k+'"'+(s.preset===k?' selected':'')+'>'+p.label+'</option>';
+      });
+      h+='</select></div></div>';
+      h+='<div style="display:flex;align-items:center;gap:8px;margin-top:9px;">';
+      h+='<div style="flex:1;height:8px;border-radius:6px;overflow:hidden;display:flex;background:#eef2f4;">';
+      h+='<span style="width:'+pw(d.e)+'%;background:#3bb273;"></span><span style="width:'+pw(d.m)+'%;background:#efaa2b;"></span><span style="width:'+pw(d.h)+'%;background:#e15b64;"></span></div>';
+      h+='<span style="font-size:10.5px;color:var(--text-mid);white-space:nowrap;">&#9679;<span style="color:#3bb273;">'+d.e+'</span> &#9679;<span style="color:#efaa2b;">'+d.m+'</span> &#9679;<span style="color:#e15b64;">'+d.h+'</span></span>';
+      h+='</div></div>';
+    });
+    box.innerHTML=h;
+  }
+  var items=asBP.reduce(function(s,x){return s+x.count;},0);
+  var pts=asBP.reduce(function(s,x){return s+x.count*x.marks;},0);
+  var mins=asBP.reduce(function(s,x){return s+Math.ceil(x.count*AS_QTYPES[x.type].min);},0);
+  var tt=document.getElementById('as-totals');
+  if(tt) tt.innerHTML='<b>Sections '+asBP.length+'</b> &middot; Items '+items+' &middot; ~Time '+mins+'m &middot; Points '+pts;
+  if(typeof asRenderTOS==='function') asRenderTOS();
+}
+
+/* ==== Table of Specification (outcome mark allocation) ==== */
+var asWeights = {};   /* outcomeCode -> marks allocated */
+
+function asTotalPts(){ return asBP.reduce(function(s,x){return s+x.count*x.marks;},0); }
+function asTotalItems(){ return asBP.reduce(function(s,x){return s+x.count;},0); }
+
+function asEnsureWeights(){
+  var sel=(typeof asSelectedOutcomes==='function')?asSelectedOutcomes():[];
+  var codes=sel.map(function(o){return o.code;});
+  var missing=codes.filter(function(k){return !(k in asWeights);});
+  Object.keys(asWeights).forEach(function(k){ if(codes.indexOf(k)<0) delete asWeights[k]; });
+  if(missing.length===codes.length && codes.length){
+    var pts=asTotalPts(), eq=Math.floor(pts/codes.length);
+    codes.forEach(function(k,i){ asWeights[k]= i===codes.length-1 ? (pts-eq*(codes.length-1)) : eq; });
+  } else if(missing.length){
+    missing.forEach(function(k){ asWeights[k]=0; });
+  }
+  return sel;
+}
+function asWeightTotal(){
+  return Object.keys(asWeights).reduce(function(s,k){return s+(parseInt(asWeights[k],10)||0);},0);
+}
+function asBumpWeight(code, d){
+  var v=(parseInt(asWeights[code],10)||0)+d;
+  if(v<0) v=0;
+  asWeights[code]=v;
+  asRenderTOS();
+}
+function asBalanceWeights(){
+  var codes=Object.keys(asWeights);
+  if(!codes.length) return;
+  var pts=asTotalPts(), eq=Math.floor(pts/codes.length);
+  codes.forEach(function(k,i){ asWeights[k]= i===codes.length-1 ? (pts-eq*(codes.length-1)) : eq; });
+  asRenderTOS();
+}
+function asRenderTOS(){
+  var box=document.getElementById('as-tos'); if(!box) return;
+  var sel=asEnsureWeights();
+  if(!sel.length){
+    box.innerHTML='<div style="border:2px dashed #f0d9d2;border-radius:10px;padding:14px 10px;text-align:center;font-size:11px;color:var(--text-mid);line-height:1.6;">Select National Curriculum standards to allocate marks per outcome.</div>';
+    return;
+  }
+  var pts=asTotalPts(), tot=asWeightTotal();
+  var h='';
+  sel.forEach(function(o){
+    var w=parseInt(asWeights[o.code],10)||0;
+    var pct=pts?Math.round(w/pts*100):0;
+    var esc=o.code.replace(/'/g,"\\'");
+    h+='<div style="margin-bottom:12px;">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">';
+    h+='<b style="font-size:11px;color:var(--ocean-mid);">'+aEsc(o.code)+'</b>';
+    h+='<span style="display:inline-flex;align-items:center;gap:6px;">';
+    h+='<button type="button" onclick="asBumpWeight(\''+esc+'\',-1)" style="border:none;background:#eef2f4;border-radius:6px;width:22px;height:22px;font-size:13px;font-weight:800;color:#4a6370;cursor:pointer;line-height:1;">&minus;</button>';
+    h+='<b style="font-size:12px;color:var(--text-dark);min-width:24px;text-align:center;">'+w+'</b>';
+    h+='<button type="button" onclick="asBumpWeight(\''+esc+'\',1)" style="border:none;background:var(--ocean-pale);border-radius:6px;width:22px;height:22px;font-size:13px;font-weight:800;color:var(--ocean-mid);cursor:pointer;line-height:1;">+</button>';
+    h+='</span></div>';
+    h+='<div title="'+aEsc(o.stmt).replace(/"/g,'&quot;')+'" style="font-size:10px;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;">'+aEsc(o.stmt)+'</div>';
+    h+='<div style="display:flex;align-items:center;gap:6px;">';
+    h+='<div style="flex:1;height:7px;border-radius:5px;background:#f0e4df;overflow:hidden;"><div style="height:100%;width:'+Math.min(100,pct)+'%;background:var(--coral,#e8624a);border-radius:5px;transition:width .25s;"></div></div>';
+    h+='<span style="font-size:10px;color:var(--text-mid);min-width:52px;text-align:right;">'+pct+'% &middot; '+w+' mk</span>';
+    h+='</div></div>';
+  });
+  var ok = tot===pts && pts>0;
+  h+='<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #eee4dd;padding-top:8px;margin-top:2px;">';
+  h+='<span style="font-size:11px;font-weight:800;color:'+(ok?'#2f7d4f':'#bf3b2c')+';">Allocated: '+tot+' / '+pts+' marks'+(ok?' &#10003;':'')+'</span>';
+  h+='<button type="button" onclick="asBalanceWeights()" style="border:none;background:#eef2f4;border-radius:7px;padding:4px 9px;font-size:10.5px;font-weight:700;color:#4a6370;cursor:pointer;">Balance</button></div>';
+  if(!ok) h+='<div style="font-size:10px;color:#bf3b2c;margin-top:4px;">Allocated marks must equal the paper total before generating.</div>';
+  box.innerHTML=h;
+}
+
+/* Modal */
+function asOpenCurr(){
+  var m=document.getElementById('as-modal'); if(!m) return;
+  asSyncModalSel();
+  m.style.display='flex';
+  if(!asOutcomeCache.length) asLoadOutcomes();
+}
+function asCloseCurr(){
+  var m=document.getElementById('as-modal'); if(m) m.style.display='none';
+  var mg=document.getElementById('as-m-grade'), ms=document.getElementById('as-m-sub');
+  var g=document.getElementById('as-grade'), s=document.getElementById('as-sub');
+  if(mg&&g) g.value=mg.value; if(ms&&s) s.value=ms.value;
+  asUpdateChip();
+  if(typeof asRenderTOS==='function') asRenderTOS();
+}
+function asSyncModalSel(){
+  var g=document.getElementById('as-grade'), s=document.getElementById('as-sub');
+  var mg=document.getElementById('as-m-grade'), ms=document.getElementById('as-m-sub');
+  if(g&&mg) mg.value=g.value; if(s&&ms) ms.value=s.value;
+}
+function asUpdateChip(){
+  var el=document.getElementById('as-chip'); if(!el) return;
+  var sel=(typeof asSelectedOutcomes==='function')?asSelectedOutcomes():[];
+  if(!sel.length){ el.innerHTML='<span style="font-size:11.5px;color:var(--text-light);">No outcomes selected &mdash; questions will be topic-based.</span>'; return; }
+  var nInd=sel.reduce(function(s,o){return s+o.inds.length;},0);
+  var mg=document.getElementById('as-m-grade'), ms=document.getElementById('as-m-sub');
+  var gctx=(ms&&ms.value?ms.value:'')+(mg&&mg.value?(' &middot; '+mg.value):'');
+  el.innerHTML='<span style="display:inline-flex;align-items:center;gap:7px;background:var(--ocean-pale);color:var(--ocean-mid);font-size:11.5px;font-weight:700;border-radius:20px;padding:4px 11px;max-width:100%;flex-wrap:wrap;">'+
+    (gctx?('<span style="font-weight:800;">'+gctx+'</span> &mdash; '):'')+
+    sel.map(function(o){return o.code;}).join(', ')+' &middot; '+nInd+' indicators'+
+    '<span onclick="asClearCurr()" style="cursor:pointer;font-weight:800;">&#10005;</span></span>';
+}
+function asClearCurr(){
+  asSel={outs:{},inds:{}};
+  var box=document.getElementById('as-curr'); if(box) box.innerHTML='';
+  asOutcomeCache=[];
+  asUpdateCov(); asUpdateChip();
+}
+
+function asSyncModeUI(){
+  var builder=document.getElementById('as-builder'), classic=document.getElementById('as-classic');
+  var isBP=(currentAtype==='worksheet'||currentAtype==='quiz');
+  if(builder) builder.style.display=isBP?'block':'none';
+  if(classic) classic.style.display=isBP?'none':'grid';
+}
+setTimeout(function(){
+  try{ asRenderGallery(); asUpdateChip(); asSyncModeUI(); }catch(e){}
+},0);
+
 /* ---- Curriculum outcome/indicator picker (Assessment tab) ---- */
 var asSel = { outs:{}, inds:{} };   /* outs[code]=true, inds[indCode]=true */
 var asOutcomeCache = [];            /* grouped outcomes for current grade/subject */
 
 function asLoadOutcomes(){
-  var grade=(document.getElementById('as-grade')||{}).value||'';
-  var sub=(document.getElementById('as-sub')||{}).value||'';
+  var grade=(document.getElementById('as-m-grade')||document.getElementById('as-grade')||{}).value||'';
+  var sub=(document.getElementById('as-m-sub')||document.getElementById('as-sub')||{}).value||'';
   var box=document.getElementById('as-curr'); if(!box) return;
   asSel={outs:{},inds:{}}; asOutcomeCache=[];
   var rows=(typeof getSyl==='function'?(getSyl(grade,sub)||[]):[]);
@@ -3914,6 +4260,8 @@ function asUpdateCov(){
   var sel=asSelectedOutcomes();
   var nOut=sel.length, nInd=sel.reduce(function(s,o){return s+o.inds.length;},0);
   el.textContent = nInd ? (nOut+' outcomes, '+nInd+' indicators selected') : '';
+  if(typeof asUpdateChip==='function') asUpdateChip();
+  if(typeof asRenderTOS==='function') asRenderTOS();
 }
 (function(){
   ['as-grade','as-sub'].forEach(function(id){
@@ -3935,7 +4283,19 @@ async function doAssessment(){
   var topic=(document.getElementById('as-topic')||{}).value||'';
   var num=parseInt((document.getElementById('as-num')||{}).value,10)||10;
   var atype=(typeof currentAtype!=='undefined'&&currentAtype)||'worksheet';
-  if(!topic){ alert('Please enter a topic.'); return; }
+  var isBPmode=(atype==='worksheet'||atype==='quiz');
+  if(isBPmode){
+    var selForRun=(typeof asSelectedOutcomes==='function')?asSelectedOutcomes():[];
+    if(!selForRun.length){ alert('Select National Curriculum standards first (outcomes and indicators).'); if(typeof asOpenCurr==='function') asOpenCurr(); return; }
+    if(typeof asBP!=='undefined' && !asBP.length){ alert('Add at least one question section — pick a template or click a question type.'); return; }
+    if(typeof asWeightTotal==='function' && typeof asTotalPts==='function' && asWeightTotal()!==asTotalPts()){ alert('Table of Specification: allocated marks ('+asWeightTotal()+') must equal the paper total ('+asTotalPts()+'). Use +/&minus; or Balance to fix.'); return; }
+    var mgEl=document.getElementById('as-m-grade'), msEl=document.getElementById('as-m-sub');
+    if(mgEl&&mgEl.value) grade=mgEl.value;
+    if(msEl&&msEl.value) sub=msEl.value;
+    topic = selForRun.map(function(o){return o.code;}).join(', ')+' ('+sub+')';
+  } else {
+    if(!topic){ alert('Please enter a topic.'); return; }
+  }
   var btn=document.getElementById('as-btn'); if(btn) btn.disabled=true;
   var t0=Date.now();
   setStatus('as-status','','Generating '+(ASSESS_TYPE_LABEL[atype]||'assessment')+'&hellip;');
@@ -3944,7 +4304,8 @@ async function doAssessment(){
   try{
     var cfg={grade:grade,sub:sub,topic:topic,num:num,atype:atype,blooms:blooms,title:(topic+' — '+(ASSESS_TYPE_LABEL[atype]||'Assessment'))};
     setProgress('as-prog','as-bar',55);
-    var data=await callAPI(key, buildAssessmentPrompt(cfg), 6000);
+    var asItems=(typeof asBP!=='undefined')?asBP.reduce(function(s,x){return s+x.count;},0):0;
+    var data=await callAPI(key, buildAssessmentPrompt(cfg), asItems>18?8000:6000);
     setProgress('as-prog','as-bar',90);
     lastAssessment={data:data,cfg:cfg};
     renderAssessment(data, document.getElementById('as-out'), cfg);
@@ -3972,16 +4333,43 @@ function renderAssessment(data, el, cfg){
   if(data.brief) h+='<p class="as-brief"><b>Brief:</b> '+aEsc(data.brief)+'</p>';
   if(data.instructions) h+='<p class="as-instr"><b>Instructions:</b> '+aEsc(data.instructions)+'</p>';
   h+='<ol class="as-qlist">';
-  qs.forEach(function(q){
-    h+='<li class="as-q"><div class="as-qtext">'+aEsc(q.question)+' <span class="as-marks">['+aEsc(q.marks)+']</span></div>';
+  var asLastSection=null;
+  qs.forEach(function(q,qi){
+    if(q.section && q.section!==asLastSection){
+      asLastSection=q.section;
+      var tmeta=(typeof AS_QTYPES!=='undefined'&&AS_QTYPES[q.type])?AS_QTYPES[q.type].label:'';
+      h+='<li style="list-style:none;margin:14px 0 6px;"><div style="font-size:12px;font-weight:800;color:var(--ocean-deep);border-bottom:2px solid var(--ocean-pale);padding-bottom:4px;">Section '+aEsc(q.section)+(tmeta?(' — '+aEsc(tmeta)):'')+'</div></li>';
+    }
+    h+='<li class="as-q"><div class="as-qtext">'+aEsc(q.question)+(q.type==='multiselect'?' <span style="font-size:11px;color:var(--text-mid);">(select all that apply)</span>':'')+' <span class="as-marks">['+aEsc(q.marks)+']</span></div>';
     var badges='';
     if(q.difficulty) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:'+(q.difficulty==='Hard'?'#fce8e4;color:#bf3b2c':(q.difficulty==='Easy'?'#e2f2e5;color:#2f7d4f':'#fdf3dc;color:#b07d12'))+';">'+aEsc(q.difficulty)+'</span>';
     if(q.bloom) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:#ece6f7;color:#6b4fa8;">'+aEsc(q.bloom)+'</span>';
     if(q.outcomeCode) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:var(--ocean-pale);color:var(--ocean-mid);">'+aEsc(q.outcomeCode)+'</span>';
     if(q.indicatorCode) badges+='<span style="display:inline-block;font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:5px;background:#eef2f4;color:#4a6370;">'+aEsc(q.indicatorCode)+'</span>';
     if(badges) h+='<div style="margin:4px 0 2px;">'+badges+'</div>';
+    var asSelForMap=(typeof asSelectedOutcomes==='function')?asSelectedOutcomes():[];
+    if(asSelForMap.length && (q.outcomeCode!==undefined||q.indicatorCode!==undefined)){
+      var curOut=asSelForMap.filter(function(o){return o.code===q.outcomeCode;})[0];
+      h+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:3px 0 4px;font-size:10.5px;color:var(--text-mid);">Map to:';
+      h+='<select onchange="asQMap('+qi+',\'outcomeCode\',this.value)" style="font-size:10.5px;padding:2px 5px;border:1px solid #dde7ec;border-radius:6px;background:#fff;color:var(--text-dark);">';
+      asSelForMap.forEach(function(o){ h+='<option value="'+aEsc(o.code)+'"'+(o.code===q.outcomeCode?' selected':'')+'>'+aEsc(o.code)+'</option>'; });
+      if(!curOut&&q.outcomeCode) h+='<option selected>'+aEsc(q.outcomeCode)+'</option>';
+      h+='</select>';
+      h+='<select onchange="asQMap('+qi+',\'indicatorCode\',this.value)" style="font-size:10.5px;padding:2px 5px;border:1px solid #dde7ec;border-radius:6px;background:#fff;color:var(--text-dark);max-width:240px;">';
+      var indsList=curOut?curOut.inds:[];
+      var indFound=false;
+      indsList.forEach(function(x){ var s=(x.code===q.indicatorCode); if(s) indFound=true; h+='<option value="'+aEsc(x.code)+'"'+(s?' selected':'')+'>'+aEsc(x.code)+'</option>'; });
+      if(!indFound&&q.indicatorCode) h+='<option selected>'+aEsc(q.indicatorCode)+'</option>';
+      h+='</select></div>';
+    }
     if(q.options&&q.options.length){ h+='<ul class="as-opts">'+q.options.map(function(o){return '<li>'+aEsc(o)+'</li>';}).join('')+'</ul>'; }
     if(q.parts&&q.parts.length){ h+='<ul class="as-opts">'+q.parts.map(function(p){return '<li>'+aEsc(p.q||p.question||'')+' <span class="as-marks">['+aEsc(p.marks)+']</span></li>';}).join('')+'</ul>'; }
+    if(q.pairs&&q.pairs.length){
+      h+='<table style="font-size:12.5px;margin:6px 0 2px 14px;border-collapse:collapse;"><tr><th style="text-align:left;padding:2px 22px 2px 0;color:var(--text-mid);font-size:10.5px;text-transform:uppercase;">Column A</th><th style="text-align:left;color:var(--text-mid);font-size:10.5px;text-transform:uppercase;">Column B</th></tr>';
+      var asShuf=q.pairs.map(function(p){return p.right;}).sort(function(){return Math.random()-0.5;});
+      q.pairs.forEach(function(p,pi){ h+='<tr><td style="padding:2px 22px 2px 0;">'+(pi+1)+'. '+aEsc(p.left)+'</td><td>'+String.fromCharCode(65+pi)+'. '+aEsc(asShuf[pi])+'</td></tr>'; });
+      h+='</table>';
+    }
     h+='</li>';
   });
   h+='</ol>';
@@ -3994,6 +4382,47 @@ function renderAssessment(data, el, cfg){
   h+=asBuildMappingHTML(qs);
   h+='</div>';
   el.innerHTML=h;
+}
+
+/* ---- Per-question remapping + result-analysis export ---- */
+function asQMap(qi, field, val){
+  if(!lastAssessment||!lastAssessment.data||!lastAssessment.data.questions) return;
+  var q=lastAssessment.data.questions[qi]; if(!q) return;
+  q[field]=val;
+  if(field==='outcomeCode'){
+    var sel=(typeof asSelectedOutcomes==='function')?asSelectedOutcomes():[];
+    var o=sel.filter(function(x){return x.code===val;})[0];
+    if(o&&o.inds.length){
+      var has=o.inds.some(function(x){return x.code===q.indicatorCode;});
+      if(!has) q.indicatorCode=o.inds[0].code;
+    }
+  }
+  renderAssessment(lastAssessment.data, document.getElementById('as-out'), lastAssessment.cfg);
+  gaTrack('assessment_question_remap',{field:field});
+}
+function asDownloadBlob(text, filename, mime){
+  var blob=new Blob([text],{type:mime||'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){URL.revokeObjectURL(url);},2000);
+}
+function asExportAnalysisCSV(){
+  if(!lastAssessment||!lastAssessment.data||!lastAssessment.data.questions){ alert('Generate an assessment first.'); return; }
+  var qs=lastAssessment.data.questions;
+  var esc=function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; };
+  var r1=['Question'], r2=['Outcome'], r3=['Indicator'], r4=['Marks'];
+  var totalM=0;
+  qs.forEach(function(q){
+    r1.push('Q'+q.num); r2.push(q.outcomeCode||''); r3.push(q.indicatorCode||'');
+    var mk=parseFloat(q.marks)||0; totalM+=mk; r4.push(mk);
+  });
+  r1.push('Total'); r2.push(''); r3.push(''); r4.push(totalM);
+  var lines=[r1.map(esc).join(','), r2.map(esc).join(','), r3.map(esc).join(','), r4.map(esc).join(',')];
+  for(var i=1;i<=40;i++){ lines.push(esc('Student '+i)+new Array(qs.length+2).join(',')); }
+  var title=(lastAssessment.cfg&&lastAssessment.cfg.title?lastAssessment.cfg.title:'assessment').replace(/[^\w\d]+/g,'_');
+  asDownloadBlob('\uFEFF'+lines.join('\r\n'), title+'_result_analysis.csv');
+  gaTrack('assessment_analysis_export',{questions:qs.length});
 }
 
 /* ---- Outcome mapping & coverage report (from generated questions vs selected indicators) ---- */
@@ -4011,7 +4440,9 @@ function asBuildMappingHTML(qs){
   var warns=[]; var bloomAll={};
   qs.forEach(function(q){ if(q.bloom) bloomAll[q.bloom]=true; });
   var h='<div style="margin-top:18px;border-top:2px solid var(--ocean-pale);padding-top:14px;">';
-  h+='<div style="font-size:13px;font-weight:800;color:var(--ocean-deep);margin-bottom:10px;">Outcome Mapping &amp; Coverage</div>';
+  h+='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;">';
+  h+='<div style="font-size:13px;font-weight:800;color:var(--ocean-deep);">Outcome Mapping &amp; Coverage</div>';
+  h+='<button type="button" onclick="asExportAnalysisCSV()" class="btn btn-sm btn-navy">&#11015; Result Analysis Sheet (Excel/CSV)</button></div>';
   sel.forEach(function(o){
     var m=byOut[o.code]; var nHit=Object.keys(m.hit).length;
     var pct=m.total?Math.round(nHit/m.total*100):0;
