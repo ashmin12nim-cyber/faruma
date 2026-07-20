@@ -629,11 +629,7 @@ body::before {
       <span class="tab-ic" style="color:#5a8a2c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16h4"/></svg></span>
       <span class="tab-label">Checklists</span>
     </div>
-    <div class="tab" data-page="reportcards">
-      <span class="tab-ic" style="color:#a9802f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5L8 21l4-2 4 2-1-7.5"/></svg></span>
-      <span class="tab-label">Report Cards</span>
-    </div>
-    <div class="tab" data-page="assessment">
+<div class="tab" data-page="assessment">
       <span class="tab-ic" style="color:#bf3b2c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></span>
       <span class="tab-label">Assessment</span>
     </div>
@@ -641,15 +637,7 @@ body::before {
       <span class="tab-ic" style="color:#b07d12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span>
       <span class="tab-label">Calendar</span>
     </div>
-    <div class="tab" data-page="templates">
-      <span class="tab-ic" style="color:#cf9526"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 8h18M8 8v13"/></svg></span>
-      <span class="tab-label">Templates</span>
-    </div>
-    <div class="tab" data-page="history">
-      <span class="tab-ic" style="color:#df6d3c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v4l3 2"/></svg></span>
-      <span class="tab-label">History</span>
-    </div>
-  </div>
+</div>
 </div>
 
 <!-- AUTH OVERLAY -->
@@ -901,11 +889,7 @@ body::before {
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16h4"/></svg></div>
         <h3>Checklists</h3><p>Outcome checklists for any class</p>
       </article>
-      <article class="home-card t-lav" onclick="openTool('reportcards')">
-        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5L8 21l4-2 4 2-1-7.5"/></svg></div>
-        <h3>Report Cards</h3><p>Write report comments fast</p>
-      </article>
-      <article class="home-card t-green" onclick="openTool('assessment')">
+<article class="home-card t-green" onclick="openTool('assessment')">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></div>
         <h3>Assessment</h3><p>Create assessments from outcomes</p>
       </article>
@@ -913,15 +897,7 @@ body::before {
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
         <h3>Calendar</h3><p>Plan around the school term</p>
       </article>
-      <article class="home-card t-rose" onclick="openTool('templates')">
-        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 8h18M8 8v13"/></svg></div>
-        <h3>Templates</h3><p>Apply your school's own format</p>
-      </article>
-      <article class="home-card t-sand" onclick="openTool('history')">
-        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v4l3 2"/></svg></div>
-        <h3>History</h3><p>Find everything you've made</p>
-      </article>
-    </div>
+</div>
   </section>
 
   <div class="home-spacer"></div>
@@ -976,7 +952,7 @@ body::before {
     <div class="field"><label>School Address</label><input type="text" id="f-address" placeholder="e.g. your school address"></div>
   </div>
   <div id="active-tpl-banner" style="display:none;background:var(--ocean-pale);border:1px solid rgba(47,170,184,.3);border-radius:8px;padding:9px 14px;margin-bottom:12px;font-size:12px;color:var(--ocean-deep);font-weight:700;">
-    📄 Template active: <span id="active-tpl-name"></span> &nbsp;<a href="#" onclick="showPage2('templates');return false;" style="color:var(--coral);font-size:11px;">Change</a>
+    📄 Template active: <span id="active-tpl-name"></span> &nbsp;<a href="#" onclick="return false;" style="color:var(--coral);font-size:11px;">Change</a>
   </div>
   <div class="field"><label>Lesson Plan Format</label><select id="f-format">
     <option value="standard" selected>Seenu Atoll School Template (Set Induction · Main Body · Closure · Checked by)</option>
@@ -1080,32 +1056,6 @@ body::before {
 </div>
 
 </div>
-<!-- REPORT CARDS -->
-<div class="page" id="page-reportcards">
-<div class="card">
-  <div class="card-title">Report Card Comments</div>
-  <div class="apirow"><label>API Key</label><input type="password" id="rc-key" placeholder="sk-ant-api03-..."></div>
-  <div class="g2">
-    <div class="field"><label>Grade</label><select id="rc-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
-    <div class="field"><label>Subject</label><select id="rc-sub"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option><option>All subjects</option></select></div>
-  </div>
-  <div class="g2">
-    <div class="field"><label>Student Name</label><input type="text" id="rc-name" placeholder="e.g. Ahmed Ali"></div>
-    <div class="field"><label>Gender</label><select id="rc-gender"><option value="M">Male (He/His)</option><option value="F">Female (She/Her)</option></select></div>
-  </div>
-  <div class="g3">
-    <div class="field"><label>Performance</label><select id="rc-level"><option value="outstanding">Outstanding</option><option value="above">Above Average</option><option value="average" selected>Average</option><option value="below">Below Average</option><option value="support">Needs Support</option></select></div>
-    <div class="field"><label>Strengths</label><input type="text" id="rc-strengths" placeholder="e.g. problem solving"></div>
-    <div class="field"><label>Areas to Improve</label><input type="text" id="rc-improve" placeholder="e.g. written work"></div>
-  </div>
-  <div class="field"><label>Additional Notes</label><textarea id="rc-notes" rows="2" placeholder="Optional..."></textarea></div>
-  <div class="field"><label>Tone</label><select id="rc-tone"><option value="formal">Formal and Professional</option><option value="warm">Warm and Encouraging</option><option value="direct">Clear and Direct</option></select></div>
-  <button class="btn btn-purple" id="rc-btn" onclick="doReportCard()">&#9889; Generate Comments</button>
-  <div class="prog" id="rc-prog"><div class="prog-bar" id="rc-bar" style="width:0%"></div></div>
-  <div class="status" id="rc-status"></div>
-  <div id="rc-out"></div>
-</div></div>
-
 <!-- ASSESSMENT -->
 <div class="page" id="page-assessment">
 <div class="card">
@@ -1215,74 +1165,6 @@ body::before {
   <div class="card-title">School Calendar 2026</div>
   <div style="font-size:12px;color:#888;margin-bottom:12px;">Academic Year 2026 &mdash; Term 1: 25 Jan – 16 Jul &nbsp;|&nbsp; Term 2: 2 Aug – 17 Dec</div>
   <div class="cal-grid" id="cal-grid"></div>
-</div></div>
-
-<!-- TEMPLATES -->
-<div class="page" id="page-templates">
-<div class="card">
-  <div class="card-title">Upload Lesson Plan Template</div>
-  <p style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.7;">
-    Upload your school's Word (.docx) or PDF lesson plan template. Once uploaded, your template becomes
-    the master format: every lesson plan uses only the sections in your template, in the same order,
-    with no extra default headings added.
-  </p>
-
-  <!-- Upload area -->
-  <div id="upload-area" style="border:2px dashed var(--ocean-light);border-radius:12px;padding:32px;text-align:center;background:var(--ocean-pale);cursor:pointer;transition:all .2s;margin-bottom:16px;" onclick="document.getElementById('tpl-file').click()" ondragover="event.preventDefault();this.style.borderColor='var(--coral)'" ondragleave="this.style.borderColor='var(--ocean-light)'" ondrop="handleDrop(event)">
-    <div style="font-size:36px;margin-bottom:8px;">📄</div>
-    <div style="font-size:14px;font-weight:700;color:var(--ocean-deep);margin-bottom:4px;">Drop your template here</div>
-    <div style="font-size:12px;color:var(--text-mid);">or click to browse &mdash; .docx or .pdf supported</div>
-    <input type="file" id="tpl-file" accept=".docx,.pdf" style="display:none" onchange="handleFileSelect(this)">
-  </div>
-
-  <div class="status" id="tpl-status"></div>
-
-  <!-- Template preview -->
-  <div id="tpl-preview" style="display:none;">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px 16px;background:var(--ocean-pale);border-radius:10px;border:1px solid rgba(47,170,184,.3);">
-      <div style="font-size:24px;">✅</div>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:var(--ocean-deep);" id="tpl-filename">template.docx</div>
-        <div style="font-size:11px;color:var(--text-mid);" id="tpl-desc">Template loaded</div>
-      </div>
-      <button onclick="clearTemplate()" style="margin-left:auto;background:none;border:1px solid #e0a0a0;color:#b05050;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;">✕ Remove</button>
-    </div>
-
-    <div class="g2" style="margin-bottom:14px;">
-      <div>
-        <div style="font-size:11px;font-weight:800;color:var(--ocean-mid);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Detected Sections</div>
-        <div id="tpl-sections" style="font-size:12px;line-height:1.9;color:var(--text-dark);"></div>
-      </div>
-      <div>
-        <div style="font-size:11px;font-weight:800;color:var(--ocean-mid);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Template Style</div>
-        <div id="tpl-format" style="font-size:12px;color:var(--text-dark);line-height:1.7;"></div>
-      </div>
-    </div>
-
-    <div style="margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:800;color:var(--ocean-mid);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Template Preview</div>
-      <div id="tpl-text-preview" style="font-size:11px;color:var(--text-mid);background:var(--sand);border:1px solid var(--sand-dark);border-radius:8px;padding:12px;max-height:150px;overflow-y:auto;white-space:pre-wrap;line-height:1.6;font-family:monospace;"></div>
-    </div>
-
-    <div style="background:#e8f8f0;border:1px solid rgba(42,157,110,.3);border-radius:10px;padding:12px 16px;font-size:13px;color:#1a6642;font-weight:600;">
-      ✓ Template active — your next lesson plan will follow this format. Go to the <b>Lesson Plan</b> tab to generate.
-    </div>
-  </div>
-</div>
-
-<!-- Saved templates list -->
-<div class="card" id="saved-tpls-card" style="display:none;">
-  <div class="card-title">Saved Templates</div>
-  <div id="saved-tpls-list"></div>
-</div>
-</div>
-
-<!-- HISTORY -->
-<div class="page" id="page-history">
-<div class="card">
-  <div class="card-title">Lesson Plan History</div>
-  <button class="clear-btn" onclick="doClearHistory()">&#128465; Clear All</button>
-  <div id="hist-list"></div>
 </div></div>
 
 <script>
@@ -2040,7 +1922,7 @@ async function schGenerateActivity() {
   if(!currentUser){ openAuth('login'); resultDiv.innerHTML=''; return; }
   resultDiv.innerHTML='<span class="spin"></span> Generating...';
   try {
-    var prompt='Suggest a concise learning activity (2-3 sentences) for '+grade+' '+sub+'. Outcome: '+code+' '+stmt+'. Indicators: '+checked.map(function(c){return c.code;}).join(', ')+'. Use a real-world context relevant to the topic; use Maldivian context only where it fits naturally. Return ONLY the activity text, no JSON, no markdown.';
+    var prompt='Suggest a concise learning activity (2-3 sentences) for '+grade+' '+sub+'. Outcome: '+code+' '+stmt+'. Indicators: '+checked.map(function(c){return c.code;}).join(', ')+'. Use a real-world context relevant to the topic. Return ONLY the activity text, no JSON, no markdown.';
     var headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
     if(key) headers["x-api-key"]=key;
     var token=localStorage.getItem("boli_token"); if(token) headers["Authorization"]="Bearer "+token;
@@ -2306,8 +2188,9 @@ function renderCalendar() {
 // renderWeekly and openPlanFor removed (Weekly tab removed)
 
 function renderHistory(){
-  var h=getHist();
   var el=document.getElementById("hist-list");
+  if(!el) return;
+  var h=getHist();
   if(!h.length){el.innerHTML="<div class='empty-msg'>No lesson plans yet.</div>";return;}
   el.innerHTML=h.map(function(e,i){
     return"<div class='hist-item'><span class='hist-badge'>"+(e.sub||"")+"</span><div class='hist-info'><div class='hist-title'>"+(e.fname||"")+"</div><div class='hist-sub'>"+(e.grade||"")+" &bull; "+(e.topic||"")+" &bull; "+(e.date||"")+"</div></div><span class='hist-dl' onclick='dlFromHist("+e.ts+")'>&#8681; .docx</span><span class='hist-del' onclick='delHist("+i+")'>&#128465;</span></div>";
@@ -3880,7 +3763,7 @@ function assessSyllabusContext(grade, sub, topic){
 function buildAssessmentPrompt(cfg){
   var ctx=assessSyllabusContext(cfg.grade,cfg.sub,cfg.topic);
   if(cfg.atype==='rubric'){
-    return 'You are an expert '+cfg.sub+' teacher in the Maldives. Create a clear marking RUBRIC for '+cfg.grade+' on "'+cfg.topic+'".\n'+ctx+
+    return 'You are an expert '+cfg.sub+' teacher. Create a clear marking RUBRIC for '+cfg.grade+' on "'+cfg.topic+'".\n'+ctx+
       'Return ONLY JSON (no markdown): {"title":"'+cfg.title+'","instructions":"...","rubric":[{"criterion":"...","levels":[{"label":"Excellent","marks":4,"descriptor":"..."},{"label":"Good","marks":3,"descriptor":"..."},{"label":"Satisfactory","marks":2,"descriptor":"..."},{"label":"Developing","marks":1,"descriptor":"..."}]}],"totalMarks":n}';
   }
   var typeHint = cfg.atype==='exit_ticket' ? '3-4 quick check-for-understanding questions'
@@ -3903,7 +3786,7 @@ function buildAssessmentPrompt(cfg){
       }).join('\n');
       tosBlock='Table of Specification — allocate questions and marks across the outcomes to match this mark allocation as closely as the blueprint allows:\n'+wLines+'\n\n';
     }
-    return 'You are an expert '+cfg.sub+' teacher in the Maldives writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'".\n'+
+    return 'You are an expert '+cfg.sub+' teacher writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'".\n'+
       currBlockBP+tosBlock+(currBlockBP?'':ctx)+
       'Follow this EXACT blueprint — generate every section, in order, with exactly the stated number of questions and marks:\n'+secLines+'\n\n'+
       'Type rules: "mcq" needs four options A-D with one correct; "multiselect" needs five options A-E with 2-3 correct (state all correct letters in answer); "tf" is a statement answered True or False; "matching" needs a "pairs" array of {"left":"...","right":"..."} (5 pairs unless count differs) — the question field introduces the task; "fitb" uses ___ for the blank; "short" needs a model answer; "scenario" embeds a realistic context; "multipart" uses a "parts" array of {"q":"...","marks":N} sub-questions whose marks sum to the item marks; "essay" needs a model answer outline.\n'+
@@ -3913,14 +3796,14 @@ function buildAssessmentPrompt(cfg){
   if(selOuts.length){
     var currBlock = 'Assess ONLY the following Maldives National Curriculum outcomes and indicators. Every question MUST be mapped to exactly one of these indicator codes:\n' +
       selOuts.map(function(o){ return '['+o.code+'] '+o.stmt+'\n'+o.inds.map(function(x){return '   - '+x.code+': '+x.text;}).join('\n'); }).join('\n') + '\n\n';
-    return 'You are an expert '+cfg.sub+' teacher in the Maldives writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'". '+
+    return 'You are an expert '+cfg.sub+' teacher writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'". '+
       "Bloom's focus: "+cfg.blooms+'. Produce '+typeHint+'.\n'+currBlock+
       'Spread questions across the selected indicators (cover as many as sensible). Use a MIX of question types: mcq, short, structured, essay, practical. For EACH question provide: the question, (for mcq) four options labelled A-D, the correct answer / model answer, the marks, difficulty (Easy/Medium/Hard), Bloom level (Remember/Understand/Apply/Analyse/Evaluate/Create), the outcome code and indicator code it assesses, and the assessment objective. Number questions sequentially. Make questions specific, not generic.\n'+
       (cfg.atype==='project'?'Also include a one-paragraph "brief".\n':'')+
       'Return ONLY JSON (no markdown, no commentary): {"title":"'+cfg.title+'","instructions":"...","brief":"","totalMarks":0,"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"B. ...","marks":1,"difficulty":"Medium","bloom":"Apply","outcomeCode":"...","indicatorCode":"...","objective":"..."}]}';
   }
-  return 'You are an expert '+cfg.sub+' teacher in the Maldives writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'". '+
-    "Bloom's focus: "+cfg.blooms+'. Produce '+typeHint+', aligned to the Maldives National Curriculum.\n'+ctx+
+  return 'You are an expert '+cfg.sub+' teacher writing a '+(ASSESS_TYPE_LABEL[cfg.atype]||'assessment')+' for '+cfg.grade+' on "'+cfg.topic+'". '+
+    "Bloom's focus: "+cfg.blooms+'. Produce '+typeHint+'.\n'+ctx+
     'Use an appropriate MIX of question types: mcq, short, structured, essay, practical. For EACH question provide: the question, (for mcq) four options labelled A-D, the correct answer / model answer, the marks, and the assessment objective (skill assessed). Vary difficulty sensibly and number questions sequentially. Make questions specific to the topic, not generic.\n'+
     (cfg.atype==='project'?'Also include a one-paragraph "brief".\n':'')+
     'Return ONLY JSON (no markdown, no commentary): {"title":"'+cfg.title+'","instructions":"...","brief":"","totalMarks":0,"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"B. ...","marks":1,"objective":"..."}]}';
@@ -4596,7 +4479,7 @@ async function generateLessonAssessment(){
     var planTxt='';
     try{ planTxt=JSON.stringify(plan).slice(0,4000); }catch(e){}
     var typeLine = types==='mixed' ? 'Use an appropriate MIX of MCQ, short-answer, structured and (where suitable) essay questions.' : 'Use mainly '+types+' questions.';
-    var prompt='You are an expert '+L.subject+' teacher in the Maldives. A '+L.grade+' lesson has just been taught. Create an assessment of '+count+' questions at '+diff+' difficulty that aligns EXACTLY with what this lesson taught — its learning outcome, indicators, activities and skills. '+typeLine+'\n\n'+
+    var prompt='You are an expert '+L.subject+' teacher. A '+L.grade+' lesson has just been taught. Create an assessment of '+count+' questions at '+diff+' difficulty that aligns EXACTLY with what this lesson taught — its learning outcome, indicators, activities and skills. '+typeLine+'\n\n'+
       'LESSON CONTEXT:\nSubject: '+L.subject+'\nGrade: '+L.grade+'\nTopic: '+(L.topic||'')+'\nOutcome: '+(L.outCode||'')+' '+(L.outStmt||'')+'\nIndicators: '+((L.indicators||[]).join(' | '))+'\nLesson plan (JSON excerpt): '+planTxt+'\n\n'+
       'For each question give the question, (mcq) options A-D, the correct/model answer, marks, and the assessment objective. Number sequentially. Provide a total marks figure.\n'+
       'Return ONLY JSON (no markdown): {"title":"'+((L.topic||'Lesson')+' — Assessment')+'","instructions":"...","totalMarks":0,"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"...","marks":1,"objective":"..."}]}';
