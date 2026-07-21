@@ -598,7 +598,7 @@ body::before {
 
 /* ==== FARUMA Presentation Engine styles ==== */
 /* ===== FARUMA Presentation Engine ===== */
-.pres-ov{position:fixed;inset:0;z-index:11000;background:rgba(15,39,64,.55);display:none;align-items:center;justify-content:center;padding:18px;}
+.pres-ov{position:fixed;top:var(--fed-top,0);left:0;right:0;bottom:0;z-index:9600;background:rgba(15,39,64,.55);display:none;align-items:center;justify-content:center;padding:18px;}
 .pres-modal{background:var(--sand,#f5f6f3);border-radius:18px;width:100%;max-width:720px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);}
 .pres-modal-wide{max-width:1120px;}
 .pres-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 24px 14px;background:var(--ivory,#fff);border-bottom:1px solid var(--ocean-pale,#e7f1f7);}
@@ -689,98 +689,120 @@ body::before {
 .pres-launch:hover{filter:brightness(1.06);}
 
 
-/* ==== FARUMA Document Editor & Template Builder styles ==== */
-/* ================= FARUMA Document Editor & Template Builder ================= */
-.fed-ov{position:fixed;inset:0;z-index:12000;background:#eef2f5;display:none;flex-direction:column;}
+/* ==== FARUMA Workspace styles (v2 light) ==== */
+/* ================= FARUMA Workspace (Document Editor & Template Builder) — light theme ================= */
+.fed-ov{position:fixed;top:var(--fed-top,0);left:0;right:0;bottom:0;z-index:9500;background:#faf8f4;display:none;flex-direction:column;font-family:'Segoe UI',system-ui,sans-serif;}
 .fed-ov.open{display:flex;}
-.fed-top{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--ocean-deep,#13324e);color:#fff;flex-wrap:wrap;}
-.fed-top .fed-title{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;}
-.fed-top .fed-title input{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;width:210px;}
+.fed-ov.left-off .fed-left{display:none;}
+/* top bar — white, breadcrumb + title chip + orange export */
+.fed-top{display:flex;align-items:center;gap:10px;padding:8px 16px;background:#fff;border-bottom:1px solid #eee6da;flex-wrap:wrap;}
+.fed-crumb{font-size:13px;font-weight:600;color:#8a8073;}
+.fed-crumb::after{content:'›';margin-left:8px;color:#c9beae;}
+.fed-chip{display:flex;align-items:center;gap:7px;border:1.5px solid var(--coral,#e8624a);background:#fff;border-radius:10px;padding:5px 10px;font-size:13px;color:#3c342b;}
+.fed-chip input{border:none;outline:none;font-size:13px;font-weight:700;color:#3c342b;width:220px;background:transparent;}
+.fed-chip .fed-chip-x{cursor:pointer;color:#b7ab99;font-size:15px;line-height:1;}
+.fed-chip .fed-chip-x:hover{color:var(--coral,#e8624a);}
 .fed-top .fed-spacer{flex:1;}
-.fed-top button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:7px;padding:6px 11px;font-size:12.5px;font-weight:700;cursor:pointer;}
-.fed-top button:hover{background:rgba(255,255,255,.26);}
-.fed-top button.fed-primary{background:var(--coral,#e8624a);border-color:var(--coral,#e8624a);}
-.fed-top .fed-x{font-size:20px;line-height:1;padding:4px 9px;}
-.fed-status{font-size:11.5px;color:#bfe0d4;min-width:60px;}
-/* toolbar */
-.fed-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:6px 12px;background:#fff;border-bottom:1px solid #dbe4ea;}
-.fed-tb-group{display:flex;align-items:center;gap:2px;padding:0 6px;border-right:1px solid #e4ebf0;}
+.fed-status{font-size:11.5px;color:#9a8f7f;min-width:52px;}
+.fed-top button{border:1px solid transparent;background:none;border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:700;cursor:pointer;color:#5c5347;}
+.fed-top button:hover{background:#f5efe6;border-color:#e8dfd1;}
+.fed-top .fed-export{background:var(--coral,#e8624a);border-color:var(--coral,#e8624a);color:#fff;padding:7px 14px;}
+.fed-top .fed-export:hover{filter:brightness(1.05);background:var(--coral,#e8624a);}
+.fed-top .fed-x{font-size:19px;line-height:1;padding:4px 9px;color:#9a8f7f;}
+/* toolbar — white pill row, subtle separators */
+.fed-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:7px 14px;background:#fff;border-bottom:1px solid #eee6da;box-shadow:0 1px 3px rgba(90,70,40,.04);}
+.fed-tb-group{display:flex;align-items:center;gap:2px;padding:0 8px;border-right:1px solid #f0e9dd;}
 .fed-tb-group:last-child{border-right:none;}
-.fed-toolbar button,.fed-toolbar select{border:1px solid transparent;background:none;border-radius:6px;padding:5px 7px;font-size:13px;cursor:pointer;color:#2a4356;min-width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;}
-.fed-toolbar button:hover,.fed-toolbar select:hover{background:#eef4f8;border-color:#d5e2ea;}
-.fed-toolbar button.on{background:var(--ocean-pale,#e7f1f7);border-color:var(--ocean-light,#7fb8d4);}
-.fed-toolbar select{min-width:auto;font-size:12px;padding:4px 4px;}
-.fed-toolbar input[type=color]{width:26px;height:26px;border:1px solid #d5e2ea;border-radius:5px;padding:0;cursor:pointer;background:none;}
-.fed-tb-lbl{font-size:10px;color:#7a94a2;font-weight:700;margin-right:2px;}
-/* body: 3 columns */
+.fed-toolbar button,.fed-toolbar select{border:1px solid transparent;background:none;border-radius:7px;padding:5px 7px;font-size:13px;cursor:pointer;color:#5c5347;min-width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;}
+.fed-toolbar button:hover,.fed-toolbar select:hover{background:#f5efe6;border-color:#e8dfd1;}
+.fed-toolbar button.on{background:#fdeee9;border-color:var(--coral,#e8624a);color:var(--coral,#e8624a);}
+.fed-toolbar select{min-width:auto;font-size:12px;padding:4px;}
+.fed-toolbar input[type=color]{width:24px;height:24px;border:1px solid #e2d8c8;border-radius:6px;padding:0;cursor:pointer;background:none;}
+.fed-tb-lbl{font-size:10px;color:#a89c88;font-weight:700;margin-right:2px;}
+/* body */
 .fed-body{display:flex;flex:1;overflow:hidden;}
-.fed-left{width:150px;min-width:150px;background:#e3e9ee;overflow-y:auto;padding:12px 10px;border-right:1px solid #d3dde4;}
-.fed-thumb{background:#fff;border:2px solid transparent;border-radius:6px;margin-bottom:10px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.1);overflow:hidden;}
+.fed-left{width:156px;min-width:156px;background:#f4f0e8;overflow-y:auto;padding:14px 12px;border-right:1px solid #eae2d4;}
+.fed-thumb{background:#fff;border:2px solid transparent;border-radius:8px;margin-bottom:10px;cursor:pointer;box-shadow:0 1px 5px rgba(90,70,40,.1);overflow:hidden;}
+.fed-thumb:hover{box-shadow:0 3px 9px rgba(90,70,40,.15);}
 .fed-thumb.sel{border-color:var(--coral,#e8624a);}
-.fed-thumb .fed-thumb-mini{height:0;padding-bottom:141%;position:relative;background:#fff;transform-origin:top left;}
-.fed-thumb .fed-thumb-num{font-size:10px;text-align:center;color:#6b8494;padding:2px;font-weight:700;}
-.fed-left .fed-addpage{width:100%;border:1.5px dashed #9db6c4;background:none;color:#476;border-radius:6px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;}
-.fed-canvas-wrap{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;align-items:center;gap:24px;background:#eef2f5;}
-.fed-page{background:#fff;box-shadow:0 3px 16px rgba(20,50,80,.16);position:relative;flex-shrink:0;overflow:hidden;}
-.fed-page .fed-hdr,.fed-page .fed-ftr{position:absolute;left:0;right:0;font-size:11px;color:#7a94a2;padding:0 14px;pointer-events:none;display:flex;justify-content:space-between;}
+.fed-thumb .fed-thumb-mini{height:0;padding-bottom:141%;position:relative;background:#fff;transform-origin:top left;overflow:hidden;}
+.fed-thumb .fed-thumb-num{font-size:10px;text-align:center;color:#8a8073;padding:3px;font-weight:700;}
+.fed-left .fed-addpage{width:100%;border:1.5px dashed #cbbfa8;background:none;color:#7a6f5e;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;}
+.fed-left .fed-addpage:hover{background:#efe8db;}
+.fed-canvas-wrap{flex:1;overflow:auto;padding:26px;display:flex;flex-direction:column;align-items:center;gap:26px;background:#faf8f4;}
+.fed-page{background:#fff;box-shadow:0 2px 14px rgba(90,70,40,.12);border:1px solid #efe8dc;border-radius:2px;position:relative;flex-shrink:0;overflow:hidden;}
+.fed-page .fed-hdr,.fed-page .fed-ftr{position:absolute;left:0;right:0;font-size:11px;color:#a89c88;padding:0 14px;pointer-events:none;display:flex;justify-content:space-between;}
 .fed-page .fed-hdr{top:6px;}.fed-page .fed-ftr{bottom:6px;}
-.fed-content{position:absolute;overflow:visible;outline:none;font-size:14px;line-height:1.5;color:#12283c;font-family:'Segoe UI',system-ui,sans-serif;}
+.fed-content{position:absolute;overflow:visible;outline:none;font-size:14px;line-height:1.55;color:#2b2620;font-family:'Segoe UI',system-ui,sans-serif;}
 .fed-content:focus{outline:none;}
 .fed-content table{border-collapse:collapse;margin:6px 0;}
-.fed-content table td,.fed-content table th{border:1px solid #789;padding:4px 7px;min-width:34px;vertical-align:top;}
-.fed-content h1{font-size:22px;margin:.3em 0;}.fed-content h2{font-size:18px;margin:.3em 0;}
+.fed-content table td,.fed-content table th{border:1px solid #8b8272;padding:4px 7px;min-width:34px;vertical-align:top;}
+.fed-content h1{font-size:23px;margin:.3em 0;color:#1f1b16;}
+.fed-content h2{font-size:18px;margin:.45em 0 .25em;color:#2b2620;}
+.fed-content h3{font-size:15px;margin:.4em 0 .2em;color:#3c342b;}
 .fed-content ul,.fed-content ol{margin:.3em 0 .3em 1.4em;}
-.fed-content .fed-ansline{border-bottom:1px solid #345;height:1.6em;}
+.fed-content .fed-ansline{border-bottom:1px solid #6b6257;height:1.6em;}
 .fed-svg-layer{position:absolute;inset:0;pointer-events:none;}
 .fed-svg-layer.drawing{pointer-events:all;cursor:crosshair;}
-/* floating objects (images, shapes wrapper, sticky) */
+/* floating objects */
 .fed-obj{position:absolute;border:1px solid transparent;}
 .fed-obj.sel{border:1px dashed var(--coral,#e8624a);}
 .fed-obj img{width:100%;height:100%;display:block;}
-.fed-obj .fed-handle{position:absolute;width:11px;height:11px;background:#fff;border:2px solid var(--coral,#e8624a);border-radius:2px;right:-6px;bottom:-6px;cursor:nwse-resize;}
-.fed-obj .fed-rot{position:absolute;width:12px;height:12px;background:var(--ocean-mid,#1f5e7d);border-radius:50%;left:50%;top:-22px;transform:translateX(-50%);cursor:grab;}
-.fed-obj .fed-objbar{position:absolute;top:-26px;right:0;display:none;gap:3px;background:#243;border-radius:5px;padding:2px 4px;}
+.fed-obj .fed-handle{position:absolute;width:11px;height:11px;background:#fff;border:2px solid var(--coral,#e8624a);border-radius:3px;right:-6px;bottom:-6px;cursor:nwse-resize;}
+.fed-obj .fed-rot{position:absolute;width:12px;height:12px;background:#8a8073;border-radius:50%;left:50%;top:-22px;transform:translateX(-50%);cursor:grab;}
+.fed-obj .fed-objbar{position:absolute;top:-27px;right:0;display:none;gap:4px;background:#3c342b;border-radius:6px;padding:3px 6px;}
 .fed-obj.sel .fed-objbar{display:flex;}
 .fed-obj .fed-objbar a{color:#fff;font-size:11px;cursor:pointer;padding:1px 3px;}
-.fed-sticky{background:#fff6a8;box-shadow:0 2px 8px rgba(0,0,0,.18);padding:8px;font-size:13px;font-family:'Segoe UI',sans-serif;color:#3a3300;}
+.fed-sticky{background:#fff3b8;box-shadow:0 2px 8px rgba(90,70,40,.2);padding:8px;font-size:13px;color:#4a3f00;border-radius:2px;}
 /* right panel */
-.fed-right{width:210px;min-width:210px;background:#fff;border-left:1px solid #d3dde4;overflow-y:auto;padding:12px;}
-.fed-right h4{font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--ocean-mid,#1f5e7d);margin:14px 0 7px;}
+.fed-right{width:216px;min-width:216px;background:#fff;border-left:1px solid #eee6da;overflow-y:auto;padding:14px;}
+.fed-right h4{font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:#a89c88;margin:16px 0 8px;font-weight:800;}
 .fed-right h4:first-child{margin-top:0;}
 .fed-comp{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.fed-comp button{border:1px solid #d9e3ea;background:#f6fafc;border-radius:7px;padding:8px 4px;font-size:11px;font-weight:600;color:#33546a;cursor:pointer;text-align:center;line-height:1.2;}
-.fed-comp button:hover{background:var(--ocean-pale,#e7f1f7);border-color:var(--ocean-light,#7fb8d4);}
+.fed-comp button{border:1px solid #ece4d6;background:#faf7f1;border-radius:8px;padding:8px 4px;font-size:11px;font-weight:600;color:#5c5347;cursor:pointer;text-align:center;line-height:1.25;}
+.fed-comp button:hover{background:#fdeee9;border-color:var(--coral,#e8624a);color:var(--coral,#e8624a);}
 .fed-ai-btns{display:flex;flex-direction:column;gap:5px;}
-.fed-ai-btns button{border:1px solid #e0c7f0;background:#f6f0fb;border-radius:7px;padding:7px;font-size:12px;font-weight:700;color:#5b2b86;cursor:pointer;text-align:left;}
-.fed-ai-btns button:hover{filter:brightness(.98);background:#efe4f8;}
-.fed-ai-note{font-size:10.5px;color:#8aa4ae;margin-top:6px;line-height:1.4;}
-.fed-field{margin-bottom:8px;}
-.fed-field label{font-size:10px;font-weight:700;color:#5a7686;text-transform:uppercase;display:block;margin-bottom:2px;}
-.fed-field select,.fed-field input{width:100%;border:1px solid #cfdbe3;border-radius:6px;padding:5px 7px;font-size:12.5px;}
-.fed-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#243;color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;z-index:12500;opacity:0;transition:.25s;pointer-events:none;}
+.fed-ai-btns button{border:1px solid #ece4d6;background:#fff;border-radius:8px;padding:7px 9px;font-size:12px;font-weight:700;color:#5c5347;cursor:pointer;text-align:left;}
+.fed-ai-btns button:hover{background:#fdeee9;border-color:var(--coral,#e8624a);color:var(--coral,#e8624a);}
+.fed-ai-note{font-size:10.5px;color:#a89c88;margin-top:6px;line-height:1.45;}
+.fed-field{margin-bottom:9px;}
+.fed-field label{font-size:10px;font-weight:700;color:#8a8073;text-transform:uppercase;display:block;margin-bottom:3px;}
+.fed-field select,.fed-field input{width:100%;border:1px solid #e2d8c8;border-radius:7px;padding:5px 8px;font-size:12.5px;background:#fff;color:#3c342b;}
+.fed-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#3c342b;color:#fff;padding:9px 16px;border-radius:9px;font-size:13px;z-index:12500;opacity:0;transition:.25s;pointer-events:none;}
 .fed-toast.show{opacity:.96;}
-/* template builder specifics */
-.ftb-block{position:absolute;border:1px solid #b9cad6;background:#fff;box-sizing:border-box;min-width:40px;min-height:24px;}
-.ftb-block.sel{border:1.5px solid var(--coral,#e8624a);box-shadow:0 2px 10px rgba(232,98,74,.2);}
-.ftb-block .fed-handle{position:absolute;width:11px;height:11px;background:#fff;border:2px solid var(--coral,#e8624a);border-radius:2px;right:-6px;bottom:-6px;cursor:nwse-resize;}
+/* template builder */
+.ftb-block{position:absolute;border:1px solid #d8cebc;background:#fff;box-sizing:border-box;min-width:40px;min-height:24px;}
+.ftb-block.sel{border:1.5px solid var(--coral,#e8624a);box-shadow:0 2px 10px rgba(232,98,74,.18);}
+.ftb-block .fed-handle{position:absolute;width:11px;height:11px;background:#fff;border:2px solid var(--coral,#e8624a);border-radius:3px;right:-6px;bottom:-6px;cursor:nwse-resize;}
 .ftb-block .ftb-del{position:absolute;top:-11px;right:-9px;width:18px;height:18px;border-radius:50%;background:var(--coral,#e8624a);color:#fff;font-size:12px;line-height:16px;text-align:center;cursor:pointer;display:none;border:1px solid #fff;}
 .ftb-block.sel .ftb-del{display:block;}
-.ftb-block[data-t=hline]{background:#345;min-height:2px;height:2px;}
-.ftb-block[data-t=vline]{background:#345;min-width:2px;width:2px;}
-.ftb-txt{padding:5px 7px;font-size:13px;color:#12283c;outline:none;width:100%;height:100%;box-sizing:border-box;overflow:auto;}
+.ftb-block[data-t=hline]{background:#6b6257;min-height:2px;height:2px;}
+.ftb-block[data-t=vline]{background:#6b6257;min-width:2px;width:2px;}
+.ftb-txt{padding:5px 7px;font-size:13px;color:#2b2620;outline:none;width:100%;height:100%;box-sizing:border-box;overflow:auto;}
 .ftb-block table{width:100%;height:100%;border-collapse:collapse;}
-.ftb-block table td{border:1px solid #567;padding:4px 6px;font-size:12px;vertical-align:top;}
-.ftb-sig{border-top:1px solid #345;font-size:10px;color:#678;text-align:center;padding-top:2px;}
-.fed-ph-chip{cursor:pointer;background:#e7f1f7;border:1px solid #b9d6e6;color:#1f5e7d;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:600;margin:0 3px 5px 0;display:inline-block;}
-.fed-ph-chip:hover{background:var(--ocean-light,#7fb8d4);color:#fff;}
+.ftb-block table td{border:1px solid #8b8272;padding:4px 6px;font-size:12px;vertical-align:top;}
+.ftb-sig{border-top:1px solid #6b6257;font-size:10px;color:#8a8073;text-align:center;padding-top:2px;}
+.fed-ph-chip{cursor:pointer;background:#faf7f1;border:1px solid #e2d8c8;color:#7a6f5e;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;margin:0 3px 5px 0;display:inline-block;}
+.fed-ph-chip:hover{background:var(--coral,#e8624a);border-color:var(--coral,#e8624a);color:#fff;}
 .fed-ph{background:#fff2cf;border:1px dashed #d4a017;border-radius:4px;padding:0 3px;font-size:.92em;color:#8a5a00;font-weight:600;}
-.ftb-lib-item{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid #e0e8ee;border-radius:7px;margin-bottom:6px;font-size:12.5px;}
-.ftb-lib-item .ftb-lib-name{flex:1;font-weight:600;color:#33546a;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.ftb-lib-item a{cursor:pointer;color:#7a94a2;font-size:12px;}
+.ftb-lib-item{display:flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid #ece4d6;border-radius:8px;margin-bottom:6px;font-size:12.5px;}
+.ftb-lib-item .ftb-lib-name{flex:1;font-weight:600;color:#5c5347;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ftb-lib-item a{cursor:pointer;color:#a89c88;font-size:12px;}
 .ftb-lib-item a:hover{color:var(--coral,#e8624a);}
 .fed-launch{background:linear-gradient(90deg,#0e8a86,#1f5e7d);color:#fff;border:none;}
 .fed-launch:hover{filter:brightness(1.06);}
-@media(max-width:820px){.fed-left{display:none;}.fed-right{width:170px;min-width:170px;}}
+/* highlighted School Calendar button on the lesson planner */
+.cal-hi{background:linear-gradient(90deg,#f59e0b,var(--coral,#e8624a));color:#fff;border:none;border-radius:11px;padding:10px 16px;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 4px 14px rgba(232,98,74,.35);animation:calPulse 2.4s ease-in-out infinite;}
+.cal-hi:hover{filter:brightness(1.05);}
+@keyframes calPulse{0%,100%{box-shadow:0 4px 14px rgba(232,98,74,.35);}50%{box-shadow:0 4px 22px rgba(232,98,74,.6);}}
+/* calendar popup */
+.fed-calov{position:fixed;top:var(--fed-top,0);left:0;right:0;bottom:0;z-index:11800;background:rgba(40,32,22,.45);display:none;align-items:flex-start;justify-content:center;padding:26px 16px;}
+.fed-calbox{background:#fff;border-radius:16px;max-width:960px;width:100%;max-height:calc(100% - 20px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.3);}
+.fed-calhead{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #eee6da;font-size:15px;color:#2b2620;}
+.fed-calx{cursor:pointer;font-size:22px;color:#a89c88;line-height:1;}
+.fed-calx:hover{color:var(--coral,#e8624a);}
+.fed-calbody{overflow-y:auto;padding:16px 20px;}
+@media(max-width:820px){.fed-left{display:none;}.fed-right{width:172px;min-width:172px;}.fed-chip input{width:130px;}}
 
 </style>
 </head>
@@ -819,6 +841,10 @@ body::before {
 <div class="tab" data-page="assessment">
       <span class="tab-ic" style="color:#bf3b2c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></span>
       <span class="tab-label">Assessment</span>
+    </div>
+    <div class="tab" data-page="slides">
+      <span class="tab-ic" style="color:#7c4dff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8.5l4 2.5-4 2.5z"/><path d="M12 16v4"/><path d="M8 20h8"/></svg></span>
+      <span class="tab-label">Slides</span>
     </div>
     <div class="tab" data-page="calendar">
       <span class="tab-ic" style="color:#b07d12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span>
@@ -1080,6 +1106,10 @@ body::before {
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></div>
         <h3>Assessment</h3><p>Create assessments from outcomes</p>
       </article>
+      <article class="home-card t-lav" onclick="openTool('slides')">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8.5l4 2.5-4 2.5z"/><path d="M12 16v4"/><path d="M8 20h8"/></svg></div>
+        <h3>Slides</h3><p>AI PowerPoint decks by design</p>
+      </article>
       <article class="home-card t-peach" onclick="openTool('calendar')">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
         <h3>Calendar</h3><p>Plan around the school term</p>
@@ -1106,6 +1136,7 @@ body::before {
 <div class="page" id="page-generate">
 <div class="card">
   <div class="card-title">Generate Lesson Plan</div>
+  <div style="margin:10px 0 14px;"><button type="button" class="cal-hi" onclick="slCalOpen()">&#128197; School Calendar <span style="font-weight:600;opacity:.92;">&middot; view terms &amp; weeks</span></button></div>
   <div id="api-key-row" class="apirow" style="display:none;"><label>API Key</label><input type="password" id="api-key" placeholder="sk-ant-api03-..."><a href="https://console.anthropic.com/settings/keys" target="_blank">Get key &#8599;</a></div>
   <div id="server-key-notice" class="api-key-row" style="display:none;">🔑 API key configured — ready to generate!</div>
   <div class="stabs">
@@ -1344,6 +1375,29 @@ body::before {
   <div class="prog" id="as-prog"><div class="prog-bar" id="as-bar" style="width:0%"></div></div>
   <div class="status" id="as-status"></div>
   <div id="as-out"></div>
+</div></div>
+
+<!-- SLIDES -->
+<div class="page" id="page-slides">
+<div class="card">
+  <div class="card-title">Slides Studio</div>
+  <div style="border:2px solid var(--coral,#e8624a);border-radius:14px;padding:16px 18px;margin:4px 0 16px;background:linear-gradient(135deg,#fff6f3,#fdfcfa);">
+    <div style="font-size:14px;font-weight:800;color:var(--coral,#e8624a);letter-spacing:.01em;">&#128218; Select National Curriculum Standard</div>
+    <div style="font-size:11.5px;color:var(--text-mid);margin-top:3px;margin-bottom:12px;">Choose the grade, subject, outcome &amp; indicators &mdash; every slide is generated from these codes.</div>
+    <div class="g2">
+      <div class="field"><label>Grade</label><select id="sl-grade" onchange="slSyncOutcomes()"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+      <div class="field"><label>Subject</label><select id="sl-sub" onchange="slSyncOutcomes()"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
+    </div>
+    <div class="field"><label>Curriculum Outcome</label><select id="sl-outcome" onchange="slSyncInds()"></select></div>
+    <div class="field"><label>Indicators</label><div id="sl-inds" style="display:flex;flex-direction:column;gap:5px;max-height:150px;overflow:auto;font-size:12.5px;border:1px solid var(--ocean-pale,#e7f1f7);border-radius:9px;padding:9px 11px;background:#fff;"></div></div>
+    <div class="field"><label>Topic / Lesson Title</label><input type="text" id="sl-topic" placeholder="e.g. Equivalent Fractions"></div>
+  </div>
+  <div class="field"><label>Design &mdash; pick a slide template</label><div class="pres-style-grid" id="sl-styles" style="margin-top:6px;"></div></div>
+  <div class="field" style="margin-top:14px;"><label>Length</label><div class="pres-pills" id="sl-len" style="margin-top:6px;"></div></div>
+  <div class="field" style="margin-top:14px;"><label>AI Enhancements</label><div class="pres-chips" id="sl-enh" style="margin-top:6px;"></div></div>
+  <button class="pres-go" id="sl-go" style="margin-top:16px;" onclick="slGenerate()">&#127916; Generate Slides <span>&middot; opens in the slide editor</span></button>
+  <div class="pres-progress" id="sl-prog" style="display:none"><div class="pres-prog-track"><div class="pres-prog-bar" id="sl-bar"></div></div><div class="pres-stage" id="sl-stage"></div></div>
+  <div id="sl-status" style="margin-top:10px;font-size:13px;"></div>
 </div></div>
 
 <!-- CALENDAR -->
@@ -5318,13 +5372,23 @@ function presSaveToHist(){
 
 /* ---------------- PPTX Export ---------------- */
 function presEnsurePptx(){
+  if(window.PptxGenJS) return Promise.resolve();
+  var urls=[
+    'https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/PptxGenJS/3.12.0/pptxgen.bundle.js',
+    'https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'
+  ];
   return new Promise(function(res,rej){
-    if(window.PptxGenJS) return res();
-    var sc=document.createElement('script');
-    sc.src='https://cdnjs.cloudflare.com/ajax/libs/PptxGenJS/3.12.0/pptxgen.bundle.js';
-    sc.onload=function(){ res(); };
-    sc.onerror=function(){ rej(new Error('Could not load the PowerPoint library — check your connection.')); };
-    document.head.appendChild(sc);
+    var i=0;
+    function next(){
+      if(window.PptxGenJS) return res();
+      if(i>=urls.length) return rej(new Error('Could not load the PowerPoint library — a network filter may be blocking CDN scripts. PDF export still works.'));
+      var sc=document.createElement('script'); sc.src=urls[i++];
+      sc.onload=function(){ if(window.PptxGenJS) res(); else next(); };
+      sc.onerror=function(){ next(); };
+      document.head.appendChild(sc);
+    }
+    next();
   });
 }
 async function presExportPPTX(){
@@ -5420,7 +5484,8 @@ async function presExportPPTX(){
       if(notes.trim()) sl.addNotes(notes.trim());
     });
     var fname=((presSrc.fname||presDeck.title||'FARUMA_slides').replace(/[^\w\- ]+/g,'').trim()||'FARUMA_slides')+'_slides';
-    await pptx.writeFile({fileName:fname+'.pptx'});
+    try{ await pptx.writeFile({fileName:fname+'.pptx'}); }
+    catch(_we){ var _blob=await pptx.write('blob'); var _a=document.createElement('a'); _a.href=URL.createObjectURL(_blob); _a.download=fname+'.pptx'; document.body.appendChild(_a); _a.click(); setTimeout(function(){ _a.remove(); },400); }
     presEdMsg('&#10003; '+presEsc(fname)+'.pptx downloaded. Upload it to Google Slides or Canva to keep editing there.');
     if(typeof gaTrack==='function') gaTrack('presentation_export',{format:'pptx',style:presDeck.theme,slides:presDeck.slides.length});
   }catch(e){ presEdMsg('&#9888; '+presEsc(e.message||e), true); }
@@ -5520,15 +5585,18 @@ function presExportPDF(){
     var html=''+
     '<div class="fed-ov" id="fed-ov">'+
       '<div class="fed-top">'+
-        '<div class="fed-title">&#128221; <input id="fed-doc-title" oninput="FED._t(this.value)"></div>'+
+        '<div class="fed-crumb">Workspace</div>'+
+        '<div class="fed-chip">&#128221; <input id="fed-doc-title" oninput="FED._t(this.value)"><span class="fed-chip-x" onclick="FED.close()" title="Close">&times;</span></div>'+
         '<span class="fed-status" id="fed-save-status"></span>'+
         '<div class="fed-spacer"></div>'+
-        '<button onclick="FED.print()">&#128424; Print</button>'+
-        '<button onclick="FED.pdf()">&#8681; PDF</button>'+
-        '<button onclick="FED.docx()">&#8681; DOCX</button>'+
-        '<button onclick="FED.save()">&#128190; Save</button>'+
-        '<button onclick="FED.load()">&#128193; Open</button>'+
-        '<button class="fed-x" onclick="FED.close()">&times;</button>'+
+        '<button onclick="FED.collapseLeft()" title="Show/hide pages">&#9776;</button>'+
+        '<button onclick="ftbOpen()" title="Custom lesson-plan templates">&#129513; Templates</button>'+
+        '<button onclick="FED.save()" title="Save project">&#128190;</button>'+
+        '<button onclick="FED.load()" title="Open project">&#128193;</button>'+
+        '<button onclick="FED.print()" title="Print">&#128424;</button>'+
+        '<button onclick="FED.docx()" title="Download as Word">DOCX</button>'+
+        '<button class="fed-export" onclick="FED.pdf()">&#8682; Export</button>'+
+        '<button class="fed-x" onclick="FED.close()" title="Close workspace">&times;</button>'+
       '</div>'+
       '<div class="fed-toolbar" onmousedown="FED._keep(event)">'+
         '<div class="fed-tb-group"><select onchange="FED.cmd(\'fontName\',this.value)" title="Font">'+fonts.map(function(f){return '<option value="'+f+'">'+f+'</option>';}).join('')+'</select>'+
@@ -5828,6 +5896,7 @@ function presExportPDF(){
     },
     save:function(){ var blob=new Blob([JSON.stringify(S)],{type:'application/json'}); var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(S.title||'document').replace(/[^\w\- ]+/g,'')+'.faruma.json';a.click(); toast('Project saved'); },
     load:function(){ var inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=function(){var f=inp.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{S=JSON.parse(rd.result);syncControls();render();toast('Project loaded');}catch(e){toast('Invalid file');}};rd.readAsText(f);};inp.click(); },
+    collapseLeft:function(){ el('fed-ov').classList.toggle('left-off'); },
     close:function(){ saveActive(); autosave(); el('fed-ov').classList.remove('open'); }
   };
   window.FED=FED;
@@ -5871,9 +5940,30 @@ function presExportPDF(){
   function htmlEscBlock(s){return esc(s).replace(/\n{2,}/g,'</p><p>').replace(/\n/g,'<br>');}
   window.fedOpenFromLesson=function(){
     var L=window.lastLessonPlan; if(!L){toast('Generate a lesson plan first');return;}
-    var body=L.plan||''; var html='<h1>'+esc(L.topic||'Lesson Plan')+'</h1><p><b>'+esc(L.subject||'')+(L.grade?' &bull; '+esc(L.grade):'')+(L.duration?' &bull; '+esc(L.duration)+' mins':'')+'</b></p>';
-    if(/[<][a-z]/i.test(body)) html+=body; else html+='<p>'+htmlEscBlock(body)+'</p>';
-    openWith(defaultState((L.topic||'Lesson')+' — Lesson Plan',[html]));
+    var p=L.plan||{};
+    if(typeof p==='string'){ var s0=/[<][a-z]/i.test(p)?p:'<p>'+htmlEscBlock(p)+'</p>'; openWith(defaultState((L.topic||'Lesson')+' — Lesson Plan',['<h1>'+esc(L.topic||'Lesson Plan')+'</h1>'+s0])); return; }
+    function normList(a2){ if(a2==null)return null; if(!Array.isArray(a2))a2=[a2]; return a2.map(function(x){ if(x&&typeof x==='object') return ((x.code?x.code+' — ':'')+(x.text||x.indicator||JSON.stringify(x))); return String(x); }).map(function(x){return x.trim();}).filter(Boolean); }
+    function listBlock(t,a2){ a2=normList(a2); if(!a2||!a2.length)return ''; return '<h2>'+esc(t)+'</h2><ul>'+a2.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'; }
+    function txtBlock(t,v){ v=String(v==null?'':v).trim(); if(!v)return ''; return '<h2>'+esc(t)+'</h2><p>'+esc(v).replace(/\n/g,'<br>')+'</p>'; }
+    var html='<h1>'+esc(p.topic||L.topic||'Lesson Plan')+'</h1>';
+    var meta=[['Subject',p.subject||L.subject],['Grade',p.grade||L.grade],['Week',p.week],['Lesson No.',p.lessonNo],['Date',p.date],['Duration',(p.duration||L.duration)?String(p.duration||L.duration)+' mins':''],['Strand',p.strand],['Sub-strand',p.substrand],['Outcome',(p.outcomeCode||L.outCode)?String(p.outcomeCode||L.outCode)+(p.outcomeStmt||L.outStmt?' — '+(p.outcomeStmt||L.outStmt):''):'']].filter(function(r){return r[1];});
+    if(meta.length){ html+='<table><tbody>'+meta.map(function(r){return '<tr><td style="width:150px"><b>'+esc(r[0])+'</b></td><td>'+esc(String(r[1]))+'</td></tr>';}).join('')+'</tbody></table>'; }
+    html+=listBlock('Learning Intentions',p.learningIntentions);
+    html+=listBlock('Success Criteria',p.successCriteria);
+    html+=listBlock('Indicators',p.indicators||L.indicators);
+    html+=listBlock('Prior Knowledge',p.priorKnowledge);
+    html+=listBlock('Key Competencies',p.keyCompetencies);
+    html+=listBlock('Shared Values',p.sharedValues);
+    html+=listBlock('Process Skills',p.processSkill);
+    html+=listBlock('Resources',p.resources);
+    var tl=p.teaching||{};
+    var phases=[['Introduction',normList(tl.introduction)],['Explanation / Inquiry',normList(tl.explanation)],['Activity',normList(tl.activity)],['Conclusion',normList(tl.conclusion)]].filter(function(x){return x[1]&&x[1].length;});
+    if(phases.length){ html+='<h2>Teaching and Learning</h2>'; phases.forEach(function(ph){ html+='<h3>'+esc(ph[0])+'</h3><ul>'+ph[1].map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'; }); }
+    html+=listBlock('Assessment',p.assessment);
+    var secs=Array.isArray(p.sections)?p.sections:(Array.isArray(p.filledSections)?p.filledSections:(Array.isArray(p.filled)?p.filled:null));
+    if(secs){ secs.forEach(function(s){ if(!s)return; var c=(s.content!=null)?s.content:((s.lines!=null)?s.lines:s.value); if(Array.isArray(c)) html+=listBlock(s.title||'Section',c); else html+=txtBlock(s.title||'Section',c); }); }
+    if(html.length<80){ toast('Generate a lesson plan first'); return; }
+    openWith(defaultState((p.topic||L.topic||'Lesson')+' — Lesson Plan',[html]));
   };
   window.fedOpenFromAssessment=function(){
     var A=window.lastAssessment; if(!A||!A.data){toast('Generate an assessment first');return;}
@@ -6041,18 +6131,118 @@ function presExportPDF(){
     el('ftb-name').value=T.name||''; ftbRender(); el('ftb-ov').classList.add('open');
   };
 
-  /* floating launcher */
-  function launcher(){
-    if(el('fed-launcher'))return;
-    var d=document.createElement('div'); d.id='fed-launcher';
-    d.style.cssText='position:fixed;left:16px;bottom:16px;z-index:9000;display:flex;gap:8px;';
-    d.innerHTML='<button class="btn btn-sm fed-launch" style="border-radius:22px;padding:9px 14px;box-shadow:0 4px 14px rgba(0,0,0,.2)" onclick="fedOpenBlank()">&#128221; Document Editor</button>'+
-      '<button class="btn btn-sm fed-launch" style="border-radius:22px;padding:9px 14px;box-shadow:0 4px 14px rgba(0,0,0,.2)" onclick="ftbOpen()">&#129513; Template Builder</button>';
-    document.body.appendChild(d);
-  }
-  if(document.readyState!=='loading')launcher(); else document.addEventListener('DOMContentLoaded',launcher);
+  /* floating launcher removed — the workspace opens only from generated files */
 })();
 
+</script>
+<script>
+/* ====== FARUMA EXTRAS: Slides tab · Calendar popup · Workspace chrome ====== */
+(function(){
+  function $(id){return document.getElementById(id);}
+  /* keep overlays below the app bar so home + tabs stay visible */
+  function chrome(){ var ab=$('appbar'); document.documentElement.style.setProperty('--fed-top',(ab?ab.offsetHeight:0)+'px'); }
+  window.addEventListener('resize',chrome);
+  /* clicking any tab / home closes the workspace and slide editor (autosaving first) */
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('.tab,.home-card,.nav-home');
+    if(!t)return;
+    var fo=$('fed-ov'); if(fo&&fo.classList.contains('open')&&window.FED){ try{FED.close();}catch(_e){fo.classList.remove('open');} }
+    var to=$('ftb-ov'); if(to&&to.classList.contains('open')&&window.FTB){ try{FTB.close();}catch(_e){to.classList.remove('open');} }
+    ['pres-ov','pres-ed','fed-cal-modal'].forEach(function(id){ var o=$(id); if(o)o.style.display='none'; });
+  },true);
+
+  /* ---------- School Calendar quick view ---------- */
+  window.slCalOpen=function(){
+    var m=$('fed-cal-modal');
+    if(!m){ m=document.createElement('div'); m.id='fed-cal-modal'; m.className='fed-calov';
+      m.innerHTML='<div class="fed-calbox"><div class="fed-calhead"><b>&#128197; School Calendar 2026</b><span class="fed-calx" onclick="slCalClose()">&times;</span></div><div class="fed-calbody" id="fed-cal-body"></div></div>';
+      m.addEventListener('click',function(e){ if(e.target===m) slCalClose(); });
+      document.body.appendChild(m); }
+    var src=document.querySelector('#page-calendar .card');
+    var body=$('fed-cal-body');
+    body.innerHTML=src?src.innerHTML:'<p>Calendar not available.</p>';
+    body.querySelectorAll('[id]').forEach(function(n){ n.removeAttribute('id'); });
+    m.style.display='flex';
+  };
+  window.slCalClose=function(){ var m=$('fed-cal-modal'); if(m)m.style.display='none'; };
+
+  /* ---------- Slides Studio tab ---------- */
+  if(typeof PRES_THEMES==='undefined'){ if(document.readyState!=='loading')chrome(); else document.addEventListener('DOMContentLoaded',chrome); return; }
+  var slTheme='professional', slLen='standard', slEnh={};
+  PRES_ENH.forEach(function(e2){ slEnh[e2.id]=(e2.on!==false); });
+
+  window.slPickTheme=function(k){ slTheme=k; document.querySelectorAll('#sl-styles .pres-style-card').forEach(function(c){ c.classList.toggle('sel',c.getAttribute('data-k')===k); }); };
+  window.slPickLen=function(k){ slLen=k; document.querySelectorAll('#sl-len .pres-pill').forEach(function(c){ c.classList.toggle('sel',c.getAttribute('data-k')===k); }); };
+  window.slTogEnh=function(k){ slEnh[k]=!slEnh[k]; var c=document.querySelector('#sl-enh .pres-chip[data-k="'+k+'"]'); if(c)c.classList.toggle('on',!!slEnh[k]); };
+  window.slSyncOutcomes=function(){
+    var g=$('sl-grade'), s=$('sl-sub'), o=$('sl-outcome'); if(!g||!s||!o)return;
+    var rows=(typeof getSyl==='function')?getSyl(g.value,s.value):[];
+    var seen={},opts=[];
+    rows.forEach(function(r){ if(seen[r.out_code])return; seen[r.out_code]=1;
+      opts.push('<option value="'+aEsc(r.out_code)+'">'+aEsc(r.out_code)+' &mdash; '+aEsc(String(r.out_stmt||'').slice(0,96))+'</option>'); });
+    o.innerHTML=opts.join('')||'<option value="">No outcomes found for this grade/subject</option>';
+    window.slSyncInds();
+  };
+  window.slSyncInds=function(){
+    var g=$('sl-grade'), s=$('sl-sub'), o=$('sl-outcome'), box=$('sl-inds'); if(!g||!s||!o||!box)return;
+    var rows=(typeof getSyl==='function')?getSyl(g.value,s.value).filter(function(r){return r.out_code===o.value;}):[];
+    box.innerHTML=rows.map(function(r){
+      return '<label style="display:flex;gap:7px;align-items:flex-start;font-weight:400;cursor:pointer;"><input type="checkbox" checked value="'+aEsc(r.ind_code)+'" data-t="'+aEsc(r.indicator)+'" style="margin-top:2px;"> <span><b>'+aEsc(r.ind_code)+'</b> '+aEsc(r.indicator)+'</span></label>';
+    }).join('')||'<span style="color:#9aa7ae;">No indicators for this outcome.</span>';
+  };
+  function slInit(){
+    var st=$('sl-styles'); if(!st||st._done)return; st._done=true;
+    st.innerHTML=Object.keys(PRES_THEMES).map(function(k){ var t=PRES_THEMES[k];
+      return '<div class="pres-style-card'+(k===slTheme?' sel':'')+'" data-k="'+k+'" onclick="slPickTheme(\''+k+'\')">'+
+        '<div class="pres-swatch" style="background:#'+t.bg+'"><div class="pres-sw-band" style="background:#'+t.band+'"></div><div class="pres-sw-line" style="width:52%;background:#'+t.ink+'"></div><div class="pres-sw-line" style="width:34%;background:#'+t.sub+'"></div><div class="pres-sw-dot" style="background:#'+t.accent+'"></div></div>'+
+        '<div class="pres-style-name">'+aEsc(t.name||k)+'</div><div class="pres-style-desc">'+aEsc(t.desc||'')+'</div></div>'; }).join('');
+    $('sl-len').innerHTML=PRES_LENGTHS.map(function(L){
+      return '<div class="pres-pill'+(L.id===slLen?' sel':'')+'" data-k="'+L.id+'" onclick="slPickLen(\''+L.id+'\')"><b>'+aEsc(L.label)+'</b><span>'+aEsc(L.hint)+'</span></div>'; }).join('');
+    $('sl-enh').innerHTML=PRES_ENH.map(function(e2){
+      return '<div class="pres-chip'+(slEnh[e2.id]?' on':'')+'" data-k="'+e2.id+'" onclick="slTogEnh(\''+e2.id+'\')">'+aEsc(e2.label)+'</div>'; }).join('');
+    window.slSyncOutcomes();
+  }
+  window.slGenerate=async function(){
+    var g=$('sl-grade').value, s=$('sl-sub').value, tp=($('sl-topic').value||'').trim();
+    var osel=$('sl-outcome'), oc=osel.value||'';
+    var ostmt=(osel.selectedIndex>=0&&oc)?osel.options[osel.selectedIndex].text.replace(/^[^\u2014]*\u2014\s*/,''):'';
+    var inds=[].map.call(document.querySelectorAll('#sl-inds input:checked'),function(c){ return {code:c.value,text:c.getAttribute('data-t')||''}; });
+    var status=$('sl-status');
+    if(!tp){ status.innerHTML='<span style="color:var(--coral,#e8624a);">Please enter a topic for the lesson.</span>'; return; }
+    presSrc={ origin:'slides-tab', subject:s, grade:g, topic:tp, duration:'',
+      outCode:oc, outStmt:ostmt, indicators:inds, material:'',
+      lang:(typeof isThaanaSubject==='function'&&isThaanaSubject(s))?'dv':'en',
+      fname:tp.replace(/[^\w\- ]+/g,'').trim()||'FARUMA' };
+    presOpts={ theme:slTheme, length:slLen, enh:{} };
+    PRES_ENH.forEach(function(e2){ presOpts.enh[e2.id]=!!slEnh[e2.id]; });
+    var go=$('sl-go'), prog=$('sl-prog'), bar=$('sl-bar'), stage=$('sl-stage');
+    go.disabled=true; prog.style.display='block'; status.innerHTML='';
+    var stages=['Reading curriculum standard\u2026','Planning slide sequence\u2026','Writing educational content\u2026','Creating image prompts\u2026','Designing slides\u2026'], si=0;
+    bar.style.width='8%'; stage.textContent=stages[0];
+    var tick=setInterval(function(){ si=Math.min(si+1,stages.length-1); stage.textContent=stages[si]; bar.style.width=(8+si*18)+'%'; },2600);
+    try{
+      var raw=await callAPI(presKey(), presBuildPrompt(), presLenObj().maxTok);
+      clearInterval(tick);
+      presDeck=presNormalize(raw);
+      presDeck.theme=presOpts.theme;
+      presDeck.src={ origin:'slides-tab', subject:s, grade:g, topic:tp, fname:presSrc.fname, lang:presSrc.lang };
+      if(presOpts.enh.images||presOpts.enh.diagrams){
+        stage.textContent='Painting AI images\u2026'; bar.style.width='90%';
+        await presFetchImages(presDeck,function(d,t2){ stage.textContent='Painting AI images\u2026 '+d+'/'+t2; bar.style.width=(90+Math.round(8*d/Math.max(1,t2)))+'%'; });
+      }
+      bar.style.width='100%'; stage.textContent='Done!';
+      presSel=0; presSaveDraft(); presOpenEditor();
+      if(typeof gaTrack==='function') gaTrack('presentation_generate',{origin:'slides-tab',subject:s,grade:g,style:slTheme,length:slLen,slides:(presDeck.slides||[]).length});
+      setTimeout(function(){ prog.style.display='none'; go.disabled=false; },900);
+    }catch(err){
+      clearInterval(tick); prog.style.display='none'; go.disabled=false;
+      status.innerHTML='<span style="color:var(--coral,#e8624a);">&#9888; '+aEsc(err&&err.message?err.message:String(err))+'</span>';
+      if(typeof gaTrack==='function') gaTrack('ai_generation_failure',{feature:'slides-tab',subject:s,grade:g});
+    }
+  };
+  function boot(){ chrome(); slInit(); }
+  if(document.readyState!=='loading')boot(); else document.addEventListener('DOMContentLoaded',boot);
+})();
 </script>
 </body>
 </html>
