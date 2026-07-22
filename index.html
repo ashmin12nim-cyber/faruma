@@ -719,6 +719,24 @@ body::before {
 .fed-toolbar select{min-width:auto;font-size:12px;padding:4px;}
 .fed-toolbar input[type=color]{width:24px;height:24px;border:1px solid #e2d8c8;border-radius:6px;padding:0;cursor:pointer;background:none;}
 .fed-tb-lbl{font-size:10px;color:#a89c88;font-weight:700;margin-right:2px;}
+/* --- keep site nav visible while workspace is open --- */
+body.fed-active #appbar{position:sticky;top:0;z-index:9700;box-shadow:0 2px 10px rgba(90,70,40,.07);}
+body.fed-active{overflow:hidden;}
+/* --- clean icon toolbar --- */
+.fed-toolbar button{min-width:34px;height:34px;padding:5px;}
+.fed-toolbar button svg,.fed-top button svg{display:block;pointer-events:none;}
+.fed-toolbar .fed-tb-group{gap:1px;padding:0 7px;}
+.fed-toolbar select{border:1px solid #ece4d6;border-radius:8px;height:32px;background:#fff;color:#5c5347;font-weight:600;padding:0 8px;}
+.fed-ic-lbl{display:inline-flex;align-items:center;gap:2px;color:#8a8073;padding:0 2px;}
+.fed-ic-lbl input[type=color]{width:20px;height:20px;border:1px solid #e2d8c8;border-radius:5px;padding:0;cursor:pointer;background:none;}
+.fed-size-step{display:inline-flex;align-items:center;gap:1px;border:1px solid #e2d8c8;border-radius:9px;padding:1px;background:#fff;}
+.fed-size-step button{min-width:26px;height:26px;padding:4px;}
+.fed-size-step input{width:32px;text-align:center;border:none;outline:none;font-size:12.5px;font-weight:700;color:#3c342b;background:transparent;}
+/* --- top bar icon buttons --- */
+.fed-top button{display:inline-flex;align-items:center;gap:0;padding:7px 9px;}
+.fed-top .fed-export{gap:5px;padding:7px 15px;}
+.fed-top .fed-export svg{width:16px;height:16px;}
+.fed-top .fed-crumb::after{content:'\203a';margin-left:8px;color:#c9beae;}
 /* body */
 .fed-body{display:flex;flex:1;overflow:hidden;}
 .fed-left{width:156px;min-width:156px;background:#f4f0e8;overflow-y:auto;padding:14px 12px;border-right:1px solid #eae2d4;}
@@ -804,6 +822,72 @@ body::before {
 .fed-calbody{overflow-y:auto;padding:16px 20px;}
 @media(max-width:820px){.fed-left{display:none;}.fed-right{width:172px;min-width:172px;}.fed-chip input{width:130px;}}
 
+
+/* ==================== FARUMA UI v2 — assessment-matched formatting + readable type ==================== */
+body{font-size:15.5px;line-height:1.55;}
+/* shared curriculum panel (assessment look, now used on every tool page) */
+.curr-panel{border:2px solid var(--coral,#e8624a);border-radius:14px;padding:18px 20px;margin:4px 0 18px;background:linear-gradient(135deg,#fff6f3,#fdfcfa);}
+.curr-title{font-size:16px;font-weight:800;color:var(--coral,#e8624a);letter-spacing:.01em;}
+.curr-sub{font-size:13.5px;color:var(--text-mid);margin-top:4px;line-height:1.5;}
+.curr-panel .field{margin-bottom:12px;}
+/* headings & titles */
+.card-title{font-size:21px;margin-bottom:18px;}
+.tab-label{font-size:16.5px;}
+.tab-ic svg{width:22px;height:22px;}
+.home-card h3{font-size:26px;}
+.home-card p{font-size:17px;}
+/* form controls */
+.field label{font-size:12px;letter-spacing:.07em;margin-bottom:6px;}
+.field input,.field select,.field textarea{font-size:15px;padding:11px 13px;border-radius:10px;}
+.field select[multiple]{padding:8px;font-size:14px;}
+.apirow label{font-size:13px;}
+.apirow input{font-size:14.5px;}
+/* pill sub-tabs — one look everywhere (assessment style) */
+.atab,.stab{font-size:14px;padding:9px 17px;border-radius:999px;letter-spacing:.02em;}
+.stabs{display:flex;flex-wrap:wrap;gap:8px;}
+.atabs{gap:8px;}
+/* buttons */
+.btn{font-size:15.5px;padding:14px;border-radius:11px;}
+.btn-sm{font-size:13.5px;padding:10px 14px;}
+.cal-hi{font-size:14.5px;padding:11px 18px;}
+/* slides studio + wizard bits */
+.pres-hint{font-size:13.5px;}
+.pres-style-name{font-size:14px;}
+.pres-style-desc{font-size:12.5px;}
+.pres-pill b{font-size:14px;}
+.pres-pill span{font-size:12.5px;}
+.pres-chip{font-size:13px;}
+.pres-go{font-size:16px;}
+/* workspace readability */
+.fed-content{font-size:15px;line-height:1.6;}
+.fed-right h4{font-size:11.5px;}
+.fed-field label{font-size:11px;}
+.fed-field select,.fed-field input{font-size:13.5px;padding:7px 9px;}
+.fed-comp button{font-size:12px;padding:9px 5px;}
+.fed-toolbar select{font-size:13px;}
+.fed-chip input{font-size:14px;}
+.fed-ai-note{font-size:11.5px;}
+.fed-thumb .fed-thumb-num{font-size:11px;}
+/* misc small text that inherits */
+.sug-wrap{font-size:13.5px;}
+
+/* ==================== FARUMA AI generating loader (multicolour dot cluster) ==================== */
+#fx-load{position:fixed;inset:0;z-index:13000;display:none;align-items:center;justify-content:center;background:rgba(18,30,42,.34);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);}
+#fx-load.on{display:flex;animation:fxfade .25s ease;}
+@keyframes fxfade{from{opacity:0}to{opacity:1}}
+.fx-card{background:#fff;border-radius:22px;padding:32px 36px 28px;box-shadow:0 26px 74px rgba(10,40,60,.30);text-align:center;max-width:340px;width:calc(100% - 48px);}
+.fx-dots{width:120px;height:120px;margin:0 auto 4px;position:relative;}
+.fx-spin{position:absolute;inset:0;animation:fxspin 5.5s linear infinite;}
+@keyframes fxspin{to{transform:rotate(360deg)}}
+.fx-dot{position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px;border-radius:50%;transform:translate(var(--tx),var(--ty)) scale(.55);animation:fxpulse 1.4s ease-in-out infinite;}
+@keyframes fxpulse{0%,100%{transform:translate(var(--tx),var(--ty)) scale(.5);opacity:.5}50%{transform:translate(var(--tx),var(--ty)) scale(1.18);opacity:1}}
+.fx-label{font-family:'Fraunces',serif;font-weight:700;font-size:19px;color:var(--ocean-deep,#13324e);margin-top:10px;}
+.fx-sub{font-size:14px;color:var(--text-mid,#4a6370);margin-top:7px;min-height:20px;transition:opacity .3s;}
+.fx-bar{height:6px;border-radius:6px;background:#eef2f4;overflow:hidden;margin-top:18px;}
+.fx-bar-i{height:100%;width:42%;border-radius:6px;background:linear-gradient(90deg,#e8624a,#f59e0b,#f6c945,#2f9e5a,#0e8a86,#1f5e7d,#7c4dff,#e0559b);background-size:220% 100%;animation:fxslide 1.25s ease-in-out infinite,fxhue 3s linear infinite;}
+@keyframes fxslide{0%{margin-left:-45%}100%{margin-left:100%}}
+@keyframes fxhue{to{background-position:220% 0}}
+@media (prefers-reduced-motion: reduce){.fx-spin,.fx-dot,.fx-bar-i{animation-duration:3s}}
 </style>
 </head>
 <body>
@@ -871,18 +955,18 @@ body::before {
       <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign In</button>
-      <div style="text-align:center;margin-top:10px;"><a onclick="showForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Forgot password?</a></div>
+      <div style="text-align:center;margin-top:10px;"><a onclick="showForgot()" style="font-size:13.5px;cursor:pointer;text-decoration:underline;">Forgot password?</a></div>
     </div>
     <!-- Forgot password form -->
     <div id="form-forgot" style="display:none;">
-      <p style="font-size:13px;margin:0 0 12px;">Enter your email and we'll send you a link to reset your password.</p>
+      <p style="font-size:14px;margin:0 0 12px;">Enter your email and we'll send you a link to reset your password.</p>
       <div class="auth-field"><label>Email</label><input type="email" id="forgot-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doForgot()"></div>
       <button class="auth-btn" id="forgot-btn" onclick="doForgot()">Send Reset Link</button>
-      <div style="text-align:center;margin-top:10px;"><a onclick="hideForgot()" style="font-size:12px;cursor:pointer;text-decoration:underline;">Back to sign in</a></div>
+      <div style="text-align:center;margin-top:10px;"><a onclick="hideForgot()" style="font-size:13.5px;cursor:pointer;text-decoration:underline;">Back to sign in</a></div>
     </div>
     <!-- Reset password form (shown when arriving from a reset email link) -->
     <div id="form-reset" style="display:none;">
-      <p style="font-size:13px;margin:0 0 12px;">Choose a new password for your account.</p>
+      <p style="font-size:14px;margin:0 0 12px;">Choose a new password for your account.</p>
       <div class="auth-field"><label>New Password</label><input type="password" id="reset-pass" placeholder="Min. 6 characters"></div>
       <div class="auth-field"><label>Confirm Password</label><input type="password" id="reset-pass2" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')doReset()"></div>
       <button class="auth-btn" id="reset-btn" onclick="doReset()">Set New Password</button>
@@ -907,13 +991,13 @@ body::before {
       <h3 style="margin:0;font-size:18px;">Privacy Notice</h3>
       <button onclick="hidePrivacy()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
-    <div style="font-size:13px;line-height:1.7;color:#333;">
+    <div style="font-size:14px;line-height:1.7;color:#333;">
       <p><b>What we collect.</b> When you create a FARUMA account we store your name, email address, and a securely hashed password. As you use the app we keep a record of your credit balance and credit transactions (when credits were used or added).</p>
       <p><b>What we do with it.</b> This information is used only to run your account, track your credits, and improve FARUMA. We do not sell or share your personal information with anyone.</p>
       <p><b>Where it is stored.</b> Account data is stored securely with Supabase. The text you type when generating lesson plans is processed by Anthropic's Claude API to produce your documents and is not used to identify you.</p>
       <p><b>Generated documents.</b> Lesson plans, schemes of work and other documents you generate are saved in your own browser on your device, not on our servers.</p>
       <p><b>Your choices.</b> You can ask for your account and its data to be deleted at any time by contacting the FARUMA administrator at your school.</p>
-      <p style="color:#777;font-size:12px;margin-bottom:0;">FARUMA · Seenu Atoll School, S. Hulhudhoo-Meedhoo · Last updated July 2026</p>
+      <p style="color:#777;font-size:13.5px;margin-bottom:0;">FARUMA · Seenu Atoll School, S. Hulhudhoo-Meedhoo · Last updated July 2026</p>
     </div>
   </div>
 </div>
@@ -926,21 +1010,21 @@ body::before {
       <button onclick="closeTopup()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
     <div id="topup-step1">
-      <p style="font-size:13px;color:#555;margin:0 0 14px;">Choose a credit pack. You'll pay by bank transfer and credits are added once the transfer is confirmed.</p>
+      <p style="font-size:14px;color:#555;margin:0 0 14px;">Choose a credit pack. You'll pay by bank transfer and credits are added once the transfer is confirmed.</p>
       <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(50)">50 credits — MVR 90</button>
       <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(150)">150 credits — MVR 240</button>
       <button class="auth-btn" style="margin-bottom:8px;" onclick="requestTopup(400)">400 credits — MVR 560 <span style="font-weight:400;">(best value)</span></button>
-      <div id="topup-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:6px;"></div>
-      <div id="topup-history" style="margin-top:14px;font-size:12px;color:#555;"></div>
+      <div id="topup-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:14px;margin-top:6px;"></div>
+      <div id="topup-history" style="margin-top:14px;font-size:13.5px;color:#555;"></div>
     </div>
     <div id="topup-step2" style="display:none;">
-      <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;font-size:13px;line-height:1.7;margin-bottom:12px;">
+      <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;font-size:14px;line-height:1.7;margin-bottom:12px;">
         <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Request created ✓</div>
         <div>Pack: <b id="topup-pack-label"></b></div>
         <div>Amount to transfer: <b id="topup-amount-label"></b></div>
         <div>Reference code: <b id="topup-ref-label" style="font-size:16px;letter-spacing:1px;"></b></div>
       </div>
-      <div style="font-size:13px;line-height:1.8;">
+      <div style="font-size:14px;line-height:1.8;">
         <b>How to pay:</b>
         <ol style="margin:6px 0 10px;padding-left:20px;">
           <li>Transfer the amount to:<br><b id="topup-bank-label"></b></li>
@@ -961,9 +1045,9 @@ body::before {
       <h3 style="margin:0;font-size:18px;">Contact FARUMA Admin</h3>
       <button onclick="closeHelp()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
-    <p style="font-size:13px;color:#555;margin:0 0 10px;">Question, problem, or a top-up that hasn't arrived? Write it here.</p>
-    <textarea id="help-text" rows="5" style="width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:8px;padding:10px;font-size:13px;font-family:inherit;resize:vertical;" placeholder="Type your message..."></textarea>
-    <div id="help-status" style="display:none;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
+    <p style="font-size:14px;color:#555;margin:0 0 10px;">Question, problem, or a top-up that hasn't arrived? Write it here.</p>
+    <textarea id="help-text" rows="5" style="width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:8px;padding:10px;font-size:14px;font-family:inherit;resize:vertical;" placeholder="Type your message..."></textarea>
+    <div id="help-status" style="display:none;border-radius:8px;padding:8px 12px;font-size:14px;margin-top:8px;"></div>
     <button class="auth-btn" id="help-send-btn" style="margin-top:10px;" onclick="sendHelp()">Send Message</button>
   </div>
 </div>
@@ -978,18 +1062,18 @@ body::before {
     <div id="admin-login">
       <div class="auth-field"><label>Admin password</label><input type="password" id="admin-pass" onkeydown="if(event.key==='Enter')adminLoad()"></div>
       <button class="auth-btn" onclick="adminLoad()">Open Admin Panel</button>
-      <div id="admin-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:8px;"></div>
+      <div id="admin-err" style="display:none;color:#a12622;background:#fdecea;border:1px solid #f2b8b5;border-radius:8px;padding:8px 12px;font-size:14px;margin-top:8px;"></div>
     </div>
     <div id="admin-body" style="display:none;">
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <button class="logout-btn" onclick="adminLoad()">↻ Refresh</button>
       </div>
-      <h4 style="margin:0 0 8px;font-size:15px;">Pending top-ups <span id="admin-pending-count" style="background:#fdecea;color:#a12622;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
-      <div id="admin-pending" style="font-size:13px;"></div>
-      <h4 style="margin:18px 0 8px;font-size:15px;">Messages from teachers <span id="admin-msg-count" style="background:#e8f1fb;color:#0f2740;border-radius:10px;padding:1px 8px;font-size:12px;"></span></h4>
-      <div id="admin-messages" style="font-size:13px;"></div>
+      <h4 style="margin:0 0 8px;font-size:15px;">Pending top-ups <span id="admin-pending-count" style="background:#fdecea;color:#a12622;border-radius:10px;padding:1px 8px;font-size:13.5px;"></span></h4>
+      <div id="admin-pending" style="font-size:14px;"></div>
+      <h4 style="margin:18px 0 8px;font-size:15px;">Messages from teachers <span id="admin-msg-count" style="background:#e8f1fb;color:#0f2740;border-radius:10px;padding:1px 8px;font-size:13.5px;"></span></h4>
+      <div id="admin-messages" style="font-size:14px;"></div>
       <h4 style="margin:18px 0 8px;font-size:15px;">Recently resolved</h4>
-      <div id="admin-recent" style="font-size:12px;color:#666;"></div>
+      <div id="admin-recent" style="font-size:13.5px;color:#666;"></div>
     </div>
   </div>
 </div>
@@ -1128,7 +1212,7 @@ body::before {
     <h2>About FARUMA</h2>
     <p>FARUMA is an AI-powered planning assistant built for Maldivian teachers. Every lesson plan, scheme of work, checklist, assessment and report comment is aligned to the Maldives National Curriculum.</p>
     <p>Pick a tool, choose your grade, subject and outcomes, and FARUMA drafts ready-to-use material in your school's own format &mdash; so you spend less time formatting and more time teaching.</p>
-    <p style="color:var(--text-light);font-size:13px;">AI Lesson Planner for Maldivian Teachers</p>
+    <p style="color:var(--text-light);font-size:14px;">AI Lesson Planner for Maldivian Teachers</p>
   </div>
 </div>
 
@@ -1156,21 +1240,28 @@ body::before {
     <div class="field"><label>Week</label><select id="f-week"><option value="">-- Select Week --</option></select></div>
     <div class="field"><label>Lesson No.</label><input type="text" id="f-lesson" placeholder="e.g. 1"></div>
   </div>
+  <div class="curr-panel">
+    <div class="curr-title">&#128218; Select National Curriculum Standard</div>
+    <div class="curr-sub" style="margin-bottom:12px;">Choose the strand, outcome &amp; indicators &mdash; the lesson plan is generated from and mapped to these codes.</div>
+    <div id="cb-gen"></div>
+    <div id="gen-hidden-syl" style="display:none">
+      <select id="f-strand"><option value="">--</option></select>
+      <select id="f-substrand"><option value="">--</option></select>
+      <select id="f-outcode"><option value="">--</option></select>
+      <textarea id="f-outstmt" rows="2" readonly></textarea>
+      <select id="f-indicators" multiple><option disabled>Select an outcome above</option></select>
+    </div>
+  </div>
   <div class="g2">
     <div class="field"><label>Date</label><input type="date" id="f-date"></div>
-    <div class="field"><label>Strand</label><select id="f-strand"><option value="">--</option></select></div>
+    <div class="field"><label>Topic / Lesson Title</label><input type="text" id="f-topic" placeholder="e.g. Adding fractions with unlike denominators"></div>
   </div>
-  <div class="g2">
-    <div class="field"><label>Sub-Strand</label><select id="f-substrand"><option value="">--</option></select></div>
-    <div class="field"><label>Outcome Code</label><select id="f-outcode"><option value="">--</option></select></div>
-  </div>
-  <div class="field"><label>Outcome Statement</label><textarea id="f-outstmt" rows="2" readonly style="background:#f5f5f5;color:#555;"></textarea></div>
   <div class="g2">
     <div class="field"><label>School Name</label><input type="text" id="f-school" placeholder="e.g. your school name" value=""></div>
     <div class="field"><label>School Address</label><input type="text" id="f-address" placeholder="e.g. your school address"></div>
   </div>
-  <div id="active-tpl-banner" style="display:none;background:var(--ocean-pale);border:1px solid rgba(47,170,184,.3);border-radius:8px;padding:9px 14px;margin-bottom:12px;font-size:12px;color:var(--ocean-deep);font-weight:700;">
-    📄 Template active: <span id="active-tpl-name"></span> &nbsp;<a href="#" onclick="return false;" style="color:var(--coral);font-size:11px;">Change</a>
+  <div id="active-tpl-banner" style="display:none;background:var(--ocean-pale);border:1px solid rgba(47,170,184,.3);border-radius:8px;padding:9px 14px;margin-bottom:12px;font-size:13.5px;color:var(--ocean-deep);font-weight:700;">
+    📄 Template active: <span id="active-tpl-name"></span> &nbsp;<a href="#" onclick="return false;" style="color:var(--coral);font-size:12.5px;">Change</a>
   </div>
   <div class="field"><label>Lesson Plan Format</label><select id="f-format">
     <option value="standard" selected>Seenu Atoll School Template (Set Induction · Main Body · Closure · Checked by)</option>
@@ -1185,23 +1276,21 @@ body::before {
     <option value="Game-Based">Game-Based Learning</option>
     <option value="Collaborative">Collaborative / Group Work</option>
   </select></div>
-  <div class="field"><label>Topic / Lesson Title</label><input type="text" id="f-topic" placeholder="e.g. Adding fractions with unlike denominators"></div>
-  <div class="field"><label>Indicators (hold Ctrl/Cmd for multiple)</label><select id="f-indicators" multiple style="height:110px;width:100%;border:1.5px solid #dde2e8;border-radius:7px;padding:5px;font-size:12px;font-family:inherit;"><option disabled>Select Outcome Code above</option></select></div>
   <div class="field"><label>Activity Ideas</label><div class="sug-wrap" id="sug-wrap"></div><textarea id="f-activities" rows="3" placeholder="Add ideas, or paste an image here..."></textarea>
     <div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#0f4c5c;border:1px solid #cfe0e2;background:#f4fbfb;padding:7px 12px;border-radius:9px">
+      <label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#0f4c5c;border:1px solid #cfe0e2;background:#f4fbfb;padding:7px 12px;border-radius:9px">
         <span>&#128206;</span> Add image, PDF or Word
         <input type="file" id="f-activity-image" accept="image/*,application/pdf,.pdf,.doc,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none" onchange="onActivityFile(this)">
       </label>
-      <span style="font-size:12px;color:#8a978f">or paste an image (Ctrl/Cmd+V) into the box above</span>
+      <span style="font-size:13.5px;color:#8a978f">or paste an image (Ctrl/Cmd+V) into the box above</span>
       <div id="act-img-preview" style="display:none;align-items:center;gap:8px">
         <img id="act-img-thumb" alt="" style="height:44px;width:44px;object-fit:cover;border-radius:8px;border:1px solid #e2e8e6;display:none">
         <span id="act-file-icon" style="display:none;height:44px;width:44px;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e2e8e6;background:#f4fbfb;font-size:20px">&#128196;</span>
-        <span id="act-img-name" style="font-size:12px;color:#5b6b63;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-        <button type="button" onclick="clearActivityImage()" style="cursor:pointer;font-size:12px;color:#b4453a;background:#fff;border:1px solid #eccdc9;padding:6px 10px;border-radius:8px">Remove</button>
+        <span id="act-img-name" style="font-size:13.5px;color:#5b6b63;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+        <button type="button" onclick="clearActivityImage()" style="cursor:pointer;font-size:13.5px;color:#b4453a;background:#fff;border:1px solid #eccdc9;padding:6px 10px;border-radius:8px">Remove</button>
       </div>
     </div>
-    <div id="act-img-hint" style="margin-top:5px;font-size:12px;color:#3a8f5c;display:none">&#10003; The generated lesson plan will include an activity built around this attachment.</div>
+    <div id="act-img-hint" style="margin-top:5px;font-size:13.5px;color:#3a8f5c;display:none">&#10003; The generated lesson plan will include an activity built around this attachment.</div>
   </div>
   <button class="btn btn-navy" id="gen-btn" onclick="doGenerate()">&#9889; Generate Lesson Plan</button>
   <div class="prog" id="gen-prog"><div class="prog-bar" id="gen-bar" style="width:0%"></div></div>
@@ -1229,6 +1318,9 @@ body::before {
       <option value="THIRD TERM 2026">THIRD TERM 2026</option>
     </select></div>
   </div>
+  <div class="curr-panel">
+    <div class="curr-title">&#128218; Select National Curriculum Standard</div>
+    <div class="curr-sub" style="margin-bottom:12px;">Choose grade, subject, strand &amp; outcome &mdash; the record sheet is built from these codes.</div>
   <div class="g2">
     <div class="field"><label>Grade</label><select id="cl-grade" onchange="clOnGradeChange()">
       <option value="">-- Select Grade --</option>
@@ -1240,7 +1332,9 @@ body::before {
       <option value="">-- Select Subject --</option>
     </select></div>
   </div>
-  <div class="g2">
+  <div id="cb-cl"></div>
+  <div id="cl-hidden-syl" style="display:none">
+<div class="g2">
     <div class="field"><label>Strand</label><select id="cl-strand" onchange="clOnStrandChange()" disabled>
       <option value="">-- Select Strand --</option>
     </select></div>
@@ -1251,7 +1345,9 @@ body::before {
   <div class="field"><label>Outcome</label><select id="cl-outcome" onchange="clOnOutcomeChange()" disabled>
     <option value="">-- Select Outcome --</option>
   </select></div>
-  <div id="cl-info" style="display:none;background:var(--ocean-pale);border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;line-height:1.7;"></div>
+  </div>
+  </div>
+  <div id="cl-info" style="display:none;background:var(--ocean-pale);border-radius:8px;padding:12px;margin-bottom:12px;font-size:13.5px;line-height:1.7;"></div>
 </div>
 
 <div class="card">
@@ -1287,11 +1383,11 @@ body::before {
     <div class="atab" data-atype="project">Project Brief</div>
   </div>
   <!-- National Curriculum highlight panel -->
-  <div style="border:2px solid var(--coral,#e8624a);border-radius:14px;padding:16px 18px;margin:4px 0 16px;background:linear-gradient(135deg,#fff6f3,#fdfcfa);">
+  <div class="curr-panel">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
       <div style="flex:1;min-width:220px;">
-        <div style="font-size:14px;font-weight:800;color:var(--coral,#e8624a);letter-spacing:.01em;">&#128218; Select National Curriculum Standard</div>
-        <div style="font-size:11.5px;color:var(--text-mid);margin-top:3px;">Choose grade, subject, outcomes &amp; indicators &mdash; every question is generated from and mapped to these codes.</div>
+        <div class="curr-title">&#128218; Select National Curriculum Standard</div>
+        <div class="curr-sub">Choose grade, subject, outcomes &amp; indicators &mdash; every question is generated from and mapped to these codes.</div>
       </div>
       <button class="btn btn-orange" type="button" onclick="asOpenCurr()">Select standards</button>
     </div>
@@ -1315,13 +1411,13 @@ body::before {
   <div id="as-builder">
     <!-- Gallery -->
     <div id="as-gallery">
-      <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-mid);text-transform:uppercase;margin:6px 0 10px;">Start with a template</div>
+      <div style="font-size:12.5px;font-weight:800;letter-spacing:.08em;color:var(--text-mid);text-transform:uppercase;margin:6px 0 10px;">Start with a template</div>
       <div id="as-bp-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;"></div>
-      <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-mid);text-transform:uppercase;margin:16px 0 10px;">Or build your own</div>
+      <div style="font-size:12.5px;font-weight:800;letter-spacing:.08em;color:var(--text-mid);text-transform:uppercase;margin:16px 0 10px;">Or build your own</div>
       <div onclick="asStartCustom()" style="border:2px dashed #cfdce3;border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;background:#fdfefe;">
         <div style="width:40px;height:40px;border:2px dashed #cfdce3;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#9db3bf;">+</div>
         <div><div style="font-size:13.5px;font-weight:700;color:var(--text-dark);">Create Custom Assessment</div>
-        <div style="font-size:12px;color:var(--text-mid);">Start with an empty blueprint and choose your own question sections</div></div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Start with an empty blueprint and choose your own question sections</div></div>
       </div>
     </div>
 
@@ -1329,22 +1425,22 @@ body::before {
     <div id="as-config" style="display:none;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
         <button class="btn btn-sm" type="button" onclick="asShowGallery()" style="background:#eef2f4;color:var(--text-dark);">&#8592; Templates</button>
-        <span style="font-size:12px;color:var(--text-mid);">Assessment Builder &rsaquo; <b style="color:var(--text-dark);">Configure</b></span>
+        <span style="font-size:13.5px;color:var(--text-mid);">Assessment Builder &rsaquo; <b style="color:var(--text-dark);">Configure</b></span>
       </div>
       <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;">
         <div style="flex:0 0 190px;min-width:170px;border:1px solid #e4edf2;border-radius:12px;background:#fbfdfe;padding:12px;">
-          <div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--text-mid);text-transform:uppercase;margin-bottom:8px;">Add questions</div>
+          <div style="font-size:12.5px;font-weight:800;letter-spacing:.06em;color:var(--text-mid);text-transform:uppercase;margin-bottom:8px;">Add questions</div>
           <div id="as-tiles" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;"></div>
         </div>
         <div style="flex:1;min-width:280px;">
           <div id="as-sections"></div>
           <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border:1px solid #e4edf2;border-radius:12px;background:#fbfdfe;padding:10px 14px;margin-top:8px;">
-            <span id="as-totals" style="font-size:12px;color:var(--text-mid);"></span>
+            <span id="as-totals" style="font-size:13.5px;color:var(--text-mid);"></span>
           </div>
         </div>
         <div style="flex:0 0 252px;min-width:230px;border:1px solid #e4edf2;border-radius:12px;background:#fbfdfe;padding:12px;" id="as-tos-wrap">
-          <div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--text-mid);text-transform:uppercase;margin-bottom:2px;">Table of Specification</div>
-          <div style="font-size:10.5px;color:var(--text-light);margin-bottom:9px;">Weightage of each outcome in this paper</div>
+          <div style="font-size:12.5px;font-weight:800;letter-spacing:.06em;color:var(--text-mid);text-transform:uppercase;margin-bottom:2px;">Table of Specification</div>
+          <div style="font-size:12px;color:var(--text-light);margin-bottom:9px;">Weightage of each outcome in this paper</div>
           <div id="as-tos"></div>
         </div>
       </div>
@@ -1359,13 +1455,13 @@ body::before {
         <button type="button" onclick="asCloseCurr()" style="border:none;background:none;font-size:20px;color:#9db3bf;cursor:pointer;line-height:1;">&#10005;</button>
       </div>
       <div style="padding:12px 18px;border-bottom:1px solid #eef2f4;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
-        <div class="field" style="margin:0;flex:1;min-width:130px;"><label>Grade</label><select id="as-m-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
-        <div class="field" style="margin:0;flex:1;min-width:150px;"><label>Subject</label><select id="as-m-sub"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
-        <button class="btn btn-sm btn-navy" type="button" onclick="asLoadOutcomes()">Load outcomes</button>
+        <div class="field" style="margin:0;flex:1;min-width:130px;"><label>Grade</label><select id="as-m-grade" onchange="asLoadOutcomes()"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+        <div class="field" style="margin:0;flex:1;min-width:150px;"><label>Subject</label><select id="as-m-sub" onchange="asLoadOutcomes()"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
+        
       </div>
       <div id="as-curr" style="flex:1;overflow-y:auto;padding:12px 18px;"></div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid #eef2f4;">
-        <span id="as-cov" style="font-size:12px;color:var(--text-mid);"></span>
+        <span id="as-cov" style="font-size:13.5px;color:var(--text-mid);"></span>
         <button class="btn btn-sm btn-orange" type="button" onclick="asCloseCurr()">Done</button>
       </div>
     </div>
@@ -1381,15 +1477,18 @@ body::before {
 <div class="page" id="page-slides">
 <div class="card">
   <div class="card-title">Slides Studio</div>
-  <div style="border:2px solid var(--coral,#e8624a);border-radius:14px;padding:16px 18px;margin:4px 0 16px;background:linear-gradient(135deg,#fff6f3,#fdfcfa);">
-    <div style="font-size:14px;font-weight:800;color:var(--coral,#e8624a);letter-spacing:.01em;">&#128218; Select National Curriculum Standard</div>
-    <div style="font-size:11.5px;color:var(--text-mid);margin-top:3px;margin-bottom:12px;">Choose the grade, subject, outcome &amp; indicators &mdash; every slide is generated from these codes.</div>
+  <div class="curr-panel">
+    <div class="curr-title">&#128218; Select National Curriculum Standard</div>
+    <div class="curr-sub" style="margin-bottom:12px;">Choose the grade, subject, outcome &amp; indicators &mdash; every slide is generated from these codes.</div>
     <div class="g2">
-      <div class="field"><label>Grade</label><select id="sl-grade" onchange="slSyncOutcomes()"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
-      <div class="field"><label>Subject</label><select id="sl-sub" onchange="slSyncOutcomes()"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
+      <div class="field"><label>Grade</label><select id="sl-grade" onchange="cbRefresh('sl')"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+      <div class="field"><label>Subject</label><select id="sl-sub" onchange="cbRefresh('sl')"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
     </div>
-    <div class="field"><label>Curriculum Outcome</label><select id="sl-outcome" onchange="slSyncInds()"></select></div>
-    <div class="field"><label>Indicators</label><div id="sl-inds" style="display:flex;flex-direction:column;gap:5px;max-height:150px;overflow:auto;font-size:12.5px;border:1px solid var(--ocean-pale,#e7f1f7);border-radius:9px;padding:9px 11px;background:#fff;"></div></div>
+    <div id="cb-sl"></div>
+    <div id="sl-hidden-syl" style="display:none">
+<div class="field"><label>Curriculum Outcome</label><select id="sl-outcome"></select></div>
+    <div class="field"><label>Indicators</label><div id="sl-inds" style="display:flex;flex-direction:column;gap:5px;max-height:150px;overflow:auto;font-size:13.5px;border:1px solid var(--ocean-pale,#e7f1f7);border-radius:9px;padding:9px 11px;background:#fff;"></div></div>
+    </div>
     <div class="field"><label>Topic / Lesson Title</label><input type="text" id="sl-topic" placeholder="e.g. Equivalent Fractions"></div>
   </div>
   <div class="field"><label>Design &mdash; pick a slide template</label><div class="pres-style-grid" id="sl-styles" style="margin-top:6px;"></div></div>
@@ -1397,14 +1496,14 @@ body::before {
   <div class="field" style="margin-top:14px;"><label>AI Enhancements</label><div class="pres-chips" id="sl-enh" style="margin-top:6px;"></div></div>
   <button class="pres-go" id="sl-go" style="margin-top:16px;" onclick="slGenerate()">&#127916; Generate Slides <span>&middot; opens in the slide editor</span></button>
   <div class="pres-progress" id="sl-prog" style="display:none"><div class="pres-prog-track"><div class="pres-prog-bar" id="sl-bar"></div></div><div class="pres-stage" id="sl-stage"></div></div>
-  <div id="sl-status" style="margin-top:10px;font-size:13px;"></div>
+  <div id="sl-status" style="margin-top:10px;font-size:14px;"></div>
 </div></div>
 
 <!-- CALENDAR -->
 <div class="page" id="page-calendar">
 <div class="card">
   <div class="card-title">School Calendar 2026</div>
-  <div style="font-size:12px;color:#888;margin-bottom:12px;">Academic Year 2026 &mdash; Term 1: 25 Jan – 16 Jul &nbsp;|&nbsp; Term 2: 2 Aug – 17 Dec</div>
+  <div style="font-size:13.5px;color:#888;margin-bottom:12px;">Academic Year 2026 &mdash; Term 1: 25 Jan – 16 Jul &nbsp;|&nbsp; Term 2: 2 Aug – 17 Dec</div>
   <div class="cal-grid" id="cal-grid"></div>
 </div></div>
 
@@ -1858,6 +1957,7 @@ async function doGenerate() {
   var btn=document.getElementById("gen-btn"); btn.disabled=true;
   setStatus("gen-status","loading","<span class='spin'></span> Generating...");
   setProgress("gen-prog","gen-bar",20);
+  if(window.fxStart)fxStart('Generating your lesson plan',['Reading the curriculum standard\u2026','Aligning to outcomes & indicators\u2026','Structuring the lesson flow\u2026','Writing activities & assessment\u2026','Formatting your document\u2026']);
 
   var hasTemplate = !!activeTemplate;
   var fmt = (document.getElementById("f-format")||{}).value || "school";
@@ -2046,6 +2146,7 @@ async function doGenerate() {
     setStatus("gen-status","error","&#9888; Error: "+e.message);
     if(typeof gaTrack==='function') gaTrack('ai_generation_failure',{feature:'lesson_plan',subject:currentSub,grade:grade});
   }
+  if(window.fxStop)fxStop();
   btn.disabled=false;
 }
 
@@ -4322,7 +4423,7 @@ function asLoadOutcomes(){
   var box=document.getElementById('as-curr'); if(!box) return;
   asSel={outs:{},inds:{}}; asOutcomeCache=[];
   var rows=(typeof getSyl==='function'?(getSyl(grade,sub)||[]):[]);
-  if(!rows.length){ box.innerHTML='<div style="font-size:12px;color:var(--text-mid);padding:8px 0;">No syllabus data found for '+aEsc(grade)+' '+aEsc(sub)+'.</div>'; asUpdateCov(); return; }
+  if(!rows.length){ box.innerHTML='<div style="font-size:13.5px;color:var(--text-mid);padding:8px 0;">No syllabus data found for '+aEsc(grade)+' '+aEsc(sub)+'.</div>'; asUpdateCov(); return; }
   var map={}, order=[];
   rows.forEach(function(r){
     var k=r.out_code||'';
@@ -4335,13 +4436,13 @@ function asLoadOutcomes(){
     h+='<div style="border:1px solid #e4edf2;border-radius:9px;margin-bottom:7px;background:#fff;">';
     h+='<div style="display:flex;align-items:flex-start;gap:9px;padding:9px 11px;cursor:pointer;" onclick="asToggleExpand('+i+')">';
     h+='<input type="checkbox" id="as-oc-'+i+'" onclick="event.stopPropagation();asToggleOut('+i+')" style="margin-top:3px;accent-color:var(--ocean-mid);">';
-    h+='<div style="flex:1;min-width:0;"><span style="display:inline-block;background:var(--ocean-pale);color:var(--ocean-mid);font-size:10.5px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:6px;">'+aEsc(o.code)+'</span>';
-    h+='<span style="font-size:10.5px;color:var(--text-light);">'+aEsc(o.strand)+' &middot; '+aEsc(o.sub)+'</span>';
-    h+='<div style="font-size:12.5px;color:var(--text-dark);margin-top:3px;line-height:1.45;">'+aEsc(o.stmt)+'</div></div>';
+    h+='<div style="flex:1;min-width:0;"><span style="display:inline-block;background:var(--ocean-pale);color:var(--ocean-mid);font-size:12px;font-weight:700;border-radius:20px;padding:1px 8px;margin-right:6px;">'+aEsc(o.code)+'</span>';
+    h+='<span style="font-size:12px;color:var(--text-light);">'+aEsc(o.strand)+' &middot; '+aEsc(o.sub)+'</span>';
+    h+='<div style="font-size:13.5px;color:var(--text-dark);margin-top:3px;line-height:1.45;">'+aEsc(o.stmt)+'</div></div>';
     h+='<span id="as-oarrow-'+i+'" style="color:#b9c8d0;font-size:13px;margin-top:2px;">&#9662;</span></div>';
     h+='<div id="as-oinds-'+i+'" style="display:none;border-top:1px solid #eef4f7;background:#f8fbfc;padding:8px 12px 8px 34px;">';
     o.inds.forEach(function(ind,j){
-      h+='<label style="display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--text-dark);padding:3px 0;cursor:pointer;">';
+      h+='<label style="display:flex;align-items:flex-start;gap:7px;font-size:13px;color:var(--text-dark);padding:3px 0;cursor:pointer;">';
       h+='<input type="checkbox" id="as-ic-'+i+'-'+j+'" onclick="asToggleInd('+i+','+j+')" style="margin-top:2px;accent-color:var(--ocean-mid);">';
       h+='<span><b style="color:var(--ocean-mid);">'+aEsc(ind.code)+'</b> &mdash; '+aEsc(ind.text)+'</span></label>';
     });
@@ -4424,6 +4525,7 @@ async function doAssessment(){
   var t0=Date.now();
   setStatus('as-status','','Generating '+(ASSESS_TYPE_LABEL[atype]||'assessment')+'&hellip;');
   setProgress('as-prog','as-bar',30);
+  if(window.fxStart)fxStart('Generating your assessment',['Reading the curriculum standard\u2026','Building the question blueprint\u2026','Writing questions & answers\u2026','Mapping to indicators\u2026','Formatting your document\u2026']);
   gaTrack('assessment_generate_start',{assessment_type:atype,subject:sub,grade:grade});
   try{
     var cfg={grade:grade,sub:sub,topic:topic,num:num,atype:atype,blooms:blooms,title:(topic+' — '+(ASSESS_TYPE_LABEL[atype]||'Assessment'))};
@@ -4440,7 +4542,7 @@ async function doAssessment(){
     setStatus('as-status','error','&#9888; '+(e.message||e));
     gaTrack('ai_generation_failure',{feature:'assessment',assessment_type:atype,subject:sub,grade:grade});
   }
-  if(btn) btn.disabled=false;
+  if(window.fxStop)fxStop(); if(btn) btn.disabled=false;
 }
 
 function renderAssessment(data, el, cfg){
@@ -5551,6 +5653,59 @@ function presExportPDF(){
   var PX={A4:[794,1123],A3:[1123,1587],Letter:[816,1056],Legal:[816,1344]};
   function esc(s){return (window.aEsc?aEsc(s):String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}));}
   function el(id){return document.getElementById(id);}
+
+  function ic(n){
+    var S='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">';
+    var T='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" stroke="none">';
+    var P={
+      undo:'<path d="M9 14 4 9l5-5"/><path d="M4 9h11a6 6 0 0 1 0 12H9"/>',
+      redo:'<path d="m15 14 5-5-5-5"/><path d="M20 9H9a6 6 0 0 0 0 12h6"/>',
+      bold:'<path d="M7 5h6a3.5 3.5 0 0 1 0 7H7z"/><path d="M7 12h7a3.5 3.5 0 0 1 0 7H7z"/>',
+      italic:'<line x1="19" y1="5" x2="11" y2="5"/><line x1="13" y1="19" x2="5" y2="19"/><line x1="15" y1="5" x2="9" y2="19"/>',
+      underline:'<path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" y1="21" x2="20" y2="21"/>',
+      strike:'<path d="M17 5H9.5a3 3 0 0 0-1 5.5"/><path d="M14 13a3.5 3.5 0 0 1-2 6H7"/><line x1="4" y1="12" x2="20" y2="12"/>',
+      colorA:'<path d="M5 19 12 5l7 14"/><line x1="8.2" y1="14" x2="15.8" y2="14"/>',
+      marker:'<path d="M15 4l5 5-8.5 8.5-5-5z"/><path d="M6.5 12.5 4 20l7.5-2.5"/>',
+      alignL:'<line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="18" y2="18"/>',
+      alignC:'<line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="5" y1="18" x2="19" y2="18"/>',
+      alignR:'<line x1="4" y1="6" x2="20" y2="6"/><line x1="10" y1="12" x2="20" y2="12"/><line x1="6" y1="18" x2="20" y2="18"/>',
+      alignJ:'<line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>',
+      ul:'<line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/>',
+      ol:'<line x1="10" y1="6" x2="20" y2="6"/><line x1="10" y1="12" x2="20" y2="12"/><line x1="10" y1="18" x2="20" y2="18"/><text x="2.5" y="8" font-size="7" fill="currentColor" stroke="none">1</text><text x="2.5" y="14" font-size="7" fill="currentColor" stroke="none">2</text><text x="2.5" y="20" font-size="7" fill="currentColor" stroke="none">3</text>',
+      outdent:'<line x1="10" y1="6" x2="20" y2="6"/><line x1="10" y1="18" x2="20" y2="18"/><line x1="14" y1="12" x2="20" y2="12"/><path d="M7 9l-3 3 3 3"/>',
+      indent:'<line x1="10" y1="6" x2="20" y2="6"/><line x1="10" y1="18" x2="20" y2="18"/><line x1="14" y1="12" x2="20" y2="12"/><path d="M4 9l3 3-3 3"/>',
+      table:'<rect x="3" y="3" width="18" height="18" rx="1.5"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>',
+      rowAdd:'<rect x="3" y="4" width="18" height="6" rx="1"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="9" y1="18" x2="15" y2="18"/>',
+      rowDel:'<rect x="3" y="4" width="18" height="6" rx="1"/><line x1="9" y1="18" x2="15" y2="18"/>',
+      colAdd:'<rect x="4" y="3" width="6" height="18" rx="1"/><line x1="18" y1="9" x2="18" y2="15"/><line x1="15" y1="12" x2="21" y2="12"/>',
+      colDel:'<rect x="4" y="3" width="6" height="18" rx="1"/><line x1="15" y1="12" x2="21" y2="12"/>',
+      merge:'<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M9 12h6"/><path d="M13 9l3 3-3 3"/>',
+      bucket:'<path d="M5 11 12 4l7 7-7 7z"/><path d="M19 15c0 1.5 1.5 2.5 1.5 2.5"/>',
+      pen:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+      rect:'<rect x="4" y="6" width="16" height="12" rx="1.5"/>',
+      circle:'<circle cx="12" cy="12" r="8"/>',
+      slash:'<line x1="5" y1="19" x2="19" y2="5"/>',
+      arrow:'<line x1="4" y1="12" x2="18" y2="12"/><path d="M13 7l5 5-5 5"/>',
+      star:'<path d="M12 3.5l2.6 5.7 6.2.6-4.7 4.1 1.4 6.1L12 16.8 6.5 20l1.4-6.1L3.2 9.8l6.2-.6z"/>',
+      sticky:'<path d="M5 4h14v10l-5 5H5z"/><path d="M19 14h-5v5"/>',
+      image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/>',
+      file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+      panel:'<rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/>',
+      save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h7"/>',
+      folder:'<path d="M4 5h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>',
+      print:'<path d="M6 9V3h12v6"/><rect x="6" y="14" width="12" height="7"/><path d="M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/>',
+      word:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8.5 13l1.3 4 1.2-3 1.2 3 1.3-4"/>',
+      download:'<path d="M12 4v11"/><path d="M8 11l4 4 4-4"/><path d="M5 20h14"/>',
+      minus:'<line x1="5" y1="12" x2="19" y2="12"/>',
+      plus:'<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'
+    };
+    var TX={
+      sup:'<text x="3" y="17" font-size="14" font-family="Georgia,serif">x</text><text x="13" y="10" font-size="9">2</text>',
+      sub:'<text x="3" y="15" font-size="14" font-family="Georgia,serif">x</text><text x="13" y="21" font-size="9">2</text>'
+    };
+    if(TX[n]) return T+TX[n]+'</svg>';
+    return S+(P[n]||'')+'</svg>';
+  }
   function toast(m){var t=el('fed-toast');if(!t){t=document.createElement('div');t.id='fed-toast';t.className='fed-toast';document.body.appendChild(t);}t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
 
   /* ---------- free AI call (haiku) through the app proxy ---------- */
@@ -5585,58 +5740,27 @@ function presExportPDF(){
     var html=''+
     '<div class="fed-ov" id="fed-ov">'+
       '<div class="fed-top">'+
-        '<div class="fed-crumb">Workspace</div>'+
-        '<div class="fed-chip">&#128221; <input id="fed-doc-title" oninput="FED._t(this.value)"><span class="fed-chip-x" onclick="FED.close()" title="Close">&times;</span></div>'+
+        '<div class="fed-crumb">FARUMA</div>'+
+        '<div class="fed-chip">'+ic('file')+' <input id="fed-doc-title" oninput="FED._t(this.value)"><span class="fed-chip-x" onclick="FED.close()" title="Close">&times;</span></div>'+
         '<span class="fed-status" id="fed-save-status"></span>'+
         '<div class="fed-spacer"></div>'+
-        '<button onclick="FED.collapseLeft()" title="Show/hide pages">&#9776;</button>'+
-        '<button onclick="ftbOpen()" title="Custom lesson-plan templates">&#129513; Templates</button>'+
-        '<button onclick="FED.save()" title="Save project">&#128190;</button>'+
-        '<button onclick="FED.load()" title="Open project">&#128193;</button>'+
-        '<button onclick="FED.print()" title="Print">&#128424;</button>'+
-        '<button onclick="FED.docx()" title="Download as Word">DOCX</button>'+
-        '<button class="fed-export" onclick="FED.pdf()">&#8682; Export</button>'+
+        '<button onclick="FED.collapseLeft()" title="Show / hide pages">'+ic('panel')+'</button>'+
+        '<button onclick="FED.save()" title="Save project">'+ic('save')+'</button>'+
+        '<button onclick="FED.load()" title="Open project">'+ic('folder')+'</button>'+
+        '<button onclick="FED.print()" title="Print">'+ic('print')+'</button>'+
+        '<button onclick="FED.docx()" title="Download as Word">'+ic('word')+'</button>'+
+        '<button class="fed-export" onclick="FED.pdf()">'+ic('download')+'Export</button>'+
         '<button class="fed-x" onclick="FED.close()" title="Close workspace">&times;</button>'+
       '</div>'+
-      '<div class="fed-toolbar" onmousedown="FED._keep(event)">'+
-        '<div class="fed-tb-group"><select onchange="FED.cmd(\'fontName\',this.value)" title="Font">'+fonts.map(function(f){return '<option value="'+f+'">'+f+'</option>';}).join('')+'</select>'+
-          '<select onchange="FED.size(this.value)" title="Size">'+sizes.map(function(s){return '<option value="'+s+'"'+(s===14?' selected':'')+'>'+s+'</option>';}).join('')+'</select></div>'+
-        '<div class="fed-tb-group"><button onclick="FED.cmd(\'bold\')" title="Bold"><b>B</b></button>'+
-          '<button onclick="FED.cmd(\'italic\')" title="Italic"><i>I</i></button>'+
-          '<button onclick="FED.cmd(\'underline\')" title="Underline"><u>U</u></button>'+
-          '<button onclick="FED.cmd(\'strikeThrough\')" title="Strikethrough"><s>S</s></button>'+
-          '<span class="fed-tb-lbl">A</span><input type="color" value="#12283c" oninput="FED.cmd(\'foreColor\',this.value)" title="Text colour">'+
-          '<span class="fed-tb-lbl">&#9608;</span><input type="color" value="#fff59d" oninput="FED.cmd(\'hiliteColor\',this.value)" title="Highlight">'+
-          '<button onclick="FED.cmd(\'superscript\')" title="Superscript">x&sup2;</button>'+
-          '<button onclick="FED.cmd(\'subscript\')" title="Subscript">x&#8322;</button></div>'+
-        '<div class="fed-tb-group"><button onclick="FED.cmd(\'justifyLeft\')" title="Left">&#8676;</button>'+
-          '<button onclick="FED.cmd(\'justifyCenter\')" title="Center">&#8596;</button>'+
-          '<button onclick="FED.cmd(\'justifyRight\')" title="Right">&#8677;</button>'+
-          '<button onclick="FED.cmd(\'justifyFull\')" title="Justify">&#8801;</button></div>'+
-        '<div class="fed-tb-group"><button onclick="FED.cmd(\'insertUnorderedList\')" title="Bullets">&bull; &#8801;</button>'+
-          '<button onclick="FED.cmd(\'insertOrderedList\')" title="Numbered">1. &#8801;</button>'+
-          '<button onclick="FED.cmd(\'outdent\')" title="Outdent">&#8676;|</button>'+
-          '<button onclick="FED.cmd(\'indent\')" title="Indent">|&#8677;</button>'+
-          '<select onchange="FED.lh(this.value)" title="Line spacing"><option value="">Spacing</option><option value="1">1.0</option><option value="1.15">1.15</option><option value="1.5">1.5</option><option value="2">2.0</option></select></div>'+
-        '<div class="fed-tb-group"><select onchange="FED.block(this.value)" title="Style"><option value="">Style</option><option value="h1">Heading 1</option><option value="h2">Heading 2</option><option value="p">Normal</option></select>'+
-          '<button onclick="FED.tableInsert()" title="Insert table">&#9638;</button>'+
-          '<button onclick="FED.cmd(\'undo\')" title="Undo">&#8630;</button>'+
-          '<button onclick="FED.cmd(\'redo\')" title="Redo">&#8631;</button></div>'+
-        '<div class="fed-tb-group" id="fed-tabletools" style="display:none"><span class="fed-tb-lbl">Table</span>'+
-          '<button onclick="FED.tRow(1)" title="Row below">+Row</button><button onclick="FED.tRow(-1)" title="Delete row">&minus;Row</button>'+
-          '<button onclick="FED.tCol(1)" title="Column right">+Col</button><button onclick="FED.tCol(-1)" title="Delete col">&minus;Col</button>'+
-          '<button onclick="FED.tMerge()" title="Merge right">Merge</button>'+
-          '<input type="color" value="#eef4f8" oninput="FED.tBg(this.value)" title="Cell colour"></div>'+
-        '<div class="fed-tb-group"><span class="fed-tb-lbl">Draw</span>'+
-          '<button onclick="FED.draw(\'pen\')" title="Pencil">&#9998;</button>'+
-          '<button onclick="FED.shape(\'rect\')" title="Rectangle">&#9645;</button>'+
-          '<button onclick="FED.shape(\'circle\')" title="Circle">&#9711;</button>'+
-          '<button onclick="FED.shape(\'line\')" title="Line">&#9585;</button>'+
-          '<button onclick="FED.shape(\'arrow\')" title="Arrow">&#8594;</button>'+
-          '<button onclick="FED.shape(\'star\')" title="Star">&#9733;</button>'+
-          '<button onclick="FED.sticky()" title="Sticky note">&#128221;</button>'+
-          '<button onclick="FED.textbox()" title="Text box">T</button>'+
-          '<button onclick="FED.image()" title="Image">&#128247;</button></div>'+
+'<div class="fed-toolbar" onmousedown="FED._keep(event)">'+
+        '<div class="fed-tb-group">'+'<button onclick="FED.cmd(\'undo\')" title="Undo">'+ic('undo')+'</button>'+'<button onclick="FED.cmd(\'redo\')" title="Redo">'+ic('redo')+'</button></div>'+
+        '<div class="fed-tb-group">'+'<select onchange="FED.cmd(\'fontName\',this.value)" title="Font">'+fonts.map(function(f){return '<option value="'+f+'">'+f+'</option>';}).join('')+'</select>'+'<div class="fed-size-step"><button onclick="FED.sizeStep(-1)" title="Smaller">'+ic('minus')+'</button><input id="fed-size-val" value="14" onchange="FED.size(this.value)"><button onclick="FED.sizeStep(1)" title="Larger">'+ic('plus')+'</button></div>'+'<select onchange="FED.block(this.value)" title="Text style"><option value="">Normal text</option><option value="h1">Heading 1</option><option value="h2">Heading 2</option><option value="p">Body</option></select></div>'+
+        '<div class="fed-tb-group">'+'<button onclick="FED.cmd(\'bold\')" title="Bold">'+ic('bold')+'</button>'+'<button onclick="FED.cmd(\'italic\')" title="Italic">'+ic('italic')+'</button>'+'<button onclick="FED.cmd(\'underline\')" title="Underline">'+ic('underline')+'</button>'+'<button onclick="FED.cmd(\'strikeThrough\')" title="Strikethrough">'+ic('strike')+'</button>'+'<span class="fed-ic-lbl" title="Text colour">'+ic('colorA')+'<input type="color" value="#2b2620" oninput="FED.cmd(\'foreColor\',this.value)"></span>'+'<span class="fed-ic-lbl" title="Highlight">'+ic('marker')+'<input type="color" value="#fff3b8" oninput="FED.cmd(\'hiliteColor\',this.value)"></span>'+'<button onclick="FED.cmd(\'superscript\')" title="Superscript">'+ic('sup')+'</button>'+'<button onclick="FED.cmd(\'subscript\')" title="Subscript">'+ic('sub')+'</button></div>'+
+        '<div class="fed-tb-group">'+'<button onclick="FED.cmd(\'justifyLeft\')" title="Align left">'+ic('alignL')+'</button>'+'<button onclick="FED.cmd(\'justifyCenter\')" title="Align center">'+ic('alignC')+'</button>'+'<button onclick="FED.cmd(\'justifyRight\')" title="Align right">'+ic('alignR')+'</button>'+'<button onclick="FED.cmd(\'justifyFull\')" title="Justify">'+ic('alignJ')+'</button></div>'+
+        '<div class="fed-tb-group">'+'<button onclick="FED.cmd(\'insertUnorderedList\')" title="Bullet list">'+ic('ul')+'</button>'+'<button onclick="FED.cmd(\'insertOrderedList\')" title="Numbered list">'+ic('ol')+'</button>'+'<button onclick="FED.cmd(\'outdent\')" title="Decrease indent">'+ic('outdent')+'</button>'+'<button onclick="FED.cmd(\'indent\')" title="Increase indent">'+ic('indent')+'</button>'+'<select onchange="FED.lh(this.value)" title="Line spacing"><option value="">Spacing</option><option value="1">1.0</option><option value="1.15">1.15</option><option value="1.5">1.5</option><option value="2">2.0</option></select></div>'+
+        '<div class="fed-tb-group">'+'<button onclick="FED.tableInsert()" title="Insert table">'+ic('table')+'</button></div>'+
+        '<div class="fed-tb-group" id="fed-tabletools" style="display:none">'+'<button onclick="FED.tRow(1)" title="Insert row below">'+ic('rowAdd')+'</button>'+'<button onclick="FED.tRow(-1)" title="Delete row">'+ic('rowDel')+'</button>'+'<button onclick="FED.tCol(1)" title="Insert column right">'+ic('colAdd')+'</button>'+'<button onclick="FED.tCol(-1)" title="Delete column">'+ic('colDel')+'</button>'+'<button onclick="FED.tMerge()" title="Merge with next cell">'+ic('merge')+'</button>'+'<span class="fed-ic-lbl" title="Cell colour">'+ic('bucket')+'<input type="color" value="#f2ede3" oninput="FED.tBg(this.value)"></span></div>'+
+        '<div class="fed-tb-group">'+'<button onclick="FED.draw(\'pen\')" title="Pencil">'+ic('pen')+'</button>'+'<button onclick="FED.shape(\'rect\')" title="Rectangle">'+ic('rect')+'</button>'+'<button onclick="FED.shape(\'circle\')" title="Circle">'+ic('circle')+'</button>'+'<button onclick="FED.shape(\'line\')" title="Line">'+ic('slash')+'</button>'+'<button onclick="FED.shape(\'arrow\')" title="Arrow">'+ic('arrow')+'</button>'+'<button onclick="FED.shape(\'star\')" title="Star">'+ic('star')+'</button>'+'<button onclick="FED.sticky()" title="Sticky note">'+ic('sticky')+'</button>'+'<button onclick="FED.textbox()" title="Text box">'+ic('tbox')+'</button>'+'<button onclick="FED.image()" title="Insert image">'+ic('image')+'</button></div>'+
       '</div>'+
       '<div class="fed-body">'+
         '<div class="fed-left" id="fed-thumbs"></div>'+
@@ -5650,18 +5774,6 @@ function presExportPDF(){
           '<div class="fed-field"><label>Header text</label><input id="fed-hdr" oninput="FED.setHF(\'hdr\',this.value)"></div>'+
           '<div class="fed-field"><label>Footer text</label><input id="fed-ftr" oninput="FED.setHF(\'ftr\',this.value)"></div>'+
           '<div class="fed-field"><label><input type="checkbox" id="fed-pageno" checked onchange="FED.setPageno(this.checked)" style="width:auto"> Page numbers</label></div>'+
-          '<h4>Rewrite with AI</h4>'+
-          '<div class="fed-ai-btns">'+
-            '<button onclick="FED.ai(\'simplify\')">Simplify</button>'+
-            '<button onclick="FED.ai(\'harder\')">Make harder</button>'+
-            '<button onclick="FED.ai(\'shorten\')">Shorten</button>'+
-            '<button onclick="FED.ai(\'expand\')">Expand</button>'+
-            '<button onclick="FED.ai(\'grammar\')">Correct grammar</button>'+
-            '<button onclick="FED.ai(\'english\')">Translate &rarr; English</button>'+
-            '<button onclick="FED.ai(\'dhivehi\')">Convert to Dhivehi</button>'+
-            '<button onclick="FED.ai(\'answers\')">Generate answer key</button>'+
-            '<button onclick="FED.ai(\'marking\')">Marking scheme</button>'+
-          '</div><div class="fed-ai-note">Select text on the page, then choose an action. New content appends below the page.</div>'+
           '<h4>Insert Resource</h4>'+
           '<div class="fed-comp">'+
             '<button onclick="FED.comp(\'ansline\')">Answer lines</button>'+
@@ -5802,13 +5914,14 @@ function presExportPDF(){
   /* public API */
   var FED={
     _t:function(v){S.title=v;autosave();},
-    _keep:function(e){ if(e.target.tagName==='BUTTON'||e.target.classList.contains('fed-tb-lbl'))e.preventDefault(); },
+    _keep:function(e){ if(e.target.closest&&e.target.closest('button'))e.preventDefault(); },
     _focus:function(elm){activeContent=elm;},
     _edit:function(i,elm){S.pages[i].html=elm.innerHTML;autosaveSoon();},
     _objtext:function(id,pi,html){var o=(S.pages[pi].objs||[]).filter(function(x){return x.id===id;})[0];if(o){o.html=html;autosaveSoon();}},
     _bgclick:function(e){ if(e.target.id==='fed-canvas')document.querySelectorAll('.fed-obj.sel').forEach(function(x){x.classList.remove('sel');}); },
     _tabtoggle:function(){ /* debounce table toolbar */ FED._tabtoggle2&&clearTimeout(FED._tabtoggle2); FED._tabtoggle2=setTimeout(function(){var tt=el('fed-tabletools');if(tt)tt.style.display=curCell()?'flex':'none';},60); },
     cmd:function(c,v){ restore(); try{document.execCommand('styleWithCSS',false,true);}catch(e){} document.execCommand(c,false,v||null); saveActive(); autosaveSoon(); },
+    sizeStep:function(d){ var i=el('fed-size-val'); if(!i)return; var v=Math.max(8,Math.min(96,(parseInt(i.value,10)||14)+d)); i.value=v; FED.size(v); },
     size:function(px){ restore(); document.execCommand('styleWithCSS',false,true); document.execCommand('fontSize',false,'7'); if(activeContent){activeContent.querySelectorAll('font[size="7"]').forEach(function(f){f.removeAttribute('size');f.style.fontSize=px+'px';});} saveActive(); },
     lh:function(v){ if(!v)return; var c=curBlockEl(); if(c)c.style.lineHeight=v; saveActive(); },
     block:function(tag){ if(!tag)return; restore(); document.execCommand('formatBlock',false,tag); saveActive(); },
@@ -5897,7 +6010,7 @@ function presExportPDF(){
     save:function(){ var blob=new Blob([JSON.stringify(S)],{type:'application/json'}); var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(S.title||'document').replace(/[^\w\- ]+/g,'')+'.faruma.json';a.click(); toast('Project saved'); },
     load:function(){ var inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=function(){var f=inp.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{S=JSON.parse(rd.result);syncControls();render();toast('Project loaded');}catch(e){toast('Invalid file');}};rd.readAsText(f);};inp.click(); },
     collapseLeft:function(){ el('fed-ov').classList.toggle('left-off'); },
-    close:function(){ saveActive(); autosave(); el('fed-ov').classList.remove('open'); }
+    close:function(){ saveActive(); autosave(); document.body.classList.remove('fed-active'); el('fed-ov').classList.remove('open'); }
   };
   window.FED=FED;
 
@@ -5932,7 +6045,7 @@ function presExportPDF(){
   function autosaveSoon(){ clearTimeout(_sv); _sv=setTimeout(autosave,1500); }
 
   function syncControls(){ el('fed-doc-title').value=S.title; el('fed-size').value=S.size; el('fed-orient').value=S.orient; el('fed-margin').value=S.margins; el('fed-zoom').value=S.zoom; el('fed-hdr').value=S.hdr||''; el('fed-ftr').value=S.ftr||''; el('fed-pageno').checked=!!S.pageno; }
-  function openWith(state){ ensureShell(); S=state; syncControls(); render(); el('fed-ov').classList.add('open'); }
+  function openWith(state){ ensureShell(); S=state; syncControls(); render(); var ab=document.getElementById('appbar'); if(ab) document.documentElement.style.setProperty('--fed-top', ab.offsetHeight+'px'); try{window.scrollTo(0,0);}catch(e){} document.body.classList.add('fed-active'); el('fed-ov').classList.add('open'); }
 
   /* entry points */
   window.fedOpenBlank=function(){ var prev=null; try{prev=JSON.parse(localStorage.getItem('faruma_fed_doc'));}catch(e){} if(prev&&prev.pages&&prev.pages.length&&confirm('Resume your last document? (Cancel for a blank one)')){openWith(prev);} else {openWith(defaultState('Untitled document'));} };
@@ -6151,6 +6264,118 @@ function presExportPDF(){
     ['pres-ov','pres-ed','fed-cal-modal'].forEach(function(id){ var o=$(id); if(o)o.style.display='none'; });
   },true);
 
+
+  /* ---------- shared curriculum outcome browser (assessment-style, used on generate / checklists / slides) ---------- */
+  var cbState={};
+  function cbCfg(){
+    return {
+      gen:{host:'cb-gen',grade:function(){var g=$('f-grade');return g?g.value:'';},sub:function(){var s=document.querySelector('.stab.on');return s?(s.getAttribute('data-sub')||''):'';},lock:false,note:'Untick any indicators you don\u2019t need.',apply:cbApplyGen},
+      cl:{host:'cb-cl',grade:function(){var g=$('cl-grade');return g?g.value:'';},sub:function(){var s=$('cl-sub');return s?s.value:'';},lock:true,note:'All indicators of the outcome are included in the sheet.',apply:cbApplyCl},
+      sl:{host:'cb-sl',grade:function(){var g=$('sl-grade');return g?g.value:'';},sub:function(){var s=$('sl-sub');return s?s.value:'';},lock:false,note:'Untick any indicators you don\u2019t need.',apply:cbApplySl}
+    };
+  }
+  window.cbRefresh=function(k){
+    var cfg=cbCfg()[k]; if(!cfg)return; var box=$(cfg.host); if(!box)return;
+    var grade=cfg.grade(), sub=cfg.sub();
+    var st=cbState[k]={cache:[],sel:-1,inds:{},cfg:cfg};
+    if(!grade||!sub){ box.innerHTML='<div style="font-size:13.5px;color:var(--text-mid);padding:6px 0;">Choose a grade and subject to load outcomes.</div>'; cfg.apply(null,[]); return; }
+    var rows=(typeof getSyl==='function')?(getSyl(grade,sub)||[]):[];
+    if(!rows.length){ box.innerHTML='<div style="font-size:13.5px;color:var(--text-mid);padding:6px 0;">No syllabus data found for '+aEsc(grade)+' '+aEsc(sub)+'.</div>'; cfg.apply(null,[]); return; }
+    var map={},order=[];
+    rows.forEach(function(r){var kk=r.out_code||''; if(!map[kk]){map[kk]={code:kk,stmt:r.out_stmt||'',strand:r.strand||'',sub:r.substrand||'',inds:[]};order.push(kk);} map[kk].inds.push({code:r.ind_code||'',text:r.indicator||''});});
+    st.cache=order.map(function(kk){return map[kk];});
+    var hh='<div style="max-height:340px;overflow-y:auto;">';
+    st.cache.forEach(function(o,i){
+      hh+='<div style="border:1px solid #e4edf2;border-radius:9px;margin-bottom:7px;background:#fff;">';
+      hh+='<div style="display:flex;align-items:flex-start;gap:9px;padding:10px 12px;cursor:pointer;" onclick="cbExpand(\''+k+'\','+i+')">';
+      hh+='<input type="checkbox" id="cb-'+k+'-oc-'+i+'" onclick="event.stopPropagation();cbPick(\''+k+'\','+i+')" style="margin-top:3px;accent-color:var(--ocean-mid);">';
+      hh+='<div style="flex:1;min-width:0;"><span style="display:inline-block;background:var(--ocean-pale);color:var(--ocean-mid);font-size:12px;font-weight:700;border-radius:20px;padding:1px 9px;margin-right:6px;">'+aEsc(o.code)+'</span>';
+      hh+='<span style="font-size:12px;color:var(--text-light);">'+aEsc(o.strand)+' &middot; '+aEsc(o.sub)+'</span>';
+      hh+='<div style="font-size:13.5px;color:var(--text-dark);margin-top:3px;line-height:1.5;">'+aEsc(o.stmt)+'</div></div>';
+      hh+='<span id="cb-'+k+'-ar-'+i+'" style="color:#b9c8d0;font-size:13px;margin-top:2px;">&#9662;</span></div>';
+      hh+='<div id="cb-'+k+'-in-'+i+'" style="display:none;border-top:1px solid #eef4f7;background:#f8fbfc;padding:9px 12px 9px 36px;">';
+      o.inds.forEach(function(ind,j){
+        hh+='<label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-dark);padding:3px 0;cursor:pointer;">';
+        hh+='<input type="checkbox" id="cb-'+k+'-ic-'+i+'-'+j+'"'+(cfg.lock?' disabled':'')+' onclick="cbInd(\''+k+'\','+i+','+j+')" style="margin-top:2px;accent-color:var(--ocean-mid);">';
+        hh+='<span><b style="color:var(--ocean-mid);">'+aEsc(ind.code)+'</b> &mdash; '+aEsc(ind.text)+'</span></label>';
+      });
+      hh+='</div></div>';
+    });
+    hh+='</div>';
+    hh+='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:8px;">';
+    hh+='<span id="cb-'+k+'-cov" style="font-size:13.5px;color:var(--text-mid);">No outcome selected yet.</span>';
+    hh+='<span style="font-size:12.5px;color:var(--text-light);">'+cfg.note+'</span></div>';
+    box.innerHTML=hh;
+    cfg.apply(null,[]);
+  };
+  window.cbExpand=function(k,i){ var d=$('cb-'+k+'-in-'+i),a=$('cb-'+k+'-ar-'+i); if(!d)return; var open=d.style.display!=='none'; d.style.display=open?'none':'block'; if(a)a.innerHTML=open?'&#9662;':'&#9652;'; };
+  window.cbPick=function(k,i){
+    var st=cbState[k]; if(!st)return; var cb=$('cb-'+k+'-oc-'+i);
+    if(cb&&!cb.checked){ st.sel=-1; st.inds={}; cbSync(k); return; }
+    st.cache.forEach(function(o,x){ if(x===i)return; var c=$('cb-'+k+'-oc-'+x); if(c)c.checked=false; var d=$('cb-'+k+'-in-'+x); if(d)d.style.display='none'; var a=$('cb-'+k+'-ar-'+x); if(a)a.innerHTML='&#9662;'; });
+    st.sel=i; st.inds={};
+    st.cache[i].inds.forEach(function(ind,j){ st.inds[j]=true; var c=$('cb-'+k+'-ic-'+i+'-'+j); if(c)c.checked=true; });
+    var d=$('cb-'+k+'-in-'+i); if(d)d.style.display='block'; var a=$('cb-'+k+'-ar-'+i); if(a)a.innerHTML='&#9652;';
+    cbSync(k);
+  };
+  window.cbInd=function(k,i,j){
+    var st=cbState[k]; if(!st)return;
+    if(st.sel!==i){ var keep=$('cb-'+k+'-ic-'+i+'-'+j); var want=!!(keep&&keep.checked); cbPick(k,i); var oc=$('cb-'+k+'-oc-'+i); if(oc)oc.checked=true; if(keep)keep.checked=want; }
+    var c=$('cb-'+k+'-ic-'+i+'-'+j); st.inds[j]=!!(c&&c.checked);
+    var any=false,x; for(x in st.inds){ if(st.inds[x])any=true; }
+    if(!any){ st.sel=-1; var oc2=$('cb-'+k+'-oc-'+i); if(oc2)oc2.checked=false; }
+    cbSync(k);
+  };
+  function cbSync(k){
+    var st=cbState[k]; if(!st)return;
+    var cov=$('cb-'+k+'-cov');
+    var o=(st.sel>=0)?st.cache[st.sel]:null;
+    var chosen=[]; if(o){ o.inds.forEach(function(ind,j){ if(st.inds[j])chosen.push(ind); }); }
+    if(cov)cov.innerHTML=o?('<b style="color:var(--ocean-mid);">'+aEsc(o.code)+'</b> selected &middot; '+chosen.length+' of '+o.inds.length+' indicators'):'No outcome selected yet.';
+    st.cfg.apply(o,chosen);
+  }
+  function cbSetSel(sel,val){ if(!sel)return false; for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===val){ sel.selectedIndex=i; return true; } } return false; }
+  function cbForce(sel,val){ if(!sel)return; if(!cbSetSel(sel,val)){ var op=document.createElement('option'); op.value=val; op.textContent=val; sel.appendChild(op); sel.value=val; } }
+  function cbFire(sel){ if(!sel)return; try{ sel.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){ if(sel.onchange)sel.onchange(); } }
+  function cbApplyGen(o,inds){
+    var fs=$('f-strand'),fss=$('f-substrand'),foc=$('f-outcode'),fst=$('f-outstmt'),fi=$('f-indicators');
+    if(!o){ if(foc)foc.selectedIndex=0; if(fst)fst.value=''; if(fi)fi.innerHTML='<option disabled>Select an outcome above</option>'; return; }
+    cbForce(fs,o.strand); cbFire(fs);
+    cbForce(fss,o.sub); cbFire(fss);
+    cbForce(foc,o.code); cbFire(foc);
+    if(fst&&!fst.value) fst.value=o.stmt;
+    if(fi){
+      var want={}; inds.forEach(function(x){want[x.code]=1;});
+      var matched=0;
+      for(var i=0;i<fi.options.length;i++){ var on=!!want[fi.options[i].value]; fi.options[i].selected=on; if(on)matched++; }
+      if(!matched&&inds.length){
+        fi.innerHTML=inds.map(function(x){ return '<option value="'+aEsc(x.code)+'" data-text="'+aEsc(x.text)+'" selected>'+aEsc(x.code)+': '+aEsc(x.text)+'</option>'; }).join('');
+      }
+    }
+  }
+  function cbApplyCl(o,inds){
+    if(!o)return;
+    var s1=$('cl-strand'),s2=$('cl-substrand'),s3=$('cl-outcome');
+    cbForce(s1,o.strand); if(typeof clOnStrandChange==='function')clOnStrandChange();
+    cbForce(s2,o.sub); if(typeof clOnSubstrandChange==='function')clOnSubstrandChange();
+    cbForce(s3,o.code); if(typeof clOnOutcomeChange==='function')clOnOutcomeChange();
+  }
+  function cbApplySl(o,inds){
+    var os=$('sl-outcome'),ib=$('sl-inds'); if(!os||!ib)return;
+    if(!o){ os.innerHTML=''; ib.innerHTML=''; return; }
+    os.innerHTML='<option value="'+aEsc(o.code)+'" selected>'+aEsc(o.code)+' \u2014 '+aEsc(o.stmt)+'</option>';
+    ib.innerHTML=inds.map(function(x){ return '<label><input type="checkbox" checked value="'+aEsc(x.code)+'" data-t="'+aEsc(x.text)+'"></label>'; }).join('');
+  }
+  function cbBoot(){
+    var cfgs=cbCfg(),k;
+    for(k in cfgs){ if($(cfgs[k].host))cbRefresh(k); }
+    var fg=$('f-grade'); if(fg)fg.addEventListener('change',function(){setTimeout(function(){cbRefresh('gen');},80);});
+    document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('.stab'))setTimeout(function(){cbRefresh('gen');},100); },true);
+    var cg=$('cl-grade'); if(cg)cg.addEventListener('change',function(){setTimeout(function(){cbRefresh('cl');},100);});
+    var cs2=$('cl-sub'); if(cs2)cs2.addEventListener('change',function(){setTimeout(function(){cbRefresh('cl');},100);});
+  }
+  if(document.readyState!=='loading')cbBoot(); else document.addEventListener('DOMContentLoaded',cbBoot);
+
   /* ---------- School Calendar quick view ---------- */
   window.slCalOpen=function(){
     var m=$('fed-cal-modal');
@@ -6200,7 +6425,7 @@ function presExportPDF(){
       return '<div class="pres-pill'+(L.id===slLen?' sel':'')+'" data-k="'+L.id+'" onclick="slPickLen(\''+L.id+'\')"><b>'+aEsc(L.label)+'</b><span>'+aEsc(L.hint)+'</span></div>'; }).join('');
     $('sl-enh').innerHTML=PRES_ENH.map(function(e2){
       return '<div class="pres-chip'+(slEnh[e2.id]?' on':'')+'" data-k="'+e2.id+'" onclick="slTogEnh(\''+e2.id+'\')">'+aEsc(e2.label)+'</div>'; }).join('');
-    window.slSyncOutcomes();
+    if(window.cbRefresh)cbRefresh('sl');
   }
   window.slGenerate=async function(){
     var g=$('sl-grade').value, s=$('sl-sub').value, tp=($('sl-topic').value||'').trim();
@@ -6209,6 +6434,7 @@ function presExportPDF(){
     var inds=[].map.call(document.querySelectorAll('#sl-inds input:checked'),function(c){ return {code:c.value,text:c.getAttribute('data-t')||''}; });
     var status=$('sl-status');
     if(!tp){ status.innerHTML='<span style="color:var(--coral,#e8624a);">Please enter a topic for the lesson.</span>'; return; }
+    if(!oc){ status.innerHTML='<span style="color:var(--coral,#e8624a);">Please select a curriculum outcome first.</span>'; return; }
     presSrc={ origin:'slides-tab', subject:s, grade:g, topic:tp, duration:'',
       outCode:oc, outStmt:ostmt, indicators:inds, material:'',
       lang:(typeof isThaanaSubject==='function'&&isThaanaSubject(s))?'dv':'en',
@@ -6217,6 +6443,7 @@ function presExportPDF(){
     PRES_ENH.forEach(function(e2){ presOpts.enh[e2.id]=!!slEnh[e2.id]; });
     var go=$('sl-go'), prog=$('sl-prog'), bar=$('sl-bar'), stage=$('sl-stage');
     go.disabled=true; prog.style.display='block'; status.innerHTML='';
+    if(window.fxStart)fxStart('Generating your slides',['Reading curriculum standard\u2026','Planning the slide sequence\u2026','Writing educational content\u2026','Designing each slide\u2026','Almost ready\u2026']);
     var stages=['Reading curriculum standard\u2026','Planning slide sequence\u2026','Writing educational content\u2026','Creating image prompts\u2026','Designing slides\u2026'], si=0;
     bar.style.width='8%'; stage.textContent=stages[0];
     var tick=setInterval(function(){ si=Math.min(si+1,stages.length-1); stage.textContent=stages[si]; bar.style.width=(8+si*18)+'%'; },2600);
@@ -6231,17 +6458,46 @@ function presExportPDF(){
         await presFetchImages(presDeck,function(d,t2){ stage.textContent='Painting AI images\u2026 '+d+'/'+t2; bar.style.width=(90+Math.round(8*d/Math.max(1,t2)))+'%'; });
       }
       bar.style.width='100%'; stage.textContent='Done!';
-      presSel=0; presSaveDraft(); presOpenEditor();
+      presSel=0; presSaveDraft(); if(window.fxStop)fxStop(); presOpenEditor();
       if(typeof gaTrack==='function') gaTrack('presentation_generate',{origin:'slides-tab',subject:s,grade:g,style:slTheme,length:slLen,slides:(presDeck.slides||[]).length});
       setTimeout(function(){ prog.style.display='none'; go.disabled=false; },900);
     }catch(err){
-      clearInterval(tick); prog.style.display='none'; go.disabled=false;
+      clearInterval(tick); if(window.fxStop)fxStop(); prog.style.display='none'; go.disabled=false;
       status.innerHTML='<span style="color:var(--coral,#e8624a);">&#9888; '+aEsc(err&&err.message?err.message:String(err))+'</span>';
       if(typeof gaTrack==='function') gaTrack('ai_generation_failure',{feature:'slides-tab',subject:s,grade:g});
     }
   };
   function boot(){ chrome(); slInit(); }
   if(document.readyState!=='loading')boot(); else document.addEventListener('DOMContentLoaded',boot);
+})();
+</script>
+<script>
+/* ====== FARUMA AI generating loader ====== */
+(function(){
+  var COLORS=['#e8624a','#f59e0b','#f6c945','#2f9e5a','#0e8a86','#1f5e7d','#7c4dff','#e0559b'];
+  var DEFAULT=['Reading the curriculum standard\u2026','Aligning to outcomes & indicators\u2026','Thinking through the best approach\u2026','Writing the content\u2026','Formatting your document\u2026'];
+  var timer=null, subs=DEFAULT, si=0;
+  function build(){
+    if(document.getElementById('fx-load'))return;
+    var d=document.createElement('div'); d.id='fx-load';
+    var dots='', n=COLORS.length, R=34;
+    for(var i=0;i<n;i++){ var a=(i/n)*Math.PI*2, tx=Math.cos(a)*R, ty=Math.sin(a)*R;
+      dots+='<span class="fx-dot" style="background:'+COLORS[i]+';--tx:'+tx.toFixed(1)+'px;--ty:'+ty.toFixed(1)+'px;animation-delay:'+(i*0.14).toFixed(2)+'s"></span>'; }
+    dots+='<span class="fx-dot" style="background:#13324e;--tx:0px;--ty:0px;animation-delay:.7s"></span>';
+    d.innerHTML='<div class="fx-card"><div class="fx-dots"><div class="fx-spin">'+dots+'</div></div><div class="fx-label" id="fx-label">Generating\u2026</div><div class="fx-sub" id="fx-sub"></div><div class="fx-bar"><div class="fx-bar-i"></div></div></div>';
+    document.body.appendChild(d);
+  }
+  window.fxStart=function(label,messages){
+    build(); var d=document.getElementById('fx-load'); if(!d)return;
+    document.getElementById('fx-label').textContent=label||'Generating\u2026';
+    subs=(messages&&messages.length)?messages:DEFAULT; si=0;
+    var sub=document.getElementById('fx-sub'); sub.textContent=subs[0]; sub.style.opacity=1;
+    clearInterval(timer);
+    timer=setInterval(function(){ si=(si+1)%subs.length; sub.style.opacity=0; setTimeout(function(){ sub.textContent=subs[si]; sub.style.opacity=1; },250); },2600);
+    d.classList.add('on');
+  };
+  window.fxStop=function(){ var d=document.getElementById('fx-load'); if(d)d.classList.remove('on'); clearInterval(timer); timer=null; };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build); else build();
 })();
 </script>
 </body>
