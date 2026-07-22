@@ -888,6 +888,12 @@ body{font-size:15.5px;line-height:1.55;}
 @keyframes fxslide{0%{margin-left:-45%}100%{margin-left:100%}}
 @keyframes fxhue{to{background-position:220% 0}}
 @media (prefers-reduced-motion: reduce){.fx-spin,.fx-dot,.fx-bar-i{animation-duration:3s}}
+
+/* curriculum outcome chip (shown in panel after popup selection) */
+.cb-chip{display:inline-flex;align-items:flex-start;gap:8px;background:#fff;border:1.5px solid var(--ocean-light,#7fb8d4);border-radius:11px;padding:9px 13px;font-size:13.5px;color:var(--text-dark,#163049);line-height:1.45;max-width:100%;}
+.cb-chip b{color:var(--ocean-mid,#1f5e7d);}
+.cb-chip .cb-chip-ind{color:var(--text-mid);font-size:12.5px;}
+.cb-empty{font-size:13px;color:var(--text-mid,#4a6370);}
 </style>
 </head>
 <body>
@@ -1243,7 +1249,7 @@ body{font-size:15.5px;line-height:1.55;}
   <div class="curr-panel">
     <div class="curr-title">&#128218; Select National Curriculum Standard</div>
     <div class="curr-sub" style="margin-bottom:12px;">Choose the strand, outcome &amp; indicators &mdash; the lesson plan is generated from and mapped to these codes.</div>
-    <div id="cb-gen"></div>
+    <button class="btn btn-orange" type="button" style="width:auto;padding:11px 18px;" onclick="cbOpen('gen')">&#128218; Select outcome &amp; indicators</button><div id="cb-gen-chip" style="margin-top:12px;"></div>
     <div id="gen-hidden-syl" style="display:none">
       <select id="f-strand"><option value="">--</option></select>
       <select id="f-substrand"><option value="">--</option></select>
@@ -1332,7 +1338,7 @@ body{font-size:15.5px;line-height:1.55;}
       <option value="">-- Select Subject --</option>
     </select></div>
   </div>
-  <div id="cb-cl"></div>
+  <button class="btn btn-orange" type="button" style="width:auto;padding:11px 18px;" onclick="cbOpen('cl')">&#128218; Select outcome &amp; indicators</button><div id="cb-cl-chip" style="margin-top:12px;"></div>
   <div id="cl-hidden-syl" style="display:none">
 <div class="g2">
     <div class="field"><label>Strand</label><select id="cl-strand" onchange="clOnStrandChange()" disabled>
@@ -1473,6 +1479,25 @@ body{font-size:15.5px;line-height:1.55;}
   <div id="as-out"></div>
 </div></div>
 
+<!-- SHARED CURRICULUM OUTCOME MODAL -->
+<div id="cb-modal" style="display:none;position:fixed;inset:0;background:rgba(10,30,45,.45);z-index:12000;align-items:center;justify-content:center;padding:18px;">
+  <div style="background:#fff;border-radius:16px;max-width:720px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid #eef2f4;">
+      <div style="font-size:17px;font-weight:800;color:var(--ocean-deep);">Select curriculum outcome</div>
+      <button type="button" onclick="cbCloseModal()" style="border:none;background:none;font-size:22px;color:#9db3bf;cursor:pointer;line-height:1;">&#10005;</button>
+    </div>
+    <div style="padding:14px 20px;border-bottom:1px solid #eef2f4;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+      <div class="field" style="margin:0;flex:1;min-width:140px;"><label>Grade</label><select id="cb-m-grade" onchange="cbRender()"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+      <div class="field" style="margin:0;flex:1;min-width:150px;"><label>Subject</label><select id="cb-m-sub" onchange="cbRender()"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
+    </div>
+    <div id="cb-modal-body" style="flex:1;overflow-y:auto;padding:14px 20px;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-top:1px solid #eef2f4;">
+      <span id="cb-modal-cov" style="font-size:14px;color:var(--text-mid);">No outcome selected yet.</span>
+      <button class="btn btn-orange" type="button" style="width:auto;padding:11px 26px;" onclick="cbDone()">Done</button>
+    </div>
+  </div>
+</div>
+
 <!-- SLIDES -->
 <div class="page" id="page-slides">
 <div class="card">
@@ -1481,10 +1506,10 @@ body{font-size:15.5px;line-height:1.55;}
     <div class="curr-title">&#128218; Select National Curriculum Standard</div>
     <div class="curr-sub" style="margin-bottom:12px;">Choose the grade, subject, outcome &amp; indicators &mdash; every slide is generated from these codes.</div>
     <div class="g2">
-      <div class="field"><label>Grade</label><select id="sl-grade" onchange="cbRefresh('sl')"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
-      <div class="field"><label>Subject</label><select id="sl-sub" onchange="cbRefresh('sl')"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
+      <div class="field"><label>Grade</label><select id="sl-grade" onchange="cbClearSel('sl')"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
+      <div class="field"><label>Subject</label><select id="sl-sub" onchange="cbClearSel('sl')"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
     </div>
-    <div id="cb-sl"></div>
+    <button class="btn btn-orange" type="button" style="width:auto;padding:11px 18px;" onclick="cbOpen('sl')">&#128218; Select outcome &amp; indicators</button><div id="cb-sl-chip" style="margin-top:12px;"></div>
     <div id="sl-hidden-syl" style="display:none">
 <div class="field"><label>Curriculum Outcome</label><select id="sl-outcome"></select></div>
     <div class="field"><label>Indicators</label><div id="sl-inds" style="display:flex;flex-direction:column;gap:5px;max-height:150px;overflow:auto;font-size:13.5px;border:1px solid var(--ocean-pale,#e7f1f7);border-radius:9px;padding:9px 11px;background:#fff;"></div></div>
@@ -6265,75 +6290,117 @@ function presExportPDF(){
   },true);
 
 
-  /* ---------- shared curriculum outcome browser (assessment-style, used on generate / checklists / slides) ---------- */
-  var cbState={};
-  function cbCfg(){
-    return {
-      gen:{host:'cb-gen',grade:function(){var g=$('f-grade');return g?g.value:'';},sub:function(){var s=document.querySelector('.stab.on');return s?(s.getAttribute('data-sub')||''):'';},lock:false,note:'Untick any indicators you don\u2019t need.',apply:cbApplyGen},
-      cl:{host:'cb-cl',grade:function(){var g=$('cl-grade');return g?g.value:'';},sub:function(){var s=$('cl-sub');return s?s.value:'';},lock:true,note:'All indicators of the outcome are included in the sheet.',apply:cbApplyCl},
-      sl:{host:'cb-sl',grade:function(){var g=$('sl-grade');return g?g.value:'';},sub:function(){var s=$('sl-sub');return s?s.value:'';},lock:false,note:'Untick any indicators you don\u2019t need.',apply:cbApplySl}
-    };
-  }
-  window.cbRefresh=function(k){
-    var cfg=cbCfg()[k]; if(!cfg)return; var box=$(cfg.host); if(!box)return;
-    var grade=cfg.grade(), sub=cfg.sub();
-    var st=cbState[k]={cache:[],sel:-1,inds:{},cfg:cfg};
-    if(!grade||!sub){ box.innerHTML='<div style="font-size:13.5px;color:var(--text-mid);padding:6px 0;">Choose a grade and subject to load outcomes.</div>'; cfg.apply(null,[]); return; }
+  /* ---------- shared curriculum outcome popup (assessment-style, used on generate / checklists / slides) ---------- */
+  var cbState={}, cbKey=null;
+  function cbVal(id){ var el=$(id); return el?el.value:''; }
+  function cbSetVal(id,v){ var el=$(id); if(el)el.value=v; }
+  function cbFireEl(id){ var el=$(id); if(!el)return; try{ el.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){ if(el.onchange)el.onchange(); } }
+  function cbClickStab(v){ var found=false; document.querySelectorAll('.stab').forEach(function(t){ if((t.getAttribute('data-sub')||'')===v){ t.click(); found=true; } }); return found; }
+  function cbOptEnsure(sel,v){ if(!sel||!v)return; for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===v){ sel.value=v; return; } } var op=document.createElement('option'); op.value=v; op.textContent=v; sel.appendChild(op); sel.value=v; }
+  var CB_DEF={
+    gen:{ grade:function(){return cbVal('f-grade');}, sub:function(){var s=document.querySelector('.stab.on');return s?(s.getAttribute('data-sub')||''):'';},
+          setGrade:function(v){ if(cbVal('f-grade')!==v){ cbSetVal('f-grade',v); cbFireEl('f-grade'); } },
+          setSub:function(v){ var cur=document.querySelector('.stab.on'); if(!cur||(cur.getAttribute('data-sub')||'')!==v) cbClickStab(v); },
+          lock:false, apply:cbApplyGen, chip:'cb-gen-chip' },
+    cl:{ grade:function(){return cbVal('cl-grade');}, sub:function(){return cbVal('cl-sub');},
+          setGrade:function(v){ if(cbVal('cl-grade')!==v){ cbSetVal('cl-grade',v); cbFireEl('cl-grade'); } },
+          setSub:function(v){ var s=$('cl-sub'); if(s){ cbOptEnsure(s,v); if(s.value!==v){s.value=v;} cbFireEl('cl-sub'); } },
+          lock:true, apply:cbApplyCl, chip:'cb-cl-chip' },
+    sl:{ grade:function(){return cbVal('sl-grade');}, sub:function(){return cbVal('sl-sub');},
+          setGrade:function(v){ cbSetVal('sl-grade',v); }, setSub:function(v){ cbSetVal('sl-sub',v); },
+          lock:false, apply:cbApplySl, chip:'cb-sl-chip' }
+  };
+
+  window.cbOpen=function(k){
+    var cfg=CB_DEF[k]; if(!cfg)return; cbKey=k;
+    var mg=$('cb-m-grade'), ms=$('cb-m-sub');
+    var g=cfg.grade(), s=cfg.sub();
+    if(g)cbOptEnsure(mg,g); if(s)cbOptEnsure(ms,s);
+    cbRender();
+    var m=$('cb-modal'); if(m)m.style.display='flex';
+  };
+  window.cbCloseModal=function(){ var m=$('cb-modal'); if(m)m.style.display='none'; };
+
+  window.cbRender=function(){
+    var k=cbKey; if(!k)return; var box=$('cb-modal-body'); if(!box)return;
+    var grade=cbVal('cb-m-grade'), sub=cbVal('cb-m-sub');
+    var prev=cbState[k];
+    var same=prev&&prev.grade===grade&&prev.sub===sub;
     var rows=(typeof getSyl==='function')?(getSyl(grade,sub)||[]):[];
-    if(!rows.length){ box.innerHTML='<div style="font-size:13.5px;color:var(--text-mid);padding:6px 0;">No syllabus data found for '+aEsc(grade)+' '+aEsc(sub)+'.</div>'; cfg.apply(null,[]); return; }
+    if(!rows.length){ box.innerHTML='<div class="cb-empty" style="padding:10px 0;">No syllabus data found for '+aEsc(grade)+' '+aEsc(sub)+'.</div>'; cbState[k]={grade:grade,sub:sub,cache:[],sel:-1,inds:{}}; cbCov(); return; }
     var map={},order=[];
     rows.forEach(function(r){var kk=r.out_code||''; if(!map[kk]){map[kk]={code:kk,stmt:r.out_stmt||'',strand:r.strand||'',sub:r.substrand||'',inds:[]};order.push(kk);} map[kk].inds.push({code:r.ind_code||'',text:r.indicator||''});});
-    st.cache=order.map(function(kk){return map[kk];});
-    var hh='<div style="max-height:340px;overflow-y:auto;">';
-    st.cache.forEach(function(o,i){
-      hh+='<div style="border:1px solid #e4edf2;border-radius:9px;margin-bottom:7px;background:#fff;">';
-      hh+='<div style="display:flex;align-items:flex-start;gap:9px;padding:10px 12px;cursor:pointer;" onclick="cbExpand(\''+k+'\','+i+')">';
-      hh+='<input type="checkbox" id="cb-'+k+'-oc-'+i+'" onclick="event.stopPropagation();cbPick(\''+k+'\','+i+')" style="margin-top:3px;accent-color:var(--ocean-mid);">';
-      hh+='<div style="flex:1;min-width:0;"><span style="display:inline-block;background:var(--ocean-pale);color:var(--ocean-mid);font-size:12px;font-weight:700;border-radius:20px;padding:1px 9px;margin-right:6px;">'+aEsc(o.code)+'</span>';
-      hh+='<span style="font-size:12px;color:var(--text-light);">'+aEsc(o.strand)+' &middot; '+aEsc(o.sub)+'</span>';
-      hh+='<div style="font-size:13.5px;color:var(--text-dark);margin-top:3px;line-height:1.5;">'+aEsc(o.stmt)+'</div></div>';
-      hh+='<span id="cb-'+k+'-ar-'+i+'" style="color:#b9c8d0;font-size:13px;margin-top:2px;">&#9662;</span></div>';
-      hh+='<div id="cb-'+k+'-in-'+i+'" style="display:none;border-top:1px solid #eef4f7;background:#f8fbfc;padding:9px 12px 9px 36px;">';
+    var cache=order.map(function(kk){return map[kk];});
+    var st=same?prev:{grade:grade,sub:sub,cache:cache,sel:-1,inds:{}};
+    st.cache=cache; st.grade=grade; st.sub=sub; if(!same){st.sel=-1;st.inds={};}
+    cbState[k]=st;
+    var lock=CB_DEF[k].lock;
+    var hh='';
+    cache.forEach(function(o,i){
+      var selOn=(st.sel===i);
+      hh+='<div style="border:1px solid #e4edf2;border-radius:9px;margin-bottom:8px;background:#fff;">';
+      hh+='<div style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;cursor:pointer;" onclick="cbExpand('+i+')">';
+      hh+='<input type="checkbox" id="cb-oc-'+i+'"'+(selOn?' checked':'')+' onclick="event.stopPropagation();cbPick('+i+')" style="margin-top:3px;width:18px;height:18px;accent-color:var(--ocean-mid);">';
+      hh+='<div style="flex:1;min-width:0;"><span style="display:inline-block;background:var(--ocean-pale);color:var(--ocean-mid);font-size:12.5px;font-weight:700;border-radius:20px;padding:2px 10px;margin-right:6px;">'+aEsc(o.code)+'</span>';
+      hh+='<span style="font-size:12.5px;color:var(--text-light);">'+aEsc(o.strand)+' &middot; '+aEsc(o.sub)+'</span>';
+      hh+='<div style="font-size:14px;color:var(--text-dark);margin-top:4px;line-height:1.5;">'+aEsc(o.stmt)+'</div></div>';
+      hh+='<span id="cb-ar-'+i+'" style="color:#b9c8d0;font-size:14px;margin-top:2px;">'+(selOn?'&#9652;':'&#9662;')+'</span></div>';
+      hh+='<div id="cb-in-'+i+'" style="display:'+(selOn?'block':'none')+';border-top:1px solid #eef4f7;background:#f8fbfc;padding:10px 14px 10px 40px;">';
       o.inds.forEach(function(ind,j){
-        hh+='<label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-dark);padding:3px 0;cursor:pointer;">';
-        hh+='<input type="checkbox" id="cb-'+k+'-ic-'+i+'-'+j+'"'+(cfg.lock?' disabled':'')+' onclick="cbInd(\''+k+'\','+i+','+j+')" style="margin-top:2px;accent-color:var(--ocean-mid);">';
+        var icOn=selOn&&st.inds[j];
+        hh+='<label style="display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--text-dark);padding:4px 0;cursor:pointer;">';
+        hh+='<input type="checkbox" id="cb-ic-'+i+'-'+j+'"'+(icOn?' checked':'')+(lock?' disabled':'')+' onclick="cbInd('+i+','+j+')" style="margin-top:2px;width:17px;height:17px;accent-color:var(--ocean-mid);">';
         hh+='<span><b style="color:var(--ocean-mid);">'+aEsc(ind.code)+'</b> &mdash; '+aEsc(ind.text)+'</span></label>';
       });
       hh+='</div></div>';
     });
-    hh+='</div>';
-    hh+='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:8px;">';
-    hh+='<span id="cb-'+k+'-cov" style="font-size:13.5px;color:var(--text-mid);">No outcome selected yet.</span>';
-    hh+='<span style="font-size:12.5px;color:var(--text-light);">'+cfg.note+'</span></div>';
-    box.innerHTML=hh;
-    cfg.apply(null,[]);
+    box.innerHTML=hh; cbCov();
   };
-  window.cbExpand=function(k,i){ var d=$('cb-'+k+'-in-'+i),a=$('cb-'+k+'-ar-'+i); if(!d)return; var open=d.style.display!=='none'; d.style.display=open?'none':'block'; if(a)a.innerHTML=open?'&#9662;':'&#9652;'; };
-  window.cbPick=function(k,i){
-    var st=cbState[k]; if(!st)return; var cb=$('cb-'+k+'-oc-'+i);
-    if(cb&&!cb.checked){ st.sel=-1; st.inds={}; cbSync(k); return; }
-    st.cache.forEach(function(o,x){ if(x===i)return; var c=$('cb-'+k+'-oc-'+x); if(c)c.checked=false; var d=$('cb-'+k+'-in-'+x); if(d)d.style.display='none'; var a=$('cb-'+k+'-ar-'+x); if(a)a.innerHTML='&#9662;'; });
+  window.cbExpand=function(i){ var d=$('cb-in-'+i),a=$('cb-ar-'+i); if(!d)return; var open=d.style.display!=='none'; d.style.display=open?'none':'block'; if(a)a.innerHTML=open?'&#9662;':'&#9652;'; };
+  window.cbPick=function(i){
+    var st=cbState[cbKey]; if(!st)return; var cb=$('cb-oc-'+i);
+    if(cb&&!cb.checked){ st.sel=-1; st.inds={}; var d0=$('cb-in-'+i); if(d0)d0.style.display='none'; var a0=$('cb-ar-'+i); if(a0)a0.innerHTML='&#9662;'; cbCov(); return; }
+    st.cache.forEach(function(o,x){ if(x===i)return; var c=$('cb-oc-'+x); if(c)c.checked=false; var d=$('cb-in-'+x); if(d)d.style.display='none'; var a=$('cb-ar-'+x); if(a)a.innerHTML='&#9662;'; });
     st.sel=i; st.inds={};
-    st.cache[i].inds.forEach(function(ind,j){ st.inds[j]=true; var c=$('cb-'+k+'-ic-'+i+'-'+j); if(c)c.checked=true; });
-    var d=$('cb-'+k+'-in-'+i); if(d)d.style.display='block'; var a=$('cb-'+k+'-ar-'+i); if(a)a.innerHTML='&#9652;';
-    cbSync(k);
+    st.cache[i].inds.forEach(function(ind,j){ st.inds[j]=true; var c=$('cb-ic-'+i+'-'+j); if(c&&!c.disabled)c.checked=true; if(c&&c.disabled)c.checked=true; });
+    var d=$('cb-in-'+i); if(d)d.style.display='block'; var a=$('cb-ar-'+i); if(a)a.innerHTML='&#9652;';
+    cbCov();
   };
-  window.cbInd=function(k,i,j){
-    var st=cbState[k]; if(!st)return;
-    if(st.sel!==i){ var keep=$('cb-'+k+'-ic-'+i+'-'+j); var want=!!(keep&&keep.checked); cbPick(k,i); var oc=$('cb-'+k+'-oc-'+i); if(oc)oc.checked=true; if(keep)keep.checked=want; }
-    var c=$('cb-'+k+'-ic-'+i+'-'+j); st.inds[j]=!!(c&&c.checked);
+  window.cbInd=function(i,j){
+    var st=cbState[cbKey]; if(!st)return;
+    if(st.sel!==i){ var want=$('cb-ic-'+i+'-'+j); var w=!!(want&&want.checked); cbPick(i); var oc=$('cb-oc-'+i); if(oc)oc.checked=true; if(want)want.checked=w; }
+    var c=$('cb-ic-'+i+'-'+j); st.inds[j]=!!(c&&c.checked);
     var any=false,x; for(x in st.inds){ if(st.inds[x])any=true; }
-    if(!any){ st.sel=-1; var oc2=$('cb-'+k+'-oc-'+i); if(oc2)oc2.checked=false; }
-    cbSync(k);
+    if(!any){ st.sel=-1; var oc2=$('cb-oc-'+i); if(oc2)oc2.checked=false; var d=$('cb-in-'+i); if(d)d.style.display='none'; }
+    cbCov();
   };
-  function cbSync(k){
-    var st=cbState[k]; if(!st)return;
-    var cov=$('cb-'+k+'-cov');
-    var o=(st.sel>=0)?st.cache[st.sel]:null;
-    var chosen=[]; if(o){ o.inds.forEach(function(ind,j){ if(st.inds[j])chosen.push(ind); }); }
-    if(cov)cov.innerHTML=o?('<b style="color:var(--ocean-mid);">'+aEsc(o.code)+'</b> selected &middot; '+chosen.length+' of '+o.inds.length+' indicators'):'No outcome selected yet.';
-    st.cfg.apply(o,chosen);
+  function cbCov(){
+    var st=cbState[cbKey], cov=$('cb-modal-cov'); if(!cov)return;
+    var o=(st&&st.sel>=0)?st.cache[st.sel]:null;
+    var n=0; if(o)o.inds.forEach(function(ind,j){ if(st.inds[j])n++; });
+    cov.innerHTML=o?('<b style="color:var(--ocean-mid);">'+aEsc(o.code)+'</b> selected &middot; '+n+' of '+o.inds.length+' indicators'):'No outcome selected yet.';
   }
+  window.cbDone=function(){
+    var k=cbKey, cfg=CB_DEF[k], st=cbState[k];
+    if(!cfg){ cbCloseModal(); return; }
+    var grade=cbVal('cb-m-grade'), sub=cbVal('cb-m-sub');
+    var o=(st&&st.sel>=0)?st.cache[st.sel]:null;
+    var chosen=[]; if(o)o.inds.forEach(function(ind,j){ if(st.inds[j])chosen.push(ind); });
+    cfg.setGrade(grade); cfg.setSub(sub);
+    setTimeout(function(){ try{ cfg.apply(o,chosen); }catch(e){} cbChip(k,o,chosen); }, 40);
+    cbCloseModal();
+  };
+  function cbChip(k,o,chosen){
+    var chip=$(CB_DEF[k].chip); if(!chip)return;
+    if(!o){ chip.innerHTML='<span class="cb-empty">No outcome selected yet &mdash; tap the button above.</span>'; return; }
+    var stmt=o.stmt.length>90?o.stmt.slice(0,90)+'\u2026':o.stmt;
+    chip.innerHTML='<span class="cb-chip"><span><b>'+aEsc(o.code)+'</b> &mdash; '+aEsc(stmt)+'<br><span class="cb-chip-ind">'+chosen.length+' of '+o.inds.length+' indicators selected</span></span></span>';
+  }
+  window.cbClearSel=function(k){ var st=cbState[k]; if(st){st.sel=-1;st.inds={};} cbChip(k,null,[]); };
+  function cbInitChips(){
+    ['gen','cl','sl'].forEach(function(k){ var chip=$(CB_DEF[k].chip); if(chip&&!chip.innerHTML)chip.innerHTML='<span class="cb-empty">No outcome selected yet &mdash; tap the button above.</span>'; });
+  }
+
   function cbSetSel(sel,val){ if(!sel)return false; for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===val){ sel.selectedIndex=i; return true; } } return false; }
   function cbForce(sel,val){ if(!sel)return; if(!cbSetSel(sel,val)){ var op=document.createElement('option'); op.value=val; op.textContent=val; sel.appendChild(op); sel.value=val; } }
   function cbFire(sel){ if(!sel)return; try{ sel.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){ if(sel.onchange)sel.onchange(); } }
@@ -6367,12 +6434,13 @@ function presExportPDF(){
     ib.innerHTML=inds.map(function(x){ return '<label><input type="checkbox" checked value="'+aEsc(x.code)+'" data-t="'+aEsc(x.text)+'"></label>'; }).join('');
   }
   function cbBoot(){
-    var cfgs=cbCfg(),k;
-    for(k in cfgs){ if($(cfgs[k].host))cbRefresh(k); }
-    var fg=$('f-grade'); if(fg)fg.addEventListener('change',function(){setTimeout(function(){cbRefresh('gen');},80);});
-    document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('.stab'))setTimeout(function(){cbRefresh('gen');},100); },true);
-    var cg=$('cl-grade'); if(cg)cg.addEventListener('change',function(){setTimeout(function(){cbRefresh('cl');},100);});
-    var cs2=$('cl-sub'); if(cs2)cs2.addEventListener('change',function(){setTimeout(function(){cbRefresh('cl');},100);});
+    cbInitChips();
+    var fg=$('f-grade'); if(fg)fg.addEventListener('change',function(){cbClearSel('gen');});
+    document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('.stab'))cbClearSel('gen'); },true);
+    var cg=$('cl-grade'); if(cg)cg.addEventListener('change',function(){cbClearSel('cl');});
+    var cs2=$('cl-sub'); if(cs2)cs2.addEventListener('change',function(){cbClearSel('cl');});
+    var sg=$('sl-grade'); if(sg)sg.addEventListener('change',function(){cbClearSel('sl');});
+    var ss=$('sl-sub'); if(ss)ss.addEventListener('change',function(){cbClearSel('sl');});
   }
   if(document.readyState!=='loading')cbBoot(); else document.addEventListener('DOMContentLoaded',cbBoot);
 
@@ -6425,7 +6493,6 @@ function presExportPDF(){
       return '<div class="pres-pill'+(L.id===slLen?' sel':'')+'" data-k="'+L.id+'" onclick="slPickLen(\''+L.id+'\')"><b>'+aEsc(L.label)+'</b><span>'+aEsc(L.hint)+'</span></div>'; }).join('');
     $('sl-enh').innerHTML=PRES_ENH.map(function(e2){
       return '<div class="pres-chip'+(slEnh[e2.id]?' on':'')+'" data-k="'+e2.id+'" onclick="slTogEnh(\''+e2.id+'\')">'+aEsc(e2.label)+'</div>'; }).join('');
-    if(window.cbRefresh)cbRefresh('sl');
   }
   window.slGenerate=async function(){
     var g=$('sl-grade').value, s=$('sl-sub').value, tp=($('sl-topic').value||'').trim();
