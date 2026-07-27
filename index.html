@@ -883,6 +883,7 @@ body{font-size:15.5px;line-height:1.55;}
 @keyframes fxpulse{0%,100%{transform:translate(var(--tx),var(--ty)) scale(.5);opacity:.5}50%{transform:translate(var(--tx),var(--ty)) scale(1.18);opacity:1}}
 .fx-label{font-family:'Fraunces',serif;font-weight:700;font-size:19px;color:var(--ocean-deep,#13324e);margin-top:10px;}
 .fx-sub{font-size:14px;color:var(--text-mid,#4a6370);margin-top:7px;min-height:20px;transition:opacity .3s;}
+.fx-count{font-size:12px;color:var(--text-light,#8aa4ae);margin-top:9px;letter-spacing:.02em;}
 .fx-bar{height:6px;border-radius:6px;background:#eef2f4;overflow:hidden;margin-top:18px;}
 .fx-bar-i{height:100%;width:42%;border-radius:6px;background:linear-gradient(90deg,#e8624a,#f59e0b,#f6c945,#2f9e5a,#0e8a86,#1f5e7d,#7c4dff,#e0559b);background-size:220% 100%;animation:fxslide 1.25s ease-in-out infinite,fxhue 3s linear infinite;}
 @keyframes fxslide{0%{margin-left:-45%}100%{margin-left:100%}}
@@ -1642,16 +1643,56 @@ function safeJsonParse(text){
   }
 }
 
+// Reads Anthropic's SSE stream, assembling text as it arrives so the UI can show
+// it live. Returns the full text; throws on a streamed error event.
+async function readAnthropicStream(resp, onText){
+  var reader = resp.body.getReader();
+  var dec = (typeof TextDecoder!=='undefined') ? new TextDecoder() : null;
+  var buf='', text='', errMsg=null, last=0;
+  while(true){
+    var chunk = await reader.read();
+    if(chunk.done) break;
+    buf += dec ? dec.decode(chunk.value,{stream:true}) : String.fromCharCode.apply(null, chunk.value);
+    var nl;
+    while((nl = buf.indexOf('\n')) >= 0){
+      var line = buf.slice(0,nl).replace(/\r$/,''); buf = buf.slice(nl+1);
+      if(line.indexOf('data:') !== 0) continue;
+      var raw = line.slice(5).trim();
+      if(!raw || raw === '[DONE]') continue;
+      var ev; try{ ev = JSON.parse(raw); }catch(e){ continue; }
+      if(ev.type === 'content_block_delta' && ev.delta && typeof ev.delta.text === 'string'){
+        text += ev.delta.text;
+      } else if(ev.type === 'error'){
+        errMsg = (ev.error && ev.error.message) || 'The AI stream was interrupted.';
+      }
+    }
+    if(onText && text.length - last > 40){ last = text.length; try{ onText(text); }catch(e){} }
+  }
+  if(onText && text){ try{ onText(text); }catch(e){} }
+  if(errMsg) throw new Error(errMsg);
+  if(!text) throw new Error('The AI returned an empty response. Please try again.');
+  return text.trim();
+}
+function fxRelay(quiet){
+  if(quiet) return null;
+  return function(t){ if(typeof window!=='undefined' && typeof window.fxTick==='function') window.fxTick(t); };
+}
 async function callAPI(key,prompt,maxTokens) {
   var resp;
   try {
     resp = await fetch("/api/messages",{
       method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:maxTokens||4000,messages:[{role:"user",content:prompt}]})
+      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:maxTokens||4000,messages:[{role:"user",content:prompt}],stream:true})
     });
   } catch(fetchErr) {
     throw new Error("Network error — make sure the app is running on Railway (not opened as a local file). Details: " + fetchErr.message);
+  }
+  var ctype = (resp.headers && resp.headers.get("Content-Type")) || "";
+  if (ctype.indexOf("text/event-stream") >= 0 && resp.body && resp.body.getReader) {
+    var streamed = await readAnthropicStream(resp, fxRelay(false));
+    streamed = streamed.replace(/^```json\s*/,"").replace(/\s*```$/,"").trim();
+    return safeJsonParse(streamed);
   }
   var data = await resp.json();
   if(data.error) throw new Error("API error: " + data.error.message + " (status " + resp.status + ")");
@@ -3258,9 +3299,10 @@ function renderSavedTemplates() {
 // =====================================================================
 // OVERRIDE callAPI to use server key transparently
 // =====================================================================
-async function callAPI(key, prompt, maxTokens, attachment) {
+async function callAPI(key, prompt, maxTokens, attachment, opts) {
   // Explore-first: only require login at the point of generating/saving.
   if (!currentUser) { if (typeof openAuth === 'function') openAuth('login'); throw new Error('Please log in to generate. Your inputs are kept — just log in and try again.'); }
+  opts = opts || {};
   var headers = { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' };
   // Send auth token if logged in
   var token = localStorage.getItem('boli_token');
@@ -3276,18 +3318,30 @@ async function callAPI(key, prompt, maxTokens, attachment) {
     _blocks.push({ type:'document', source:{ type:'base64', media_type:'application/pdf', data:attachment.data } });
   }
   var userContent = _blocks.length ? _blocks.concat([{ type:'text', text:prompt }]) : prompt;
+  var payload = {
+    model: 'claude-sonnet-4-6',
+    max_tokens: maxTokens || 4000,
+    messages: [{ role: 'user', content: userContent }],
+    stream: true
+  };
+  if (opts.extraBody) { for (var _k in opts.extraBody) payload[_k] = opts.extraBody[_k]; }
   try {
-    resp = await fetch('/api/messages', {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: maxTokens || 4000,
-        messages: [{ role: 'user', content: userContent }]
-      })
-    });
+    resp = await fetch('/api/messages', { method: 'POST', headers: headers, body: JSON.stringify(payload) });
   } catch(fetchErr) {
     throw new Error('Network error — is the app running? ' + fetchErr.message);
+  }
+  // When streaming, credits come back as response headers.
+  var _bal = (resp.headers && resp.headers.get) ? resp.headers.get('X-Faruma-Credits-Balance') : null;
+  if (_bal !== null && _bal !== undefined && _bal !== '' && currentUser) {
+    currentUser.credits = parseInt(_bal, 10);
+    currentUser.limit = parseInt(_bal, 10);
+    if (typeof updateUserBar === 'function') updateUserBar();
+  }
+  var ctype = (resp.headers && resp.headers.get) ? (resp.headers.get('Content-Type') || '') : '';
+  if (ctype.indexOf('text/event-stream') >= 0 && resp.body && resp.body.getReader) {
+    var streamed = await readAnthropicStream(resp, fxRelay(opts.quiet));
+    streamed = streamed.replace(/^```json\s*/,'').replace(/\s*```$/,'').trim();
+    return safeJsonParse(streamed);
   }
   var data = await resp.json();
   if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
@@ -5157,6 +5211,102 @@ function presBuildPrompt(){
   return p;
 }
 
+/* ---------- Two-stage parallel deck generation ----------
+   One quick outline call plans the lesson arc, then slide batches are written
+   concurrently instead of one long sequential stream. Same schema, same quality,
+   a fraction of the wall-clock wait. Falls back to single-pass if anything fails. */
+function presCtx(){
+  var s=presSrc;
+  var inds=(s.indicators||[]).map(function(x){ return (x.code?x.code+' ':'')+(x.text||x.indicator||x); }).join('\n');
+  return 'LESSON CONTEXT\nSubject: '+s.subject+'\nGrade: '+s.grade+'\nTopic: '+(s.topic||'(infer from material)')+'\n'+
+    (s.duration?('Duration: '+s.duration+' mins\n'):'')+
+    (s.outCode?('Outcome '+s.outCode+': '+s.outStmt+'\n'):'')+
+    (inds?('Indicators:\n'+inds+'\n'):'')+
+    '\nSOURCE MATERIAL\n'+(s.material||'(none \u2014 build from the context above)')+'\n\n';
+}
+function presRules(){
+  var s=presSrc, e=presOpts.enh, dv=s.lang==='dv';
+  return 'SLIDE TEXT RULES (visual-first)\n- Max 5 bullets per slide, max 10 words per bullet. Never write paragraphs on a slide.\n'+
+  '- Age-appropriate language for '+s.grade+'.\n- Use concrete Maldivian contexts where natural (islands, reef, fishing, rufiyaa, school life).\n'+
+  (e.icons?'- Start every slide title with ONE relevant emoji.\n':'- Do not use emoji.\n')+
+  (dv?'- ALL learner-facing text (titles, bullets, facts) AND notes/script must be written in Dhivehi (Thaana script). Keep JSON keys and layout values in English.\n':'')+
+  '\nLAYOUTS \u2014 set "layout" on every slide to exactly one of:\n'+
+  '"title" (deck opener), "content" (bullets), "twocol" (compare/contrast: col1title,col1[],col2title,col2[]), "bigfact" (one striking fact: fact, factCaption), "activity" (numbered steps in bullets), "quiz" (questions in bullets, ALL answers in notes), "recap" (summary/exit bullets).\n\n'+
+  'FIELDS per slide: {"layout","kind","title","subtitle" (optional),"bullets":[],"col1title","col1":[],"col2title","col2":[],"fact","factCaption","keyPoint" (optional one-line takeaway),'+
+  ((e.images||e.diagrams)?'"imagePrompt" (optional),':'')+
+  ((e.notes||e.script)?'"notes","script",':'')+'}\n'+
+  ((e.images||e.diagrams)?('\nIMAGE PROMPTS\n- Add "imagePrompt" to roughly 60% of your slides: a short English description of a single clear picture supporting the idea. Describe scenes/objects only \u2014 the image must contain NO words, letters or numbers.\n'+(e.diagrams?'- If one of your slides is a Visual Diagram, its imagePrompt must describe a simple, clean diagram-style illustration of the concept (still no text in the image).\n':'')):'\nDo not include imagePrompt fields.\n')+
+  (e.notes?'\nSPEAKER NOTES\n- "notes": 2\u20134 sentences of teaching guidance per slide (what to emphasise, misconceptions, timing).\n':'')+
+  (e.script?'- "script": 2\u20133 sentences the teacher can say aloud, word for word.\n':'')+
+  (e.blooms?'- Question slides must climb Bloom\'s taxonomy; tag each question\'s Bloom level inside notes.\n':'');
+}
+function presBuildOutlinePrompt(){
+  var e=presOpts.enh, len=presLenObj(), dv=presSrc.lang==='dv';
+  return 'You are an expert instructional designer planning a classroom presentation for a teacher in the Maldives (Maldives National Curriculum).\n\n'+
+  presCtx()+
+  'TASK\nPlan \u2014 do not write \u2014 a professionally sequenced deck of exactly '+len.slides+' slides (slide 1 is the title slide). '+
+  'Pick the most appropriate slides for THIS lesson from this menu: Title, Learning Outcomes, Success Criteria, Hook Activity, Starter Question, Prior Knowledge, Key Vocabulary, Concept Explanation, Visual Diagram, Worked Example, Interactive Question, Group Activity, Think-Pair-Share, Real-World Connection, Common Misconceptions, Assessment Checkpoint, Quiz, Exit Ticket, Homework, Summary. Order them like a real lesson: open, teach, practise, check, close.\n\n'+
+  'MUST-INCLUDE SLIDES (only those switched on):\n'+
+  (e.activities?'- At least one Group Activity slide using the lesson\'s actual activities.\n':'')+
+  (e.tps?'- One Think-Pair-Share slide with a rich prompt.\n':'')+
+  (e.discussion?'- One Interactive/Discussion Questions slide.\n':'')+
+  (e.quiz?'- One Quiz slide.\n':'')+
+  (e.exit?'- One Exit Ticket slide (recap layout).\n':'')+
+  (e.homework?'- One Homework slide.\n':'')+
+  (e.realworld?'- One Real-World Connection slide grounded in Maldivian daily life.\n':'')+
+  (e.funfacts?'- One bigfact slide with a memorable fun fact about the topic.\n':'')+
+  '\nFor every slide give: its number, kind (from the menu), layout ("title","content","twocol","bigfact","activity","quiz","recap"), a working title, and a one-line purpose describing exactly what that slide must achieve.\n'+
+  (dv?'Write the "title" field in Dhivehi (Thaana script). Keep JSON keys, kind and layout values in English.\n':'')+
+  '\nReturn ONLY valid JSON, no markdown, exactly:\n'+
+  '{"title":"deck title","subtitle":"one line","outline":[{"n":1,"kind":"Title","layout":"title","title":"...","purpose":"..."}]}';
+}
+function presBuildBatchPrompt(info, items, from, to){
+  function line(it,i){ return (i+1)+'. ['+(it.kind||'')+' / '+(it.layout||'content')+'] '+(it.title||'')+(it.purpose?' \u2014 '+it.purpose:''); }
+  var plan=items.map(line).join('\n');
+  var mine=items.slice(from,to).map(function(it,i){ return line(it,from+i); }).join('\n');
+  return 'You are an expert instructional designer writing part of a classroom presentation for a teacher in the Maldives (Maldives National Curriculum).\n\n'+
+  presCtx()+
+  'DECK TITLE: '+((info&&info.title)||presSrc.topic||'Lesson')+'\n\n'+
+  'FULL DECK PLAN (context only \u2014 do NOT write these):\n'+plan+'\n\n'+
+  'YOUR TASK\nWrite in full ONLY these '+(to-from)+' slides, in this exact order:\n'+mine+'\n\n'+
+  'Write no other slide, and do not repeat content belonging to the rest of the deck.\n\n'+
+  presRules()+
+  '\nReturn ONLY valid JSON, no markdown, exactly:\n'+
+  '{"slides":[{...}]} containing exactly '+(to-from)+' slide objects in the order listed.';
+}
+async function presGenerateDeck(onStage){
+  var len=presLenObj();
+  function stage(m,p){ if(onStage){ try{ onStage(m,p); }catch(e){} } }
+  async function singlePass(pct){
+    stage('Writing your slides\u2026', pct||45);
+    var raw=await callAPI(presKey(), presBuildPrompt(), len.maxTok);
+    return presNormalize(raw);
+  }
+  var info=null, items=[];
+  stage('Planning the lesson arc\u2026', 14);
+  try{
+    info=await callAPI(presKey(), presBuildOutlinePrompt(), 2000, null, { extraBody:{ faruma_job:'slides-outline' } });
+    items=(info&&Array.isArray(info.outline))?info.outline:[];
+  }catch(e){ items=[]; }
+  if(items.length<4) return await singlePass(45);
+  if(items.length>28) items=items.slice(0,28);
+
+  var size=(items.length<=8)?4:5, batches=[];
+  for(var i=0;i<items.length;i+=size) batches.push([i, Math.min(i+size, items.length)]);
+  var perTok=Math.max(2600, Math.min(4800, Math.round(len.maxTok/batches.length)+1000));
+  var done=0;
+  stage('Writing '+items.length+' slides in parallel\u2026', 36);
+  var parts=await Promise.all(batches.map(function(b){
+    return callAPI(presKey(), presBuildBatchPrompt(info, items, b[0], b[1]), perTok, null, { quiet:true, extraBody:{ faruma_sub:true } })
+      .then(function(r){ done++; stage('Writing slides\u2026 '+done+'/'+batches.length+' sections ready', 36+Math.round(48*done/batches.length)); return r; })
+      .catch(function(){ done++; return null; });
+  }));
+  var slides=[];
+  parts.forEach(function(r){ if(r&&Array.isArray(r.slides)) slides=slides.concat(r.slides); });
+  if(slides.length<3) return await singlePass(60);
+  return presNormalize({ title:(info&&info.title)||presSrc.topic, subtitle:(info&&info.subtitle)||'', slides:slides });
+}
+
 async function presGenerate(){
   if(presBusy) return;
   presBusy = true;
@@ -5165,9 +5315,8 @@ async function presGenerate(){
   presStartStages();
   var t0=Date.now(), len=presLenObj();
   try{
-    var raw = await callAPI(presKey(), presBuildPrompt(), len.maxTok);
     presStopStages();
-    presDeck = presNormalize(raw);
+    presDeck = await presGenerateDeck(function(msg,pct){ presStageSet(msg,pct); });
     presDeck.theme = presOpts.theme;
     presDeck.src = { origin:presSrc.origin, subject:presSrc.subject, grade:presSrc.grade, topic:presSrc.topic, fname:presSrc.fname, lang:presSrc.lang };
     if(presOpts.enh.images || presOpts.enh.diagrams){
@@ -6515,9 +6664,8 @@ function presExportPDF(){
     bar.style.width='8%'; stage.textContent=stages[0];
     var tick=setInterval(function(){ si=Math.min(si+1,stages.length-1); stage.textContent=stages[si]; bar.style.width=(8+si*18)+'%'; },2600);
     try{
-      var raw=await callAPI(presKey(), presBuildPrompt(), presLenObj().maxTok);
       clearInterval(tick);
-      presDeck=presNormalize(raw);
+      presDeck=await presGenerateDeck(function(msg,pct){ stage.textContent=msg; bar.style.width=pct+'%'; });
       presDeck.theme=presOpts.theme;
       presDeck.src={ origin:'slides-tab', subject:s, grade:g, topic:tp, fname:presSrc.fname, lang:presSrc.lang };
       if(presOpts.enh.images||presOpts.enh.diagrams){
@@ -6551,7 +6699,7 @@ function presExportPDF(){
     for(var i=0;i<n;i++){ var a=(i/n)*Math.PI*2, tx=Math.cos(a)*R, ty=Math.sin(a)*R;
       dots+='<span class="fx-dot" style="background:'+COLORS[i]+';--tx:'+tx.toFixed(1)+'px;--ty:'+ty.toFixed(1)+'px;animation-delay:'+(i*0.14).toFixed(2)+'s"></span>'; }
     dots+='<span class="fx-dot" style="background:#13324e;--tx:0px;--ty:0px;animation-delay:.7s"></span>';
-    d.innerHTML='<div class="fx-card"><div class="fx-dots"><div class="fx-spin">'+dots+'</div></div><div class="fx-label" id="fx-label">Generating\u2026</div><div class="fx-sub" id="fx-sub"></div><div class="fx-bar"><div class="fx-bar-i"></div></div></div>';
+    d.innerHTML='<div class="fx-card"><div class="fx-dots"><div class="fx-spin">'+dots+'</div></div><div class="fx-label" id="fx-label">Generating\u2026</div><div class="fx-sub" id="fx-sub"></div><div class="fx-bar"><div class="fx-bar-i"></div></div><div class="fx-count" id="fx-count"></div></div>';
     document.body.appendChild(d);
   }
   window.fxStart=function(label,messages){
@@ -6559,9 +6707,27 @@ function presExportPDF(){
     document.getElementById('fx-label').textContent=label||'Generating\u2026';
     subs=(messages&&messages.length)?messages:DEFAULT; si=0;
     var sub=document.getElementById('fx-sub'); sub.textContent=subs[0]; sub.style.opacity=1;
+    var cnt=document.getElementById('fx-count'); if(cnt)cnt.textContent='';
     clearInterval(timer);
     timer=setInterval(function(){ si=(si+1)%subs.length; sub.style.opacity=0; setTimeout(function(){ sub.textContent=subs[si]; sub.style.opacity=1; },250); },2600);
     d.classList.add('on');
+  };
+  // Called by callAPI as tokens stream in — real progress replaces the rotating copy.
+  window.fxTick=function(txt){
+    var sub=document.getElementById('fx-sub'), cnt=document.getElementById('fx-count');
+    if(!sub)return;
+    if(timer){ clearInterval(timer); timer=null; }
+    var clean=String(txt||'')
+      .replace(/\\[nrt]/g,' ')
+      .replace(/"[A-Za-z_][A-Za-z0-9_]*"\s*:/g,' ')
+      .replace(/[{}\[\]",]/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+    var words=clean?clean.split(' ').length:0;
+    var tail=clean.length>96?clean.slice(-96):clean;
+    sub.style.opacity=1;
+    sub.textContent=tail?('\u2026'+tail):'Writing\u2026';
+    if(cnt)cnt.textContent=words?('~'+words+' words written'):'';
   };
   window.fxStop=function(){ var d=document.getElementById('fx-load'); if(d)d.classList.remove('on'); clearInterval(timer); timer=null; };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build); else build();
