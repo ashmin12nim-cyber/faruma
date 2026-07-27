@@ -125,6 +125,11 @@ function makeRefCode() {
 // ── Credit pricing (inferred from the request) ──────────────────────
 function creditCost(body) {
   try {
+    // Parallel sub-requests belonging to one job (e.g. slide batches) are billed
+    // on the parent call only, so splitting work never costs the teacher more.
+    if (body.faruma_sub === true && (parseInt(body.max_tokens) || 0) <= 5000) return 0;
+    // The slide outline call carries the price of the whole deck.
+    if (body.faruma_job === 'slides-outline') return 2;
     const model = String(body.model || '').toLowerCase();
     if (model.indexOf('haiku') >= 0) return 0;
     let attach = false;
@@ -156,6 +161,7 @@ function readBody(req) {
   });
 }
 function jsonRes(res, status, data) {
+  if (res.headersSent || res.writableEnded) return;
   const b = JSON.stringify(data);
   res.writeHead(status, { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(b), 'Access-Control-Allow-Origin': '*' });
   res.end(b);
@@ -191,6 +197,51 @@ function callAnthropic(body, apiKey) {
     const chunks = [];
     const req = https.request(options, res => { res.on('data', c => chunks.push(c)); res.on('end', () => { try { resolve(JSON.parse(Buffer.concat(chunks).toString())); } catch(e) { reject(new Error('Invalid JSON from Anthropic')); } }); });
     req.on('error', reject); req.write(payload); req.end();
+  });
+}
+// Streams Anthropic's SSE straight through to the browser so text appears as it is written.
+// Resolves {ok:true, sawError} once the stream is finished, or {ok:false, error} if the
+// upstream call failed before any bytes were sent (in which case nothing was written to res).
+function callAnthropicStream(body, apiKey, res, extraHeaders) {
+  return new Promise((resolve, reject) => {
+    const key = apiKey || ANTHROPIC_KEY;
+    if (!key) return reject(new Error('No API key. Set ANTHROPIC_API_KEY env variable on Railway.'));
+    const payload = JSON.stringify(body);
+    const options = {
+      hostname: 'api.anthropic.com', path: '/v1/messages', method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'Content-Length': Buffer.byteLength(payload) }
+    };
+    const up = https.request(options, r => {
+      if (r.statusCode !== 200) {
+        const chunks = [];
+        r.on('data', c => chunks.push(c));
+        r.on('end', () => {
+          let parsed = null;
+          try { parsed = JSON.parse(Buffer.concat(chunks).toString()); } catch (e) {}
+          resolve({ ok: false, status: r.statusCode, error: (parsed && parsed.error) || { message: 'Upstream error ' + r.statusCode } });
+        });
+        return;
+      }
+      const headers = Object.assign({
+        'Content-Type': 'text/event-stream; charset=utf-8',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Expose-Headers': 'X-Faruma-Credits-Spent, X-Faruma-Credits-Balance'
+      }, extraHeaders || {});
+      res.writeHead(200, headers);
+      let sawError = false;
+      r.on('data', c => {
+        if (c.indexOf('"type":"error"') >= 0) sawError = true;
+        res.write(c);
+        if (typeof res.flush === 'function') res.flush();
+      });
+      r.on('end', () => { res.end(); resolve({ ok: true, streamed: true, sawError: sawError }); });
+      r.on('error', () => { try { res.end(); } catch (e) {} resolve({ ok: true, streamed: true, sawError: true }); });
+    });
+    up.on('error', reject);
+    up.write(payload); up.end();
   });
 }
 function serveStatic(req, res) {
@@ -433,10 +484,20 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && url === '/api/messages') {
       const body = JSON.parse((await readBody(req)).toString());
       const apiKey = ANTHROPIC_KEY || req.headers['x-api-key'] || '';
+      const wantStream = body.faruma_stream === true;
+      // internal routing flags must never be forwarded to Anthropic
+      const upstream = Object.assign({}, body);
+      delete upstream.faruma_sub; delete upstream.faruma_job; delete upstream.faruma_stream;
+      if (wantStream) upstream.stream = true;
 
       // BYO-key mode (no server key): pass through, no credits involved.
       if (!ANTHROPIC_KEY) {
-        const result = await callAnthropic(body, apiKey);
+        if (wantStream) {
+          const r = await callAnthropicStream(upstream, apiKey, res);
+          if (!r.ok) return jsonRes(res, 400, { error: r.error });
+          return;
+        }
+        const result = await callAnthropic(upstream, apiKey);
         return jsonRes(res, result.error ? 400 : 200, result);
       }
 
@@ -454,7 +515,19 @@ const server = http.createServer(async (req, res) => {
           return jsonRes(res, 500, { error: { message: 'Credit check failed. Please try again.' } });
         }
         try {
-          const result = await callAnthropic(body, apiKey);
+          if (wantStream) {
+            const r = await callAnthropicStream(upstream, apiKey, res, {
+              'X-Faruma-Credits-Spent': String(cost),
+              'X-Faruma-Credits-Balance': String(d.balance)
+            });
+            if (!r.ok) {
+              await supaAddCredits(su.id, cost, 'refund:api_error', null);
+              return jsonRes(res, 400, { error: r.error });
+            }
+            if (r.sawError) await supaAddCredits(su.id, cost, 'refund:api_error', null);
+            return;
+          }
+          const result = await callAnthropic(upstream, apiKey);
           if (result.error) {
             await supaAddCredits(su.id, cost, 'refund:api_error', null);
             return jsonRes(res, 400, result);
@@ -466,7 +539,12 @@ const server = http.createServer(async (req, res) => {
           throw err;
         }
       }
-      const result = await callAnthropic(body, apiKey);
+      if (wantStream) {
+        const r = await callAnthropicStream(upstream, apiKey, res);
+        if (!r.ok) return jsonRes(res, 400, { error: r.error });
+        return;
+      }
+      const result = await callAnthropic(upstream, apiKey);
       return jsonRes(res, result.error ? 400 : 200, result);
     }
 

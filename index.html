@@ -1683,7 +1683,7 @@ async function callAPI(key,prompt,maxTokens) {
     resp = await fetch("/api/messages",{
       method:"POST",
       headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:maxTokens||4000,messages:[{role:"user",content:prompt}],stream:true})
+      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:maxTokens||4000,messages:[{role:"user",content:prompt}],faruma_stream:true})
     });
   } catch(fetchErr) {
     throw new Error("Network error — make sure the app is running on Railway (not opened as a local file). Details: " + fetchErr.message);
@@ -3322,7 +3322,7 @@ async function callAPI(key, prompt, maxTokens, attachment, opts) {
     model: 'claude-sonnet-4-6',
     max_tokens: maxTokens || 4000,
     messages: [{ role: 'user', content: userContent }],
-    stream: true
+    faruma_stream: true
   };
   if (opts.extraBody) { for (var _k in opts.extraBody) payload[_k] = opts.extraBody[_k]; }
   try {
