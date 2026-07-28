@@ -970,6 +970,20 @@ body{font-size:15.5px;line-height:1.55;}
 .fr-dot-a{ background:#f3a68f; width:70px; height:70px; left:-8px; bottom:16px; }
 .fr-dot-b{ background:#7fc7e0; width:54px; height:54px; right:24px; bottom:-10px; }
 
+/* restored lagoon hero: taller than the original because the old in-scene
+   topbar is gone and the CTA row now lives inside the hero copy */
+.home-sky{ height:clamp(500px,66vh,680px); padding-top:clamp(8px,2.2vh,26px); }
+.home-hero .fr-hero-cta button{ box-shadow:0 6px 18px -6px rgba(19,50,78,.35); }
+.fr-hero-cta .fr-btn-outline{ background:rgba(255,255,255,.92); border-color:rgba(255,255,255,.9); color:var(--ocean-deep); }
+
+/* step badges reuse the feature-card gradients so the two sections rhyme */
+.fr-stepic{ width:74px; height:74px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; margin:6px auto 16px; box-shadow:0 3px 11px rgba(0,0,0,.06); }
+.fr-stepic svg{ width:37px; height:37px; }
+.fr-stepic.s1{ background:linear-gradient(158deg,#dff4f1 0%, #9fdcd5 100%); } .fr-stepic.s1 svg{ color:#0c8a86; }
+.fr-stepic.s2{ background:linear-gradient(158deg,#eaf3da 0%, #bcdd97 100%); } .fr-stepic.s2 svg{ color:#5a8a2c; }
+.fr-stepic.s3{ background:linear-gradient(158deg,#ffeae0 0%, #ffc6a9 100%); } .fr-stepic.s3 svg{ color:#df6d3c; }
+
 /* ── sections ──────────────────────────────────────────────────── */
 .fr-section{ max-width:1160px; margin:0 auto; padding:clamp(44px,6vw,74px) clamp(16px,3vw,40px); }
 .fr-band{ background:#f0f7f6; }
@@ -988,7 +1002,6 @@ body{font-size:15.5px;line-height:1.55;}
 .fr-step{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px 22px; text-align:center; position:relative; }
 .fr-step .fr-num{ position:absolute; top:14px; left:14px; width:26px; height:26px; border-radius:50%;
   color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; }
-.fr-step .fr-ic{ width:46px; height:46px; margin:6px auto 14px; color:var(--teal-deep); }
 .fr-step h3{ font-family:'Fraunces',serif; font-size:17px; margin-bottom:8px; color:var(--ocean-deep); font-weight:600; }
 .fr-step p{ font-size:13.5px; color:var(--text-mid); line-height:1.55; }
 .fr-arrow{ color:var(--ocean-light); font-size:24px; text-align:center; }
@@ -1118,6 +1131,54 @@ body{font-size:15.5px;line-height:1.55;}
   background:var(--ocean-pale); border-radius:10px; padding:8px 10px; }
 .db-week b{ color:var(--ocean-deep); }
 
+/* ══ Lesson Plan Format picker ══ */
+.sr-hide{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+.tplpick{ border:1.5px solid var(--ocean-pale); background:linear-gradient(180deg,#f3fbfa,#ffffff 60%);
+  border-radius:16px; padding:18px 18px 20px; margin:6px 0 18px; }
+.tplpick-head h3{ font-family:'Fraunces',serif; font-size:19px; color:var(--ocean-deep); font-weight:600; }
+.tplpick-head p{ font-size:13.5px; color:var(--text-mid); margin:5px 0 16px; }
+.tplpick-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.tplcard{ position:relative; text-align:left; background:#fff; border:1.5px solid var(--line);
+  border-radius:14px; padding:14px; cursor:pointer; font-family:'Inter',sans-serif;
+  display:flex; flex-direction:column; gap:8px; transition:border-color .15s, box-shadow .15s, transform .15s; }
+.tplcard:hover{ border-color:var(--ocean-light); transform:translateY(-2px); box-shadow:0 12px 26px -16px rgba(19,50,78,.45); }
+.tplcard.on{ border-color:var(--leaf-deep); box-shadow:0 0 0 3px rgba(31,158,90,.14); }
+.tplcard.on::after{ content:'\2713 Selected'; position:absolute; top:12px; right:12px;
+  background:var(--leaf-deep); color:#fff; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:20px; }
+.tplcard-tag{ font-size:10.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--text-light); }
+.tplcard.on .tplcard-tag{ visibility:hidden; }
+.tplthumb{ display:block; border-radius:9px; padding:9px; }
+.tplthumb svg{ display:block; width:100%; height:auto; opacity:.85; }
+.tplcard b{ font-family:'Fraunces',serif; font-size:16px; color:var(--ocean-deep); font-weight:600; }
+.tplcard-d{ font-size:12.5px; color:var(--text-mid); line-height:1.5; flex:1; }
+.tplcard-prev{ font-size:12.5px; font-weight:700; color:var(--leaf-deep); }
+
+/* ══ format design preview ══ */
+#tplprev-modal{ position:fixed; inset:0; z-index:12000; align-items:center; justify-content:center; padding:20px; }
+.tplprev-scrim{ position:absolute; inset:0; background:rgba(15,39,64,.65); }
+.tplprev-box{ position:relative; background:#fff; border-radius:18px; width:min(860px,100%);
+  max-height:90vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 70px -20px rgba(0,0,0,.5); }
+.tplprev-box header{ display:flex; gap:14px; padding:20px 22px 14px; border-bottom:1px solid var(--line); }
+.tplprev-box header h3{ font-family:'Fraunces',serif; font-size:20px; color:var(--ocean-deep); font-weight:600; }
+.tplprev-box header p{ font-size:13px; color:var(--text-mid); margin-top:5px; line-height:1.55; max-width:640px; }
+.tplprev-x{ margin-left:auto; align-self:flex-start; background:none; border:none; font-size:26px;
+  line-height:1; color:var(--text-light); cursor:pointer; }
+.tplprev-scroll{ overflow:auto; padding:22px; background:#eef1ef; }
+.tplprev-box footer{ display:flex; align-items:center; gap:10px; padding:14px 22px;
+  border-top:1px solid var(--line); flex-wrap:wrap; }
+.tplprev-box footer #tplprev-best{ font-size:12.5px; color:var(--text-mid); max-width:340px; }
+.tplprev-sp{ flex:1; }
+
+.tplprev-sheet{ background:#fff; padding:16px; box-shadow:0 2px 14px rgba(0,0,0,.12); max-width:660px; margin:0 auto;
+  border:1px solid #cfd6d4; }
+.tplprev-row{ display:grid; grid-template-columns:repeat(4,1fr); }
+.tplprev-cell{ border:1px solid #9aa5a2; margin:-1px 0 0 -1px; padding:7px 8px; min-height:30px;
+  font-family:Arial,sans-serif; font-size:10.5px; color:#1b2b28; display:flex; align-items:flex-start; }
+.tplprev-cell.k-h{ background:#ededed; font-weight:700; justify-content:center; align-items:center; text-align:center; }
+.tplprev-cell.k-f{ font-weight:700; }
+.tplprev-cell.k-b{ font-weight:700; min-height:56px; }
+.tplprev-cell.k-b span{ opacity:.85; }
+
 /* ── responsive ────────────────────────────────────────────────── */
 @media (max-width:1040px){
   .fr-hero-wrap{ grid-template-columns:1fr; }
@@ -1127,6 +1188,9 @@ body{font-size:15.5px;line-height:1.55;}
   .db-grid{ grid-template-columns:1fr; }
 }
 @media (max-width:860px){
+  .tplpick-grid{ grid-template-columns:1fr; }
+  .tplprev-sheet{ padding:10px; }
+  .tplprev-cell{ font-size:9.5px; padding:5px 6px; }
   .fr-nav{ display:none; }
   .fr-steps{ grid-template-columns:1fr; }
   .fr-arrow{ display:none; }
@@ -1348,6 +1412,27 @@ body{font-size:15.5px;line-height:1.55;}
   </div>
 </div>
 
+<!-- ══ LESSON PLAN FORMAT PREVIEW ══ -->
+<div id="tplprev-modal" style="display:none;">
+  <div class="tplprev-scrim" onclick="closeTplPreview()"></div>
+  <div class="tplprev-box" role="dialog" aria-modal="true" aria-labelledby="tplprev-title">
+    <header>
+      <div>
+        <h3 id="tplprev-title">Template</h3>
+        <p id="tplprev-blurb"></p>
+      </div>
+      <button class="tplprev-x" onclick="closeTplPreview()" aria-label="Close preview">&times;</button>
+    </header>
+    <div class="tplprev-scroll"><div id="tplprev-body"></div></div>
+    <footer>
+      <span id="tplprev-best"></span>
+      <div class="tplprev-sp"></div>
+      <button class="fr-btn fr-btn-ghost" onclick="closeTplPreview()">Cancel</button>
+      <button class="fr-btn fr-btn-green" id="tplprev-use" data-fmt="standard" onclick="useTplFromPreview()">Use this format</button>
+    </footer>
+  </div>
+</div>
+
 <!-- ════════ ADMIN PANEL ════════ -->
 <div id="admin-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.7);z-index:10001;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;">
   <div style="background:#fff;border-radius:14px;max-width:680px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.4);margin:20px 0;">
@@ -1395,31 +1480,89 @@ body{font-size:15.5px;line-height:1.55;}
     </div>
   </header>
 
-  <!-- ── hero ── -->
-  <section class="fr-hero">
-    <div class="fr-hero-wrap">
-      <div>
-        <h1>AI lesson planner <em>for Maldivian teachers</em></h1>
-        <p class="fr-hero-dv" lang="dv" dir="rtl">ދިވެހި މުދައްރިސުންނަށް އެހީއެއް</p>
-        <p class="fr-hero-sub">Plan smarter, save time, and inspire learners. FARUMA drafts lesson plans, schemes of work, checklists, assessments and slides &mdash; every one aligned to the Maldives National Curriculum.</p>
-        <div class="fr-hero-cta">
-          <button class="fr-btn fr-btn-green fr-btn-lg" onclick="homeGetStarted()">Start planning &rarr;</button>
-          <button class="fr-btn fr-btn-outline fr-btn-lg" onclick="scrollToFeatures()">See what's inside</button>
-        </div>
-      </div>
-      <div class="fr-art">
-        <div class="fr-blob"></div>
-        <span class="fr-dot fr-dot-a"></span><span class="fr-dot fr-dot-b"></span>
-        <span class="faruma-mark" role="img" aria-label="FARUMA"></span>
-        <div class="fr-badge">
-          <b>&#10022; Built for the MNC</b>
-          <li>Outcomes and indicators built in</li>
-          <li>Dhivehi and English</li>
-          <li>Exports to Word and PowerPoint</li>
-        </div>
+  <!-- ── hero: Maldives lagoon scene ── -->
+  <div class="home-sky">
+
+    <div class="home-hero">
+      <h1 class="hero-logo"><span class="faruma-mark hero-mark" role="img" aria-label="FARUMA"></span></h1>
+      <p class="hero-dv" lang="dv" dir="rtl" style="font-family:'MV Faseyha','Faruma','A Faruma','MV Boli','MV Elaaf Normal',sans-serif;direction:rtl;text-align:center;white-space:nowrap;font-size:26px;line-height:1.3;font-weight:800;letter-spacing:-.5px;color:var(--ocean-deep);margin:.3rem auto .6rem;text-shadow:0 2px 14px rgba(255,255,255,.65);">ދިވެހި މުދައްރިސުންނަށް އެހީއެއް</p>
+      <p>AI lesson planning aligned to the Maldives National Curriculum &mdash; schemes, checklists, assessments and report cards, all in one place.</p>
+      <div class="fr-hero-cta" style="justify-content:center;margin-top:clamp(14px,2.4vh,24px);">
+        <button class="fr-btn fr-btn-green fr-btn-lg" onclick="homeGetStarted()">Start planning &rarr;</button>
+        <button class="fr-btn fr-btn-outline fr-btn-lg" onclick="scrollToFeatures()">See what's inside</button>
       </div>
     </div>
-  </section>
+
+    <svg class="home-treeline" viewBox="0 0 1440 38" preserveAspectRatio="none" fill="#2f6b46" aria-hidden="true">
+      <path d="M0,38 L0,20 Q60,8 120,16 Q190,26 260,14 Q330,4 400,16 Q470,28 540,14 Q610,4 680,16 Q750,28 820,14 Q890,4 960,16 Q1030,28 1100,14 Q1170,4 1240,16 Q1310,26 1380,16 Q1410,12 1440,18 L1440,38 Z"/>
+    </svg>
+    <svg class="home-boat" viewBox="0 0 130 72" aria-hidden="true">
+      <path d="M12,30 Q40,48 65,48 Q92,48 118,26 Q94,62 65,62 Q34,62 12,30 Z" fill="#6f4a28"/>
+      <path d="M12,30 Q40,48 65,48 Q92,48 118,26" fill="none" stroke="#1f7a86" stroke-width="4" stroke-linecap="round"/>
+      <path d="M16,33 Q42,45 65,45 Q90,45 114,29" fill="none" stroke="#eaf4f3" stroke-width="2" stroke-linecap="round"/>
+      <path d="M118,26 Q124,18 126,9" fill="none" stroke="#6f4a28" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M12,30 Q8,23 7,16" fill="none" stroke="#6f4a28" stroke-width="3.4" stroke-linecap="round"/>
+      <line x1="55" y1="47" x2="55" y2="40" stroke="#5a3c20" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="80" y1="46" x2="80" y2="39" stroke="#5a3c20" stroke-width="2.2" stroke-linecap="round"/>
+      <ellipse cx="64" cy="67" rx="48" ry="3.4" fill="#1f5a66" opacity="0.16"/>
+    </svg>
+    <svg class="home-people" viewBox="0 0 1000 340" aria-hidden="true">
+      <g fill="#000" opacity="0.10">
+        <ellipse cx="300" cy="316" rx="11" ry="3.5"/>
+        <ellipse cx="430" cy="316" rx="16" ry="4"/>
+        <ellipse cx="468" cy="316" rx="12" ry="3.5"/>
+        <ellipse cx="530" cy="314" rx="22" ry="4"/>
+        <ellipse cx="558" cy="312" rx="13" ry="3.5"/>
+        <ellipse cx="608" cy="312" rx="11" ry="3.5"/>
+      </g>
+      <path d="M296,314 L298,300 M304,314 L302,300" stroke="#2a3550" stroke-width="3" stroke-linecap="round"/>
+      <path d="M295,302 L305,302 L305,293 L295,293 Z" fill="#2a3550"/>
+      <path d="M294,294 L296,272 L304,272 L306,294 Z" fill="#eef2f0"/>
+      <ellipse cx="300" cy="265" rx="7" ry="8" fill="#2a2118"/>
+      <path d="M297,274 L288,258" stroke="#2a2118" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M288,258 Q196,196 120,150" stroke="#9aa3a0" stroke-width="1" fill="none"/>
+      <polygon points="120,130 138,154 120,178 102,154" fill="#d94f4f"/>
+      <polygon points="120,130 120,178 102,154" fill="#b83b3b"/>
+      <path d="M120,178 q7,7 0,14 q-7,7 0,14 q7,7 0,14" stroke="#d94f4f" stroke-width="2" fill="none"/>
+      <path d="M421,314 L426,228 L436,228 L441,314 Z" fill="#2f8f86"/>
+      <ellipse cx="430" cy="212" rx="9" ry="11" fill="#281d14"/>
+      <path d="M439,210 Q447,214 443,228 Q439,229 436,226 Z" fill="#281d14"/>
+      <path d="M476,250 L486,262" stroke="#e07a3c" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M486,262 L492,273" stroke="#6f4a28" stroke-width="1.8" stroke-linecap="round"/>
+      <polygon points="489,272 495,272 492,279" fill="#9a9a9a"/>
+      <path d="M460,314 L464,232 L474,232 L478,314 Z" fill="#e07a3c"/>
+      <ellipse cx="468" cy="214" rx="8.5" ry="10" fill="#281d14"/>
+      <path d="M459,212 Q450,214 452,226 Q456,227 460,220 Z" fill="#281d14"/>
+      <path d="M477,212 Q486,214 484,226 Q480,227 476,220 Z" fill="#281d14"/>
+      <path d="M512,312 L516,300 L544,300 L548,312 Z" fill="#d8c39a"/>
+      <path d="M518,300 L518,290 L525,290 L525,300 Z" fill="#d8c39a"/>
+      <path d="M537,300 L537,288 L544,288 L544,300 Z" fill="#d8c39a"/>
+      <path d="M540,288 L540,279" stroke="#6f4a28" stroke-width="1.4" stroke-linecap="round"/>
+      <polygon points="540,279 549,282 540,285" fill="#d94f4f"/>
+      <g fill="#f0e6d2" stroke="#cdbf9a" stroke-width="0.6">
+        <ellipse cx="506" cy="309" rx="2.2" ry="1.6"/>
+        <ellipse cx="551" cy="310" rx="2.2" ry="1.6"/>
+      </g>
+      <path d="M550,290 L538,300" stroke="#281d14" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M549,300 Q553,276 563,276 Q572,280 568,300 Z" fill="#8a6fb0"/>
+      <ellipse cx="558" cy="268" rx="8" ry="9" fill="#281d14"/>
+      <path d="M550,264 Q541,266 543,277 Q547,278 551,272 Z" fill="#281d14"/>
+      <path d="M566,264 Q575,266 573,277 Q569,278 565,272 Z" fill="#281d14"/>
+      <ellipse cx="608" cy="286" rx="7" ry="7" fill="#3a2a1c"/>
+      <path d="M601,304 Q608,290 615,304 Z" fill="#7fbf6a"/>
+      <path d="M612,298 L600,307" stroke="#3a2a1c" stroke-width="2" stroke-linecap="round"/>
+      <path d="M592,302 L604,302 L602,312 L594,312 Z" fill="#d94f4f"/>
+      <path d="M592,302 Q598,295 604,302" stroke="#a83838" stroke-width="1.2" fill="none"/>
+      <g fill="#f0e6d2" stroke="#cdbf9a" stroke-width="0.6">
+        <ellipse cx="598" cy="306" rx="1.8" ry="1.3"/>
+        <ellipse cx="586" cy="309" rx="2" ry="1.5"/>
+        <ellipse cx="582" cy="311" rx="1.8" ry="1.4"/>
+      </g>
+    </svg>
+    <svg class="home-silhouette" viewBox="0 0 1440 150" preserveAspectRatio="none" fill="#f3eee1" aria-hidden="true">
+      <path d="M0,150 L0,60 Q360,46 720,54 Q1080,62 1440,52 L1440,150 Z"/>
+    </svg>
+  </div>
 
   <!-- ── features: the six cards below are FINALISED UI, do not restyle ── -->
   <section class="fr-features" id="fr-features-band">
@@ -1467,21 +1610,21 @@ body{font-size:15.5px;line-height:1.55;}
       <div class="fr-steps">
         <div class="fr-step">
           <div class="fr-num" style="background:var(--leaf-deep)">1</div>
-          <div class="fr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg></div>
+          <div class="fr-stepic s1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 2.5 8.5 12 13.5 21.5 8.5 12 3.5Z"/><path d="M6.5 11.2v4.6c0 1.6 2.5 2.9 5.5 2.9s5.5-1.3 5.5-2.9v-4.6"/><path d="M21.5 8.5v5.2"/></svg></div>
           <h3>Choose grade &amp; subject</h3>
           <p>Pick the class, subject, week and the outcomes you're teaching.</p>
         </div>
         <div class="fr-arrow">&rarr;</div>
         <div class="fr-step">
           <div class="fr-num" style="background:var(--ocean-mid)">2</div>
-          <div class="fr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M18 18l-2.5-2.5"/></svg></div>
+          <div class="fr-stepic s2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2.5 15 8l5.5 2-5.5 2-2 5.5L11 12 5.5 10 11 8Z"/><path d="M5.5 15.5 6.4 18l2.5.9-2.5.9L5.5 22.3 4.6 19.8 2 18.9l2.6-.9Z"/></svg></div>
           <h3>FARUMA writes the draft</h3>
           <p>Activities, questions and slides, matched to the indicators you selected.</p>
         </div>
         <div class="fr-arrow">&rarr;</div>
         <div class="fr-step">
           <div class="fr-num" style="background:var(--coral)">3</div>
-          <div class="fr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 11l4 4 4-4M4 21h16"/></svg></div>
+          <div class="fr-stepic s3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"/><path d="M8 10.2 12 14.2 16 10.2"/><path d="M4 17.5v2A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-2"/></svg></div>
           <h3>Edit, download, teach</h3>
           <p>Tidy it up in the editor, then export to Word or PowerPoint.</p>
         </div>
@@ -1604,13 +1747,48 @@ body{font-size:15.5px;line-height:1.55;}
     <div class="field"><label>School Name</label><input type="text" id="f-school" placeholder="e.g. your school name" value=""></div>
     <div class="field"><label>School Address</label><input type="text" id="f-address" placeholder="e.g. your school address"></div>
   </div>
+  <div class="g2">
+    <div class="field"><label>Teacher's Name</label><input type="text" id="f-teacher" placeholder="e.g. your name" value=""></div>
+    <div class="field"><label>Term</label><select id="f-term"><option value="">-</option><option value="1">Term 1</option><option value="2">Term 2</option><option value="3">Term 3</option></select></div>
+  </div>
   <div id="active-tpl-banner" style="display:none;background:var(--ocean-pale);border:1px solid rgba(47,170,184,.3);border-radius:8px;padding:9px 14px;margin-bottom:12px;font-size:13.5px;color:var(--ocean-deep);font-weight:700;">
     📄 Template active: <span id="active-tpl-name"></span> &nbsp;<a href="#" onclick="return false;" style="color:var(--coral);font-size:12.5px;">Change</a>
   </div>
-  <div class="field"><label>Lesson Plan Format</label><select id="f-format">
-    <option value="standard" selected>Standard Template (Set Induction · Main Body · Closure · Checked by)</option>
-    <option value="school">Template 1 (Subject · Strand · Teaching &amp; Learning · Reflections)</option>
-  </select></div>
+  <!-- ══ Lesson Plan Format — emphasised picker with design previews ══ -->
+  <section class="tplpick" id="tplpick">
+    <div class="tplpick-head">
+      <h3>Lesson Plan Format</h3>
+      <p>Choose the layout your school uses. Click a template to see the exact page before you generate.</p>
+    </div>
+    <div class="tplpick-grid">
+      <button type="button" class="tplcard on" data-fmt="standard" aria-pressed="true" onclick="pickFormat('standard')">
+        <span class="tplcard-tag">Most used</span>
+        <span class="tplthumb t-blue"><svg viewBox="0 0 80 69" fill="currentColor" aria-hidden="true"><rect x="2" y="2" width="76" height="8" rx="2"/><rect x="2" y="13" width="17" height="7" rx="1.5"/><rect x="21" y="13" width="17" height="7" rx="1.5"/><rect x="40" y="13" width="17" height="7" rx="1.5"/><rect x="59" y="13" width="19" height="7" rx="1.5"/><rect x="2" y="23" width="37" height="7" rx="1.5"/><rect x="41" y="23" width="37" height="7" rx="1.5"/><rect x="2" y="33" width="76" height="6" rx="1.5" opacity=".55"/><rect x="2" y="41" width="14" height="16" rx="1.5"/><rect x="18" y="41" width="34" height="16" rx="1.5"/><rect x="54" y="41" width="24" height="16" rx="1.5"/><rect x="2" y="59" width="76" height="8" rx="1.5"/></svg></span>
+        <b>Standard Template</b>
+        <span class="tplcard-d">Set Induction &middot; Main Body &middot; Closure, timings, adaptation levels and a sign-off block.</span>
+        <span class="tplcard-prev">Preview design &rarr;</span>
+      </button>
+      <button type="button" class="tplcard" data-fmt="school" aria-pressed="false" onclick="pickFormat('school')">
+        <span class="tplcard-tag">School format</span>
+        <span class="tplthumb t-lilac"><svg viewBox="0 0 80 69" fill="currentColor" aria-hidden="true"><rect x="2" y="2" width="18" height="7" rx="1.5"/><rect x="22" y="2" width="18" height="7" rx="1.5"/><rect x="42" y="2" width="18" height="7" rx="1.5"/><rect x="62" y="2" width="16" height="7" rx="1.5"/><rect x="2" y="12" width="76" height="7" rx="1.5"/><rect x="2" y="22" width="37" height="11" rx="1.5"/><rect x="41" y="22" width="37" height="11" rx="1.5"/><rect x="2" y="36" width="37" height="11" rx="1.5"/><rect x="41" y="36" width="37" height="11" rx="1.5"/><rect x="2" y="50" width="76" height="6" rx="1.5" opacity=".55"/><rect x="2" y="58" width="76" height="9" rx="1.5"/></svg></span>
+        <b>Template 1</b>
+        <span class="tplcard-d">Key Competencies, Process Skill and Shared Values, ending with your reflection.</span>
+        <span class="tplcard-prev">Preview design &rarr;</span>
+      </button>
+      <button type="button" class="tplcard" data-fmt="mnc2" aria-pressed="false" onclick="pickFormat('mnc2')">
+        <span class="tplcard-tag">New</span>
+        <span class="tplthumb t-sand"><svg viewBox="0 0 80 69" fill="currentColor" aria-hidden="true"><rect x="2" y="2" width="38" height="7" rx="1.5"/><rect x="42" y="2" width="17" height="7" rx="1.5"/><rect x="61" y="2" width="17" height="7" rx="1.5"/><rect x="2" y="12" width="17" height="7" rx="1.5"/><rect x="21" y="12" width="17" height="7" rx="1.5"/><rect x="40" y="12" width="17" height="7" rx="1.5"/><rect x="59" y="12" width="19" height="7" rx="1.5"/><rect x="2" y="22" width="37" height="10" rx="1.5"/><rect x="41" y="22" width="37" height="10" rx="1.5"/><rect x="2" y="35" width="76" height="10" rx="1.5"/><rect x="2" y="48" width="14" height="6" rx="1.5" opacity=".55"/><rect x="18" y="48" width="42" height="6" rx="1.5" opacity=".55"/><rect x="62" y="48" width="16" height="6" rx="1.5" opacity=".55"/><rect x="2" y="56" width="14" height="11" rx="1.5"/><rect x="18" y="56" width="42" height="11" rx="1.5"/><rect x="62" y="56" width="16" height="11" rx="1.5"/></svg></span>
+        <b>Template 2</b>
+        <span class="tplcard-d">Learning Intentions, ICP success criteria, differentiated levels and Effective Questing.</span>
+        <span class="tplcard-prev">Preview design &rarr;</span>
+      </button>
+    </div>
+    <select id="f-format" class="sr-hide" tabindex="-1" aria-hidden="true">
+      <option value="standard" selected>Standard Template</option>
+      <option value="school">Template 1</option>
+      <option value="mnc2">Template 2</option>
+    </select>
+  </section>
   <div class="field"><label>Lesson Activity Type</label><select id="f-activity-type">
     <option value="Standard" selected>Standard (Introduction + Activity)</option>
     <option value="5E Model">5E Model (Engage, Explore, Explain, Elaborate, Evaluate)</option>
@@ -2451,6 +2629,39 @@ async function doGenerate() {
       +',"closure":{"teacherActivity":["Summarise"],"studentActivity":["Reflect"]}'
       +',"learningOutcomes":["'+outStmt.replace(/"/g,"'")+'"]}'
       ;
+  } else if (fmt === "mnc2") {
+    prompt = "You are an expert teacher in the Maldives filling in your school's lesson-plan format.\n\n"
+      +"Grade: "+grade+" | Subject: "+currentSub+" | Duration: "+dur+" mins\n"
+      +"Week: "+(wk||"?")+" | Date: "+(date||"?")+" | Period/Lesson: "+fname+"\n"
+      +"Strand: "+strand+" | Sub-strand: "+substrand+"\n"
+      +"Outcome Code: "+outCode+"\nOutcome: "+outStmt+"\n"
+      +"Topic: "+topic+"\nIndicators:\n"+inds.join("\n")+"\n"
+      +(activities?"Activity ideas: "+activities+"\n":"")
+      +"Lesson activity model: "+activityType+"\n\n"
+      +"Write detailed, classroom-ready content for EVERY field. Use Bloom's progression and age-appropriate "
+      +"activities for "+grade+". Use real-world / Maldivian contexts only where they fit the topic naturally.\n"
+      +"The three phase times must add up to "+dur+" minutes.\n"
+      +"'icpStudents' means students on an IndividualCa"+"re Plan: give simplified, achievable success criteria for them.\n"
+      +"'effectiveQuestions' are the questions the teacher asks during the lesson, in the order they would be asked.\n"
+      +"'specialEducationalNotes' are practical adjustments for learners with additional needs.\n\n"
+      +"Return ONLY valid JSON, no markdown:\n"
+      +'{'
+      +'"keyCompetencies":["a key competency and how this lesson develops it"],'
+      +'"sharedValues":["a shared value relevant to this lesson"],'
+      +'"priorKnowledge":["what students already know that this lesson builds on"],'
+      +'"resources":["a teaching material","another resource"],'
+      +'"learningIntentions":["We are learning to ..."],'
+      +'"successCriteria":["I can ...","I can ..."],'
+      +'"icpStudents":["I can ... (simplified)"],'
+      +'"setInduction":{"time":"5","activity":["engaging hook, described step by step"]},'
+      +'"mainActivity":{"time":"'+Math.max(5,(parseInt(dur,10)||35)-15)+'","activity":["main teaching sequence, step by step"]},'
+      +'"differentiated":{"level1":["task for learners working below the expected level"],"level2":["task for learners at the expected level"],"level3":["extension task"]},'
+      +'"closure":{"time":"5","activity":["how the lesson is wrapped up and reviewed"]},'
+      +'"effectiveQuestions":["question 1","question 2","question 3"],'
+      +'"specialEducationalNotes":["adjustment for learners with additional needs"],'
+      +'"assessmentEvaluation":["how evidence is collected","how the teacher will interpret it"]'
+      +'}'
+      ;
   } else {
     prompt = "You are an expert teacher in the Maldives writing a lesson plan in your school's official format.\n\n"
       +"Grade: "+grade+" | Subject: "+currentSub+" | Duration: "+dur+" mins\n"
@@ -2502,6 +2713,8 @@ async function doGenerate() {
     plan.strand=strand; plan.substrand=substrand; plan.outcomeCode=outCode;
     plan.outcomeStmt=outStmt;
     plan.topic=topic; plan.indicators=inds;
+    plan.teacherName=(document.getElementById("f-teacher")||{}).value||"";
+    plan.term=(document.getElementById("f-term")||{}).value||"";
     plan.school=document.getElementById("f-school").value||"";
     plan.schoolAddress=document.getElementById("f-address").value||"";
     setProgress("gen-prog","gen-bar",80);
@@ -2523,6 +2736,8 @@ async function doGenerate() {
       blob = await buildDocxFromTemplate(plan, activeTemplate);
     } else if (fmt === "standard") {
       blob = await buildDocx(plan);
+    } else if (fmt === "mnc2") {
+      blob = await buildTemplate2Docx(plan);
     } else {
       blob = await buildSchoolDocx(plan);
     }
@@ -4332,6 +4547,148 @@ async function buildSchoolDocx(plan) {
   return await Packer.toBlob(doc);
 }
 
+
+/* ════════════════════════════════════════════════════════════════════
+   TEMPLATE 2 — the school lesson-plan format supplied as a Word file.
+   Single full-width table, 4-column grid. Row order and wording follow
+   the source document exactly (including "Effective Questing", which is
+   spelled that way in the original).
+   ════════════════════════════════════════════════════════════════════ */
+async function buildTemplate2Docx(plan) {
+  var _d = docx;
+  var Document=_d.Document, Packer=_d.Packer, Paragraph=_d.Paragraph, TextRun=_d.TextRun,
+      Table=_d.Table, TableRow=_d.TableRow, TableCell=_d.TableCell,
+      AlignmentType=_d.AlignmentType, BorderStyle=_d.BorderStyle,
+      WidthType=_d.WidthType, ShadingType=_d.ShadingType;
+
+  var TW = 10692, COL = Math.floor(TW/4);
+  var mkB = function(){ return { style:BorderStyle.SINGLE, size:6, color:"000000" }; };
+  var borders = { top:mkB(), bottom:mkB(), left:mkB(), right:mkB(), insideHorizontal:mkB(), insideVertical:mkB() };
+  var cm = { top:60, bottom:60, left:100, right:100 };
+
+  function run(t,o){
+    o = o || {};
+    var s = String(t==null?"":t), th = /[\u0780-\u07BF]/.test(s);
+    return new TextRun({
+      text:s, bold:!!o.bold, italics:!!o.italics,
+      underline: o.underline ? { type:"single" } : undefined,
+      size:o.size||20, font: th ? "Faruma" : "Arial",
+      color:o.color||"000000", rightToLeft:th
+    });
+  }
+  function para(children,o){
+    o = o || {};
+    return new Paragraph({
+      children: Array.isArray(children) ? children : [children],
+      spacing:{ after:(o.after==null?20:o.after) },
+      alignment:o.align||AlignmentType.LEFT
+    });
+  }
+  function arr(a){
+    return (a||[]).map(function(s){ return String(s==null?"":s).replace(/^[\u2022\-\*]\s*/,"").trim(); }).filter(Boolean);
+  }
+  function lines(a){ return arr(a).map(function(t){ return para(run(t)); }); }
+
+  function TD(kids, span, o){
+    o = o || {};
+    return new TableCell({
+      children: kids.length ? kids : [para(run(""))],
+      columnSpan: span,
+      width:{ size:span*COL, type:WidthType.DXA },
+      borders: borders, margins: cm,
+      shading: o.shade ? { type:ShadingType.CLEAR, fill:o.shade, color:"auto" } : undefined,
+      verticalAlign: o.mid ? "center" : undefined
+    });
+  }
+  /* label cell: bold label, optional inline value, optional block below */
+  function cell(label, span, o){
+    o = o || {};
+    var head = [ run(label, { bold:true }) ];
+    if (o.inline != null && o.inline !== "") head.push(run("  " + o.inline));
+    var kids = [ para(head, { after:(o.block && arr(o.block).length) ? 50 : 0 }) ];
+    lines(o.block).forEach(function(p){ kids.push(p); });
+    return TD(kids, span, o);
+  }
+  function row(cells){ return new TableRow({ children:cells }); }
+
+  var p = plan || {};
+  var HDR = "EDEDED";
+
+  /* ── the Teaching and Learning column ─────────────────────────── */
+  function seg(title, body){
+    var out = [ para(run(title, { bold:true, underline:true }), { after:30 }) ];
+    lines(body).forEach(function(x){ out.push(x); });
+    return out;
+  }
+  var tl = [];
+  seg("Set Induction:", (p.setInduction||{}).activity).forEach(function(x){ tl.push(x); });
+  seg("Main Activity:", (p.mainActivity||{}).activity).forEach(function(x){ tl.push(x); });
+
+  var diff = p.differentiated || {};
+  tl.push(para(run("Differentiated Work :", { bold:true, italics:true }), { after:30 }));
+  [["Level 1 \u2013", diff.level1], ["Level 2 \u2013", diff.level2], ["Level 3 \u2013", diff.level3]].forEach(function(pair){
+    var body = arr(pair[1]);
+    tl.push(para([ run(pair[0] + " ", { bold:true, italics:true }), run(body.join("; ")) ], { after:20 }));
+  });
+  seg("Closure:", (p.closure||{}).activity).forEach(function(x){ tl.push(x); });
+
+  /* ── the Duration column, aligned to the three phases ─────────── */
+  function mins(v){ var m = String(v==null?"":v).match(/\d+/); return "(" + (m ? m[0] : "  ") + " minutes)"; }
+  var durCol = [
+    para(run(mins((p.setInduction||{}).time), { bold:true, underline:true }), { after:120 }),
+    para(run(mins((p.mainActivity||{}).time),  { bold:true, underline:true }), { after:120 }),
+    para(run(mins((p.closure||{}).time),       { bold:true, underline:true }), { after:0 })
+  ];
+
+  /* ── Success Criteria cell ────────────────────────────────────── */
+  var scKids = [
+    para(run("Success Criteria", { bold:true }), { after:20 }),
+    para(run("I will be successful if I can:", { italics:true }), { after:40 })
+  ];
+  lines(p.successCriteria).forEach(function(x){ scKids.push(x); });
+  scKids.push(para(run("ICP-students:", { bold:true, underline:true }), { after:40 }));
+  lines(p.icpStudents).forEach(function(x){ scKids.push(x); });
+
+  var table = new Table({
+    width:{ size:TW, type:WidthType.DXA },
+    columnWidths:[COL,COL,COL,COL],
+    rows:[
+      row([ cell("Teacher's Name:", 2, { inline:p.teacherName||"" }),
+            cell("Grade:", 1, { inline:p.grade||"" }),
+            cell("Term:", 1, { inline:p.term||"" }) ]),
+      row([ cell("Week:", 1, { inline:p.week||"" }),
+            cell("Subject:", 1, { inline:p.subject||"" }),
+            cell("Duration:", 1, { inline:p.duration ? p.duration+" mins" : "" }),
+            cell("Period:", 1, { inline:p.lessonNo||"" }) ]),
+      row([ cell("Topic:", 4, { inline:p.topic||"" }) ]),
+      row([ cell("Strand:", 2, { inline:p.strand||"" }),
+            cell("Sub-strand:", 2, { inline:p.substrand||"" }) ]),
+      row([ cell("Key competencies", 2, { block:p.keyCompetencies }),
+            cell("Shared Values:", 2, { block:p.sharedValues }) ]),
+      row([ cell("Prior Knowledge", 2, { block:p.priorKnowledge }),
+            cell("Resources:", 2, { block:p.resources }) ]),
+      row([ cell("Learning Outcome:", 2, { block:(p.learningOutcomes && p.learningOutcomes.length) ? p.learningOutcomes : [p.outcomeStmt||""] }),
+            cell("Indicators:", 2, { block:(p.indicators && p.indicators.length) ? p.indicators : [] }) ]),
+      row([ cell("Learning Intentions", 4, { block:p.learningIntentions }) ]),
+      row([ TD(scKids, 4) ]),
+      row([ TD([para(run("Duration", { bold:true }), { after:0 })], 1, { shade:HDR, mid:true }),
+            TD([para(run("Teaching and Learning", { bold:true }), { after:0 })], 2, { shade:HDR, mid:true }),
+            TD([para(run("Effective Questing", { bold:true }), { after:0 })], 1, { shade:HDR, mid:true }) ]),
+      row([ TD(durCol, 1), TD(tl, 2), TD(lines(p.effectiveQuestions), 1) ]),
+      row([ cell("Special Educational Notes", 4, { block:p.specialEducationalNotes }) ]),
+      row([ cell("Assessment (collect data) / Evaluation (interpret data)", 4, { block:p.assessmentEvaluation }) ])
+    ]
+  });
+
+  var doc = new Document({
+    styles:{ default:{ document:{ run:{ font:"Arial", size:20 } } } },
+    sections:[{
+      properties:{ page:{ margin:{ top:720, right:720, bottom:720, left:720 } } },
+      children:[ table ]
+    }]
+  });
+  return await Packer.toBlob(doc);
+}
 
 async function buildDocx(p) {
   var _d=docx;
@@ -7282,6 +7639,126 @@ function renderDbCalendar(){
   }
   document.getElementById('db-week').innerHTML = msg;
 }
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   Lesson Plan Format picker + design preview
+   The hidden <select id="f-format"> stays the single source of truth so
+   every existing generator/export path keeps reading it unchanged.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Each preview row is a list of cells: [text, span, kind]
+   kind: 'h' = shaded heading · 'f' = field label · 'b' = tall content block */
+var LP_TEMPLATES = {
+  standard: {
+    name: 'Standard Template',
+    tag: 'Most used',
+    blurb: 'Set Induction, Main Body and Closure with timings, a three-level adaptation grid, a reflection box and a "Checked by" sign-off.',
+    best: 'Best for everyday planning and for schools that ask to see lesson timings.',
+    rows: [
+      [['Lesson Plan \u2014 Topic', 4, 'h']],
+      [['Subject', 1, 'f'], ['Class', 1, 'f'], ['Date', 1, 'f'], ['Duration', 1, 'f']],
+      [['Strand', 2, 'f'], ['Sub-strand', 2, 'f']],
+      [['Outcome Code', 2, 'f'], ['Learning Outcomes', 2, 'f']],
+      [['Key Competencies &amp; Indicators', 2, 'f'], ['Shared Values', 2, 'f']],
+      [['Prior Knowledge', 2, 'f'], ['Teaching Aids / Resources', 2, 'f']],
+      [['Learning Intention', 2, 'b'], ['Success Criteria', 2, 'b']],
+      [['Duration', 1, 'h'], ['Instructional Procedure', 1, 'h'], ['Success criteria', 1, 'h'], ['Assessment methods', 1, 'h']],
+      [['SET INDUCTION', 4, 'b']],
+      [['MAIN BODY', 4, 'b']],
+      [['CLOSURE', 4, 'b']],
+      [['ADAPTATION (ACTIVITIES / WORKSHEETS) \u2014 Level 1 / 2 / 3', 4, 'b']],
+      [['Reflection of the lesson', 4, 'b']],
+      [['Checked by \u2014 Name / Designation / Status / Leading Teacher', 4, 'f']]
+    ]
+  },
+  school: {
+    name: 'Template 1',
+    tag: 'School format',
+    blurb: 'A compact single-table plan built around Key Competencies, Process Skill and Shared Values, ending with a teacher reflection box.',
+    best: 'Best when your school asks for competencies and a written reflection.',
+    rows: [
+      [['Subject:', 1, 'f'], ['Period:', 1, 'f'], ['Duration:', 1, 'f'], ['Week:', 1, 'f']],
+      [['Topic:', 4, 'f']],
+      [['Strand:', 2, 'f'], ['Sub-Strand:', 2, 'f']],
+      [['Key Competencies:', 2, 'b'], ['Process Skill:', 2, 'b']],
+      [['Shared Values:', 2, 'b'], ['Prior Knowledge:', 2, 'b']],
+      [['Resources / Teaching Materials:', 4, 'b']],
+      [['Learning Outcomes:', 2, 'b'], ['Indicators:', 2, 'b']],
+      [['Learning Intentions:', 2, 'b'], ['Success Criteria:', 2, 'b']],
+      [['Teaching and Learning', 4, 'h']],
+      [['Set Induction / Main Activity / Closure', 4, 'b']],
+      [['Assessment:', 4, 'b']],
+      [['My Reflections on the Lesson:', 4, 'b']]
+    ]
+  },
+  mnc2: {
+    name: 'Template 2',
+    tag: 'New',
+    blurb: 'Wide planning grid with Learning Intentions, Success Criteria including ICP students, a Duration / Teaching and Learning / Effective Questing band, and Special Educational Notes.',
+    best: 'Best when you need differentiated levels, inclusion notes and a questioning column on the same page.',
+    rows: [
+      [["Teacher's Name:", 2, 'f'], ['Grade:', 1, 'f'], ['Term:', 1, 'f']],
+      [['Week:', 1, 'f'], ['Subject:', 1, 'f'], ['Duration:', 1, 'f'], ['Period:', 1, 'f']],
+      [['Topic:', 4, 'f']],
+      [['Strand:', 2, 'f'], ['Sub-strand:', 2, 'f']],
+      [['Key competencies', 2, 'b'], ['Shared Values:', 2, 'b']],
+      [['Prior Knowledge', 2, 'b'], ['Resources:', 2, 'b']],
+      [['Learning Outcome:', 2, 'b'], ['Indicators:', 2, 'b']],
+      [['Learning Intentions', 4, 'b']],
+      [['Success Criteria \u2014 <i>I will be successful if I can:</i> \u00b7 <u>ICP-students</u>', 4, 'b']],
+      [['Duration', 1, 'h'], ['Teaching and Learning', 2, 'h'], ['Effective Questing', 1, 'h']],
+      [['(\u2013 minutes)', 1, 'b'], ['Set Induction \u00b7 Main Activity \u00b7 <i>Differentiated Work</i> L1 / L2 / L3 \u00b7 Closure', 2, 'b'], ['', 1, 'b']],
+      [['Special Educational Notes', 4, 'b']],
+      [['Assessment (collect data) / Evaluation (interpret data)', 4, 'b']]
+    ]
+  }
+};
+
+/* Selecting a format also opens its preview, so teachers always see the
+   page they are about to generate before they commit to it. */
+function pickFormat(id, silent){
+  var sel = document.getElementById('f-format');
+  if(sel) sel.value = id;
+  document.querySelectorAll('.tplcard').forEach(function(c){
+    c.classList.toggle('on', c.getAttribute('data-fmt') === id);
+    c.setAttribute('aria-pressed', c.getAttribute('data-fmt') === id ? 'true' : 'false');
+  });
+  if(!silent) openTplPreview(id);
+}
+
+function tplPreviewHtml(id){
+  var t = LP_TEMPLATES[id];
+  if(!t) return '';
+  return '<div class="tplprev-sheet">' + t.rows.map(function(r){
+    return '<div class="tplprev-row">' + r.map(function(c){
+      return '<div class="tplprev-cell k-' + c[2] + '" style="grid-column:span ' + c[1] + '">'
+           + '<span>' + c[0] + '</span></div>';
+    }).join('') + '</div>';
+  }).join('') + '</div>';
+}
+
+function openTplPreview(id){
+  var t = LP_TEMPLATES[id];
+  if(!t) return;
+  document.getElementById('tplprev-title').textContent = t.name;
+  document.getElementById('tplprev-blurb').textContent = t.blurb;
+  document.getElementById('tplprev-best').textContent = t.best;
+  document.getElementById('tplprev-body').innerHTML = tplPreviewHtml(id);
+  document.getElementById('tplprev-use').setAttribute('data-fmt', id);
+  document.getElementById('tplprev-modal').style.display = 'flex';
+  if(typeof gaTrack === 'function') gaTrack('lesson_format_preview', { template:id });
+}
+function closeTplPreview(){ document.getElementById('tplprev-modal').style.display = 'none'; }
+function useTplFromPreview(){
+  var id = document.getElementById('tplprev-use').getAttribute('data-fmt');
+  pickFormat(id, true);
+  closeTplPreview();
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && document.getElementById('tplprev-modal') &&
+     document.getElementById('tplprev-modal').style.display === 'flex') closeTplPreview();
+});
 </script>
 </body>
 </html>
