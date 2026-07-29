@@ -31,13 +31,16 @@ const PACKS = { 50: 90, 150: 240, 400: 560 };
    pipeline changes. Each provider takes {prompt,width,height} and
    returns {dataUrl} or {error}.
 
-     IMAGE_PROVIDER   together | fal | replicate | openai | imagen | pollinations
+     IMAGE_PROVIDER   openai | together | fal | replicate | imagen | pollinations
      IMAGE_API_KEY    the provider's key (not needed for pollinations)
      IMAGE_MODEL      optional override of the provider's default model
+     IMAGE_QUALITY    low | medium | high  (OpenAI only; low is cheapest)
      IMAGE_CREDIT_COST  credits charged per image (default 0)
      IMAGE_DAILY_CAP    max images per user per day  (default 60)
    ════════════════════════════════════════════════════════════════════ */
-const IMAGE_PROVIDER    = (process.env.IMAGE_PROVIDER || 'together').toLowerCase();
+const IMAGE_PROVIDER    = (process.env.IMAGE_PROVIDER || 'openai').toLowerCase();
+// low | medium | high — 'low' on gpt-image-1-mini is the cheapest OpenAI lane
+const IMAGE_QUALITY     = (process.env.IMAGE_QUALITY || 'low').toLowerCase();
 const IMAGE_API_KEY     = process.env.IMAGE_API_KEY || '';
 const IMAGE_MODEL_ENV   = process.env.IMAGE_MODEL || '';
 const IMAGE_CREDIT_COST = parseInt(process.env.IMAGE_CREDIT_COST || '0', 10) || 0;
@@ -146,7 +149,10 @@ const IMAGE_PROVIDERS = {
     }
   },
 
-  /* OpenAI — drop-in future switch */
+  /* OpenAI — the default. gpt-image-1-mini at low quality is the cheapest
+     OpenAI lane (~$0.005 per 1024x1024) and is clean enough for flat
+     vector / cartoon classroom art. Bump IMAGE_QUALITY to 'medium'
+     (~$0.011) if diagrams or realistic styles look too rough. */
   openai: {
     label: 'OpenAI · gpt-image-1-mini',
     model: 'gpt-image-1-mini',
@@ -155,7 +161,8 @@ const IMAGE_PROVIDERS = {
       const size = o.width >= o.height ? '1024x1024' : '1024x1536';
       const r = await postJSON('api.openai.com', '/v1/images/generations',
         { Authorization: 'Bearer ' + IMAGE_API_KEY },
-        { model: this.model, prompt: o.prompt, size, n: 1 });
+        { model: this.model, prompt: o.prompt, size, n: 1,
+          quality: IMAGE_QUALITY, output_format: 'png' }, 120000);
       if (r.status !== 200) return { error: (r.json && r.json.error && r.json.error.message) || r.error || ('provider ' + r.status) };
       const d = r.json && r.json.data && r.json.data[0];
       if (d && d.b64_json) return { dataUrl: 'data:image/png;base64,' + d.b64_json };
@@ -203,6 +210,29 @@ function activeImageProvider() {
   return p;
 }
 
+/* ── image cache ─────────────────────────────────────────────────────
+   Identical prompt + size + quality never hits the provider twice.
+   Shared across users, so a second teacher on the same topic and style
+   pays nothing. Capped so memory cannot grow without bound. */
+const IMAGE_CACHE = new Map();
+const IMAGE_CACHE_MAX = parseInt(process.env.IMAGE_CACHE_MAX || '300', 10) || 300;
+
+function imageCacheKey(prompt, w, h) {
+  return crypto.createHash('sha1')
+    .update(IMAGE_PROVIDER + '|' + IMAGE_QUALITY + '|' + w + 'x' + h + '|' + prompt)
+    .digest('hex');
+}
+function imageCacheGet(k) {
+  if (!IMAGE_CACHE.has(k)) return null;
+  const v = IMAGE_CACHE.get(k);
+  IMAGE_CACHE.delete(k); IMAGE_CACHE.set(k, v);   // refresh recency
+  return v;
+}
+function imageCacheSet(k, v) {
+  IMAGE_CACHE.set(k, v);
+  while (IMAGE_CACHE.size > IMAGE_CACHE_MAX) IMAGE_CACHE.delete(IMAGE_CACHE.keys().next().value);
+}
+
 /* per-user daily cap, in memory (resets on redeploy — a backstop, not billing) */
 const imageUsage = new Map();
 function imageQuotaOk(userId) {
@@ -222,7 +252,7 @@ console.log('Supabase:', SUPA_ON ? 'ENABLED' : 'MISSING ENV VARS — auth will n
 if (ADMIN_PASS === DEFAULT_ADMIN_PASS) console.log('WARNING: ADMIN_PASSWORD is still the default. Set a strong one on Railway.');
 (function(){
   const p = activeImageProvider();
-  console.log('Images: ' + p.label + (p.needsKey ? '' : '  (no key set — set IMAGE_API_KEY for FLUX)'));
+  console.log('Images: ' + p.label + (p.needsKey ? ' @ ' + IMAGE_QUALITY + ' quality' : '  (no IMAGE_API_KEY set — using the keyless fallback)'));
   if (IMAGE_CREDIT_COST > 0) console.log('Images: ' + IMAGE_CREDIT_COST + ' credit(s) each, cap ' + IMAGE_DAILY_CAP + '/user/day');
 })();
 
@@ -686,6 +716,7 @@ const server = http.createServer(async (req, res) => {
         model: IMAGE_MODEL_ENV || p.model,
         keyed: !!IMAGE_API_KEY,
         fallback: p === IMAGE_PROVIDERS.pollinations && IMAGE_PROVIDER !== 'pollinations',
+        quality: IMAGE_QUALITY, cached: IMAGE_CACHE.size,
         creditCost: IMAGE_CREDIT_COST, dailyCap: IMAGE_DAILY_CAP
       });
     }
@@ -698,6 +729,14 @@ const server = http.createServer(async (req, res) => {
       // keep resolution modest — image APIs bill per megapixel
       const width  = Math.min(1024, Math.max(256, parseInt(body.width, 10)  || 1024));
       const height = Math.min(1024, Math.max(256, parseInt(body.height, 10) || 768));
+
+      // a cache hit costs nothing, so serve it before touching credits.
+      // "Regenerate" sends noCache, because the teacher wants a different picture.
+      const cacheKey = imageCacheKey(prompt, width, height);
+      if (!body.noCache) {
+        const hit = imageCacheGet(cacheKey);
+        if (hit) return jsonRes(res, 200, { image: hit, cached: true, provider: IMAGE_PROVIDER });
+      }
 
       let userId = 'anon';
       if (SUPA_ON) {
@@ -727,7 +766,8 @@ const server = http.createServer(async (req, res) => {
         }
         return jsonRes(res, 502, { error: { message: 'Image provider failed: ' + out.error } });
       }
-      return jsonRes(res, 200, { image: out.dataUrl, provider: IMAGE_PROVIDER, model: p.model });
+      imageCacheSet(cacheKey, out.dataUrl);
+      return jsonRes(res, 200, { image: out.dataUrl, cached: false, provider: IMAGE_PROVIDER, model: p.model });
     }
 
     if (req.method === 'POST' && url === '/api/messages') {

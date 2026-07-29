@@ -6211,16 +6211,20 @@ function presNormalize(raw){
    and nothing here changes.
    ════════════════════════════════════════════════════════════════════ */
 var PRES_IMG_STYLES = {
-  cartoon:    { name:'Cartoon',           hint:'Friendly and playful',
-                suffix:'children\'s cartoon illustration, bold clean outlines, bright flat colours, simple friendly shapes' },
-  vector:     { name:'Flat Vector',       hint:'Clean and modern',
-                suffix:'flat vector illustration, simple geometric shapes, limited harmonious palette, clean lines, no gradients' },
-  diagram:    { name:'Scientific Diagram',hint:'Clear and labelled',
-                suffix:'clean scientific diagram, simple line art, neutral background, clear separated parts, textbook style' },
-  watercolour:{ name:'Watercolour',       hint:'Soft and storybook',
-                suffix:'soft watercolour illustration, gentle washes, warm storybook feel, light paper texture' },
-  realistic:  { name:'Realistic',         hint:'Photographic',
-                suffix:'clean realistic photograph, natural daylight, sharp focus, uncluttered background' }
+  vector:     { name:'Flat Vector',        hint:'Clean and modern',
+                suffix:'flat vector illustration, simple geometric shapes, clean even line weight, limited harmonious palette, no gradients, no shading' },
+  cartoon:    { name:'Cartoon',            hint:'Friendly and playful',
+                suffix:'friendly cartoon illustration, bold clean outlines, bright flat colours, simple rounded shapes, cheerful' },
+  diagram:    { name:'Scientific Diagram', hint:'Clear and labelled',
+                suffix:'clean scientific diagram, precise simple line art, plain white background, clearly separated parts, textbook figure style' },
+  watercolour:{ name:'Watercolour',        hint:'Soft and painterly',
+                suffix:'soft watercolour painting, gentle colour washes, visible brush texture, light paper grain, calm palette' },
+  realistic:  { name:'Realistic',          hint:'Photographic',
+                suffix:'clean realistic photograph, natural daylight, sharp focus, simple uncluttered background, documentary style' },
+  storybook:  { name:'Storybook',          hint:'Warm and narrative',
+                suffix:'warm childrens storybook illustration, hand drawn feel, soft textures, gentle warm palette, inviting and characterful' },
+  icons:      { name:'Minimalist Icons',   hint:'Simple and iconic',
+                suffix:'minimalist icon illustration, single clear subject, very simple shapes, thick uniform strokes, generous white space, two or three colours only' }
 };
 var presImgStyle = 'vector';
 var presImgInfo  = null;   /* filled from /api/image/info */
@@ -6231,16 +6235,48 @@ function presImgStyleSuffix(){
 
 /* Short prompts keep latency and cost down; the cost driver is the number
    of images and their resolution, so we cap both. */
+/* Build the subject of the picture from whatever the slide gives us:
+   the model's own imagePrompt first, then title + a little body context. */
+function presImgSubject(slide){
+  if(typeof slide === 'string') return slide;
+  var p = String(slide.imagePrompt || '').trim();
+  if(p) return p;
+  var bits = [ String(slide.title || '').trim() ];
+  var body = (slide.bullets && slide.bullets.length) ? slide.bullets[0]
+           : (slide.col1 && slide.col1.length) ? slide.col1[0] : '';
+  if(body) bits.push(String(body).trim());
+  return bits.filter(Boolean).join(', ');
+}
+
+/* Every picture in a deck shares subject, age band, style and palette, so
+   the set looks like it was drawn by one illustrator. */
 function presImgPrompt(slide){
-  var raw = (typeof slide === 'string') ? slide : (slide.imagePrompt || slide.title || '');
-  var subject = String(raw).replace(/\s+/g,' ').trim().slice(0,200);
-  var age = '';
+  var subject = presImgSubject(slide).replace(/\s+/g,' ').trim().slice(0,180);
+  var ctx = [];
   try {
     var g = String((presSrc && presSrc.grade) || '').match(/\d+/);
-    if(g) age = 'suitable for ' + (5 + parseInt(g[0],10)) + ' year old pupils, ';
+    if(g) ctx.push('for ' + (5 + parseInt(g[0],10)) + ' year olds');
+    var subj = String((presSrc && presSrc.subject) || '').trim();
+    if(subj) ctx.push(subj.toLowerCase() + ' lesson');
   } catch(e){}
-  return subject + ', ' + age + presImgStyleSuffix()
-    + ', educational classroom illustration, child friendly, no text, no words, no letters, no watermark';
+  var pal = presImgPalette();
+  return subject
+    + (ctx.length ? ', ' + ctx.join(', ') : '')
+    + ', ' + presImgStyleSuffix()
+    + (pal ? ', ' + pal : '')
+    + ', single clear subject, plain uncluttered background, educational, child friendly,'
+    + ' no text, no words, no letters, no numbers, no watermark, no border';
+}
+
+/* Nudge the palette towards the chosen deck theme so slides feel of a piece. */
+function presImgPalette(){
+  try {
+    var key = (presDeck && presDeck.theme) || (typeof presOpts !== 'undefined' && presOpts.theme) || '';
+    var t = PRES_THEMES && PRES_THEMES[key];
+    if(!t) return '';
+    var a = String(t.accent || '').replace('#','');
+    return a ? ('colour palette built around #' + a) : '';
+  } catch(e){ return ''; }
 }
 
 async function presImgInfoLoad(){
@@ -6252,12 +6288,24 @@ async function presImgInfoLoad(){
   return presImgInfo;
 }
 
+/* Prompts already seen this session. The server caches too, but this
+   avoids even making the round trip. */
+var PRES_IMG_CACHE = {};
+var presImgStats = { requested:0, cached:0, generated:0 };
+
 /* One image. Resolves to a data URL, or null if it could not be made. */
-function presFetchOne(slide, seed){
+function presFetchOne(slide, seed, noCache){
+  var prompt = presImgPrompt(slide);
+  presImgStats.requested++;
+  if(!noCache && PRES_IMG_CACHE[prompt]){
+    presImgStats.cached++;
+    return Promise.resolve(PRES_IMG_CACHE[prompt]);
+  }
   var body = JSON.stringify({
-    prompt: presImgPrompt(slide),
-    width: 1024, height: 768,           /* 0.79 MP — below the 1 MP billing step */
-    seed: seed || 0
+    prompt: prompt,
+    width: 1024, height: 1024,          /* the cheapest size on every provider */
+    seed: seed || 0,
+    noCache: !!noCache
   });
   var ctrl = new AbortController();
   var to = setTimeout(function(){ ctrl.abort(); }, 60000);
@@ -6269,6 +6317,10 @@ function presFetchOne(slide, seed){
     clearTimeout(to);
     return r.json().then(function(j){
       if(!r.ok) throw new Error((j && j.error && j.error.message) || ('image ' + r.status));
+      if(j.image){
+        PRES_IMG_CACHE[prompt] = j.image;
+        if(j.cached) presImgStats.cached++; else presImgStats.generated++;
+      }
       return j.image || null;
     });
   }).catch(function(err){
@@ -6288,16 +6340,24 @@ function presAuthHeaders(){
   return hh;
 }
 
-/* Which slides get a picture: the model marks them with imagePrompt, and
-   we cap the count so a long deck cannot run up a surprise bill. */
+/* Does this slide genuinely benefit from a picture?
+   Text-only slides deliberately get nothing — an illustration next to a
+   definition list is decoration, and decoration costs money. */
+function presSlideNeedsImage(s){
+  if(!s) return false;
+  if(s._imgOff) return false;                 /* teacher turned it off */
+  if(s.layout === 'title') return false;      /* the title is the visual */
+  if(s.layout === 'bigfact') return false;    /* the number is the visual */
+  if(s.layout === 'twocol') return false;     /* both columns are text, no room */
+  /* the writing model marks the slides it thinks are illustratable */
+  return !!String(s.imagePrompt || '').trim();
+}
+
+/* Which slides to fetch for, capped so a long deck cannot surprise you. */
 function presImgTargets(deck, force){
   return deck.slides.map(function(s,i){ return {s:s,i:i}; })
-    .filter(function(x){
-      if(x.s.layout === 'title') return false;
-      if(!force && x.s._img) return false;
-      return !!(x.s.imagePrompt || x.s.title);
-    })
-    .filter(function(x){ return !!x.s.imagePrompt; })
+    .filter(function(x){ return presSlideNeedsImage(x.s); })
+    .filter(function(x){ return force || !x.s._img; })
     .slice(0, 12);
 }
 
@@ -6324,6 +6384,7 @@ async function presRegenAllImages(btn){
   var label = btn ? btn.innerHTML : '';
   if(btn){ btn.disabled = true; btn.innerHTML = 'Generating\u2026'; }
   presDeck.slides.forEach(function(s){ if(s.imagePrompt) s._img = null; });
+  PRES_IMG_CACHE = {};          /* a style change must not reuse old art */
   await presFetchImages(presDeck, function(d,t){
     if(btn) btn.innerHTML = 'Generating ' + d + '/' + t + '\u2026';
   });
@@ -6576,7 +6637,7 @@ async function presRegenImage(){
   if(!ip){ presEdMsg('&#9888; Add an image prompt first.', true); return; }
   s.imagePrompt=ip;
   presEdMsg('&#128444; Painting image…');
-  var data=await presFetchOne(ip, Math.floor(Math.random()*9999));
+  var data=await presFetchOne(ip, Math.floor(Math.random()*9999), true);
   if(data){ s._img=data; presRenderForm(); presRenderThumbs(); presEdMsg('&#10003; Image ready.'); }
   else presEdMsg('&#9888; Image service did not respond — try again.', true);
   if(typeof gaTrack==='function') gaTrack('presentation_slide_regen',{what:'image'});
