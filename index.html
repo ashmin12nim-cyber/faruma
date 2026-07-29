@@ -1156,6 +1156,13 @@ body{font-size:15.5px;line-height:1.55;}
   border-radius:20px; padding:3px 9px; }
 .db-cal-card .db-week{ background:#fff; border:1px solid var(--ocean-pale); }
 
+/* image generation status / failure reporting */
+.pres-imgstatus{ font-size:12.5px; line-height:1.55; border-radius:10px; margin:10px 0; }
+.pres-imgstatus:empty{ display:none; }
+.pres-imgstatus.ok{ background:#eef8f1; color:#1f6b42; border:1px solid #bfe3cd; padding:9px 12px; }
+.pres-imgstatus.bad{ background:#fdf0ec; color:#a33d26; border:1px solid #f2c6b8; padding:11px 13px; }
+.pres-imgstatus.bad span{ color:#8a5442; font-size:11.5px; display:block; margin-top:5px; }
+
 /* ══ slide image style picker ══ */
 .pres-imgrow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
 .pres-imgstyle{ border:1.5px solid var(--line); background:#fff; border-radius:10px;
@@ -6538,7 +6545,8 @@ function presRenderForm(){
     h+=presField('pf-bullets', s.layout==='activity'?'Steps (one per line)': s.layout==='quiz'?'Questions (one per line)':'Bullets (one per line)','area',5);
   }
   if(s.layout!=='title' && s.layout!=='bigfact') h+=presField('pf-key','Key point callout (optional)');
-  h+='<div class="pres-f-row pres-img-row">'+
+  h+='<div class="pres-imgstatus" id="pres-imgstatus"></div>'+
+  '<div class="pres-f-row pres-img-row">'+
     '<div class="pres-f" style="flex:2"><label>Image prompt (no text in image)</label><input id="pf-img" type="text"></div>'+
     '<div class="pres-f-regen"><button class="btn btn-sm btn-ghost" onclick="presRegenImage()">&#128444; Regenerate image</button>'+
     (s._img?'<button class="btn btn-sm btn-ghost" onclick="presClearImage()">Remove</button>':'')+'</div>'+
