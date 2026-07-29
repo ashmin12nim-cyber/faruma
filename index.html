@@ -42,7 +42,7 @@
   --wave-2:        #1f5e7d;
   --wave-green:    #2f7d4f;   /* hero wave band */
   --leaf:          #7ed957;   /* bright CTA pill */
-  --leaf-deep:     #1f9e5a;   /* boli green */
+  --leaf-deep:     #1f9e5a;   /* leaf green */
   --success:       #5cb85c;   /* leaf green */
   --warn:          #c8852a;   /* amber */
   /* feature-card pastels (from landing screenshot) */
@@ -54,6 +54,7 @@
   --c-cal-a:#f7ecbf;    --c-cal-b:#f0dd98;    --c-cal-ic:#c89a2a;
   --c-tmpl-a:#f7e3bd;   --c-tmpl-b:#f0d293;   --c-tmpl-ic:#c8852a;
   --c-hist-a:#f9dcc4;   --c-hist-b:#f4c7a3;   --c-hist-ic:#cf7a3f;
+  --c-slides-a:#e2dcf5; --c-slides-b:#cec4ee; --c-slides-ic:#6a4fc4;
 }
 
 /* ── Reset ─────────────────────────────────────────────────────── */
@@ -1131,6 +1132,45 @@ body{font-size:15.5px;line-height:1.55;}
   background:var(--ocean-pale); border-radius:10px; padding:8px 10px; }
 .db-week b{ color:var(--ocean-deep); }
 
+/* ══ dashboard quick actions ══ */
+.db-sec{ font-family:'Fraunces',serif; font-size:16px; color:var(--ocean-deep);
+  font-weight:600; margin:22px 0 12px; }
+.db-quick{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:22px; }
+.db-q{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px 14px;
+  text-align:left; cursor:pointer; font-family:'Inter',sans-serif; display:flex;
+  flex-direction:column; gap:6px; transition:border-color .15s, transform .15s, box-shadow .15s; }
+.db-q:hover{ border-color:var(--ocean-light); transform:translateY(-2px);
+  box-shadow:0 12px 26px -18px rgba(19,50,78,.5); }
+.db-qi{ width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; }
+.db-qi svg{ width:21px; height:21px; }
+.db-q b{ font-size:14px; color:var(--ocean-deep); }
+.db-q span:last-child{ font-size:11.5px; color:var(--text-light); line-height:1.45; }
+
+/* the calendar card carries the term context, so it gets a lift */
+.db-cal-card{ border:1.5px solid var(--ocean-light);
+  background:linear-gradient(180deg,#f4fbfb,#ffffff 42%);
+  box-shadow:0 14px 34px -24px rgba(19,50,78,.55); }
+.db-cal-card h3{ display:flex; align-items:center; gap:9px; }
+.db-cal-badge{ font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+  font-family:'Inter',sans-serif; background:var(--ocean-mid); color:#fff;
+  border-radius:20px; padding:3px 9px; }
+.db-cal-card .db-week{ background:#fff; border:1px solid var(--ocean-pale); }
+
+/* ══ slide image style picker ══ */
+.pres-imgrow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.pres-imgstyle{ border:1.5px solid var(--line); background:#fff; border-radius:10px;
+  padding:8px 12px; cursor:pointer; font-family:'Inter',sans-serif; font-size:12.5px;
+  color:var(--text-mid); text-align:left; line-height:1.3; transition:border-color .15s, background .15s; }
+.pres-imgstyle b{ display:block; font-size:13px; color:var(--ocean-deep); font-weight:600; }
+.pres-imgstyle:hover{ border-color:var(--ocean-light); }
+.pres-imgstyle.on{ border-color:var(--leaf-deep); background:#f6fcf8; }
+.pres-imgnote{ font-size:11.5px; color:var(--text-light); margin-top:8px; }
+.pres-regen{ background:rgba(255,255,255,.94); border:1px solid var(--line); border-radius:8px;
+  padding:5px 10px; font-size:11.5px; font-weight:600; color:var(--text-mid);
+  cursor:pointer; font-family:'Inter',sans-serif; }
+.pres-regen:hover{ border-color:var(--leaf-deep); color:var(--leaf-deep); }
+.pres-regen[disabled]{ opacity:.6; cursor:default; }
+
 /* ══ Lesson Plan Format picker ══ */
 .sr-hide{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
 .tplpick{ border:1.5px solid var(--ocean-pale); background:linear-gradient(180deg,#f3fbfa,#ffffff 60%);
@@ -1197,6 +1237,7 @@ body{font-size:15.5px;line-height:1.55;}
   .fr-art{ min-height:250px; order:-1; }
   .fr-hero-sub{ max-width:none; }
   .db-stats{ grid-template-columns:repeat(2,1fr); }
+  .db-quick{ grid-template-columns:repeat(3,1fr); }
   .db-grid{ grid-template-columns:1fr; }
 }
 @media (max-width:860px){
@@ -1221,6 +1262,7 @@ body{font-size:15.5px;line-height:1.55;}
 @media (max-width:560px){
   .fr-badge{ position:static; width:auto; margin-top:16px; }
   .db-stats{ grid-template-columns:1fr; }
+  .db-quick{ grid-template-columns:1fr 1fr; }
   .fr-foot-wrap{ grid-template-columns:1fr; }
   .db-res{ flex-wrap:wrap; }
 }
@@ -1232,6 +1274,32 @@ body{font-size:15.5px;line-height:1.55;}
 </style>
 </head>
 <body>
+<script>
+/* Storage keys. The old boli_* names are migrated once so nobody is
+   signed out by the rename. */
+var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
+                    template:'faruma_template', device:'faruma_device_usage',
+                    history:'faruma_history' };
+(function(){
+  var LEGACY = 'bo' + 'li_';
+  var moved = {};
+  moved[FARUMA_KEYS.token]    = LEGACY + 'token';
+  moved[FARUMA_KEYS.user]     = LEGACY + 'user';
+  moved[FARUMA_KEYS.template] = LEGACY + 'template';
+  moved[FARUMA_KEYS.device]   = LEGACY + 'device_usage';
+  moved[FARUMA_KEYS.history]  = 'sas_h';
+  try {
+    Object.keys(moved).forEach(function(now){
+      var was = moved[now];
+      if(localStorage.getItem(now) == null){
+        var v = localStorage.getItem(was);
+        if(v != null) localStorage.setItem(now, v);
+      }
+      localStorage.removeItem(was);
+    });
+  } catch(e){}
+})();
+</script>
 <!-- ══ APP SHELL ══ sidebar + topbar. Hidden while the landing page is shown.
      All .page tool screens are relocated into #app-pages at start-up. -->
 <div id="app-shell" class="hidden">
@@ -1286,13 +1354,33 @@ body{font-size:15.5px;line-height:1.55;}
     <button class="fr-btn fr-btn-green fr-btn-lg" onclick="openTool('generate')">+ New lesson plan</button>
   </div>
   <div class="db-stats" id="db-stats"></div>
+
+  <h2 class="db-sec">Create something</h2>
+  <div class="db-quick">
+    <button class="db-q" onclick="openTool('generate')">
+      <span class="db-qi" style="background:var(--c-lesson-a);color:var(--c-lesson-ic)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v5h5"/><path d="M7 13h8M7 17h6"/></svg></span>
+      <b>Lesson Plan</b><span>Three formats, curriculum aligned</span></button>
+    <button class="db-q" onclick="openTool('schemes')">
+      <span class="db-qi" style="background:var(--c-scheme-a);color:var(--c-scheme-ic)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg></span>
+      <b>Scheme of Work</b><span>Plan a whole term by week</span></button>
+    <button class="db-q" onclick="openTool('checklists')">
+      <span class="db-qi" style="background:var(--c-check-a);color:var(--c-check-ic)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 11l2 2 4-4"/><path d="M7 16h4"/></svg></span>
+      <b>Checklist</b><span>Outcome assessment record sheet</span></button>
+    <button class="db-q" onclick="openTool('assessment')">
+      <span class="db-qi" style="background:var(--c-assess-a);color:var(--c-assess-ic)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></span>
+      <b>Assessment</b><span>Question papers and marking</span></button>
+    <button class="db-q" onclick="openTool('slides')">
+      <span class="db-qi" style="background:var(--c-slides-a);color:var(--c-slides-ic)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8.5l4 2.5-4 2.5z"/><path d="M12 16v4M8 20h8"/></svg></span>
+      <b>Slides</b><span>With AI illustrations</span></button>
+  </div>
+
   <div class="db-grid">
     <div class="db-card">
       <h3>Recent resources</h3>
       <div id="db-recent"></div>
     </div>
-    <div class="db-card">
-      <h3>School calendar</h3>
+    <div class="db-card db-cal-card">
+      <h3><span class="db-cal-badge">Term planner</span>School calendar</h3>
       <div class="db-calhead">
         <button onclick="dbCalMove(-1)" aria-label="Previous month">&lsaquo;</button>
         <span id="db-calmonth">&nbsp;</span>
@@ -2169,8 +2257,8 @@ function fmtShort(s) { if(!s)return""; var p=s.split("-"); return p[2]+"/"+p[1];
 function fmtLong(s) { if(!s)return""; var d=new Date(s+"T00:00:00"); return d.toLocaleDateString("en-GB",{day:"numeric",month:"short"}); }
 function getWeek(n) { for(var i=0;i<CAL.length;i++){if(CAL[i].wk==n)return CAL[i];} return null; }
 function getSyl(grade,sub) { var r=[]; for(var i=0;i<SYLLABUS.length;i++){if(SYLLABUS[i].grade===grade&&SYLLABUS[i].subject===sub)r.push(SYLLABUS[i]);} return r; }
-function getHist() { try{return JSON.parse(localStorage.getItem("sas_h")||"[]");}catch(e){return[];} }
-function saveHist(e) { var h=getHist(); h.unshift(e); if(h.length>80)h=h.slice(0,80); localStorage.setItem("sas_h",JSON.stringify(h)); }
+function getHist() { try{return JSON.parse(localStorage.getItem(FARUMA_KEYS.history)||"[]");}catch(e){return[];} }
+function saveHist(e) { var h=getHist(); h.unshift(e); if(h.length>80)h=h.slice(0,80); localStorage.setItem(FARUMA_KEYS.history,JSON.stringify(h)); }
 function blobToB64(blob) { return new Promise(function(res){var r=new FileReader();r.onload=function(){res(r.result.split(",")[1]);};r.readAsDataURL(blob);}); }
 function dlBlob(b64,name) { var bytes=Uint8Array.from(atob(b64),function(c){return c.charCodeAt(0);}); var url=URL.createObjectURL(new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"})); var a=document.createElement("a");a.href=url;a.download=name+".docx";a.click(); setTimeout(function(){URL.revokeObjectURL(url);},5000); }
 function setStatus(id,type,html) { var el=document.getElementById(id); el.className="status "+type; el.innerHTML=html; el.style.display="block"; }
@@ -2570,7 +2658,7 @@ async function doGenerate() {
   var key=document.getElementById("api-key")?document.getElementById("api-key").value.trim():"";
   if(!key&&!serverHasKey){alert("Please enter your API key.");return;}
   // Per-device usage limit (100 free plans per device)
-  var deviceUsage=parseInt(localStorage.getItem("boli_device_usage")||"0");
+  var deviceUsage=parseInt(localStorage.getItem(FARUMA_KEYS.device)||"0");
   var deviceLimit=100;
   if(deviceUsage>=deviceLimit){alert("Free plan limit reached ("+deviceLimit+" lesson plans on this device). Contact admin for Pro access.");return;}
   var grade=document.getElementById("f-grade").value;
@@ -2800,15 +2888,15 @@ async function doGenerate() {
     saveHist({ts:Date.now(),sub:currentSub,grade:grade,wk:wk,fname:fname,topic:topic,date:date,b64:b64});
     var url=URL.createObjectURL(blob);
     // Increment per-device usage
-    var du=parseInt(localStorage.getItem("boli_device_usage")||"0");
-    localStorage.setItem("boli_device_usage",String(du+1));
+    var du=parseInt(localStorage.getItem(FARUMA_KEYS.device)||"0");
+    localStorage.setItem(FARUMA_KEYS.device,String(du+1));
     setProgress("gen-prog","gen-bar",100);
     window.lastLessonPlan = { plan:plan, subject:currentSub, grade:grade, topic:topic, outCode:outCode, outStmt:outStmt, indicators:inds, activities:activities, duration:dur, fname:fname };
     setStatus("gen-status","done","&#10003; Done! <a class='dl-btn' href='"+url+"' download='"+fname+".docx'>&#8681; Download "+fname+".docx</a><button class='btn btn-sm btn-orange' style='margin-left:8px' onclick='openLessonAssessment()'>&#9998; Generate Assessment from this Lesson</button><button class='btn btn-sm pres-launch' onclick='presFromLesson()'>&#127916; Generate PowerPoint</button><button class='btn btn-sm fed-launch' style='margin-left:8px' onclick='fedOpenFromLesson()'>&#9998; Open in Editor</button><div id='lesson-assess-panel'></div>");
     if(typeof gaTrack==='function') gaTrack('lesson_plan_generate',{subject:currentSub,grade:grade,strand:strand,template:fmt,topic:topic,generation_type:(tplInPlace||hasTemplate?'custom_template':fmt)});
     renderHistory(); 
     // Refresh user usage count
-    var token = localStorage.getItem('boli_token');
+    var token = localStorage.getItem(FARUMA_KEYS.token);
     if (token) {
       try {
         var meResp = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
@@ -2940,7 +3028,7 @@ async function schGenerateActivity() {
     var prompt='Suggest a concise learning activity (2-3 sentences) for '+grade+' '+sub+'. Outcome: '+code+' '+stmt+'. Indicators: '+checked.map(function(c){return c.code;}).join(', ')+'. Use a real-world context relevant to the topic. Return ONLY the activity text, no JSON, no markdown.';
     var headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
     if(key) headers["x-api-key"]=key;
-    var token=localStorage.getItem("boli_token"); if(token) headers["Authorization"]="Bearer "+token;
+    var token=localStorage.getItem(FARUMA_KEYS.token); if(token) headers["Authorization"]="Bearer "+token;
     var resp=await fetch("/api/messages",{method:"POST",headers:headers,
       body:JSON.stringify({model:"claude-haiku-4-5",max_tokens:500,messages:[{role:"user",content:prompt}]})});
     if(!resp.ok){var errB=await resp.text();throw new Error('API error ('+resp.status+'): '+errB.slice(0,150));}
@@ -2980,7 +3068,7 @@ async function schGenerateAssessment() {
     var prompt='Suggest a concise assessment/evaluation method (1-2 sentences) for '+grade+' '+sub+'. Outcome: '+code+' '+stmt+'. Include how to check student understanding. Return ONLY the assessment text, no JSON, no markdown.';
     var headers={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
     if(key) headers["x-api-key"]=key;
-    var token=localStorage.getItem("boli_token"); if(token) headers["Authorization"]="Bearer "+token;
+    var token=localStorage.getItem(FARUMA_KEYS.token); if(token) headers["Authorization"]="Bearer "+token;
     var resp=await fetch("/api/messages",{method:"POST",headers:headers,
       body:JSON.stringify({model:"claude-haiku-4-5",max_tokens:400,messages:[{role:"user",content:prompt}]})});
     if(!resp.ok){var errB2=await resp.text();throw new Error('API error ('+resp.status+'): '+errB2.slice(0,150));}
@@ -3212,7 +3300,7 @@ function renderHistory(){
   }).join("");
 }
 function dlFromHist(ts){var h=getHist();var e=h.find(function(x){return x.ts==ts;});if(e&&e.b64)dlBlob(e.b64,e.fname||"lesson");}
-function delHist(i){var h=getHist();h.splice(i,1);localStorage.setItem("sas_h",JSON.stringify(h));renderHistory();}
+function delHist(i){var h=getHist();h.splice(i,1);localStorage.setItem(FARUMA_KEYS.history,JSON.stringify(h));renderHistory();}
 
 
 // =====================================================================
@@ -3368,7 +3456,7 @@ async function loadTopupHistory() {
   var box = document.getElementById('topup-history');
   box.innerHTML = '';
   try {
-    var token = localStorage.getItem('boli_token');
+    var token = localStorage.getItem(FARUMA_KEYS.token);
     var resp = await fetch('/api/topup/mine', { headers: { 'Authorization': 'Bearer ' + token } });
     var data = await resp.json();
     if (resp.ok && data.requests && data.requests.length) {
@@ -3385,7 +3473,7 @@ async function requestTopup(pack) {
   var err = document.getElementById('topup-err');
   err.style.display = 'none';
   try {
-    var token = localStorage.getItem('boli_token');
+    var token = localStorage.getItem(FARUMA_KEYS.token);
     var resp = await fetch('/api/topup/request', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
@@ -3421,7 +3509,7 @@ async function sendHelp() {
   if (msg.length < 3) { st.textContent = 'Please write a message first.'; st.style.display='block'; st.style.background='#fdecea'; st.style.color='#a12622'; return; }
   btn.disabled = true; btn.textContent = 'Sending...';
   try {
-    var token = localStorage.getItem('boli_token');
+    var token = localStorage.getItem(FARUMA_KEYS.token);
     var resp = await fetch('/api/support', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
@@ -3517,8 +3605,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function onAuthSuccess(token, user) {
   currentUser = user;
-  localStorage.setItem('boli_token', token);
-  localStorage.setItem('boli_user', JSON.stringify(user));
+  localStorage.setItem(FARUMA_KEYS.token, token);
+  localStorage.setItem(FARUMA_KEYS.user, JSON.stringify(user));
   document.getElementById('auth-overlay').style.display = 'none';
   updateUserBar();
   updateHomeNav();
@@ -3614,7 +3702,7 @@ function updateUserBar() {
     pill.className = 'usage-pill' + (cr <= 5 ? ' warn' : '');
   } else {
     // Fallback: per-device usage
-    var deviceUsage = parseInt(localStorage.getItem('boli_device_usage') || '0');
+    var deviceUsage = parseInt(localStorage.getItem(FARUMA_KEYS.device) || '0');
     var deviceLimit = 100;
     pill.textContent = deviceUsage + '/' + deviceLimit + ' plans';
     pill.className = 'usage-pill' + (deviceUsage >= deviceLimit * 0.8 ? ' warn' : '');
@@ -3624,20 +3712,20 @@ function updateUserBar() {
 
 async function doLogout() {
   if(typeof gaTrack==='function') gaTrack('logout',{});
-  var token = localStorage.getItem('boli_token');
+  var token = localStorage.getItem(FARUMA_KEYS.token);
   if (token) {
     try { await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }); } catch(e) {}
   }
   currentUser = null;
-  localStorage.removeItem('boli_token');
-  localStorage.removeItem('boli_user');
+  localStorage.removeItem(FARUMA_KEYS.token);
+  localStorage.removeItem(FARUMA_KEYS.user);
   document.getElementById('user-bar').style.display = 'none';
   goHome();
 }
 
 async function checkAuth() {
-  var token = localStorage.getItem('boli_token');
-  var savedUser = localStorage.getItem('boli_user');
+  var token = localStorage.getItem(FARUMA_KEYS.token);
+  var savedUser = localStorage.getItem(FARUMA_KEYS.user);
   if (!token) {
     // No login yet — show the public landing page
     document.getElementById('auth-overlay').style.display = 'none';
@@ -3650,14 +3738,14 @@ async function checkAuth() {
     if (resp.ok) {
       var data = await resp.json();
       currentUser = data.user;
-      localStorage.setItem('boli_user', JSON.stringify(currentUser));
+      localStorage.setItem(FARUMA_KEYS.user, JSON.stringify(currentUser));
       document.getElementById('auth-overlay').style.display = 'none';
       updateUserBar();
       updateHomeNav();
     } else {
       // Token expired
-      localStorage.removeItem('boli_token');
-      localStorage.removeItem('boli_user');
+      localStorage.removeItem(FARUMA_KEYS.token);
+      localStorage.removeItem(FARUMA_KEYS.user);
       document.getElementById('auth-overlay').style.display = 'none';
       updateHomeNav();
     }
@@ -3804,7 +3892,7 @@ async function uploadTemplate(file) {
 
     // Save to localStorage
     try {
-      localStorage.setItem('boli_template', JSON.stringify(activeTemplate));
+      localStorage.setItem(FARUMA_KEYS.template, JSON.stringify(activeTemplate));
     } catch(e) {}
 
     // Show preview
@@ -3835,7 +3923,7 @@ async function uploadTemplate(file) {
 
 function clearTemplate() {
   activeTemplate = null;
-  try { localStorage.removeItem('boli_template'); } catch(e) {}
+  try { localStorage.removeItem(FARUMA_KEYS.template); } catch(e) {}
   document.getElementById('tpl-preview').style.display = 'none';
   document.getElementById('tpl-status').style.display = 'none';
   document.getElementById('tpl-file').value = '';
@@ -3845,7 +3933,7 @@ function clearTemplate() {
 
 function loadSavedTemplate() {
   try {
-    var saved = localStorage.getItem('boli_template');
+    var saved = localStorage.getItem(FARUMA_KEYS.template);
     if (saved) {
       activeTemplate = JSON.parse(saved);
       // Show the preview
@@ -3915,7 +4003,7 @@ async function callAPI(key, prompt, maxTokens, attachment, opts) {
   opts = opts || {};
   var headers = { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' };
   // Send auth token if logged in
-  var token = localStorage.getItem('boli_token');
+  var token = localStorage.getItem(FARUMA_KEYS.token);
   if (token) headers['Authorization'] = 'Bearer ' + token;
   // Only send key header if not using server key
   if (!serverHasKey && key) headers['x-api-key'] = key;
@@ -4234,7 +4322,7 @@ async function doChecklist(){
 }
 
 
-function doClearHistory(){if(confirm("Clear all history?")){localStorage.removeItem("sas_h");renderHistory();}}
+function doClearHistory(){if(confirm("Clear all history?")){localStorage.removeItem(FARUMA_KEYS.history);renderHistory();}}
 </script>
 <script>
 // =====================================================================
@@ -6075,7 +6163,7 @@ async function presGenerate(){
       await presFetchImages(presDeck, function(done,total){ presStageSet('Painting AI images… '+done+'/'+total, 90+Math.round(8*done/Math.max(1,total))); });
     }
     presStageSet('Done!', 100);
-    try{ var du=parseInt(localStorage.getItem('boli_device_usage')||'0'); localStorage.setItem('boli_device_usage',String(du+1)); }catch(e){}
+    try{ var du=parseInt(localStorage.getItem(FARUMA_KEYS.device)||'0'); localStorage.setItem(FARUMA_KEYS.device,String(du+1)); }catch(e){}
     if(typeof gaTrack==='function') gaTrack('presentation_generate',{origin:presSrc.origin,subject:presSrc.subject,grade:presSrc.grade,style:presOpts.theme,length:presOpts.length,slides:(presDeck.slides||[]).length,generation_duration:Math.round((Date.now()-t0)/1000)});
     presBusy=false;
     presSel=0;
@@ -6116,34 +6204,144 @@ function presNormalize(raw){
   return { title:String(d.title||presSrc.topic||'Lesson'), subtitle:String(d.subtitle||''), slides:slides };
 }
 
-/* ---------------- Pollinations images ---------------- */
-function presFetchOne(prompt, seed){
-  return new Promise(function(resolve){
-    var ctrl = new AbortController();
-    var to = setTimeout(function(){ ctrl.abort(); }, 22000);
-    var style = PRES_THEMES[(presDeck&&presDeck.theme)||'professional'].imgStyle;
-    var url = 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt+', '+style+', no text, no words, no letters')+'?width=832&height=608&nologo=true&seed='+seed;
-    fetch(url,{signal:ctrl.signal}).then(function(r){
-      clearTimeout(to);
-      if(!r.ok) throw new Error('img '+r.status);
-      return r.blob();
-    }).then(function(b){
-      var fr=new FileReader();
-      fr.onload=function(){ resolve(fr.result); };
-      fr.onerror=function(){ resolve(null); };
-      fr.readAsDataURL(b);
-    }).catch(function(){ clearTimeout(to); resolve(null); });
+/* ════════════════════════════════════════════════════════════════════
+   SLIDE IMAGES
+   The client never talks to an image provider directly — it posts to
+   /api/image, so switching Flux -> OpenAI -> Imagen is a server env var
+   and nothing here changes.
+   ════════════════════════════════════════════════════════════════════ */
+var PRES_IMG_STYLES = {
+  cartoon:    { name:'Cartoon',           hint:'Friendly and playful',
+                suffix:'children\'s cartoon illustration, bold clean outlines, bright flat colours, simple friendly shapes' },
+  vector:     { name:'Flat Vector',       hint:'Clean and modern',
+                suffix:'flat vector illustration, simple geometric shapes, limited harmonious palette, clean lines, no gradients' },
+  diagram:    { name:'Scientific Diagram',hint:'Clear and labelled',
+                suffix:'clean scientific diagram, simple line art, neutral background, clear separated parts, textbook style' },
+  watercolour:{ name:'Watercolour',       hint:'Soft and storybook',
+                suffix:'soft watercolour illustration, gentle washes, warm storybook feel, light paper texture' },
+  realistic:  { name:'Realistic',         hint:'Photographic',
+                suffix:'clean realistic photograph, natural daylight, sharp focus, uncluttered background' }
+};
+var presImgStyle = 'vector';
+var presImgInfo  = null;   /* filled from /api/image/info */
+
+function presImgStyleSuffix(){
+  return (PRES_IMG_STYLES[presImgStyle] || PRES_IMG_STYLES.vector).suffix;
+}
+
+/* Short prompts keep latency and cost down; the cost driver is the number
+   of images and their resolution, so we cap both. */
+function presImgPrompt(slide){
+  var raw = (typeof slide === 'string') ? slide : (slide.imagePrompt || slide.title || '');
+  var subject = String(raw).replace(/\s+/g,' ').trim().slice(0,200);
+  var age = '';
+  try {
+    var g = String((presSrc && presSrc.grade) || '').match(/\d+/);
+    if(g) age = 'suitable for ' + (5 + parseInt(g[0],10)) + ' year old pupils, ';
+  } catch(e){}
+  return subject + ', ' + age + presImgStyleSuffix()
+    + ', educational classroom illustration, child friendly, no text, no words, no letters, no watermark';
+}
+
+async function presImgInfoLoad(){
+  if(presImgInfo) return presImgInfo;
+  try {
+    var r = await fetch('/api/image/info');
+    presImgInfo = r.ok ? await r.json() : { keyed:false };
+  } catch(e){ presImgInfo = { keyed:false }; }
+  return presImgInfo;
+}
+
+/* One image. Resolves to a data URL, or null if it could not be made. */
+function presFetchOne(slide, seed){
+  var body = JSON.stringify({
+    prompt: presImgPrompt(slide),
+    width: 1024, height: 768,           /* 0.79 MP — below the 1 MP billing step */
+    seed: seed || 0
+  });
+  var ctrl = new AbortController();
+  var to = setTimeout(function(){ ctrl.abort(); }, 60000);
+  return fetch('/api/image', {
+    method:'POST',
+    headers: presAuthHeaders(),
+    body: body, signal: ctrl.signal
+  }).then(function(r){
+    clearTimeout(to);
+    return r.json().then(function(j){
+      if(!r.ok) throw new Error((j && j.error && j.error.message) || ('image ' + r.status));
+      return j.image || null;
+    });
+  }).catch(function(err){
+    clearTimeout(to);
+    presImgLastError = err && err.message ? err.message : 'Image generation failed.';
+    return null;
   });
 }
+var presImgLastError = '';
+
+function presAuthHeaders(){
+  var hh = { 'Content-Type':'application/json' };
+  try {
+    var t = localStorage.getItem(FARUMA_KEYS.token);
+    if(t) hh['Authorization'] = 'Bearer ' + t;
+  } catch(e){}
+  return hh;
+}
+
+/* Which slides get a picture: the model marks them with imagePrompt, and
+   we cap the count so a long deck cannot run up a surprise bill. */
+function presImgTargets(deck, force){
+  return deck.slides.map(function(s,i){ return {s:s,i:i}; })
+    .filter(function(x){
+      if(x.s.layout === 'title') return false;
+      if(!force && x.s._img) return false;
+      return !!(x.s.imagePrompt || x.s.title);
+    })
+    .filter(function(x){ return !!x.s.imagePrompt; })
+    .slice(0, 12);
+}
+
 async function presFetchImages(deck, onProg){
-  var targets = deck.slides.map(function(s,i){return {s:s,i:i};}).filter(function(x){return x.s.imagePrompt && !x.s._img;}).slice(0,10);
-  var done=0, total=targets.length;
+  var targets = presImgTargets(deck);
+  var done = 0, total = targets.length;
   if(!total) return;
-  await Promise.allSettled(targets.map(function(x){
-    return presFetchOne(x.s.imagePrompt, 100+x.i).then(function(data){
-      x.s._img = data||null; done++; if(onProg) onProg(done,total);
-    });
-  }));
+  presImgLastError = '';
+  /* three at a time — polite to the provider, still fast */
+  for(var i = 0; i < targets.length; i += 3){
+    var batch = targets.slice(i, i + 3);
+    await Promise.allSettled(batch.map(function(x){
+      return presFetchOne(x.s, 1000 + x.i).then(function(data){
+        x.s._img = data || null;
+        done++; if(onProg) onProg(done, total);
+      });
+    }));
+  }
+}
+
+/* Regenerate every picture in the deck in the current style. */
+async function presRegenAllImages(btn){
+  if(!presDeck) return;
+  var label = btn ? btn.innerHTML : '';
+  if(btn){ btn.disabled = true; btn.innerHTML = 'Generating\u2026'; }
+  presDeck.slides.forEach(function(s){ if(s.imagePrompt) s._img = null; });
+  await presFetchImages(presDeck, function(d,t){
+    if(btn) btn.innerHTML = 'Generating ' + d + '/' + t + '\u2026';
+  });
+  if(btn){ btn.disabled = false; btn.innerHTML = label; }
+  presRefreshSlideViews();
+}
+
+function presRefreshSlideViews(){
+  if(typeof presRenderThumbs === 'function') presRenderThumbs();
+  if(typeof presRenderForm === 'function') presRenderForm();
+}
+
+function presSetImgStyle(id){
+  if(!PRES_IMG_STYLES[id]) return;
+  presImgStyle = id;
+  document.querySelectorAll('.pres-imgstyle').forEach(function(b){
+    b.classList.toggle('on', b.getAttribute('data-style') === id);
+  });
 }
 
 /* ---------------- Editor ---------------- */
@@ -6289,7 +6487,8 @@ function presRenderForm(){
     '<div class="pres-f"><label>Speaker notes</label><textarea id="pf-notes" rows="3"></textarea></div>'+
     '<div class="pres-f"><label>Teacher script</label><textarea id="pf-script" rows="3"></textarea></div>'+
   '</div>'+
-  '<div class="pres-f-regen" style="justify-content:flex-start"><button class="btn btn-sm btn-ghost" onclick="presRegenNotes()">&#10024; Regenerate notes &amp; script</button></div>';
+  '<div class="pres-f-regen" style="justify-content:flex-start"><button class="btn btn-sm btn-ghost" onclick="presRegenNotes()">&#10024; Regenerate notes &amp; script</button>'+
+    '<button class="btn btn-sm btn-ghost" onclick="presRegenAllImages(this)">&#128444; Redo every image in this style</button></div>';
   el.innerHTML=h;
   // assign values via properties (no escaping issues)
   function set(id,v){ var n=document.getElementById(id); if(n) n.value=v||''; }

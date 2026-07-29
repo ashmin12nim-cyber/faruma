@@ -7,7 +7,8 @@ const busboy = require('busboy');
 
 const PORT = parseInt(process.env.PORT) || 3579;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
-const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'boli2026';
+const DEFAULT_ADMIN_PASS = 'faruma-change-me';
+const ADMIN_PASS = process.env.ADMIN_PASSWORD || DEFAULT_ADMIN_PASS;
 // Shown to teachers in the Top Up panel. Set on Railway, e.g.:
 // BANK_ACCOUNT = "BML MVR account 7730-XXXXXXX-101 — Hawwa Nimsha"
 const BANK_ACCOUNT = process.env.BANK_ACCOUNT || 'Bank account details not configured yet — please contact the FARUMA admin.';
@@ -23,11 +24,207 @@ const SUPA_ON = !!(SUPA_URL && SUPA_ANON && SUPA_SERVICE);
 // Credit packs: credits -> price in MVR
 const PACKS = { 50: 90, 150: 240, 400: 560 };
 
+/* ════════════════════════════════════════════════════════════════════
+   IMAGE GENERATION — pluggable providers
+   --------------------------------------------------------------------
+   Switch provider with one env var; nothing else in the presentation
+   pipeline changes. Each provider takes {prompt,width,height} and
+   returns {dataUrl} or {error}.
+
+     IMAGE_PROVIDER   together | fal | replicate | openai | imagen | pollinations
+     IMAGE_API_KEY    the provider's key (not needed for pollinations)
+     IMAGE_MODEL      optional override of the provider's default model
+     IMAGE_CREDIT_COST  credits charged per image (default 0)
+     IMAGE_DAILY_CAP    max images per user per day  (default 60)
+   ════════════════════════════════════════════════════════════════════ */
+const IMAGE_PROVIDER    = (process.env.IMAGE_PROVIDER || 'together').toLowerCase();
+const IMAGE_API_KEY     = process.env.IMAGE_API_KEY || '';
+const IMAGE_MODEL_ENV   = process.env.IMAGE_MODEL || '';
+const IMAGE_CREDIT_COST = parseInt(process.env.IMAGE_CREDIT_COST || '0', 10) || 0;
+const IMAGE_DAILY_CAP   = parseInt(process.env.IMAGE_DAILY_CAP || '60', 10) || 60;
+
+function postJSON(host, path, headers, payload, timeoutMs) {
+  return new Promise((resolve) => {
+    const data = Buffer.from(JSON.stringify(payload));
+    const req = https.request({
+      host, path, method: 'POST',
+      headers: Object.assign({
+        'Content-Type': 'application/json',
+        'Content-Length': data.length
+      }, headers || {})
+    }, (r) => {
+      const chunks = [];
+      r.on('data', (c) => chunks.push(c));
+      r.on('end', () => {
+        const raw = Buffer.concat(chunks).toString();
+        let json = null;
+        try { json = JSON.parse(raw); } catch (e) {}
+        resolve({ status: r.statusCode, json, raw });
+      });
+    });
+    req.on('error', (e) => resolve({ status: 0, error: e.message }));
+    req.setTimeout(timeoutMs || 60000, () => { req.destroy(); resolve({ status: 0, error: 'timeout' }); });
+    req.end(data);
+  });
+}
+
+function getBinary(urlStr, timeoutMs) {
+  return new Promise((resolve) => {
+    const u = new URL(urlStr);
+    const req = https.get({ host: u.host, path: u.pathname + u.search }, (r) => {
+      if (r.statusCode >= 300 && r.statusCode < 400 && r.headers.location) {
+        r.resume();
+        return resolve(getBinary(r.headers.location, timeoutMs));
+      }
+      if (r.statusCode !== 200) { r.resume(); return resolve({ error: 'download ' + r.statusCode }); }
+      const chunks = [];
+      r.on('data', (c) => chunks.push(c));
+      r.on('end', () => resolve({
+        buf: Buffer.concat(chunks),
+        mime: (r.headers['content-type'] || 'image/png').split(';')[0]
+      }));
+    });
+    req.on('error', (e) => resolve({ error: e.message }));
+    req.setTimeout(timeoutMs || 45000, () => { req.destroy(); resolve({ error: 'timeout' }); });
+  });
+}
+
+const toDataUrl = (buf, mime) => 'data:' + (mime || 'image/png') + ';base64,' + buf.toString('base64');
+
+const IMAGE_PROVIDERS = {
+  /* FLUX.1 [schnell] — the budget default. ~$0.003 per 1MP image. */
+  together: {
+    label: 'Together AI · FLUX.1 [schnell]',
+    model: 'black-forest-labs/FLUX.1-schnell',
+    needsKey: true,
+    async generate(o) {
+      const r = await postJSON('api.together.xyz', '/v1/images/generations',
+        { Authorization: 'Bearer ' + IMAGE_API_KEY },
+        { model: this.model, prompt: o.prompt, width: o.width, height: o.height, steps: 4, n: 1 });
+      if (r.status !== 200) return { error: (r.json && r.json.error && r.json.error.message) || r.error || ('provider ' + r.status) };
+      const d = r.json && r.json.data && r.json.data[0];
+      if (!d) return { error: 'empty response' };
+      if (d.b64_json) return { dataUrl: 'data:image/png;base64,' + d.b64_json };
+      if (d.url) { const g = await getBinary(d.url); return g.error ? { error: g.error } : { dataUrl: toDataUrl(g.buf, g.mime) }; }
+      return { error: 'no image in response' };
+    }
+  },
+
+  /* fal.ai — same FLUX weights, ~$0.003/MP */
+  fal: {
+    label: 'fal.ai · FLUX.1 [schnell]',
+    model: 'fal-ai/flux/schnell',
+    needsKey: true,
+    async generate(o) {
+      const r = await postJSON('fal.run', '/' + this.model,
+        { Authorization: 'Key ' + IMAGE_API_KEY },
+        { prompt: o.prompt, image_size: { width: o.width, height: o.height }, num_inference_steps: 4, num_images: 1, enable_safety_checker: true });
+      if (r.status !== 200) return { error: (r.json && r.json.detail) || r.error || ('provider ' + r.status) };
+      const img = r.json && r.json.images && r.json.images[0];
+      if (!img || !img.url) return { error: 'no image in response' };
+      const g = await getBinary(img.url);
+      return g.error ? { error: g.error } : { dataUrl: toDataUrl(g.buf, g.mime) };
+    }
+  },
+
+  /* Replicate — same weights, billed per second of GPU time */
+  replicate: {
+    label: 'Replicate · FLUX.1 [schnell]',
+    model: 'black-forest-labs/flux-schnell',
+    needsKey: true,
+    async generate(o) {
+      const r = await postJSON('api.replicate.com', '/v1/models/' + this.model + '/predictions',
+        { Authorization: 'Bearer ' + IMAGE_API_KEY, Prefer: 'wait' },
+        { input: { prompt: o.prompt, num_outputs: 1, output_format: 'jpg', go_fast: true,
+                   aspect_ratio: (o.width >= o.height ? '4:3' : '3:4') } });
+      if (r.status !== 200 && r.status !== 201) return { error: (r.json && r.json.detail) || r.error || ('provider ' + r.status) };
+      const out = r.json && r.json.output;
+      const first = Array.isArray(out) ? out[0] : out;
+      if (!first) return { error: 'no image in response' };
+      const g = await getBinary(first);
+      return g.error ? { error: g.error } : { dataUrl: toDataUrl(g.buf, g.mime) };
+    }
+  },
+
+  /* OpenAI — drop-in future switch */
+  openai: {
+    label: 'OpenAI · gpt-image-1-mini',
+    model: 'gpt-image-1-mini',
+    needsKey: true,
+    async generate(o) {
+      const size = o.width >= o.height ? '1024x1024' : '1024x1536';
+      const r = await postJSON('api.openai.com', '/v1/images/generations',
+        { Authorization: 'Bearer ' + IMAGE_API_KEY },
+        { model: this.model, prompt: o.prompt, size, n: 1 });
+      if (r.status !== 200) return { error: (r.json && r.json.error && r.json.error.message) || r.error || ('provider ' + r.status) };
+      const d = r.json && r.json.data && r.json.data[0];
+      if (d && d.b64_json) return { dataUrl: 'data:image/png;base64,' + d.b64_json };
+      if (d && d.url) { const g = await getBinary(d.url); return g.error ? { error: g.error } : { dataUrl: toDataUrl(g.buf, g.mime) }; }
+      return { error: 'no image in response' };
+    }
+  },
+
+  /* Google Imagen — drop-in future switch */
+  imagen: {
+    label: 'Google · Imagen 4 Fast',
+    model: 'imagen-4.0-fast-generate-001',
+    needsKey: true,
+    async generate(o) {
+      const path = '/v1beta/models/' + this.model + ':predict?key=' + encodeURIComponent(IMAGE_API_KEY);
+      const r = await postJSON('generativelanguage.googleapis.com', path, {},
+        { instances: [{ prompt: o.prompt }],
+          parameters: { sampleCount: 1, aspectRatio: (o.width >= o.height ? '4:3' : '3:4') } });
+      if (r.status !== 200) return { error: (r.json && r.json.error && r.json.error.message) || r.error || ('provider ' + r.status) };
+      const p = r.json && r.json.predictions && r.json.predictions[0];
+      const b64 = p && (p.bytesBase64Encoded || p.image);
+      if (!b64) return { error: 'no image in response' };
+      return { dataUrl: 'data:image/png;base64,' + b64 };
+    }
+  },
+
+  /* Keyless fallback so the feature still works before a key is added */
+  pollinations: {
+    label: 'Pollinations (keyless fallback)',
+    model: 'flux',
+    needsKey: false,
+    async generate(o) {
+      const url = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(o.prompt)
+        + '?width=' + o.width + '&height=' + o.height + '&nologo=true&model=flux'
+        + (o.seed ? '&seed=' + o.seed : '');
+      const g = await getBinary(url, 40000);
+      return g.error ? { error: g.error } : { dataUrl: toDataUrl(g.buf, g.mime) };
+    }
+  }
+};
+
+function activeImageProvider() {
+  const p = IMAGE_PROVIDERS[IMAGE_PROVIDER] || IMAGE_PROVIDERS.together;
+  if (p.needsKey && !IMAGE_API_KEY) return IMAGE_PROVIDERS.pollinations;   // graceful degradation
+  return p;
+}
+
+/* per-user daily cap, in memory (resets on redeploy — a backstop, not billing) */
+const imageUsage = new Map();
+function imageQuotaOk(userId) {
+  const day = new Date().toISOString().slice(0, 10);
+  const k = userId + '|' + day;
+  const n = (imageUsage.get(k) || 0) + 1;
+  if (n > IMAGE_DAILY_CAP) return false;
+  imageUsage.set(k, n);
+  if (imageUsage.size > 5000) imageUsage.clear();
+  return true;
+}
+
 console.log('=== FARUMA server ===');
 console.log('Port:', PORT);
 console.log('API Key configured:', ANTHROPIC_KEY ? 'YES' : 'NO');
 console.log('Supabase:', SUPA_ON ? 'ENABLED' : 'MISSING ENV VARS — auth will not work!');
-if (ADMIN_PASS === 'boli2026') console.log('WARNING: ADMIN_PASSWORD is still the default. Set a strong one on Railway.');
+if (ADMIN_PASS === DEFAULT_ADMIN_PASS) console.log('WARNING: ADMIN_PASSWORD is still the default. Set a strong one on Railway.');
+(function(){
+  const p = activeImageProvider();
+  console.log('Images: ' + p.label + (p.needsKey ? '' : '  (no key set — set IMAGE_API_KEY for FLUX)'));
+  if (IMAGE_CREDIT_COST > 0) console.log('Images: ' + IMAGE_CREDIT_COST + ' credit(s) each, cap ' + IMAGE_DAILY_CAP + '/user/day');
+})();
 
 // ── Supabase REST helper ────────────────────────────────────────────
 function supaFetch(pathname, { method = 'GET', token = null, service = false, body = null, headers: extra = {} } = {}) {
@@ -481,6 +678,58 @@ const server = http.createServer(async (req, res) => {
     }
 
     // ── POST /api/messages — AI proxy with credit gating ─────────
+    // ── image generation for the presentation builder ────────────
+    if (req.method === 'GET' && url === '/api/image/info') {
+      const p = activeImageProvider();
+      return jsonRes(res, 200, {
+        provider: IMAGE_PROVIDER, active: p.label,
+        model: IMAGE_MODEL_ENV || p.model,
+        keyed: !!IMAGE_API_KEY,
+        fallback: p === IMAGE_PROVIDERS.pollinations && IMAGE_PROVIDER !== 'pollinations',
+        creditCost: IMAGE_CREDIT_COST, dailyCap: IMAGE_DAILY_CAP
+      });
+    }
+
+    if (req.method === 'POST' && url === '/api/image') {
+      const body = JSON.parse((await readBody(req)).toString());
+      const prompt = String(body.prompt || '').slice(0, 700).trim();
+      if (!prompt) return jsonRes(res, 400, { error: { message: 'No image prompt supplied.' } });
+
+      // keep resolution modest — image APIs bill per megapixel
+      const width  = Math.min(1024, Math.max(256, parseInt(body.width, 10)  || 1024));
+      const height = Math.min(1024, Math.max(256, parseInt(body.height, 10) || 768));
+
+      let userId = 'anon';
+      if (SUPA_ON) {
+        const su = await supaGetUser(req);
+        if (!su) return jsonRes(res, 401, { error: { message: 'Please log in to generate slide images.' } });
+        userId = su.id;
+        if (!imageQuotaOk(userId)) {
+          return jsonRes(res, 429, { error: { message: 'Daily image limit reached (' + IMAGE_DAILY_CAP + '). Try again tomorrow.' } });
+        }
+        if (IMAGE_CREDIT_COST > 0) {
+          const d = await supaDeduct(userId, IMAGE_CREDIT_COST, 'slide-image');
+          if (!d.ok) {
+            if (d.insufficient) return jsonRes(res, 402, { error: { message: 'You have run out of credits. Tap "Top Up" to buy a credit pack.' } });
+            return jsonRes(res, 500, { error: { message: 'Credit check failed. Please try again.' } });
+          }
+        }
+      }
+
+      const p = activeImageProvider();
+      if (IMAGE_MODEL_ENV) p.model = IMAGE_MODEL_ENV;
+      const out = await p.generate({ prompt, width, height, seed: parseInt(body.seed, 10) || 0 });
+
+      if (out.error) {
+        // refund on provider failure so a teacher is never charged for nothing
+        if (SUPA_ON && IMAGE_CREDIT_COST > 0 && userId !== 'anon') {
+          try { await supaAddCredits(userId, IMAGE_CREDIT_COST, 'refund', 'slide-image-failed'); } catch (e) {}
+        }
+        return jsonRes(res, 502, { error: { message: 'Image provider failed: ' + out.error } });
+      }
+      return jsonRes(res, 200, { image: out.dataUrl, provider: IMAGE_PROVIDER, model: p.model });
+    }
+
     if (req.method === 'POST' && url === '/api/messages') {
       const body = JSON.parse((await readBody(req)).toString());
       const apiKey = ANTHROPIC_KEY || req.headers['x-api-key'] || '';
