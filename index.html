@@ -1196,10 +1196,10 @@ body{font-size:16px;line-height:1.62;}
 .pres-imgstyle:hover{ border-color:var(--ocean-light); }
 .pres-imgstyle.on{ border-color:var(--leaf-deep); background:#f6fcf8; }
 .pres-imgnote{ font-size:12.5px; color:var(--text-light); margin-top:8px; }
-.pres-regen{ background:rgba(255,255,255,.94); border:1px solid var(--line); border-radius:8px;
-  padding:5px 10px; font-size:12.5px; font-weight:600; color:var(--text-mid);
-  cursor:pointer; font-family:'Inter',sans-serif; }
-.pres-regen:hover{ border-color:var(--leaf-deep); color:var(--leaf-deep); }
+.pres-regen{ background:var(--ocean-mid,#1f7a86); border:1px solid var(--ocean-mid,#1f7a86);
+  border-radius:8px; padding:7px 13px; font-size:13.5px; font-weight:700; color:#fff;
+  cursor:pointer; font-family:'Inter',sans-serif; min-height:36px; }
+.pres-regen:hover{ background:var(--ocean-deep,#0f4c5c); border-color:var(--ocean-deep,#0f4c5c); color:#fff; }
 .pres-regen[disabled]{ opacity:.6; cursor:default; }
 
 /* ══ Lesson Plan Format picker ══ */
@@ -1662,6 +1662,80 @@ body{font-size:16px;line-height:1.62;}
   .as-win{ max-width:100%; max-height:100%; height:100%; border-radius:0; }
   .as-win-body{ padding:14px 15px 20px; }
 }
+
+/* ============ AI action buttons — one design system ============
+   Every button that asks the AI to make something shares this look:
+   solid accent fill, white label, visible focus ring, real disabled
+   state and a spinner while it works. Introduced because
+   .fed-primary had no rule at all and rendered white-on-white.
+   ============================================================== */
+.fr-ai-btn,
+.fed-primary,
+.pres-go,
+.pres-regen,
+.fed-ai-btns button.fr-ai-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  background:var(--ocean-mid,#1f7a86);
+  color:#fff !important;
+  border:1px solid var(--ocean-mid,#1f7a86);
+  border-radius:10px;
+  padding:11px 18px;
+  font-family:'Inter',sans-serif;
+  font-size:14.5px; font-weight:700; letter-spacing:.01em;
+  cursor:pointer; min-height:44px;
+  box-shadow:0 2px 6px rgba(15,76,92,.18);
+  transition:background .16s ease, box-shadow .16s ease, transform .06s ease;
+}
+.fr-ai-btn:hover,
+.fed-primary:hover,
+.pres-go:hover,
+.fed-ai-btns button.fr-ai-btn:hover{
+  background:var(--ocean-deep,#0f4c5c);
+  border-color:var(--ocean-deep,#0f4c5c);
+  box-shadow:0 4px 12px rgba(15,76,92,.26);
+}
+.fr-ai-btn:active,
+.fed-primary:active,
+.pres-go:active{ transform:translateY(1px); box-shadow:0 1px 4px rgba(15,76,92,.2); }
+
+.fr-ai-btn:focus-visible,
+.fed-primary:focus-visible,
+.pres-go:focus-visible,
+.pres-regen:focus-visible{
+  outline:3px solid rgba(31,122,134,.45); outline-offset:2px;
+}
+
+.fr-ai-btn:disabled,
+.fed-primary:disabled,
+.pres-go:disabled,
+.pres-regen:disabled{
+  background:#c3d2d6; border-color:#c3d2d6; color:#fff !important;
+  cursor:not-allowed; box-shadow:none; transform:none;
+}
+
+/* the primary CTA keeps the coral fill, but inherits everything else */
+.pres-go{ width:100%; background:var(--coral,#e8624a); border-color:var(--coral,#e8624a); }
+.pres-go:hover{ background:#d2503a; border-color:#d2503a; }
+
+/* spinner shown while the AI is working: add .is-busy to the button */
+.fr-ai-btn.is-busy::before,
+.fed-primary.is-busy::before,
+.pres-go.is-busy::before,
+.pres-regen.is-busy::before{
+  content:''; width:15px; height:15px; flex:none;
+  border:2px solid rgba(255,255,255,.45); border-top-color:#fff;
+  border-radius:50%; animation:fr-ai-spin .7s linear infinite;
+}
+.fr-ai-btn.is-busy, .fed-primary.is-busy, .pres-go.is-busy, .pres-regen.is-busy{
+  pointer-events:none; opacity:.92;
+}
+@keyframes fr-ai-spin{ to{ transform:rotate(360deg); } }
+
+/* Safety net: nothing anywhere may render a white label on a white fill. */
+button[style*="background:#fff"][style*="color:#fff"],
+button[style*="background:white"][style*="color:white"]{
+  background:var(--ocean-mid,#1f7a86) !important; color:#fff !important;
+}
 </style>
 </head>
 <body>
@@ -1821,7 +1895,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
       <p>AI-Powered Lesson Planner for Maldivian Teachers</p>
     </div>
     <div class="auth-tabs">
-      <div class="auth-tab on" id="tab-login" onclick="switchAuthTab('login')">Sign In</div>
+      <div class="auth-tab on" id="tab-login" onclick="switchAuthTab('login')">Sign in</div>
       <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
     </div>
     <div class="auth-err" id="auth-err"></div>
@@ -1829,29 +1903,29 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <div id="form-login">
       <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+      <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign in</button>
       <div style="text-align:center;margin-top:10px;"><a onclick="showForgot()" style="font-size:14px;cursor:pointer;text-decoration:underline;">Forgot password?</a></div>
     </div>
     <!-- Forgot password form -->
     <div id="form-forgot" style="display:none;">
       <p style="font-size:14.5px;margin:0 0 12px;">Enter your email and we'll send you a link to reset your password.</p>
       <div class="auth-field"><label>Email</label><input type="email" id="forgot-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doForgot()"></div>
-      <button class="auth-btn" id="forgot-btn" onclick="doForgot()">Send Reset Link</button>
+      <button class="auth-btn" id="forgot-btn" onclick="doForgot()">Send reset link</button>
       <div style="text-align:center;margin-top:10px;"><a onclick="hideForgot()" style="font-size:14px;cursor:pointer;text-decoration:underline;">Back to sign in</a></div>
     </div>
     <!-- Reset password form (shown when arriving from a reset email link) -->
     <div id="form-reset" style="display:none;">
       <p style="font-size:14.5px;margin:0 0 12px;">Choose a new password for your account.</p>
-      <div class="auth-field"><label>New Password</label><input type="password" id="reset-pass" placeholder="Min. 6 characters"></div>
-      <div class="auth-field"><label>Confirm Password</label><input type="password" id="reset-pass2" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')doReset()"></div>
-      <button class="auth-btn" id="reset-btn" onclick="doReset()">Set New Password</button>
+      <div class="auth-field"><label>New password</label><input type="password" id="reset-pass" placeholder="Min. 6 characters"></div>
+      <div class="auth-field"><label>Confirm password</label><input type="password" id="reset-pass2" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')doReset()"></div>
+      <button class="auth-btn" id="reset-btn" onclick="doReset()">Set new password</button>
     </div>
     <!-- Register form -->
     <div id="form-register" style="display:none;">
-      <div class="auth-field"><label>Full Name</label><input type="text" id="reg-name" placeholder="Your name"></div>
+      <div class="auth-field"><label>Full name</label><input type="text" id="reg-name" placeholder="Your name"></div>
       <div class="auth-field"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com"></div>
       <div class="auth-field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min. 6 characters"></div>
-      <button class="auth-btn" id="reg-btn" onclick="doRegister()">Create Account</button>
+      <button class="auth-btn" id="reg-btn" onclick="doRegister()">Create account</button>
     </div>
     <div class="auth-demo">
       New here? You get <b>15 free credits</b> when you register. &nbsp;·&nbsp; <a onclick="showPrivacy()" style="cursor:pointer;text-decoration:underline;">Privacy</a>
@@ -1863,7 +1937,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
 <div id="privacy-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
   <div style="background:#fff;border-radius:14px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <h3 style="margin:0;font-size:18px;">Privacy Notice</h3>
+      <h3 style="margin:0;font-size:18px;">Privacy notice</h3>
       <button onclick="hidePrivacy()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
     <div style="font-size:14.5px;line-height:1.7;color:#333;">
@@ -1881,7 +1955,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
 <div id="topup-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
   <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <h3 style="margin:0;font-size:18px;">Top Up Credits</h3>
+      <h3 style="margin:0;font-size:18px;">Top up credits</h3>
       <button onclick="closeTopup()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
     <div id="topup-step1">
@@ -1917,7 +1991,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
 <div id="help-modal" style="display:none;position:fixed;inset:0;background:rgba(15,39,64,.55);z-index:10000;align-items:center;justify-content:center;padding:16px;">
   <div style="background:#fff;border-radius:14px;max-width:460px;width:100%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <h3 style="margin:0;font-size:18px;">Contact FARUMA Admin</h3>
+      <h3 style="margin:0;font-size:18px;">Contact FARUMA admin</h3>
       <button onclick="closeHelp()" style="background:none;border:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
     <p style="font-size:14.5px;color:#555;margin:0 0 10px;">Question, problem, a top-up that hasn't arrived, or your school's own template? Write it here.</p>
@@ -1940,7 +2014,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     </div>
 
     <div id="help-status" style="display:none;border-radius:8px;padding:8px 12px;font-size:14.5px;margin-top:8px;"></div>
-    <button class="auth-btn" id="help-send-btn" style="margin-top:10px;" onclick="sendHelp()">Send Message</button>
+    <button class="auth-btn" id="help-send-btn" style="margin-top:10px;" onclick="sendHelp()">Send message</button>
   </div>
 </div>
 
@@ -2253,7 +2327,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <div class="field"><label>Grade</label><select id="f-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
     <div class="field"><label>Duration</label><select id="f-dur"><option value="35">35 minutes</option><option value="70">70 minutes</option></select></div>
     <div class="field"><label>Week</label><select id="f-week"><option value="">-- Select Week --</option></select></div>
-    <div class="field"><label>Lesson No.</label><input type="text" id="f-lesson" placeholder="e.g. 1"></div>
+    <div class="field"><label>Lesson no.</label><input type="text" id="f-lesson" placeholder="e.g. 1"></div>
   </div>
   <div class="curr-panel">
     <div class="curr-title">&#128218; Select National Curriculum Standard</div>
@@ -2269,10 +2343,10 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
   </div>
   <div class="g2">
     <div class="field"><label>Date</label><input type="date" id="f-date"></div>
-    <div class="field"><label>Topic / Lesson Title</label><input type="text" id="f-topic" placeholder="e.g. Adding fractions with unlike denominators"></div>
+    <div class="field"><label>Topic / lesson title</label><input type="text" id="f-topic" placeholder="e.g. Adding fractions with unlike denominators"></div>
   </div>
   <div class="g2">
-    <div class="field"><label>School Name</label><input type="text" id="f-school" placeholder="e.g. your school name" value=""></div>
+    <div class="field"><label>School name</label><input type="text" id="f-school" placeholder="e.g. your school name" value=""></div>
     <div class="field"><label>Term</label><select id="f-term"><option value="">-</option><option value="1">Term 1</option><option value="2">Term 2</option><option value="3">Term 3</option></select></div>
   </div>
   <div id="active-tpl-banner" style="display:none;background:var(--ocean-pale);border:1px solid rgba(47,170,184,.3);border-radius:8px;padding:9px 14px;margin-bottom:12px;font-size:14px;color:var(--ocean-deep);font-weight:700;">
@@ -2281,7 +2355,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
   <!-- ══ Lesson Plan Format — emphasised picker with design previews ══ -->
   <section class="tplpick" id="tplpick">
     <div class="tplpick-head">
-      <h3>Lesson Plan Format</h3>
+      <h3>Lesson plan format</h3>
       <p>Choose the layout your school uses. Click a template to see the exact page before you generate.</p>
     </div>
     <div class="tplpick-grid">
@@ -2314,7 +2388,12 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
       <option value="mnc2">Template 2</option>
     </select>
   </section>
-  <div class="field"><label>Lesson Activity Type</label><select id="f-activity-type">
+  <div class="field"><label>Detail level</label><select id="f-detail">
+    <option value="concise">Concise &mdash; key points only, fits one page</option>
+    <option value="standard" selected>Standard &mdash; balanced, classroom ready</option>
+    <option value="comprehensive">Comprehensive &mdash; full detail, every step written out</option>
+  </select></div>
+  <div class="field"><label>Lesson activity type</label><select id="f-activity-type">
     <option value="Standard" selected>Standard (Introduction + Activity)</option>
     <option value="5E Model">5E Model (Engage, Explore, Explain, Elaborate, Evaluate)</option>
     <option value="Inquiry-Based">Inquiry-Based Learning</option>
@@ -2323,7 +2402,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <option value="Game-Based">Game-Based Learning</option>
     <option value="Collaborative">Collaborative / Group Work</option>
   </select></div>
-  <div class="field"><label>Activity Ideas</label><div class="sug-wrap" id="sug-wrap"></div><textarea id="f-activities" rows="3" placeholder="Add ideas, or paste an image here..."></textarea>
+  <div class="field"><label>Activity ideas</label><div class="sug-wrap" id="sug-wrap"></div><textarea id="f-activities" rows="3" placeholder="Add ideas, or paste an image here..."></textarea>
     <div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
       <label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:14.5px;font-weight:600;color:#0f4c5c;border:1px solid #cfe0e2;background:#f4fbfb;padding:7px 12px;border-radius:9px">
         <span>&#128206;</span> Add image, PDF or Word
@@ -2373,7 +2452,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
 
 <section class="tplpick" id="tplpick-checklist">
   <div class="tplpick-head">
-    <h3>Record Sheet Format</h3>
+    <h3>Record sheet format</h3>
     <p>This is the layout your checklist will be exported in. Click it to see the exact page.</p>
   </div>
   <div class="tplpick-grid" data-group="checklist"></div>
@@ -2395,8 +2474,8 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
 <div class="card">
   <div class="card-title">Outcome Assessment Record Sheet</div>
   <div class="g2">
-    <div class="field"><label>School Name</label><input type="text" id="cl-school" placeholder="Your school name" value=""></div>
-    <div class="field"><label>School Address</label><input type="text" id="cl-address" placeholder="Your school address" value=""></div>
+    <div class="field"><label>School name</label><input type="text" id="cl-school" placeholder="Your school name" value=""></div>
+    <div class="field"><label>School address</label><input type="text" id="cl-address" placeholder="Your school address" value=""></div>
   </div>
   <div class="g2">
     <div class="field"><label>Class</label><input type="text" id="cl-class" placeholder="e.g. 5A"></div>
@@ -2426,7 +2505,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <div class="field"><label>Strand</label><select id="cl-strand" onchange="clOnStrandChange()" disabled>
       <option value="">-- Select Strand --</option>
     </select></div>
-    <div class="field"><label>Sub-Strand</label><select id="cl-substrand" onchange="clOnSubstrandChange()" disabled>
+    <div class="field"><label>Sub-strand</label><select id="cl-substrand" onchange="clOnSubstrandChange()" disabled>
       <option value="">-- Select Sub-Strand --</option>
     </select></div>
   </div>
@@ -2480,10 +2559,10 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <div class="g3">
       <div class="field"><label>Grade</label><select id="as-grade"><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option selected>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option></select></div>
       <div class="field"><label>Subject</label><select id="as-sub"><option>Mathematics</option><option>English</option><option>Science</option><option>Social Studies</option><option>H.PE</option></select></div>
-      <div class="field"><label>Topic / Objective</label><input type="text" id="as-topic" placeholder="e.g. Fractions"></div>
+      <div class="field"><label>Topic / objective</label><input type="text" id="as-topic" placeholder="e.g. Fractions"></div>
     </div>
     <div class="g2">
-      <div class="field"><label>Bloom's Focus</label><select id="as-blooms"><option value="remember">Remember</option><option value="understand">Understand</option><option value="apply" selected>Apply</option><option value="analyze">Analyze</option><option value="evaluate">Evaluate</option><option value="create">Create</option><option value="mixed">Mixed</option></select></div>
+      <div class="field"><label>Bloom's focus</label><select id="as-blooms"><option value="remember">Remember</option><option value="understand">Understand</option><option value="apply" selected>Apply</option><option value="analyze">Analyze</option><option value="evaluate">Evaluate</option><option value="create">Create</option><option value="mixed">Mixed</option></select></div>
       <div class="field"><label>No. of Questions</label><input type="number" id="as-num" value="10" min="3" max="30"></div>
     </div>
   </div>
@@ -2555,7 +2634,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
 </div></div>
 
 <!-- ════════ GENERATED ASSESSMENT WINDOW ════════ -->
-<div id="as-modal" style="display:none;position:fixed;inset:0;z-index:12500;background:rgba(10,30,45,.55);align-items:center;justify-content:center;padding:16px;">
+<div id="as-win-modal" style="display:none;position:fixed;inset:0;z-index:12600;background:rgba(10,30,45,.55);align-items:center;justify-content:center;padding:16px;">
   <div class="as-win" role="dialog" aria-modal="true" aria-labelledby="as-win-title">
     <header class="as-win-top">
       <div style="min-width:0;">
@@ -2569,7 +2648,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     </header>
     <div class="as-win-body" id="as-win-body"></div>
     <footer class="as-win-foot">
-      <div class="status" id="as-modal-dl" style="display:none;margin:0;flex:1 1 240px;"></div>
+      <div class="status" id="as-win-dl" style="display:none;margin:0;flex:1 1 240px;"></div>
       <div class="as-win-sp"></div>
       <button class="btn btn-sm btn-ghost" type="button" onclick="asCloseWin()">Close</button>
       <button class="btn btn-sm btn-orange" type="button" onclick="asWinRegenerate()">&#8635; Generate again</button>
@@ -2609,14 +2688,14 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     </div>
     <button class="btn btn-orange" type="button" style="width:auto;padding:11px 18px;" onclick="cbOpen('sl')">&#128218; Select outcome &amp; indicators</button><div id="cb-sl-chip" style="margin-top:12px;"></div>
     <div id="sl-hidden-syl" style="display:none">
-<div class="field"><label>Curriculum Outcome</label><select id="sl-outcome"></select></div>
+<div class="field"><label>Curriculum outcome</label><select id="sl-outcome"></select></div>
     <div class="field"><label>Indicators</label><div id="sl-inds" style="display:flex;flex-direction:column;gap:5px;max-height:150px;overflow:auto;font-size:14px;border:1px solid var(--ocean-pale,#e7f1f7);border-radius:9px;padding:9px 11px;background:#fff;"></div></div>
     </div>
-    <div class="field"><label>Topic / Lesson Title</label><input type="text" id="sl-topic" placeholder="e.g. Equivalent Fractions"></div>
+    <div class="field"><label>Topic / lesson title</label><input type="text" id="sl-topic" placeholder="e.g. Equivalent Fractions"></div>
   </div>
   <div class="field"><label>Design &mdash; pick a slide template</label><div class="pres-style-grid" id="sl-styles" style="margin-top:6px;"></div></div>
   <div class="field" style="margin-top:14px;"><label>Length</label><div class="pres-pills" id="sl-len" style="margin-top:6px;"></div></div>
-  <div class="field" style="margin-top:14px;"><label>AI Enhancements</label><div class="pres-chips" id="sl-enh" style="margin-top:6px;"></div></div>
+  <div class="field" style="margin-top:14px;"><label>AI enhancements</label><div class="pres-chips" id="sl-enh" style="margin-top:6px;"></div></div>
   <button class="pres-go" id="sl-go" style="margin-top:16px;" onclick="slGenerate()">&#127916; Generate Slides <span>&middot; opens in the slide editor</span></button>
   <div class="pres-progress" id="sl-prog" style="display:none"><div class="pres-prog-track"><div class="pres-prog-bar" id="sl-bar"></div></div><div class="pres-stage" id="sl-stage"></div></div>
   <div id="sl-status" style="margin-top:10px;font-size:14.5px;"></div>
@@ -3063,6 +3142,31 @@ function clearActivityImage(){
 })();
 
 // ── Thaana (Dhivehi-script) generation for Dhivehi, Islam and Quran ──
+/* How much detail the teacher asked for. Wording is deliberately plain:
+   Concise / Standard / Comprehensive reads better to teachers than
+   "verbose" or "summarised", and sorts naturally from least to most. */
+var FR_DETAIL = {
+  concise: {
+    label:'Concise',
+    rule:'DETAIL LEVEL: CONCISE. Keep every field to the essentials — short bullet fragments, no full sentences where a phrase will do. Aim for a plan a teacher can scan in under a minute and that prints on one page. Give 1-2 bullets per field, 2-3 for the main activity. Do not pad.\n'
+  },
+  standard: {
+    label:'Standard',
+    rule:'DETAIL LEVEL: STANDARD. Balanced, classroom-ready detail — 2-4 bullets per field, enough for another teacher to pick up and teach from without asking questions. This is the default.\n'
+  },
+  comprehensive: {
+    label:'Comprehensive',
+    rule:'DETAIL LEVEL: COMPREHENSIVE. Write the plan out in full — 4-6 bullets per field, every activity described step by step with what the teacher says and does, what pupils do, the materials at each step, likely misconceptions and how to address them, and specific questions to ask. A trainee teacher or a relief teacher should be able to deliver this lesson from the page alone. Be thorough, but never repeat yourself.\n'
+  }
+};
+function frDetailRule(){
+  var v=(document.getElementById('f-detail')||{}).value||'standard';
+  return (FR_DETAIL[v]||FR_DETAIL.standard).rule;
+}
+function frDetailKey(){
+  return (document.getElementById('f-detail')||{}).value||'standard';
+}
+
 function isThaanaSubject(sub){ return /^(Dhivehi|Islam|Quran)$/i.test((sub||"").trim()); }
 function thaanaDirective(sub, grade){
   if(!isThaanaSubject(sub)) return "";
@@ -3136,7 +3240,8 @@ async function doGenerate() {
   if (tplInPlace) {
     var _flds = await templateFields(tplBytes);
     var _labelList = _flds.map(function(f){ return "- " + f.label + (f.kind==="meta" ? "  (short header value)" : ""); }).join("\n");
-    prompt = "You are an expert primary school teacher in the Maldives, filling in a school's OWN lesson-plan template. "
+    prompt = "You are an expert primary school teacher filling in a school's OWN lesson-plan template. "
+      + frDetailRule()
       + "The uploaded template defines the structure; you only supply the wording that goes into each field.\n\n"
       + "LESSON DATA:\n"
       + "Grade/Class: " + grade + " | Subject: " + currentSub + " | Duration: " + dur + " mins\n"
@@ -3153,7 +3258,7 @@ async function doGenerate() {
       + "2. Short header fields (Subject, Class/Grade, Week, Duration, Period, Date, Topic, Strand, Sub-strand, Lesson No, Outcome code) -> the correct single value.\n"
       + "3. List-style fields (Learning Outcomes, Indicators, Success Criteria, Learning Intentions, Activities/Teaching and Learning, Assessment, Shared Values, Key Competencies, Process Skill, Resources, etc.) -> an array of short lines.\n"
       + "4. Use ONLY the labels listed above. Do NOT invent or rename fields. No placeholders — real content everywhere.\n"
-      + "5. Maldivian context (atolls, fishing, reefs, MVR, Islam) only where it fits the topic.\n\n"
+      + "5. Use real-world contexts that fit the topic naturally; keep examples universal and culture-neutral.\n\n"
       + "Return ONLY valid JSON, no markdown, EXACTLY:\n"
       + '{"fields":{"<exact label from the list>":"<single value, or [\"line 1\",\"line 2\"] for list fields>"}}';
   } else if (hasTemplate) {
@@ -3163,7 +3268,8 @@ async function doGenerate() {
       : '(no sections were detected — infer them from the template text below)';
     var _school = document.getElementById("f-school").value || "";
     var _addr = "";
-    prompt = "You are an expert primary school teacher in the Maldives. You are filling in a school's OWN lesson plan template. The template — not any default format — defines the structure.\n\n"
+    prompt = "You are an expert primary school teacher. You are filling in a school's OWN lesson plan template. The template — not any default format — defines the structure.\n\n"
+      + frDetailRule()
       + "LESSON DATA:\n"
       + "School: " + (_school || "(school name)") + (_addr ? " — " + _addr : "") + "\n"
       + "Grade/Class: " + grade + " | Subject: " + currentSub + " | Duration: " + dur + " mins\n"
@@ -3181,12 +3287,12 @@ async function doGenerate() {
       + "2. NEVER introduce sections that are not in the template. In particular do NOT add Shared Values, Key Competencies, Adaptations, Cross-Curricular Links, Resources, Homework, Reflection, Prior Knowledge, Teaching Aids or any other heading unless that exact title already appears in the list above.\n"
       + "3. Fill every section intelligently from the lesson data. For short header/label fields (e.g. School, Date, Class, Subject, Week, Duration, Lesson No, Teacher, Topic, Outcome, Strand) give the correct single value. For content sections (e.g. Learning Outcomes, Success Criteria, Learning Experiences/Activities, Assessment, Reflection) write specific, detailed, classroom-ready content as separate bullet lines.\n"
       + "4. No placeholders — real content everywhere. Use Bloom's progression and three differentiation levels ONLY if the template's sections ask for them.\n"
-      + "5. Use Maldivian contexts (atolls, fishing, MVR, reefs, Islam) only where they fit the topic naturally; do not force them.\n\n"
+      + "5. Use real-world contexts that fit the topic naturally; keep examples universal and culture-neutral.\n\n"
       + "Return ONLY valid JSON, no markdown, in EXACTLY this shape:\n"
       + '{"sections":[{"title":"<exact template section title>","content":["line 1","line 2"]}]}\n'
       + "Each content is an array of strings; a single-value field uses a one-element array. Include one object per template section, in order.";
     } else if (fmt === "standard") {
-    prompt = "You are an expert primary school teacher in the Maldives.\n\n"
+    prompt = "You are an expert primary school teacher.\n\n"
       +"Grade: "+grade+" | Subject: "+currentSub+" | Duration: "+dur+" mins\n"
       +"Week: "+(wk||"?")+", Date: "+(date||"?")+", Lesson ID: "+fname+"\n"
       +"Strand: "+strand+" | Sub-strand: "+substrand+"\n"
@@ -3194,11 +3300,11 @@ async function doGenerate() {
       +"Topic: "+topic+"\nIndicators:\n"+inds.join("\n")+"\n"
       +(activities?"Activity ideas: "+activities+"\n":"")
       +"Lesson activity model: "+activityType+"\n"
+      +"\n"+frDetailRule()
       +"\nIMPORTANT:\n"
-      +"- Concise bullet points only\n"
       +"- Research-backed activities for "+grade+"\n"
       +"- Bloom\'s Taxonomy progression\n"
-      +"- Use contexts relevant to the topic; include Maldivian contexts (atolls, fishing, MVR, Islam) only where they fit naturally, do not force them\n"
+      +"- Use contexts relevant to the topic; keep examples universal and culture-neutral\n"
       +"- 3 differentiation levels\n"
       +"- Structure the MAIN BODY as time-segmented phases. If the activity model is '5E Model', use phases Engage, Explore, Explain, Elaborate, Evaluate. For 'Direct Instruction' use I do / We do / You do. Otherwise use Lesson Introduction then one or more numbered Activities. Each phase is one segment with its own time (times should add up to the main body duration), success criteria, activity description, and assessment method.\n"
       +'\nRespond ONLY with valid JSON:\n{"lessonNo":"'+fname+'"'
@@ -3218,7 +3324,8 @@ async function doGenerate() {
       +',"learningOutcomes":["'+outStmt.replace(/"/g,"'")+'"]}'
       ;
   } else if (fmt === "mnc2") {
-    prompt = "You are an expert teacher in the Maldives filling in your school's lesson-plan format.\n\n"
+    prompt = "You are an expert teacher filling in your school's lesson-plan format.\n\n"
+      + frDetailRule()
       +"Grade: "+grade+" | Subject: "+currentSub+" | Duration: "+dur+" mins\n"
       +"Week: "+(wk||"?")+" | Date: "+(date||"?")+" | Period/Lesson: "+fname+"\n"
       +"Strand: "+strand+" | Sub-strand: "+substrand+"\n"
@@ -3227,7 +3334,7 @@ async function doGenerate() {
       +(activities?"Activity ideas: "+activities+"\n":"")
       +"Lesson activity model: "+activityType+"\n\n"
       +"Write detailed, classroom-ready content for EVERY field. Use Bloom's progression and age-appropriate "
-      +"activities for "+grade+". Use real-world / Maldivian contexts only where they fit the topic naturally.\n"
+      +"activities for "+grade+". Use real-world contexts that fit the topic naturally; keep examples universal and culture-neutral.\n"
       +"The three phase times must add up to "+dur+" minutes.\n"
       +"'icpStudents' means students on an IndividualCa"+"re Plan: give simplified, achievable success criteria for them.\n"
       +"'effectiveQuestions' are the questions the teacher asks during the lesson, in the order they would be asked.\n"
@@ -3251,7 +3358,8 @@ async function doGenerate() {
       +'}'
       ;
   } else {
-    prompt = "You are an expert teacher in the Maldives writing a lesson plan in your school's official format.\n\n"
+    prompt = "You are an expert teacher writing a lesson plan in your school's official format.\n\n"
+      + frDetailRule()
       +"Grade: "+grade+" | Subject: "+currentSub+" | Duration: "+dur+" mins\n"
       +"Week: "+(wk||"?")+" | Date: "+(date||"?")+" | Period/Lesson: "+fname+"\n"
       +"Strand: "+strand+" | Sub-strand: "+substrand+"\n"
@@ -3259,7 +3367,7 @@ async function doGenerate() {
       +"Topic: "+topic+"\nIndicators:\n"+inds.join("\n")+"\n"
       +(activities?"Activity ideas: "+activities+"\n":"")
       +"Lesson activity model: "+activityType+"\n\n"
-      +"Write detailed, classroom-ready content for EACH field below. Use Bloom's progression and age-appropriate activities for "+grade+". Use real-world / Maldivian contexts only where they fit the topic naturally. The Teaching and Learning section must have four timed phases whose times add up to about "+dur+" minutes.\n\n"
+      +"Write detailed, classroom-ready content for EACH field below. Use Bloom's progression and age-appropriate activities for "+grade+". Use real-world contexts that fit the topic naturally; keep examples universal and culture-neutral. The Teaching and Learning section must have four timed phases whose times add up to about "+dur+" minutes.\n\n"
       +"Return ONLY valid JSON, no markdown:\n"
       +'{'
       +'"keyCompetencies":["a key competency and a sentence on how this lesson develops it"],'
@@ -4343,7 +4451,8 @@ function frPushModal(id){
 /* Every dialog in the app, newest-closing-first, with how to shut it. */
 function frOpenModals(){
   var defs = [
-    ['as-modal',       function(){ if(typeof asCloseWin==='function') asCloseWin(); }],
+    ['as-win-modal',   function(){ if(typeof asCloseWin==='function') asCloseWin(); }],
+    ['as-modal',       function(){ if(typeof asCloseCurr==='function') asCloseCurr(); }],
     ['admin-modal',    function(){ if(typeof closeAdmin==='function') closeAdmin(); }],
     ['help-modal',     function(){ if(typeof closeHelp==='function') closeHelp(); }],
     ['topup-modal',    function(){ if(typeof closeTopup==='function') closeTopup(); }],
@@ -6419,7 +6528,7 @@ function asQMap(qi, field, val){
       if(!has) q.indicatorCode=o.inds[0].code;
     }
   }
-  renderAssessment(lastAssessment.data, (document.getElementById('as-modal')&&document.getElementById('as-modal').style.display!=='none')?document.getElementById('as-win-body'):document.getElementById('as-out'), lastAssessment.cfg);
+  renderAssessment(lastAssessment.data, (document.getElementById('as-win-modal')&&document.getElementById('as-win-modal').style.display!=='none')?document.getElementById('as-win-body'):document.getElementById('as-out'), lastAssessment.cfg);
   gaTrack('assessment_question_remap',{field:field});
 }
 function asDownloadBlob(text, filename, mime){
@@ -6502,9 +6611,26 @@ function renderRubric(data, el, cfg){
   h+='</tbody></table>'+(data.totalMarks?('<div class="as-total">Total: '+aEsc(data.totalMarks)+' marks</div>'):'')+'</div>';
   el.innerHTML=h;
 }
+/* Put a button into / out of its loading state. Used by every AI action
+   so the teacher can see something is happening. */
+function frBusy(el, on, busyLabel){
+  if(typeof el==='string') el=document.getElementById(el);
+  if(!el) return;
+  if(on){
+    if(el.dataset.frLabel==null) el.dataset.frLabel=el.innerHTML;
+    el.classList.add('is-busy');
+    el.disabled=true;
+    if(busyLabel) el.innerHTML=busyLabel;
+  }else{
+    el.classList.remove('is-busy');
+    el.disabled=false;
+    if(el.dataset.frLabel!=null){ el.innerHTML=el.dataset.frLabel; delete el.dataset.frLabel; }
+  }
+}
+
 /* ── Generated-assessment window ────────────────────────────────── */
 function asOpenWin(cfg){
-  var m=document.getElementById('as-modal'); if(!m) return;
+  var m=document.getElementById('as-win-modal'); if(!m) return;
   var c=cfg||(lastAssessment&&lastAssessment.cfg)||{};
   var d=(lastAssessment&&lastAssessment.data)||{};
   var body=document.getElementById('as-win-body');
@@ -6514,14 +6640,14 @@ function asOpenWin(cfg){
   var s=document.getElementById('as-win-sub');
   if(s) s.textContent=[c.grade,c.sub,(d.totalMarks?('Total '+d.totalMarks+' marks'):''),
       ((d.questions||[]).length?((d.questions||[]).length+' questions'):'')].filter(Boolean).join('  \u00b7  ');
-  var dl=document.getElementById('as-modal-dl'); if(dl){ dl.style.display='none'; dl.innerHTML=''; }
+  var dl=document.getElementById('as-win-dl'); if(dl){ dl.style.display='none'; dl.innerHTML=''; }
   m.style.display='flex';
   document.body.style.overflow='hidden';
-  if(typeof frPushModal==='function') frPushModal('as-modal');
+  if(typeof frPushModal==='function') frPushModal('as-win-modal');
   if(body) body.scrollTop=0;
 }
 function asCloseWin(){
-  var m=document.getElementById('as-modal'); if(m) m.style.display='none';
+  var m=document.getElementById('as-win-modal'); if(m) m.style.display='none';
   document.body.style.overflow='';
 }
 function asWinRegenerate(){ asCloseWin(); if(typeof doAssessment==='function') doAssessment(); }
@@ -6604,7 +6730,7 @@ function asDeliverFile(blob,fname){
       document.body.appendChild(a); a.click(); a.remove(); clicked=true;
     }
   }catch(e){ clicked=false; }
-  var host=document.getElementById('as-modal-dl')||document.getElementById('as-status');
+  var host=document.getElementById('as-win-dl')||document.getElementById('as-status');
   if(host){
     host.innerHTML='<a class="dl-btn" href="'+url+'" download="'+fname.replace(/"/g,'')+'" '
       +'style="display:inline-flex;align-items:center;gap:7px;">&#11015; '
@@ -6617,7 +6743,7 @@ function asDeliverFile(blob,fname){
 
 /* Word export wrapped so a failure is visible instead of silent. */
 async function assessmentDocxSafe(){
-  var host=document.getElementById('as-modal-dl')||document.getElementById('as-status');
+  var host=document.getElementById('as-win-dl')||document.getElementById('as-status');
   try{
     if(host){ host.style.display='block'; host.innerHTML='Building your Word file&hellip;'; }
     await assessmentDocx();
@@ -6976,15 +7102,19 @@ function presBuildPrompt(){
   var e=o.enh;
   var dv = s.lang==='dv';
   var inds = (s.indicators||[]).map(function(x){ return (x.code?x.code+' ':'')+(x.text||x.indicator||x); }).join('\n');
-  var p = 'You are an expert instructional designer creating a classroom presentation for a teacher in the Maldives (Maldives National Curriculum).\n\n'+
+  var p = 'You are an expert instructional designer creating a classroom presentation.\n\n'+
   'LESSON CONTEXT\nSubject: '+s.subject+'\nGrade: '+s.grade+'\nTopic: '+(s.topic||'(infer from material)')+'\n'+
   (s.duration?('Duration: '+s.duration+' mins\n'):'')+
   (s.outCode?('Outcome '+s.outCode+': '+s.outStmt+'\n'):'')+
   (inds?('Indicators:\n'+inds+'\n'):'')+
   '\nSOURCE MATERIAL\n'+(s.material||'(none — build from the context above)')+'\n\n'+
-  'TASK\nDesign a complete, professionally sequenced slide deck of about '+len.slides+' slides (first slide is the title slide). '+
-  'Pick the most appropriate slides for THIS lesson from this menu: Title, Learning Outcomes, Success Criteria, Hook Activity, Starter Question, Prior Knowledge, Key Vocabulary, Concept Explanation, Visual Diagram, Worked Example, Interactive Question, Group Activity, Think-Pair-Share, Real-World Connection, Common Misconceptions, Assessment Checkpoint, Quiz, Exit Ticket, Homework, Summary. Order them like a real lesson: open, teach, practise, check, close.\n\n'+
-  'SLIDE TEXT RULES (visual-first)\n- Max 5 bullets per slide, max 10 words per bullet. Never write paragraphs on a slide.\n- Age-appropriate language for '+s.grade+'.\n- Use concrete Maldivian contexts where natural (islands, reef, fishing, rufiyaa, school life).\n'+
+  'TASK\nDesign a complete, professionally sequenced slide deck of about '+len.slides+' slides.\n'+
+  'FIXED OPENING (never change these two):\n'+
+  '- Slide 1 = Title slide.\n'+
+  '- Slide 2 = "Learning Intention & Success Criteria", layout "twocol". Left column: the learning intentions as "We are learning to ..." statements. Right column: the success criteria as "I can ..." statements. Draw both from the lesson outcome and indicators above, in pupil-facing language.\n'+
+  'Design the remaining slides from slide 3 onward. '+
+  'Pick the most appropriate slides for THIS lesson from this menu: Hook Activity, Starter Question, Prior Knowledge, Key Vocabulary, Concept Explanation, Visual Diagram, Worked Example, Interactive Question, Group Activity, Think-Pair-Share, Real-World Connection, Common Misconceptions, Assessment Checkpoint, Quiz, Exit Ticket, Homework, Summary. Order them like a real lesson: open, teach, practise, check, close.\n\n'+
+  'SLIDE TEXT RULES (visual-first)\n- Max 5 bullets per slide, max 10 words per bullet. Never write paragraphs on a slide.\n- Age-appropriate language for '+s.grade+'.\n- Use concrete everyday contexts a child anywhere would recognise; keep examples culture-neutral.\n'+
   (e.icons?'- Start every slide title with ONE relevant emoji.\n':'- Do not use emoji.\n')+
   (dv?'- ALL learner-facing text (titles, bullets, facts) AND notes/script must be written in Dhivehi (Thaana script). Keep JSON keys and layout values in English.\n':'')+
   '\nLAYOUTS — set "layout" on every slide to exactly one of:\n'+
@@ -6992,7 +7122,7 @@ function presBuildPrompt(){
   'FIELDS per slide: {"layout","kind" (menu name above),"title","subtitle" (optional),"bullets":[],"col1title","col1":[],"col2title","col2":[],"fact","factCaption","keyPoint" (optional one-line takeaway),'+
   ((e.images||e.diagrams)?'"imagePrompt" (optional),':'')+
   ((e.notes||e.script)?'"notes","script",':'')+'}\n'+
-  ((e.images||e.diagrams)?('\nIMAGE PROMPTS\n- Add "imagePrompt" to roughly 60% of slides: a short English description of a single clear picture supporting the idea. Describe scenes/objects only — the image must contain NO words, letters or numbers.\n'+(e.diagrams?'- Include at least one "Visual Diagram" slide whose imagePrompt describes a simple, clean diagram-style illustration of the concept (still no text in the image).\n':'')):'\nDo not include imagePrompt fields.\n')+
+  ((e.images||e.diagrams)?('\n'+presImageRules(s.subject, s.grade)+(e.diagrams?'- At least one slide must be a full "Visual Diagram" whose imagePrompt describes a clean, labelled-by-the-slide diagram of the concept.\n':'')):'\nDo not include imagePrompt fields.\n')+
   ((e.notes)?'\nSPEAKER NOTES\n- "notes": 2–4 sentences of teaching guidance per slide (what to emphasise, misconceptions, timing).\n':'')+
   ((e.script)?'- "script": 2–3 sentences the teacher can say aloud, word for word.\n':'')+
   '\nMUST-INCLUDE SLIDES (only those switched on):\n'+
@@ -7002,7 +7132,7 @@ function presBuildPrompt(){
   (e.quiz?'- One Quiz slide (3–5 quick questions; put every answer in notes, never on the slide).\n':'')+
   (e.exit?'- One Exit Ticket slide (recap layout).\n':'')+
   (e.homework?'- One Homework slide with a small, doable task.\n':'')+
-  (e.realworld?'- One Real-World Connection slide grounded in Maldivian daily life.\n':'')+
+  (e.realworld?'- One Real-World Connection slide grounded in everyday life.\n':'')+
   (e.funfacts?'- One bigfact slide with a memorable fun fact about the topic.\n':'')+
   (e.blooms?'- Question slides must climb Bloom\'s taxonomy; tag each question\'s Bloom level inside notes.\n':'')+
   '\nReturn ONLY valid JSON, no markdown, exactly:\n'+
@@ -7026,7 +7156,7 @@ function presCtx(){
 function presRules(){
   var s=presSrc, e=presOpts.enh, dv=s.lang==='dv';
   return 'SLIDE TEXT RULES (visual-first)\n- Max 5 bullets per slide, max 10 words per bullet. Never write paragraphs on a slide.\n'+
-  '- Age-appropriate language for '+s.grade+'.\n- Use concrete Maldivian contexts where natural (islands, reef, fishing, rufiyaa, school life).\n'+
+  '- Age-appropriate language for '+s.grade+'.\n- Use concrete everyday contexts a child anywhere would recognise; keep examples culture-neutral.\n'+
   (e.icons?'- Start every slide title with ONE relevant emoji.\n':'- Do not use emoji.\n')+
   (dv?'- ALL learner-facing text (titles, bullets, facts) AND notes/script must be written in Dhivehi (Thaana script). Keep JSON keys and layout values in English.\n':'')+
   '\nLAYOUTS \u2014 set "layout" on every slide to exactly one of:\n'+
@@ -7034,17 +7164,89 @@ function presRules(){
   'FIELDS per slide: {"layout","kind","title","subtitle" (optional),"bullets":[],"col1title","col1":[],"col2title","col2":[],"fact","factCaption","keyPoint" (optional one-line takeaway),'+
   ((e.images||e.diagrams)?'"imagePrompt" (optional),':'')+
   ((e.notes||e.script)?'"notes","script",':'')+'}\n'+
-  ((e.images||e.diagrams)?('\nIMAGE PROMPTS\n- Add "imagePrompt" to roughly 60% of your slides: a short English description of a single clear picture supporting the idea. Describe scenes/objects only \u2014 the image must contain NO words, letters or numbers.\n'+(e.diagrams?'- If one of your slides is a Visual Diagram, its imagePrompt must describe a simple, clean diagram-style illustration of the concept (still no text in the image).\n':'')):'\nDo not include imagePrompt fields.\n')+
+  ((e.images||e.diagrams)?('\n'+presImageRules(presSrc.subject, presSrc.grade)+(e.diagrams?'- If one of your slides is a Visual Diagram, its imagePrompt must describe a clean diagram of the concept.\n':'')):'\nDo not include imagePrompt fields.\n')+
   (e.notes?'\nSPEAKER NOTES\n- "notes": 2\u20134 sentences of teaching guidance per slide (what to emphasise, misconceptions, timing).\n':'')+
   (e.script?'- "script": 2\u20133 sentences the teacher can say aloud, word for word.\n':'')+
   (e.blooms?'- Question slides must climb Bloom\'s taxonomy; tag each question\'s Bloom level inside notes.\n':'');
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   IMAGE RULES — what picture belongs on this slide
+   Built per subject so the illustration teaches rather than decorates.
+
+   One hard constraint drives the wording below: the image models render
+   text unreliably, so every rule describes objects, quantities and
+   layout instead of asking for words in the picture. An "anchor chart"
+   here means the visual STRUCTURE of a classroom poster — panels,
+   arrows, grouped examples, colour coding — with the words supplied by
+   the slide text sitting next to it.
+   ════════════════════════════════════════════════════════════════════ */
+function presImageRules(subject, grade){
+  var s = String(subject||'').toLowerCase();
+  var base =
+    'IMAGE PROMPTS (every content slide gets one)\n' +
+    '- Give EVERY slide except the title slide an "imagePrompt": a short English description of one clear educational illustration that directly reinforces that slide\'s content. Never decorative, never generic, never a random stock scene.\n' +
+    '- Read the slide title and bullets first, decide the single idea a picture would make clearer, then describe exactly that.\n' +
+    '- House style for every image, repeat it in each prompt: "modern flat vector educational illustration, clean bold shapes, bright friendly colours, white background, high detail, no text". Consistency across the deck matters as much as any single image.\n' +
+    '- Child-friendly and classroom appropriate. Clear enough to read from the back of a room when projected.\n' +
+    '- Describe objects, quantities, arrangement and colour. Do NOT ask for words, labels, letters or numerals inside the image — they come out garbled. The slide text carries the words.\n';
+
+  if (/math/.test(s)) {
+    return base +
+    '\nMATHEMATICS — the picture must show the actual maths, not a child at a desk:\n' +
+    '- Counting and number recognition: show EXACTLY the quantity being taught, in one neat row or a ten-frame. Teaching 3 means three identical apples. Teaching 8 means eight identical stars. Teaching 12 means twelve identical blocks. Count the objects in your prompt and state the number twice so it is unambiguous.\n' +
+    '- Addition: two clearly separate groups of objects moving together into one larger group.\n' +
+    '- Subtraction: one group with some objects visibly crossed out, faded, or lifted away from the rest.\n' +
+    '- Multiplication: equal groups repeated — for example four baskets holding three apples each — or a neat array of rows and columns.\n' +
+    '- Division: one pile of objects shared into equal smaller piles or plates, all piles the same size.\n' +
+    '- Fractions: circles, pizzas, chocolate bars or rectangles split into equal parts with the named part shaded a strong colour and the rest plain.\n' +
+    '- Geometry: the shape as a clean diagram beside two or three real objects of that shape.\n' +
+    '- Measurement: the actual instrument — ruler, balance scale, analogue clock, thermometer, measuring jug — drawn large and face-on.\n' +
+    '- Data handling: a simple bar chart, pictograph or tally arrangement with only a few tall, well-separated bars or picture rows.\n' +
+    '- Patterns: a horizontal repeating sequence of shapes or colours with the repeat obvious and one slot left empty at the end.\n' +
+    '- Place value: columns of base-ten blocks — units, rods, flats — grouped and colour-coded by column.\n' +
+    '- For a concept slide (place value, types of angles, order of operations, prime and composite, factors and multiples, even and odd, decimals) describe an ANCHOR-CHART LAYOUT: a poster split into two to four panels, each panel holding a worked visual example, arrows showing the flow between steps, and a distinct colour per panel. Say "no text" — the slide bullets supply the wording.\n';
+  }
+  if (/science/.test(s)) {
+    return base +
+    '\nSCIENCE — use a proper diagram, drawn face-on and uncluttered:\n' +
+    '- Life cycles and the water cycle: a circular arrangement of stages with arrows running one way around the loop.\n' +
+    '- Food chains: a left-to-right row of organisms joined by arrows.\n' +
+    '- Human body, plants, simple machines: a clean cross-section or cutaway with each part a distinct colour, callout lines leading outward to empty space where the slide can label them.\n' +
+    '- Weather, ecosystems, habitats: a wide scene showing the whole system at once rather than a single close-up.\n' +
+    '- Experiments: the apparatus set up as it would actually stand on a bench.\n';
+  }
+  if (/social/.test(s)) {
+    return base +
+    '\nSOCIAL STUDIES:\n' +
+    '- Geography: a simplified flat map with strong coastlines and clear colour regions, or a cross-section of the landform being taught.\n' +
+    '- History: a horizontal timeline as evenly spaced markers along a line, or a period illustration showing dress, tools and buildings of the era.\n' +
+    '- Civics: an organisation diagram as connected boxes in a hierarchy.\n' +
+    '- Culture and community: everyday scenes of people at work, at market, or in the community.\n';
+  }
+  if (/english|language|literacy/.test(s)) {
+    return base +
+    '\nENGLISH:\n' +
+    '- Vocabulary: one clear picture per word, showing the object or action plainly against a plain background.\n' +
+    '- Story work: an illustrated scene of the key moment, in a consistent picture-book style across the whole deck.\n' +
+    '- Sequencing: three or four panels left to right showing the order of events, arrows between them.\n' +
+    '- Graphic organisers and story maps: the SHAPE of the organiser — a central circle with branches, a story mountain, a Venn diagram of two overlapping circles — drawn empty so the slide text fills it in.\n' +
+    '- Grammar and phonics: objects grouped by the pattern being taught, each group a different colour.\n';
+  }
+  return base +
+    '\n- Show the concept itself in action rather than a classroom scene. For a slide that explains an idea, describe an anchor-chart layout: two to four panels, a worked visual example in each, arrows showing the flow, one colour per panel, no text.\n';
+}
+
 function presBuildOutlinePrompt(){
   var e=presOpts.enh, len=presLenObj(), dv=presSrc.lang==='dv';
-  return 'You are an expert instructional designer planning a classroom presentation for a teacher in the Maldives (Maldives National Curriculum).\n\n'+
+  return 'You are an expert instructional designer planning a classroom presentation.\n\n'+
   presCtx()+
-  'TASK\nPlan \u2014 do not write \u2014 a professionally sequenced deck of exactly '+len.slides+' slides (slide 1 is the title slide). '+
-  'Pick the most appropriate slides for THIS lesson from this menu: Title, Learning Outcomes, Success Criteria, Hook Activity, Starter Question, Prior Knowledge, Key Vocabulary, Concept Explanation, Visual Diagram, Worked Example, Interactive Question, Group Activity, Think-Pair-Share, Real-World Connection, Common Misconceptions, Assessment Checkpoint, Quiz, Exit Ticket, Homework, Summary. Order them like a real lesson: open, teach, practise, check, close.\n\n'+
+  'TASK\nPlan \u2014 do not write \u2014 a professionally sequenced deck of exactly '+len.slides+' slides.\n'+
+  'FIXED OPENING (never change these two):\n'+
+  '- Slide 1 = Title slide.\n'+
+  '- Slide 2 = kind "Learning Intention & Success Criteria", layout "twocol". Left column lists the learning intentions as "We are learning to ..." statements; right column lists the success criteria as "I can ..." statements. Take them from the lesson outcome and indicators above. Its purpose is to tell pupils what they are learning and how they will know they have succeeded.\n'+
+  'Plan the remaining '+Math.max(0,len.slides-2)+' slides from slide 3 onward. '+
+  'Pick the most appropriate slides for THIS lesson from this menu: Hook Activity, Starter Question, Prior Knowledge, Key Vocabulary, Concept Explanation, Visual Diagram, Worked Example, Interactive Question, Group Activity, Think-Pair-Share, Real-World Connection, Common Misconceptions, Assessment Checkpoint, Quiz, Exit Ticket, Homework, Summary. Order them like a real lesson: open, teach, practise, check, close.\n\n'+
   'MUST-INCLUDE SLIDES (only those switched on):\n'+
   (e.activities?'- At least one Group Activity slide using the lesson\'s actual activities.\n':'')+
   (e.tps?'- One Think-Pair-Share slide with a rich prompt.\n':'')+
@@ -7052,7 +7254,7 @@ function presBuildOutlinePrompt(){
   (e.quiz?'- One Quiz slide.\n':'')+
   (e.exit?'- One Exit Ticket slide (recap layout).\n':'')+
   (e.homework?'- One Homework slide.\n':'')+
-  (e.realworld?'- One Real-World Connection slide grounded in Maldivian daily life.\n':'')+
+  (e.realworld?'- One Real-World Connection slide grounded in everyday life.\n':'')+
   (e.funfacts?'- One bigfact slide with a memorable fun fact about the topic.\n':'')+
   '\nFor every slide give: its number, kind (from the menu), layout ("title","content","twocol","bigfact","activity","quiz","recap"), a working title, and a one-line purpose describing exactly what that slide must achieve.\n'+
   (dv?'Write the "title" field in Dhivehi (Thaana script). Keep JSON keys, kind and layout values in English.\n':'')+
@@ -7060,10 +7262,12 @@ function presBuildOutlinePrompt(){
   '{"title":"deck title","subtitle":"one line","outline":[{"n":1,"kind":"Title","layout":"title","title":"...","purpose":"..."}]}';
 }
 function presBuildBatchPrompt(info, items, from, to){
+  /* Slide 2 is contractual: learning intentions on the left, success
+     criteria on the right, in pupil-facing language. */
   function line(it,i){ return (i+1)+'. ['+(it.kind||'')+' / '+(it.layout||'content')+'] '+(it.title||'')+(it.purpose?' \u2014 '+it.purpose:''); }
   var plan=items.map(line).join('\n');
   var mine=items.slice(from,to).map(function(it,i){ return line(it,from+i); }).join('\n');
-  return 'You are an expert instructional designer writing part of a classroom presentation for a teacher in the Maldives (Maldives National Curriculum).\n\n'+
+  return 'You are an expert instructional designer writing part of a classroom presentation.\n\n'+
   presCtx()+
   'DECK TITLE: '+((info&&info.title)||presSrc.topic||'Lesson')+'\n\n'+
   'FULL DECK PLAN (context only \u2014 do NOT write these):\n'+plan+'\n\n'+
@@ -7579,7 +7783,7 @@ async function presRegenSlide(){
   var instr = prompt('Anything specific for this slide? (leave blank to just improve it)','')||'';
   presEdMsg('&#10024; Rewriting slide '+(presSel+1)+'…');
   try{
-    var p='Rewrite ONE presentation slide for a Maldivian classroom.\n'+presSlideCtx()+
+    var p='Rewrite ONE presentation slide for a primary classroom.\n'+presSlideCtx()+
       '\nDeck outline: '+presDeck.slides.map(function(x,i){return (i+1)+'. '+(x.kind||x.layout);}).join('; ')+
       '\nCurrent slide (JSON): '+JSON.stringify({layout:s.layout,kind:s.kind,title:s.title,subtitle:s.subtitle,bullets:s.bullets,col1title:s.col1title,col1:s.col1,col2title:s.col2title,col2:s.col2,fact:s.fact,factCaption:s.factCaption,keyPoint:s.keyPoint,imagePrompt:s.imagePrompt})+
       (instr?('\nTeacher instruction: '+instr):'')+
@@ -8261,7 +8465,7 @@ function presExportPDF(){
       '<div class="fed-top">'+
         '<div class="fed-title">&#129513; Template Builder <input id="ftb-name" oninput="FTB._n(this.value)"></div>'+
         '<div class="fed-spacer"></div>'+
-        '<button onclick="FTB.gen()" class="fed-primary">&#10024; Generate Lesson Plan</button>'+
+        '<button onclick="FTB.gen()" class="fed-primary fr-ai-btn">&#10024; Generate Lesson Plan</button>'+
         '<button onclick="FTB.saveLib()">&#128190; Save</button>'+
         '<button onclick="FTB.exp()">&#8681; Export</button>'+
         '<button onclick="FTB.imp()">&#128193; Import</button>'+
