@@ -41,6 +41,15 @@ const PACKS = { 50: 90, 150: 240, 400: 560 };
 const IMAGE_PROVIDER    = (process.env.IMAGE_PROVIDER || 'openai').toLowerCase();
 // low | medium | high — 'low' on gpt-image-1-mini is the cheapest OpenAI lane
 const IMAGE_QUALITY     = (process.env.IMAGE_QUALITY || 'low').toLowerCase();
+/* A regenerated image is a deliberate choice by the teacher, so it is worth
+   spending more on — and it is charged, unlike the images that come free
+   with the deck. 1 credit against a ~$0.036 high-quality image is a markup
+   of 150-224% depending on which pack they bought. */
+const IMAGE_REGEN_QUALITY = (process.env.IMAGE_REGEN_QUALITY || 'high').toLowerCase();
+const IMAGE_REGEN_CREDIT_COST = (function(){
+  const v = parseInt(process.env.IMAGE_REGEN_CREDIT_COST || '1', 10);
+  return isNaN(v) ? 1 : Math.max(0, v);
+})();
 const IMAGE_API_KEY     = process.env.IMAGE_API_KEY || '';
 const IMAGE_MODEL_ENV   = process.env.IMAGE_MODEL || '';
 const IMAGE_CREDIT_COST = parseInt(process.env.IMAGE_CREDIT_COST || '0', 10) || 0;
@@ -162,7 +171,7 @@ const IMAGE_PROVIDERS = {
       const r = await postJSON('api.openai.com', '/v1/images/generations',
         { Authorization: 'Bearer ' + IMAGE_API_KEY },
         { model: this.model, prompt: o.prompt, size, n: 1,
-          quality: IMAGE_QUALITY, output_format: 'png' }, 120000);
+          quality: o.quality || IMAGE_QUALITY, output_format: 'png' }, 120000);
       if (r.status !== 200) return { error: (r.json && r.json.error && r.json.error.message) || r.error || ('provider ' + r.status) };
       const d = r.json && r.json.data && r.json.data[0];
       if (d && d.b64_json) return { dataUrl: 'data:image/png;base64,' + d.b64_json };
@@ -217,9 +226,9 @@ function activeImageProvider() {
 const IMAGE_CACHE = new Map();
 const IMAGE_CACHE_MAX = parseInt(process.env.IMAGE_CACHE_MAX || '300', 10) || 300;
 
-function imageCacheKey(prompt, w, h) {
+function imageCacheKey(prompt, w, h, q) {
   return crypto.createHash('sha1')
-    .update(IMAGE_PROVIDER + '|' + IMAGE_QUALITY + '|' + w + 'x' + h + '|' + prompt)
+    .update(IMAGE_PROVIDER + '|' + q + '|' + w + 'x' + h + '|' + prompt)
     .digest('hex');
 }
 function imageCacheGet(k) {
@@ -254,6 +263,7 @@ if (ADMIN_PASS === DEFAULT_ADMIN_PASS) console.log('WARNING: ADMIN_PASSWORD is s
   const p = activeImageProvider();
   console.log('Images: ' + p.label + (p.needsKey ? ' @ ' + IMAGE_QUALITY + ' quality' : '  (no IMAGE_API_KEY set — using the keyless fallback)'));
   if (IMAGE_CREDIT_COST > 0) console.log('Images: ' + IMAGE_CREDIT_COST + ' credit(s) each, cap ' + IMAGE_DAILY_CAP + '/user/day');
+  console.log('Images: regenerate = ' + IMAGE_REGEN_QUALITY + ' quality, ' + IMAGE_REGEN_CREDIT_COST + ' credit(s)');
 })();
 
 // ── Supabase REST helper ────────────────────────────────────────────
@@ -337,92 +347,8 @@ function userPayload(name, email, credits) {
   return { name: name, email: email, plan: 'free', usage: 0, limit: credits, credits: credits };
 }
 
-// Constant-time comparison so a wrong password cannot be narrowed down by
-// timing the response.  Lengths are hashed first so they never leak either.
-function safeEqual(a, b) {
-  const ha = crypto.createHash('sha256').update(String(a)).digest();
-  const hb = crypto.createHash('sha256').update(String(b)).digest();
-  return crypto.timingSafeEqual(ha, hb);
-}
-
-// Per-IP throttle for the admin surface: 20 attempts per 10 minutes, then a
-// lockout that grows with each further attempt.
-const ADMIN_HITS = new Map();
-const ADMIN_WINDOW_MS = 10 * 60 * 1000;
-const ADMIN_MAX_TRIES = 20;
-
-function clientIp(req) {
-  const fwd = (req.headers['x-forwarded-for'] || '').split(',')[0].trim();
-  return fwd || (req.socket && req.socket.remoteAddress) || 'unknown';
-}
-
-function adminThrottled(req) {
-  const ip = clientIp(req);
-  const now = Date.now();
-  let rec = ADMIN_HITS.get(ip);
-  if (!rec || now - rec.start > ADMIN_WINDOW_MS) { rec = { start: now, tries: 0, fails: 0 }; ADMIN_HITS.set(ip, rec); }
-  rec.tries++;
-  if (ADMIN_HITS.size > 5000) {
-    for (const [k, v] of ADMIN_HITS) { if (now - v.start > ADMIN_WINDOW_MS) ADMIN_HITS.delete(k); }
-  }
-  if (rec.tries > ADMIN_MAX_TRIES) {
-    const wait = Math.ceil((ADMIN_WINDOW_MS - (now - rec.start)) / 1000);
-    return wait > 0 ? wait : 1;
-  }
-  return 0;
-}
-
-function adminOk(req) {
-  const given = req.headers['x-admin-pass'] || (parseQuery(req.url).pass || '');
-  const ok = safeEqual(given, ADMIN_PASS);
-  if (ok) { ADMIN_HITS.delete(clientIp(req)); }
-  else { const r = ADMIN_HITS.get(clientIp(req)); if (r) r.fails++; }
-  return ok;
-}
-
-function isAdmin(req) { return adminOk(req); }
-
-// Small query-string helper (the router only keeps the path).
-function parseQuery(rawUrl) {
-  const q = {};
-  const i = String(rawUrl || '').indexOf('?');
-  if (i < 0) return q;
-  for (const part of rawUrl.slice(i + 1).split('&')) {
-    if (!part) continue;
-    const eq = part.indexOf('=');
-    const k = decodeURIComponent(eq < 0 ? part : part.slice(0, eq)).trim();
-    const v = eq < 0 ? '' : decodeURIComponent(part.slice(eq + 1).replace(/\+/g, ' '));
-    if (k) q[k] = v;
-  }
-  return q;
-}
-
-// ── Lightweight in-process counters for the admin Traffic tab ────────
-const STATS = { boot: Date.now(), pageLoads: 0, apiCalls: 0, generations: 0 };
-function fmtUptime(ms) {
-  const s = Math.floor(ms / 1000);
-  const d = Math.floor(s / 86400), hh = Math.floor((s % 86400) / 3600), mm = Math.floor((s % 3600) / 60);
-  if (d) return d + 'd ' + hh + 'h';
-  if (hh) return hh + 'h ' + mm + 'm';
-  return mm + 'm';
-}
-function dayKey(d) { return new Date(d).toISOString().slice(0, 10); }
-function emptySeries(days) {
-  const out = [];
-  for (let i = days - 1; i >= 0; i--) {
-    out.push({ day: dayKey(Date.now() - i * 86400000), count: 0 });
-  }
-  return out;
-}
-function fillSeries(rows, field, days) {
-  const series = emptySeries(days);
-  const idx = {};
-  series.forEach((s, i) => { idx[s.day] = i; });
-  (rows || []).forEach(r => {
-    const k = r && r[field] ? dayKey(r[field]) : null;
-    if (k != null && idx[k] != null) series[idx[k]].count++;
-  });
-  return series;
+function isAdmin(req) {
+  return (req.headers['x-admin-pass'] || '') === ADMIN_PASS;
 }
 
 function makeRefCode() {
@@ -575,8 +501,6 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
   const url = req.url.split('?')[0];
-  if (url.indexOf('/api/') === 0) STATS.apiCalls++;
-  else if (url === '/' || url === '/index.html') STATS.pageLoads++;
 
   try {
     // ── GET /api/has-key ─────────────────────────────────────────
@@ -720,203 +644,34 @@ const server = http.createServer(async (req, res) => {
       if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
       const su = await supaGetUser(req);
       if (!su) return jsonRes(res, 401, { error: 'Please log in first.' });
-      const raw = await readBody(req);
-      if (raw.length > 7 * 1024 * 1024) return jsonRes(res, 413, { error: 'That attachment is too large. Please keep it under 4MB.' });
-      let body;
-      try { body = JSON.parse(raw.toString()); }
-      catch (e) { return jsonRes(res, 400, { error: 'Could not read that request.' }); }
-
+      const body = JSON.parse((await readBody(req)).toString());
       const msg = ((body.message || '') + '').trim().slice(0, 2000);
-      const att = (body.attachment || '') + '';
-      if (msg.length < 3 && !att) return jsonRes(res, 400, { error: 'Please write a message.' });
-
-      const row = { user_id: su.id, email: su.email, name: su.name, message: msg || 'Template attached.' };
-
-      let attName = '';
-      if (att) {
-        // base64 grows ~4/3, so 4MB of file is ~5.6MB of text
-        if (att.length > 5.8 * 1024 * 1024) return jsonRes(res, 413, { error: 'That attachment is too large. Please keep it under 4MB.' });
-        if (!/^[A-Za-z0-9+/=\s]+$/.test(att.slice(0, 4096))) return jsonRes(res, 400, { error: 'That attachment could not be read.' });
-        const rawName = ((body.attachment_name || 'template') + '').replace(/[\r\n]/g, '').slice(0, 160);
-        attName = path.basename(rawName) || 'template';
-        const type = ((body.attachment_type || 'application/octet-stream') + '').slice(0, 120);
-        const ALLOWED = /^(image\/(png|jpe?g|gif|webp|heic|heif)|application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/i;
-        if (!ALLOWED.test(type)) return jsonRes(res, 400, { error: 'Please attach an image, a PDF, or a Word document.' });
-        row.attachment_name = attName;
-        row.attachment_type = type;
-        row.attachment_data = att.replace(/\s+/g, '');
-      }
-
-      let ins = await supaFetch('/rest/v1/support_messages', { method: 'POST', service: true, body: row });
-
-      // If the attachment columns have not been added to Supabase yet, keep the
-      // message rather than losing it, and tell the teacher what happened.
-      if (ins.status !== 201 && row.attachment_name) {
-        const why = JSON.stringify(ins.data || {});
-        if (/column|schema|attachment/i.test(why)) {
-          console.error('support_messages is missing the attachment columns — run the migration. Falling back to text only.');
-          const fallback = {
-            user_id: su.id, email: su.email, name: su.name,
-            message: (msg || 'Template attached.') + '\n\n[A file named "' + attName + '" was attached but could not be stored — the support_messages attachment columns are missing. Ask the teacher to email it.]'
-          };
-          ins = await supaFetch('/rest/v1/support_messages', { method: 'POST', service: true, body: fallback });
-          if (ins.status === 201) {
-            return jsonRes(res, 200, { ok: true, message: 'Message sent, but the file could not be stored. The admin will contact you for it.' });
-          }
-        }
-      }
-
-      if (ins.status !== 201) {
-        console.error('support insert failed:', ins.status, JSON.stringify(ins.data || {}));
-        return jsonRes(res, 500, { error: 'Could not send message. Please try again.' });
-      }
-      return jsonRes(res, 200, {
-        ok: true,
-        message: attName
-          ? 'Thank you — your template has been sent. We will add it as a format option.'
-          : 'Message sent. The FARUMA admin will get back to you.'
+      if (msg.length < 3) return jsonRes(res, 400, { error: 'Please write a message.' });
+      const ins = await supaFetch('/rest/v1/support_messages', {
+        method: 'POST', service: true,
+        body: { user_id: su.id, email: su.email, name: su.name, message: msg }
       });
+      if (ins.status !== 201) return jsonRes(res, 500, { error: 'Could not send message. Please try again.' });
+      return jsonRes(res, 200, { ok: true, message: 'Message sent. The FARUMA admin will get back to you.' });
     }
 
     // ── ADMIN: GET /api/admin/overview ───────────────────────────
     if (req.method === 'GET' && url === '/api/admin/overview') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const [pending, recent, msgs] = await Promise.all([
         supaFetch('/rest/v1/topup_requests?status=eq.pending&select=id,email,name,pack_credits,pack_price_mvr,ref_code,created_at&order=created_at.asc', { service: true }),
         supaFetch('/rest/v1/topup_requests?status=neq.pending&select=id,email,pack_credits,ref_code,status,resolved_at&order=resolved_at.desc&limit=15', { service: true }),
-        supaFetch('/rest/v1/support_messages?select=id,email,name,message,status,created_at,attachment_name,attachment_type&order=created_at.desc&limit=80', { service: true })
+        supaFetch('/rest/v1/support_messages?select=id,email,name,message,status,created_at&order=created_at.desc&limit=50', { service: true })
       ]);
-
-      // Fall back to the original column list if the attachment columns are absent.
-      let msgRows = (msgs.status === 200 && Array.isArray(msgs.data)) ? msgs.data : null;
-      if (msgRows === null) {
-        const plain = await supaFetch('/rest/v1/support_messages?select=id,email,name,message,status,created_at&order=created_at.desc&limit=80', { service: true });
-        msgRows = (plain.status === 200 && Array.isArray(plain.data)) ? plain.data : [];
-      }
       return jsonRes(res, 200, {
         pending: (pending.status === 200 && Array.isArray(pending.data)) ? pending.data : [],
         recent: (recent.status === 200 && Array.isArray(recent.data)) ? recent.data : [],
-        messages: msgRows
-      });
-    }
-
-    // ── ADMIN: GET /api/admin/attachment?id=..&pass=.. ───────────
-    if (req.method === 'GET' && url === '/api/admin/attachment') {
-      const wait = adminThrottled(req);
-      if (wait) { res.writeHead(429, { 'Content-Type': 'text/plain' }); return res.end('Too many attempts. Try again in ' + wait + 's.'); }
-      if (!isAdmin(req)) { res.writeHead(401, { 'Content-Type': 'text/plain' }); return res.end('Wrong admin password.'); }
-      if (!SUPA_ON) { res.writeHead(500, { 'Content-Type': 'text/plain' }); return res.end('Server is not configured.'); }
-
-      const id = parseInt(parseQuery(req.url).id, 10);
-      if (!id) { res.writeHead(400, { 'Content-Type': 'text/plain' }); return res.end('Missing message id.'); }
-
-      const r = await supaFetch('/rest/v1/support_messages?id=eq.' + id + '&select=attachment_name,attachment_type,attachment_data', { service: true });
-      const row = (r.status === 200 && Array.isArray(r.data)) ? r.data[0] : null;
-      if (!row || !row.attachment_data) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('No attachment on that message.'); }
-
-      let buf;
-      try { buf = Buffer.from(String(row.attachment_data), 'base64'); }
-      catch (e) { res.writeHead(500, { 'Content-Type': 'text/plain' }); return res.end('Attachment could not be decoded.'); }
-
-      const safeName = String(row.attachment_name || 'template').replace(/[^\w.\- ]+/g, '_');
-      const isImg = /^image\//i.test(row.attachment_type || '');
-      res.writeHead(200, {
-        'Content-Type': row.attachment_type || 'application/octet-stream',
-        'Content-Length': buf.length,
-        // images render inline in the Templates tab; documents download
-        'Content-Disposition': (isImg ? 'inline' : 'attachment') + '; filename="' + safeName + '"',
-        'Cache-Control': 'private, no-store',
-        'X-Content-Type-Options': 'nosniff'
-      });
-      return res.end(buf);
-    }
-
-    // ── ADMIN: GET /api/admin/traffic ────────────────────────────
-    if (req.method === 'GET' && url === '/api/admin/traffic') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
-      if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
-
-      const server = {
-        uptime: fmtUptime(Date.now() - STATS.boot),
-        apiCalls: STATS.apiCalls,
-        pageLoads: STATS.pageLoads,
-        imageCache: IMAGE_CACHE.size
-      };
-
-      if (!SUPA_ON) return jsonRes(res, 200, { server, note: 'Supabase is not configured, so only in-process counters are available.' });
-
-      const iso = d => new Date(Date.now() - d * 86400000).toISOString();
-      const d7 = iso(7), d14 = iso(14), d30 = iso(30);
-
-      // Everything below is derived from tables that already exist — no migration needed.
-      const [profAll, prof14, ledger30, topups] = await Promise.all([
-        supaFetch('/rest/v1/profiles?select=id&limit=100000', { service: true }),
-        supaFetch('/rest/v1/profiles?created_at=gte.' + d14 + '&select=id,created_at&order=created_at.asc&limit=5000', { service: true }),
-        supaFetch('/rest/v1/credit_ledger?created_at=gte.' + d30 + '&select=user_id,amount,reason,created_at&order=created_at.asc&limit=100000', { service: true }),
-        supaFetch('/rest/v1/topup_requests?created_at=gte.' + d30 + '&select=status,pack_credits,pack_price_mvr,created_at&limit=5000', { service: true })
-      ]);
-
-      const users = {
-        total:  (profAll.status === 200 && Array.isArray(profAll.data)) ? profAll.data.length : null,
-        new7:   0, new30: null
-      };
-      const prof14Rows = (prof14.status === 200 && Array.isArray(prof14.data)) ? prof14.data : [];
-      prof14Rows.forEach(r => { if (r.created_at >= d7) users.new7++; });
-      const signupSeries = fillSeries(prof14Rows, 'created_at', 14);
-
-      // Spends are negative ledger entries; each one is a generated document.
-      const led = (ledger30.status === 200 && Array.isArray(ledger30.data)) ? ledger30.data : [];
-      const spends = led.filter(r => Number(r.amount) < 0);
-      const gen7 = spends.filter(r => r.created_at >= d7);
-      const genSeries = fillSeries(spends.filter(r => r.created_at >= d14), 'created_at', 14);
-
-      const active = {};
-      gen7.forEach(r => { active[r.user_id] = true; });
-
-      const perUser = {};
-      spends.forEach(r => { perUser[r.user_id] = (perUser[r.user_id] || 0) + 1; });
-      const topUsers = Object.keys(perUser)
-        .map(k => ({ user_id: k, count: perUser[k] }))
-        .sort((a, b) => b.count - a.count).slice(0, 8);
-
-      // Attach emails to the busiest teachers, one lookup for all of them.
-      if (topUsers.length) {
-        const ids = topUsers.map(u => '"' + u.user_id + '"').join(',');
-        const pr = await supaFetch('/rest/v1/profiles?id=in.(' + encodeURIComponent(ids) + ')&select=id,email', { service: true });
-        const byId = {};
-        if (pr.status === 200 && Array.isArray(pr.data)) pr.data.forEach(p => { byId[p.id] = p.email; });
-        topUsers.forEach(u => { u.email = byId[u.user_id] || u.user_id.slice(0, 8) + '…'; delete u.user_id; });
-      }
-
-      const tp = (topups.status === 200 && Array.isArray(topups.data)) ? topups.data : [];
-      const credits = {
-        spent7: gen7.length ? gen7.reduce((s, r) => s + Math.abs(Number(r.amount) || 0), 0) : 0,
-        spent30: spends.reduce((s, r) => s + Math.abs(Number(r.amount) || 0), 0),
-        purchased30: led.filter(r => Number(r.amount) > 0).reduce((s, r) => s + Number(r.amount), 0),
-        revenue30: tp.filter(r => r.status === 'approved').reduce((s, r) => s + (parseInt(r.pack_price_mvr, 10) || 0), 0),
-        outstanding: null
-      };
-
-      const bal = await supaFetch('/rest/v1/profiles?select=credit_balance&limit=100000', { service: true });
-      if (bal.status === 200 && Array.isArray(bal.data)) {
-        credits.outstanding = bal.data.reduce((s, r) => s + (Number(r.credit_balance) || 0), 0);
-      }
-
-      return jsonRes(res, 200, {
-        users: { total: users.total, new7: users.new7, active7: Object.keys(active).length },
-        generations: { total7: gen7.length, total30: spends.length },
-        credits, topUsers, signupSeries, genSeries, server,
-        note: 'Page-level visitor numbers (sessions, sources, devices) live in Google Analytics — this tab reports what the FARUMA database itself can prove.'
+        messages: (msgs.status === 200 && Array.isArray(msgs.data)) ? msgs.data : []
       });
     }
 
     // ── ADMIN: POST /api/admin/topup/approve ─────────────────────
     if (req.method === 'POST' && url === '/api/admin/topup/approve') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const body = JSON.parse((await readBody(req)).toString());
       const id = parseInt(body.id);
@@ -939,8 +694,6 @@ const server = http.createServer(async (req, res) => {
 
     // ── ADMIN: POST /api/admin/topup/reject ──────────────────────
     if (req.method === 'POST' && url === '/api/admin/topup/reject') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const body = JSON.parse((await readBody(req)).toString());
       const id = parseInt(body.id);
@@ -954,8 +707,6 @@ const server = http.createServer(async (req, res) => {
 
     // ── ADMIN: POST /api/admin/message/read ──────────────────────
     if (req.method === 'POST' && url === '/api/admin/message/read') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const body = JSON.parse((await readBody(req)).toString());
       const id = parseInt(body.id);
@@ -976,7 +727,8 @@ const server = http.createServer(async (req, res) => {
         keyed: !!IMAGE_API_KEY,
         fallback: p === IMAGE_PROVIDERS.pollinations && IMAGE_PROVIDER !== 'pollinations',
         quality: IMAGE_QUALITY, cached: IMAGE_CACHE.size,
-        creditCost: IMAGE_CREDIT_COST, dailyCap: IMAGE_DAILY_CAP
+        creditCost: IMAGE_CREDIT_COST, dailyCap: IMAGE_DAILY_CAP,
+        regenQuality: IMAGE_REGEN_QUALITY, regenCreditCost: IMAGE_REGEN_CREDIT_COST
       });
     }
 
@@ -989,9 +741,15 @@ const server = http.createServer(async (req, res) => {
       const width  = Math.min(1024, Math.max(256, parseInt(body.width, 10)  || 1024));
       const height = Math.min(1024, Math.max(256, parseInt(body.height, 10) || 768));
 
+      // A regeneration is charged and rendered at higher quality; the images
+      // that arrive with a new deck are covered by the deck's own credits.
+      const isRegen = !!body.regen;
+      const quality = isRegen ? IMAGE_REGEN_QUALITY : IMAGE_QUALITY;
+      const cost    = isRegen ? IMAGE_REGEN_CREDIT_COST : IMAGE_CREDIT_COST;
+
       // a cache hit costs nothing, so serve it before touching credits.
       // "Regenerate" sends noCache, because the teacher wants a different picture.
-      const cacheKey = imageCacheKey(prompt, width, height);
+      const cacheKey = imageCacheKey(prompt, width, height, quality);
       if (!body.noCache) {
         const hit = imageCacheGet(cacheKey);
         if (hit) return jsonRes(res, 200, { image: hit, cached: true, provider: IMAGE_PROVIDER });
@@ -1005,8 +763,8 @@ const server = http.createServer(async (req, res) => {
         if (!imageQuotaOk(userId)) {
           return jsonRes(res, 429, { error: { message: 'Daily image limit reached (' + IMAGE_DAILY_CAP + '). Try again tomorrow.' } });
         }
-        if (IMAGE_CREDIT_COST > 0) {
-          const d = await supaDeduct(userId, IMAGE_CREDIT_COST, 'slide-image');
+        if (cost > 0) {
+          const d = await supaDeduct(userId, cost, isRegen ? 'slide-image-regen' : 'slide-image');
           if (!d.ok) {
             if (d.insufficient) return jsonRes(res, 402, { error: { message: 'You have run out of credits. Tap "Top Up" to buy a credit pack.' } });
             return jsonRes(res, 500, { error: { message: 'Credit check failed. Please try again.' } });
@@ -1016,17 +774,18 @@ const server = http.createServer(async (req, res) => {
 
       const p = activeImageProvider();
       if (IMAGE_MODEL_ENV) p.model = IMAGE_MODEL_ENV;
-      const out = await p.generate({ prompt, width, height, seed: parseInt(body.seed, 10) || 0 });
+      const out = await p.generate({ prompt, width, height, quality, seed: parseInt(body.seed, 10) || 0 });
 
       if (out.error) {
         // refund on provider failure so a teacher is never charged for nothing
-        if (SUPA_ON && IMAGE_CREDIT_COST > 0 && userId !== 'anon') {
-          try { await supaAddCredits(userId, IMAGE_CREDIT_COST, 'refund', 'slide-image-failed'); } catch (e) {}
+        if (SUPA_ON && cost > 0 && userId !== 'anon') {
+          try { await supaAddCredits(userId, cost, 'refund', 'slide-image-failed'); } catch (e) {}
         }
         return jsonRes(res, 502, { error: { message: 'Image provider failed: ' + out.error } });
       }
       imageCacheSet(cacheKey, out.dataUrl);
-      return jsonRes(res, 200, { image: out.dataUrl, cached: false, provider: IMAGE_PROVIDER, model: p.model });
+      return jsonRes(res, 200, { image: out.dataUrl, cached: false, provider: IMAGE_PROVIDER,
+        model: p.model, quality: quality, charged: cost });
     }
 
     if (req.method === 'POST' && url === '/api/messages') {
