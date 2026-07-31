@@ -1288,12 +1288,17 @@ body{font-size:15.5px;line-height:1.55;}
    ════════════════════════════════════════════════════════════════════ */
 @media (min-width:900px){
 
-  /* content column: 1180px left a lot of desk empty next to a 236px rail */
-  .page{ max-width:1560px; padding:30px 34px; }
+  /* Fill the window rather than capping. 2100px only kicks in on very wide
+     monitors, so on a normal 1366-1920 desktop the app spans edge to edge. */
+  .page{ max-width:min(100%, 2100px); padding:30px clamp(28px,3vw,56px); }
+  /* the landing page is full-bleed: the hero, feature band and footer run
+     edge to edge, and each section applies its own inner padding */
+  .home-page{ max-width:none; padding:0; margin:0; }
 
   /* landing sections were capped at 1160px while the feature-card track ran
      to 1640px, so the cards looked wider than everything under them */
-  .fr-section, .fr-hero-wrap, .fr-foot-wrap{ max-width:1500px; }
+  .fr-section, .fr-hero-wrap, .fr-foot-wrap{ max-width:min(100%, 1800px); }
+  .home-cards{ padding-left:clamp(16px,3vw,56px); padding-right:clamp(16px,3vw,56px); }
   .home-hero{ max-width:1000px; }
   .fr-top{ padding:16px clamp(24px,4vw,60px); }
   .fr-brand{ font-size:25px; }
@@ -1315,7 +1320,7 @@ body{font-size:15.5px;line-height:1.55;}
   .sh-topbar{ padding:18px 34px; }
 
   /* base type up one step across the app */
-  body{ font-size:16px; }
+  body{ font-size:17px; }
   .field label{ font-size:13.5px; }
   .field input, .field select, .field textarea{ font-size:15.5px; padding:11px 13px; }
   .card-title{ font-size:20px; }
@@ -1392,9 +1397,21 @@ body{font-size:15.5px;line-height:1.55;}
   .pres-imgstatus.bad span{ font-size:13px; }
 }
 
+/* The six feature cards must sit on a single row. Their flex-basis of 230px
+   plus gaps overflows a ~1466px track by ~54px, which pushed Calendar down.
+   Letting them share the row equally keeps every other card style untouched —
+   only the width changes, and 320px still caps them on very wide screens. */
+@media (min-width:1200px){
+  .home-track{ flex-wrap:nowrap; }
+  .home-card{ flex:1 1 0; }
+}
+
 @media (min-width:1500px){
   .db-quick{ grid-template-columns:repeat(5,1fr); }
-  .page{ padding:34px 44px; }
+  .db-stats{ grid-template-columns:repeat(4,1fr); }
+  body{ font-size:17.5px; }
+  .db-head h1{ font-size:38px; }
+  .db-stat .db-n{ font-size:38px; }
 }
 </style>
 </head>
