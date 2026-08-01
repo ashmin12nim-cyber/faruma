@@ -1020,6 +1020,7 @@ body{font-size:16px;line-height:1.62;}
   opacity:0; transform:translateY(14px); pointer-events:none;
   transition:opacity .6s ease, transform .6s ease; }
 .fr-tquote::before{ content:'\201C'; color:var(--coral); margin-right:6px; font-size:1.3em; line-height:0; }
+.fr-tquote::after{ content:'\201D'; color:var(--coral); margin-left:5px; font-size:1.3em; line-height:0; }
 .fr-tquote.on{ opacity:1; transform:translateY(0); pointer-events:auto; }
 .fr-tdots{ display:flex; gap:9px; justify-content:center; margin-top:26px; }
 .fr-tdots button{ width:9px; height:9px; border-radius:50%; border:none; cursor:pointer;
@@ -1477,7 +1478,7 @@ body{font-size:16px;line-height:1.62;}
 }
 
 /* ==================== ADMIN CONSOLE ==================== */
-.adm-shell{ max-width:1080px; margin:0 auto; padding:0 16px 60px; font-family:'Inter',sans-serif; }
+.adm-shell{ max-width:min(1560px, 94vw); margin:0 auto; padding:0 24px 60px; font-family:'Inter',sans-serif; }
 .adm-gate{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 0; }
 .adm-gate-box{ background:#fff; border-radius:16px; padding:30px 30px 24px; width:100%; max-width:400px;
   box-shadow:0 18px 50px rgba(15,60,76,.14); text-align:center; }
@@ -1736,6 +1737,77 @@ button[style*="background:#fff"][style*="color:#fff"],
 button[style*="background:white"][style*="color:white"]{
   background:var(--ocean-mid,#1f7a86) !important; color:#fff !important;
 }
+
+/* ==================== admin console: desktop sizing ====================
+   The console was capped at 1080px with 14px type, so on a large monitor
+   it read as a small panel floating in space. Scale it with the viewport.
+   ==================================================================== */
+@media (min-width:1100px){
+  .adm-shell{ padding:0 32px 70px; }
+  .adm-top{ padding:22px 0 18px; margin-bottom:24px; }
+  .adm-brand{ font-size:24px; }
+  .adm-stamp{ font-size:15px; }
+  .adm-tabs{ gap:8px; margin-bottom:24px; }
+  .adm-tab{ font-size:16px; padding:13px 22px; border-radius:12px; }
+  .adm-dot{ font-size:13.5px; padding:2px 10px; }
+
+  .adm-kpis{ grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-bottom:24px; }
+  .adm-kpi{ padding:22px 24px; border-radius:15px; border-left-width:5px; }
+  .adm-kpi-n{ font-size:40px; }
+  .adm-kpi-l{ font-size:16px; }
+  .adm-kpi-s{ font-size:14.5px; }
+
+  .adm-card{ padding:26px 28px; margin-bottom:20px; border-radius:16px; }
+  .adm-card h3{ font-size:22px; }
+  .adm-pill{ font-size:14px; padding:3px 12px; }
+  .adm-hint{ font-size:15px; margin:9px 0 16px; }
+  .adm-quiet,.adm-quiet2{ font-size:15px; }
+  .adm-empty{ font-size:15.5px; padding:20px 22px; }
+  .adm-line{ font-size:15.5px; padding:9px 0; }
+
+  .adm-row{ padding:17px 20px; border-radius:14px; gap:16px; }
+  .adm-row-main b{ font-size:17px; }
+  .adm-row-sub{ font-size:15px; }
+  .adm-tagc,.adm-ref{ font-size:14px; padding:4px 11px; }
+
+  .adm-msg{ padding:17px 20px; border-radius:14px; }
+  .adm-msg-top b{ font-size:17px; }
+  .adm-msg-body{ font-size:16px; }
+  .adm-att{ font-size:15px; padding:11px 14px; }
+
+  .adm-tpl{ padding:17px 20px; gap:18px; }
+  .adm-tpl-th{ width:96px; height:124px; }
+  .adm-tpl-t b{ font-size:17px; }
+
+  .adm-bars{ height:210px; gap:7px; }
+  .adm-bar-n{ font-size:14px; height:19px; }
+  .adm-bar-l{ font-size:13px; }
+
+  .adm-chip{ font-size:15px; padding:9px 17px; }
+  .adm-gate-box{ max-width:460px; padding:38px 38px 30px; }
+  .adm-gate-box h2{ font-size:28px; }
+  .adm-gate-box p{ font-size:16px; }
+}
+@media (min-width:1600px){
+  .adm-kpi-n{ font-size:46px; }
+  .adm-card h3{ font-size:24px; }
+  .adm-bars{ height:250px; }
+}
+
+/* ==================== centred dialogs ====================
+   inset:0 + flex centring, with the inner panel capped below the
+   viewport so a tall list never rides up under the sticky topbar.
+   ======================================================== */
+.fr-centre-modal{ align-items:center !important; justify-content:center !important; }
+.fr-centre-modal > div{ max-height:min(86vh, 860px) !important; margin:auto; }
+@media (max-width:820px){
+  .fr-centre-modal{ padding:10px !important; }
+  .fr-centre-modal > div{ max-height:92vh !important; }
+}
+
+/* template picker parked at the foot of a tab */
+.tplpick-foot{ margin-top:28px; padding-top:22px; border-top:1px solid var(--line); }
+.tplpick-foot .tplpick-head h3{ font-size:17px; }
 </style>
 </head>
 <body>
@@ -2608,7 +2680,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
   </div>
 
   <!-- Curriculum modal -->
-  <div id="as-modal" style="display:none;position:fixed;inset:0;background:rgba(10,30,45,.45);z-index:9000;align-items:center;justify-content:center;padding:18px;">
+  <div id="as-modal" class="fr-centre-modal" style="display:none;position:fixed;inset:0;background:rgba(10,30,45,.45);z-index:12100;align-items:center;justify-content:center;padding:18px;">
     <div style="background:#fff;border-radius:16px;max-width:720px;width:100%;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #eef2f4;">
         <div style="font-size:14.5px;font-weight:800;color:var(--ocean-deep);">Select curriculum outcomes</div>
@@ -2657,7 +2729,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
 </div>
 
 <!-- SHARED CURRICULUM OUTCOME MODAL -->
-<div id="cb-modal" style="display:none;position:fixed;inset:0;background:rgba(10,30,45,.45);z-index:12000;align-items:center;justify-content:center;padding:18px;">
+<div id="cb-modal" class="fr-centre-modal" style="display:none;position:fixed;inset:0;background:rgba(10,30,45,.45);z-index:12100;align-items:center;justify-content:center;padding:18px;">
   <div style="background:#fff;border-radius:16px;max-width:720px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid #eef2f4;">
       <div style="font-size:17px;font-weight:800;color:var(--ocean-deep);">Select curriculum outcome</div>
@@ -3815,6 +3887,13 @@ async function downloadScheme(){
   dlDiv.className="status done";
   dlDiv.style.display="block";
   dlDiv.innerHTML='&#10003; Scheme ready! <a class="dl-btn" href="'+url+'" download="'+fname+'">&#11015; Download '+fname+'</a>';
+  try{
+    var schB64=await blobToB64(blob);
+    saveHist({ts:Date.now(),kind:'scheme',sub:(r0.subject||''),grade:(r0.grade||''),
+      topic:((r0.subject||'Scheme')+' \u2014 Term '+(r0.term||'')+' \u00b7 '+schemeRows.length+' weeks'),
+      fname:fname.replace(/\.docx$/,''),date:new Date().toISOString().slice(0,10),b64:schB64});
+    if(typeof renderDashboard==='function') renderDashboard();
+  }catch(e){}
 }
 
 
@@ -4529,6 +4608,18 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }catch(e){}
 });
+
+/* Move each template picker to the bottom of its tab. Teachers pick a
+   format occasionally; they fill the form every time, so the form leads. */
+function frTemplatesToBottom(){
+  ['tplpick','tplpick-scheme','tplpick-checklist'].forEach(function(id){
+    var el=document.getElementById(id); if(!el) return;
+    var page=el.closest('.page'); if(!page || el.parentNode===page && page.lastElementChild===el) return;
+    page.appendChild(el);
+    el.classList.add('tplpick-foot');
+  });
+}
+document.addEventListener('DOMContentLoaded', frTemplatesToBottom);
 
 /* ── Landing / navigation helpers ── */
 var pendingTool = null;
@@ -6339,10 +6430,18 @@ function asToggleOut(i){
   var o=asOutcomeCache[i]; if(!o) return;
   var on=!!document.getElementById('as-oc-'+i).checked;
   asSel.outs[o.code]=on;
+  /* Ticking an outcome opens it but leaves the indicators unticked, so the
+     teacher picks exactly what this paper covers. Unticking clears them. */
   o.inds.forEach(function(ind,j){
-    asSel.inds[ind.code]=on;
-    var cb=document.getElementById('as-ic-'+i+'-'+j); if(cb) cb.checked=on;
+    asSel.inds[ind.code]=false;
+    var cb=document.getElementById('as-ic-'+i+'-'+j); if(cb) cb.checked=false;
   });
+  if(on){
+    var d=document.getElementById('as-oinds-'+i);
+    var a=document.getElementById('as-oarrow-'+i);
+    if(d) d.style.display='block';
+    if(a) a.innerHTML='&#9652;';
+  }
   asUpdateCov();
 }
 function asToggleInd(i,j){
@@ -6415,6 +6514,15 @@ async function doAssessment(){
     lastAssessment={data:data,cfg:cfg};
     renderAssessment(data, document.getElementById('as-win-body'), cfg);
     asOpenWin(cfg);
+    /* Record it now — waiting for the Word click meant most papers were
+       never saved at all. */
+    try{
+      saveHist({ ts:Date.now(), kind:'assess', sub:cfg.sub||'', grade:cfg.grade||'',
+        topic:(data.title||cfg.title||cfg.topic||'Assessment'),
+        fname:(cfg.topic||'assessment').replace(/[^\w\- ]+/g,'').trim(),
+        date:new Date().toISOString().slice(0,10), b64:null, meta:{marks:data.totalMarks||0} });
+      if(typeof renderDashboard==='function') renderDashboard();
+    }catch(e){}
     setProgress('as-prog','as-bar',100);
     setStatus('as-status','done','&#10003; '+(ASSESS_TYPE_LABEL[atype]||'Assessment')+' ready. <a href="javascript:void(0)" onclick="asOpenWin()" style="font-weight:700;">Reopen it &rarr;</a>');
     gaTrack('assessment_generate',{assessment_type:atype,subject:sub,grade:grade,generation_duration:Math.round((Date.now()-t0)/1000),question_count:(data&&data.questions?data.questions.length:num)});
@@ -6707,11 +6815,23 @@ async function asSaveToLibrary(blob,fname,cfg,d){
   if(typeof saveHist!=='function'||typeof blobToB64!=='function') return;
   var b64=null;
   try{ b64=await blobToB64(blob); }catch(e){ b64=null; }
-  saveHist({ ts:Date.now(), kind:'assess',
-    sub:(cfg&&cfg.sub)||'', grade:(cfg&&cfg.grade)||'',
-    topic:(d&&d.title)||(cfg&&cfg.title)||'Assessment',
-    fname:fname.replace(/\.docx$/,''),
-    date:new Date().toISOString().slice(0,10), b64:b64 });
+  var title=(d&&d.title)||(cfg&&cfg.title)||'Assessment';
+  /* If this paper is already in the library from generation, attach the
+     file to it rather than adding a duplicate row. */
+  var hist=getHist(), attached=false;
+  for(var i=0;i<hist.length;i++){
+    if(hist[i].kind==='assess' && hist[i].topic===title && !hist[i].b64){
+      hist[i].b64=b64; hist[i].fname=fname.replace(/\.docx$/,'');
+      try{ localStorage.setItem(FARUMA_KEYS.history,JSON.stringify(hist)); attached=true; }catch(e){}
+      break;
+    }
+  }
+  if(!attached){
+    saveHist({ ts:Date.now(), kind:'assess',
+      sub:(cfg&&cfg.sub)||'', grade:(cfg&&cfg.grade)||'',
+      topic:title, fname:fname.replace(/\.docx$/,''),
+      date:new Date().toISOString().slice(0,10), b64:b64 });
+  }
   if(typeof renderDashboard==='function'){ try{ renderDashboard(); }catch(e){} }
 }
 
@@ -7835,7 +7955,8 @@ function presSaveToHist(){
       fname:(presDeck.title||'presentation').replace(/[^\w\- ]+/g,'').slice(0,48),
       date:new Date().toISOString().slice(0,10), deck:JSON.stringify(lite) });
     if(typeof renderHistory==='function') renderHistory();
-    presEdMsg('&#10003; Saved to History. Images are re-painted when you export.');
+    if(typeof renderDashboard==='function'){ try{ renderDashboard(); }catch(e){} }
+    presEdMsg('&#10003; Saved. Find it under My materials on the dashboard.');
   }catch(e){ presEdMsg('&#9888; Could not save (storage full?). Export to PPTX instead.', true); }
 }
 
@@ -8705,7 +8826,9 @@ function presExportPDF(){
     if(cb&&!cb.checked){ st.sel=-1; st.inds={}; var d0=$('cb-in-'+i); if(d0)d0.style.display='none'; var a0=$('cb-ar-'+i); if(a0)a0.innerHTML='&#9662;'; cbCov(); return; }
     st.cache.forEach(function(o,x){ if(x===i)return; var c=$('cb-oc-'+x); if(c)c.checked=false; var d=$('cb-in-'+x); if(d)d.style.display='none'; var a=$('cb-ar-'+x); if(a)a.innerHTML='&#9662;'; });
     st.sel=i; st.inds={};
-    st.cache[i].inds.forEach(function(ind,j){ st.inds[j]=true; var c=$('cb-ic-'+i+'-'+j); if(c&&!c.disabled)c.checked=true; if(c&&c.disabled)c.checked=true; });
+    /* Open the outcome but leave every indicator unticked — the teacher
+       chooses which ones this lesson actually covers. */
+    st.cache[i].inds.forEach(function(ind,j){ st.inds[j]=false; var c=$('cb-ic-'+i+'-'+j); if(c)c.checked=false; });
     var d=$('cb-in-'+i); if(d)d.style.display='block'; var a=$('cb-ar-'+i); if(a)a.innerHTML='&#9652;';
     cbCov();
   };
@@ -8860,6 +8983,9 @@ function presExportPDF(){
     try{
       clearInterval(tick);
       presDeck=await presGenerateDeck(function(msg,pct){ stage.textContent=msg; bar.style.width=pct+'%'; });
+      /* Auto-save the deck so it appears in the dashboard without the
+         teacher having to remember the Save button. */
+      try{ if(typeof presSaveToHist==='function') presSaveToHist(); }catch(e){}
       presDeck.theme=presOpts.theme;
       presDeck.src={ origin:'slides-tab', subject:s, grade:g, topic:tp, fname:presSrc.fname, lang:presSrc.lang };
       if(presOpts.enh.images||presOpts.enh.diagrams){
