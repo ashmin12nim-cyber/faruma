@@ -11,7 +11,7 @@ const DEFAULT_ADMIN_PASS = 'faruma-change-me';
 const ADMIN_PASS = process.env.ADMIN_PASSWORD || DEFAULT_ADMIN_PASS;
 // Shown to teachers in the Top Up panel. Set on Railway, e.g.:
 // BANK_ACCOUNT = "BML MVR account 7730-XXXXXXX-101 — Hawwa Nimsha"
-const BANK_ACCOUNT = process.env.BANK_ACCOUNT || 'Bank account details not configured yet — please contact the FARUMA admin.';
+const BANK_ACCOUNT = process.env.BANK_ACCOUNT || 'BML account 90401480027961000 — CARTHAGE PVT LTD';
 // Optional contact line shown with the bank details, e.g. "Viber/WhatsApp: 7XXXXXX"
 const ADMIN_CONTACT = process.env.ADMIN_CONTACT || '';
 
@@ -21,8 +21,77 @@ const SUPA_ANON = process.env.SUPABASE_ANON_KEY || '';
 const SUPA_SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const SUPA_ON = !!(SUPA_URL && SUPA_ANON && SUPA_SERVICE);
 
+// Analytics IDs injected into index.html at serve time (see serveStatic).
+const GA4_MEASUREMENT_ID = process.env.GA4_MEASUREMENT_ID || '';
+const GTM_CONTAINER_ID   = process.env.GTM_CONTAINER_ID   || '';
+
 // Credit packs: credits -> price in MVR
-const PACKS = { 50: 90, 150: 240, 400: 560 };
+// Priced so that every credit sold covers at least 2x its worst-case API cost.
+const PACKS = { 50: 120, 150: 320, 400: 780 };
+
+// Credits granted to a brand-new account (the free starter plan).
+const SIGNUP_CREDITS = parseInt(process.env.SIGNUP_CREDITS || '4', 10) || 4;
+
+/* ════════════════════════════════════════════════════════════════════
+   CREDIT PRICING — margin-guaranteed
+   --------------------------------------------------------------------
+   Every generation is priced from the tokens it can actually consume,
+   not from a fixed table, so a bigger job always costs proportionally
+   more credits and the margin never inverts.
+
+     credits = ceil( worst_case_usd * MARGIN / USD_PER_CREDIT_FLOOR )
+
+   USD_PER_CREDIT_FLOOR is the revenue of the CHEAPEST credit we sell
+   (the 400 pack), so the margin holds even for bulk buyers.
+   MARGIN = 2.0 means every credit brings in at least twice what the
+   API call behind it can cost us.
+
+   After the response comes back we reconcile against the real token
+   usage and refund the difference, so teachers are billed for what
+   they actually used while the floor margin is still guaranteed.
+   ════════════════════════════════════════════════════════════════════ */
+const MVR_PER_USD = parseFloat(process.env.MVR_PER_USD || '15.42') || 15.42;
+const CREDIT_MARGIN = parseFloat(process.env.CREDIT_MARGIN || '2.0') || 2.0;
+// cheapest credit we sell, in USD  (780 MVR / 400 credits / 15.42)
+const USD_PER_CREDIT_FLOOR = (PACKS[400] / 400) / MVR_PER_USD;
+
+// USD per 1M tokens: [input, output]
+const MODEL_RATES = {
+  'claude-opus-5':      [5,  25],
+  'claude-fable-5':     [10, 50],
+  'claude-sonnet-5':    [3,  15],
+  'claude-sonnet-4-6':  [3,  15],
+  'claude-sonnet-4-5':  [3,  15],
+  'claude-haiku-4-5':   [1,   5],
+  'claude-3-5-haiku':   [1,   5]
+};
+const DEFAULT_RATE = [3, 15];
+
+function rateFor(model) {
+  const m = String(model || '').toLowerCase();
+  for (const k in MODEL_RATES) if (m.indexOf(k) >= 0) return MODEL_RATES[k];
+  if (m.indexOf('haiku') >= 0) return MODEL_RATES['claude-haiku-4-5'];
+  if (m.indexOf('opus')  >= 0) return MODEL_RATES['claude-opus-5'];
+  return DEFAULT_RATE;
+}
+
+// USD cost of a call given token counts
+function usdCost(model, inTok, outTok) {
+  const r = rateFor(model);
+  return (inTok / 1e6) * r[0] + (outTok / 1e6) * r[1];
+}
+
+// credits needed to cover a USD amount at the guaranteed margin
+function usdToCredits(usd) {
+  return Math.max(1, Math.ceil((usd * CREDIT_MARGIN) / USD_PER_CREDIT_FLOOR));
+}
+
+// rough token estimate for a request body (~4 chars per token)
+function estInputTokens(body) {
+  try {
+    return Math.ceil(JSON.stringify(body.messages || []).length / 4) + 250;
+  } catch (e) { return 1500; }
+}
 
 /* ════════════════════════════════════════════════════════════════════
    IMAGE GENERATION — pluggable providers
@@ -41,18 +110,13 @@ const PACKS = { 50: 90, 150: 240, 400: 560 };
 const IMAGE_PROVIDER    = (process.env.IMAGE_PROVIDER || 'openai').toLowerCase();
 // low | medium | high — 'low' on gpt-image-1-mini is the cheapest OpenAI lane
 const IMAGE_QUALITY     = (process.env.IMAGE_QUALITY || 'low').toLowerCase();
-/* A regenerated image is a deliberate choice by the teacher, so it is worth
-   spending more on — and it is charged, unlike the images that come free
-   with the deck. 1 credit against a ~$0.036 high-quality image is a markup
-   of 150-224% depending on which pack they bought. */
-const IMAGE_REGEN_QUALITY = (process.env.IMAGE_REGEN_QUALITY || 'high').toLowerCase();
-const IMAGE_REGEN_CREDIT_COST = (function(){
-  const v = parseInt(process.env.IMAGE_REGEN_CREDIT_COST || '1', 10);
-  return isNaN(v) ? 1 : Math.max(0, v);
-})();
 const IMAGE_API_KEY     = process.env.IMAGE_API_KEY || '';
 const IMAGE_MODEL_ENV   = process.env.IMAGE_MODEL || '';
 const IMAGE_CREDIT_COST = parseInt(process.env.IMAGE_CREDIT_COST || '0', 10) || 0;
+// USD billed by the image provider per generated image, used for the admin
+// spend report. Pollinations is free; OpenAI gpt-image-1-mini 'low' is ~$0.01.
+// Override with IMAGE_USD_COST once you see your real provider invoice.
+const IMAGE_USD_COST = parseFloat(process.env.IMAGE_USD_COST || '0.01') || 0;
 const IMAGE_DAILY_CAP   = parseInt(process.env.IMAGE_DAILY_CAP || '60', 10) || 60;
 
 function postJSON(host, path, headers, payload, timeoutMs) {
@@ -171,7 +235,7 @@ const IMAGE_PROVIDERS = {
       const r = await postJSON('api.openai.com', '/v1/images/generations',
         { Authorization: 'Bearer ' + IMAGE_API_KEY },
         { model: this.model, prompt: o.prompt, size, n: 1,
-          quality: o.quality || IMAGE_QUALITY, output_format: 'png' }, 120000);
+          quality: IMAGE_QUALITY, output_format: 'png' }, 120000);
       if (r.status !== 200) return { error: (r.json && r.json.error && r.json.error.message) || r.error || ('provider ' + r.status) };
       const d = r.json && r.json.data && r.json.data[0];
       if (d && d.b64_json) return { dataUrl: 'data:image/png;base64,' + d.b64_json };
@@ -226,9 +290,9 @@ function activeImageProvider() {
 const IMAGE_CACHE = new Map();
 const IMAGE_CACHE_MAX = parseInt(process.env.IMAGE_CACHE_MAX || '300', 10) || 300;
 
-function imageCacheKey(prompt, w, h, q) {
+function imageCacheKey(prompt, w, h) {
   return crypto.createHash('sha1')
-    .update(IMAGE_PROVIDER + '|' + q + '|' + w + 'x' + h + '|' + prompt)
+    .update(IMAGE_PROVIDER + '|' + IMAGE_QUALITY + '|' + w + 'x' + h + '|' + prompt)
     .digest('hex');
 }
 function imageCacheGet(k) {
@@ -263,7 +327,6 @@ if (ADMIN_PASS === DEFAULT_ADMIN_PASS) console.log('WARNING: ADMIN_PASSWORD is s
   const p = activeImageProvider();
   console.log('Images: ' + p.label + (p.needsKey ? ' @ ' + IMAGE_QUALITY + ' quality' : '  (no IMAGE_API_KEY set — using the keyless fallback)'));
   if (IMAGE_CREDIT_COST > 0) console.log('Images: ' + IMAGE_CREDIT_COST + ' credit(s) each, cap ' + IMAGE_DAILY_CAP + '/user/day');
-  console.log('Images: regenerate = ' + IMAGE_REGEN_QUALITY + ' quality, ' + IMAGE_REGEN_CREDIT_COST + ' credit(s)');
 })();
 
 // ── Supabase REST helper ────────────────────────────────────────────
@@ -347,92 +410,41 @@ function userPayload(name, email, credits) {
   return { name: name, email: email, plan: 'free', usage: 0, limit: credits, credits: credits };
 }
 
-// Constant-time comparison so a wrong password cannot be narrowed down by
-// timing the response.  Lengths are hashed first so they never leak either.
+// Constant-time comparison so the password can't be recovered by timing.
 function safeEqual(a, b) {
-  const ha = crypto.createHash('sha256').update(String(a)).digest();
-  const hb = crypto.createHash('sha256').update(String(b)).digest();
-  return crypto.timingSafeEqual(ha, hb);
+  const A = Buffer.from(String(a || ''), 'utf8');
+  const B = Buffer.from(String(b || ''), 'utf8');
+  if (A.length !== B.length) {
+    // still burn a comparison so length isn't leaked by timing
+    try { crypto.timingSafeEqual(A, A); } catch (e) {}
+    return false;
+  }
+  try { return crypto.timingSafeEqual(A, B); } catch (e) { return false; }
 }
 
-// Per-IP throttle for the admin surface: 20 attempts per 10 minutes, then a
-// lockout that grows with each further attempt.
-const ADMIN_HITS = new Map();
-const ADMIN_WINDOW_MS = 10 * 60 * 1000;
-const ADMIN_MAX_TRIES = 20;
-
+// ── Simple in-memory rate limiter (per IP, sliding window) ──────────
+const RATE_HITS = new Map();
 function clientIp(req) {
-  const fwd = (req.headers['x-forwarded-for'] || '').split(',')[0].trim();
-  return fwd || (req.socket && req.socket.remoteAddress) || 'unknown';
+  const fwd = req.headers['x-forwarded-for'];
+  if (fwd) return String(fwd).split(',')[0].trim();
+  return (req.socket && req.socket.remoteAddress) || 'unknown';
 }
-
-function adminThrottled(req) {
-  const ip = clientIp(req);
+function rateLimited(req, bucket, max, windowMs) {
+  const key = bucket + '|' + clientIp(req);
   const now = Date.now();
-  let rec = ADMIN_HITS.get(ip);
-  if (!rec || now - rec.start > ADMIN_WINDOW_MS) { rec = { start: now, tries: 0, fails: 0 }; ADMIN_HITS.set(ip, rec); }
-  rec.tries++;
-  if (ADMIN_HITS.size > 5000) {
-    for (const [k, v] of ADMIN_HITS) { if (now - v.start > ADMIN_WINDOW_MS) ADMIN_HITS.delete(k); }
+  let hits = RATE_HITS.get(key) || [];
+  hits = hits.filter(t => now - t < windowMs);
+  if (hits.length >= max) { RATE_HITS.set(key, hits); return true; }
+  hits.push(now);
+  RATE_HITS.set(key, hits);
+  if (RATE_HITS.size > 5000) {
+    for (const [k, v] of RATE_HITS) { if (!v.length || now - v[v.length - 1] > windowMs) RATE_HITS.delete(k); }
   }
-  if (rec.tries > ADMIN_MAX_TRIES) {
-    const wait = Math.ceil((ADMIN_WINDOW_MS - (now - rec.start)) / 1000);
-    return wait > 0 ? wait : 1;
-  }
-  return 0;
+  return false;
 }
 
-function adminOk(req) {
-  const given = req.headers['x-admin-pass'] || (parseQuery(req.url).pass || '');
-  const ok = safeEqual(given, ADMIN_PASS);
-  if (ok) { ADMIN_HITS.delete(clientIp(req)); }
-  else { const r = ADMIN_HITS.get(clientIp(req)); if (r) r.fails++; }
-  return ok;
-}
-
-function isAdmin(req) { return adminOk(req); }
-
-// Small query-string helper (the router only keeps the path).
-function parseQuery(rawUrl) {
-  const q = {};
-  const i = String(rawUrl || '').indexOf('?');
-  if (i < 0) return q;
-  for (const part of rawUrl.slice(i + 1).split('&')) {
-    if (!part) continue;
-    const eq = part.indexOf('=');
-    const k = decodeURIComponent(eq < 0 ? part : part.slice(0, eq)).trim();
-    const v = eq < 0 ? '' : decodeURIComponent(part.slice(eq + 1).replace(/\+/g, ' '));
-    if (k) q[k] = v;
-  }
-  return q;
-}
-
-// ── Lightweight in-process counters for the admin Traffic tab ────────
-const STATS = { boot: Date.now(), pageLoads: 0, apiCalls: 0, generations: 0 };
-function fmtUptime(ms) {
-  const s = Math.floor(ms / 1000);
-  const d = Math.floor(s / 86400), hh = Math.floor((s % 86400) / 3600), mm = Math.floor((s % 3600) / 60);
-  if (d) return d + 'd ' + hh + 'h';
-  if (hh) return hh + 'h ' + mm + 'm';
-  return mm + 'm';
-}
-function dayKey(d) { return new Date(d).toISOString().slice(0, 10); }
-function emptySeries(days) {
-  const out = [];
-  for (let i = days - 1; i >= 0; i--) {
-    out.push({ day: dayKey(Date.now() - i * 86400000), count: 0 });
-  }
-  return out;
-}
-function fillSeries(rows, field, days) {
-  const series = emptySeries(days);
-  const idx = {};
-  series.forEach((s, i) => { idx[s.day] = i; });
-  (rows || []).forEach(r => {
-    const k = r && r[field] ? dayKey(r[field]) : null;
-    if (k != null && idx[k] != null) series[idx[k]].count++;
-  });
-  return series;
+function isAdmin(req) {
+  return safeEqual(req.headers['x-admin-pass'] || '', ADMIN_PASS);
 }
 
 function makeRefCode() {
@@ -443,25 +455,68 @@ function makeRefCode() {
   return 'FRM-' + s;
 }
 
-// ── Credit pricing (inferred from the request) ──────────────────────
+// ── Credit pricing (derived from what the call can actually cost) ───
+// Returns the number of credits to RESERVE before the call runs. The real
+// figure is reconciled from the response's token usage and refunded.
 function creditCost(body) {
   try {
-    // Parallel sub-requests belonging to one job (e.g. slide batches) are billed
-    // on the parent call only, so splitting work never costs the teacher more.
-    if (body.faruma_sub === true && (parseInt(body.max_tokens) || 0) <= 5000) return 0;
-    // The slide outline call carries the price of the whole deck.
-    if (body.faruma_job === 'slides-outline') return 2;
-    const model = String(body.model || '').toLowerCase();
-    if (model.indexOf('haiku') >= 0) return 0;
-    let attach = false;
-    (body.messages || []).forEach(m => {
-      if (Array.isArray(m.content)) m.content.forEach(b => {
-        if (b && (b.type === 'image' || b.type === 'document')) attach = true;
-      });
+    const model  = body.model || '';
+    const maxTok = parseInt(body.max_tokens) || 1000;
+    const inTok  = estInputTokens(body);
+
+    // Small helper calls (autocomplete, tidy-ups) stay free — they are
+    // fractions of a cent and charging for them would feel petty.
+    if (rateFor(model)[1] <= 5 && maxTok <= 1600) return 0;
+
+    // A slide deck is billed once, on the outline call, for the WHOLE deck.
+    // The parallel batch writes that follow are free (faruma_sub), so the
+    // outline has to carry the cost of every slide the deck will contain.
+    if (body.faruma_job === 'slides-outline') {
+      const deckTok = Math.max(4000, parseInt(body.faruma_deck_tokens) || 8500);
+      // batches re-send the outline context, so input is charged ~1.6x
+      const usd = usdCost(model, inTok * 1.6 + deckTok * 0.35, deckTok * 1.25);
+      return usdToCredits(usd);
+    }
+
+    // Parallel sub-requests of a job already paid for by its parent.
+    if (body.faruma_sub === true) return 0;
+
+    return usdToCredits(usdCost(model, inTok, maxTok));
+  } catch (e) { return 2; }
+}
+
+// ── Usage logging ───────────────────────────────────────────────────
+// Records every billable API call so the admin console can show real
+// token counts and real money spent. Never throws into the request path.
+async function logApiUsage(row) {
+  if (!SUPA_ON) return;
+  try {
+    await supaFetch('/rest/v1/api_usage', {
+      method: 'POST', service: true,
+      headers: { Prefer: 'return=minimal' },
+      body: {
+        user_id:       row.userId || null,
+        email:         row.email || null,
+        provider:      row.provider || 'anthropic',
+        model:         row.model || '',
+        job:           row.job || null,
+        input_tokens:  row.inTok || 0,
+        output_tokens: row.outTok || 0,
+        images:        row.images || 0,
+        cost_usd:      Math.round((row.usd || 0) * 1e6) / 1e6,
+        credits_charged: row.credits || 0
+      }
     });
-    const heavy = (parseInt(body.max_tokens) || 0) > 5000;
-    return 1 + (heavy ? 1 : 0) + (attach ? 1 : 0);
-  } catch (e) { return 1; }
+  } catch (e) { console.error('api_usage log failed:', e.message); }
+}
+
+// Pull {input_tokens, output_tokens} out of a non-streaming response.
+function usageOf(result) {
+  const u = (result && result.usage) || {};
+  return {
+    inTok:  (parseInt(u.input_tokens)  || 0) + (parseInt(u.cache_read_input_tokens) || 0),
+    outTok: parseInt(u.output_tokens) || 0
+  };
 }
 
 // ── MIME types ──────────────────────────────────────────────────────
@@ -553,13 +608,31 @@ function callAnthropicStream(body, apiKey, res, extraHeaders) {
       }, extraHeaders || {});
       res.writeHead(200, headers);
       let sawError = false;
+      // Anthropic reports input tokens in message_start and the final output
+      // count in message_delta, so we sniff both as the bytes go past.
+      let inTok = 0, outTok = 0, tail = '';
+      function sniff(text) {
+        const buf = tail + text;
+        tail = buf.slice(-400);
+        let m = buf.match(/"input_tokens"\s*:\s*(\d+)/);
+        if (m) inTok = Math.max(inTok, parseInt(m[1]) || 0);
+        m = buf.match(/"cache_read_input_tokens"\s*:\s*(\d+)/);
+        if (m) inTok += parseInt(m[1]) || 0;
+        const all = buf.match(/"output_tokens"\s*:\s*(\d+)/g);
+        if (all && all.length) {
+          const last = all[all.length - 1].match(/(\d+)/);
+          if (last) outTok = Math.max(outTok, parseInt(last[1]) || 0);
+        }
+      }
       r.on('data', c => {
-        if (c.indexOf('"type":"error"') >= 0) sawError = true;
+        const text = c.toString('utf8');
+        if (text.indexOf('"type":"error"') >= 0) sawError = true;
+        sniff(text);
         res.write(c);
         if (typeof res.flush === 'function') res.flush();
       });
-      r.on('end', () => { res.end(); resolve({ ok: true, streamed: true, sawError: sawError }); });
-      r.on('error', () => { try { res.end(); } catch (e) {} resolve({ ok: true, streamed: true, sawError: true }); });
+      r.on('end', () => { res.end(); resolve({ ok: true, streamed: true, sawError: sawError, inTok: inTok, outTok: outTok }); });
+      r.on('error', () => { try { res.end(); } catch (e) {} resolve({ ok: true, streamed: true, sawError: true, inTok: inTok, outTok: outTok }); });
     });
     up.on('error', reject);
     up.write(payload); up.end();
@@ -572,6 +645,20 @@ function serveStatic(req, res) {
   fs.stat(filePath, (err, stat) => {
     if (err || !stat.isFile()) { res.writeHead(404); res.end('Not found'); return; }
     const ext = path.extname(filePath).toLowerCase();
+
+    // index.html carries analytics placeholders that must be filled per deploy
+    if (ext === '.html') {
+      fs.readFile(filePath, 'utf8', (e2, html) => {
+        if (e2) { res.writeHead(500); res.end('Read error'); return; }
+        if (GA4_MEASUREMENT_ID) html = html.split('__GA4_ID__').join(GA4_MEASUREMENT_ID);
+        if (GTM_CONTAINER_ID)   html = html.split('__GTM_ID__').join(GTM_CONTAINER_ID);
+        const buf = Buffer.from(html, 'utf8');
+        res.writeHead(200, { 'Content-Type': MIME['.html'], 'Content-Length': buf.length });
+        res.end(buf);
+      });
+      return;
+    }
+
     res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Content-Length': stat.size });
     fs.createReadStream(filePath).pipe(res);
   });
@@ -585,13 +672,28 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
   const url = req.url.split('?')[0];
-  if (url.indexOf('/api/') === 0) STATS.apiCalls++;
-  else if (url === '/' || url === '/index.html') STATS.pageLoads++;
 
   try {
     // ── GET /api/has-key ─────────────────────────────────────────
     if (req.method === 'GET' && url === '/api/has-key') {
       return jsonRes(res, 200, { hasKey: !!ANTHROPIC_KEY });
+    }
+
+    // ── GET /api/pricing — packs + starter grant, for the UI ─────
+    if (req.method === 'GET' && url === '/api/pricing') {
+      return jsonRes(res, 200, {
+        packs: PACKS,
+        signupCredits: SIGNUP_CREDITS,
+        bankAccount: BANK_ACCOUNT,
+        adminContact: ADMIN_CONTACT
+      });
+    }
+
+    // ── Auth brute-force guard ───────────────────────────────────
+    if (url.indexOf('/api/auth/') === 0 && req.method === 'POST') {
+      if (rateLimited(req, 'auth', 20, 10 * 60 * 1000)) {
+        return jsonRes(res, 429, { error: 'Too many attempts. Please wait a few minutes.' });
+      }
     }
 
     // ── POST /api/auth/register ──────────────────────────────────
@@ -615,8 +717,24 @@ const server = http.createServer(async (req, res) => {
         return jsonRes(res, 400, { error: 'Account created. Please check your email to confirm, then sign in.' });
       }
       const uid = r.data.user.id;
-      const credits = await supaGetCredits(uid);
-      console.log('New user registered:', emailLower);
+      // Starter plan: make sure a new account lands on exactly SIGNUP_CREDITS.
+      // The Supabase profile row may seed a different number, so top up or
+      // trim the difference here — this is the single source of truth.
+      let credits = await supaGetCredits(uid);
+      if (credits === null) credits = 0;
+      if (credits !== SIGNUP_CREDITS) {
+        const diff = SIGNUP_CREDITS - credits;
+        try {
+          if (diff > 0) {
+            const nb = await supaAddCredits(uid, diff, 'signup:starter', null);
+            if (nb !== null) credits = nb;
+          } else {
+            const d = await supaDeduct(uid, -diff, 'signup:starter_adjust');
+            if (d && d.ok) credits = d.balance;
+          }
+        } catch (e) { console.error('starter credit set failed:', e.message); }
+      }
+      console.log('New user registered:', emailLower, '- starter credits:', credits);
       return jsonRes(res, 200, { token: r.data.access_token, user: userPayload(name.trim(), emailLower, credits === null ? 0 : credits) });
     }
 
@@ -730,203 +848,94 @@ const server = http.createServer(async (req, res) => {
       if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
       const su = await supaGetUser(req);
       if (!su) return jsonRes(res, 401, { error: 'Please log in first.' });
-      const raw = await readBody(req);
-      if (raw.length > 7 * 1024 * 1024) return jsonRes(res, 413, { error: 'That attachment is too large. Please keep it under 4MB.' });
-      let body;
-      try { body = JSON.parse(raw.toString()); }
-      catch (e) { return jsonRes(res, 400, { error: 'Could not read that request.' }); }
-
+      const body = JSON.parse((await readBody(req)).toString());
       const msg = ((body.message || '') + '').trim().slice(0, 2000);
-      const att = (body.attachment || '') + '';
-      if (msg.length < 3 && !att) return jsonRes(res, 400, { error: 'Please write a message.' });
+      if (msg.length < 3) return jsonRes(res, 400, { error: 'Please write a message.' });
+      const ins = await supaFetch('/rest/v1/support_messages', {
+        method: 'POST', service: true,
+        body: { user_id: su.id, email: su.email, name: su.name, message: msg }
+      });
+      if (ins.status !== 201) return jsonRes(res, 500, { error: 'Could not send message. Please try again.' });
+      return jsonRes(res, 200, { ok: true, message: 'Message sent. The FARUMA admin will get back to you.' });
+    }
 
-      const row = { user_id: su.id, email: su.email, name: su.name, message: msg || 'Template attached.' };
-
-      let attName = '';
-      if (att) {
-        // base64 grows ~4/3, so 4MB of file is ~5.6MB of text
-        if (att.length > 5.8 * 1024 * 1024) return jsonRes(res, 413, { error: 'That attachment is too large. Please keep it under 4MB.' });
-        if (!/^[A-Za-z0-9+/=\s]+$/.test(att.slice(0, 4096))) return jsonRes(res, 400, { error: 'That attachment could not be read.' });
-        const rawName = ((body.attachment_name || 'template') + '').replace(/[\r\n]/g, '').slice(0, 160);
-        attName = path.basename(rawName) || 'template';
-        const type = ((body.attachment_type || 'application/octet-stream') + '').slice(0, 120);
-        const ALLOWED = /^(image\/(png|jpe?g|gif|webp|heic|heif)|application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/i;
-        if (!ALLOWED.test(type)) return jsonRes(res, 400, { error: 'Please attach an image, a PDF, or a Word document.' });
-        row.attachment_name = attName;
-        row.attachment_type = type;
-        row.attachment_data = att.replace(/\s+/g, '');
+    // ── ADMIN: rate limit every admin route (brute-force guard) ──
+    if (url.indexOf('/api/admin/') === 0) {
+      if (rateLimited(req, 'admin', 30, 60 * 1000)) {
+        return jsonRes(res, 429, { error: 'Too many admin requests. Wait a minute and try again.' });
       }
+    }
 
-      let ins = await supaFetch('/rest/v1/support_messages', { method: 'POST', service: true, body: row });
-
-      // If the attachment columns have not been added to Supabase yet, keep the
-      // message rather than losing it, and tell the teacher what happened.
-      if (ins.status !== 201 && row.attachment_name) {
-        const why = JSON.stringify(ins.data || {});
-        if (/column|schema|attachment/i.test(why)) {
-          console.error('support_messages is missing the attachment columns — run the migration. Falling back to text only.');
-          const fallback = {
-            user_id: su.id, email: su.email, name: su.name,
-            message: (msg || 'Template attached.') + '\n\n[A file named "' + attName + '" was attached but could not be stored — the support_messages attachment columns are missing. Ask the teacher to email it.]'
-          };
-          ins = await supaFetch('/rest/v1/support_messages', { method: 'POST', service: true, body: fallback });
-          if (ins.status === 201) {
-            return jsonRes(res, 200, { ok: true, message: 'Message sent, but the file could not be stored. The admin will contact you for it.' });
-          }
-        }
+    // ── ADMIN: GET /api/admin/usage — API spend by tokens & money ─
+    if (req.method === 'GET' && url === '/api/admin/usage') {
+      if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
+      const days = Math.min(365, Math.max(1, parseInt((req.url.split('days=')[1] || '').split('&')[0]) || 30));
+      const since = new Date(Date.now() - days * 86400000).toISOString();
+      const r = await supaFetch(
+        '/rest/v1/api_usage?created_at=gte.' + since +
+        '&select=provider,model,job,input_tokens,output_tokens,images,cost_usd,credits_charged,created_at&order=created_at.desc&limit=20000',
+        { service: true });
+      if (r.status !== 200 || !Array.isArray(r.data)) {
+        return jsonRes(res, 200, {
+          ok: false, days: days, rows: [], byModel: [], byProvider: [], daily: [], totals: null,
+          note: 'No usage data yet. Create the api_usage table in Supabase (SQL is in the FARUMA setup notes).'
+        });
       }
+      const rows = r.data;
+      const totals = { calls: 0, inTok: 0, outTok: 0, images: 0, usd: 0, credits: 0 };
+      const byModel = {}, byProvider = {}, daily = {};
+      rows.forEach(x => {
+        const inT = x.input_tokens || 0, outT = x.output_tokens || 0;
+        const usd = parseFloat(x.cost_usd) || 0, img = x.images || 0;
+        totals.calls++; totals.inTok += inT; totals.outTok += outT;
+        totals.images += img; totals.usd += usd; totals.credits += (x.credits_charged || 0);
 
-      if (ins.status !== 201) {
-        console.error('support insert failed:', ins.status, JSON.stringify(ins.data || {}));
-        return jsonRes(res, 500, { error: 'Could not send message. Please try again.' });
-      }
+        const mk = x.model || '(unknown)';
+        if (!byModel[mk]) byModel[mk] = { model: mk, provider: x.provider || '', calls: 0, inTok: 0, outTok: 0, images: 0, usd: 0, credits: 0 };
+        byModel[mk].calls++; byModel[mk].inTok += inT; byModel[mk].outTok += outT;
+        byModel[mk].images += img; byModel[mk].usd += usd; byModel[mk].credits += (x.credits_charged || 0);
+
+        const pk = x.provider || 'anthropic';
+        if (!byProvider[pk]) byProvider[pk] = { provider: pk, calls: 0, inTok: 0, outTok: 0, images: 0, usd: 0, credits: 0 };
+        byProvider[pk].calls++; byProvider[pk].inTok += inT; byProvider[pk].outTok += outT;
+        byProvider[pk].images += img; byProvider[pk].usd += usd; byProvider[pk].credits += (x.credits_charged || 0);
+
+        const dk = String(x.created_at || '').slice(0, 10);
+        if (!daily[dk]) daily[dk] = { day: dk, calls: 0, usd: 0, credits: 0 };
+        daily[dk].calls++; daily[dk].usd += usd; daily[dk].credits += (x.credits_charged || 0);
+      });
+      const revenueMvr = totals.credits * (PACKS[400] / 400);
       return jsonRes(res, 200, {
-        ok: true,
-        message: attName
-          ? 'Thank you — your template has been sent. We will add it as a format option.'
-          : 'Message sent. The FARUMA admin will get back to you.'
+        ok: true, days: days,
+        totals: Object.assign({}, totals, {
+          mvr: totals.usd * MVR_PER_USD,
+          revenueMvr: revenueMvr,
+          marginMvr: revenueMvr - (totals.usd * MVR_PER_USD)
+        }),
+        mvrPerUsd: MVR_PER_USD,
+        byModel:    Object.keys(byModel).map(k => byModel[k]).sort((a, b) => b.usd - a.usd),
+        byProvider: Object.keys(byProvider).map(k => byProvider[k]).sort((a, b) => b.usd - a.usd),
+        daily:      Object.keys(daily).map(k => daily[k]).sort((a, b) => a.day < b.day ? 1 : -1).slice(0, 60)
       });
     }
 
     // ── ADMIN: GET /api/admin/overview ───────────────────────────
     if (req.method === 'GET' && url === '/api/admin/overview') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const [pending, recent, msgs] = await Promise.all([
         supaFetch('/rest/v1/topup_requests?status=eq.pending&select=id,email,name,pack_credits,pack_price_mvr,ref_code,created_at&order=created_at.asc', { service: true }),
         supaFetch('/rest/v1/topup_requests?status=neq.pending&select=id,email,pack_credits,ref_code,status,resolved_at&order=resolved_at.desc&limit=15', { service: true }),
-        supaFetch('/rest/v1/support_messages?select=id,email,name,message,status,created_at,attachment_name,attachment_type&order=created_at.desc&limit=80', { service: true })
+        supaFetch('/rest/v1/support_messages?select=id,email,name,message,status,created_at&order=created_at.desc&limit=50', { service: true })
       ]);
-
-      // Fall back to the original column list if the attachment columns are absent.
-      let msgRows = (msgs.status === 200 && Array.isArray(msgs.data)) ? msgs.data : null;
-      if (msgRows === null) {
-        const plain = await supaFetch('/rest/v1/support_messages?select=id,email,name,message,status,created_at&order=created_at.desc&limit=80', { service: true });
-        msgRows = (plain.status === 200 && Array.isArray(plain.data)) ? plain.data : [];
-      }
       return jsonRes(res, 200, {
         pending: (pending.status === 200 && Array.isArray(pending.data)) ? pending.data : [],
         recent: (recent.status === 200 && Array.isArray(recent.data)) ? recent.data : [],
-        messages: msgRows
-      });
-    }
-
-    // ── ADMIN: GET /api/admin/attachment?id=..&pass=.. ───────────
-    if (req.method === 'GET' && url === '/api/admin/attachment') {
-      const wait = adminThrottled(req);
-      if (wait) { res.writeHead(429, { 'Content-Type': 'text/plain' }); return res.end('Too many attempts. Try again in ' + wait + 's.'); }
-      if (!isAdmin(req)) { res.writeHead(401, { 'Content-Type': 'text/plain' }); return res.end('Wrong admin password.'); }
-      if (!SUPA_ON) { res.writeHead(500, { 'Content-Type': 'text/plain' }); return res.end('Server is not configured.'); }
-
-      const id = parseInt(parseQuery(req.url).id, 10);
-      if (!id) { res.writeHead(400, { 'Content-Type': 'text/plain' }); return res.end('Missing message id.'); }
-
-      const r = await supaFetch('/rest/v1/support_messages?id=eq.' + id + '&select=attachment_name,attachment_type,attachment_data', { service: true });
-      const row = (r.status === 200 && Array.isArray(r.data)) ? r.data[0] : null;
-      if (!row || !row.attachment_data) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('No attachment on that message.'); }
-
-      let buf;
-      try { buf = Buffer.from(String(row.attachment_data), 'base64'); }
-      catch (e) { res.writeHead(500, { 'Content-Type': 'text/plain' }); return res.end('Attachment could not be decoded.'); }
-
-      const safeName = String(row.attachment_name || 'template').replace(/[^\w.\- ]+/g, '_');
-      const isImg = /^image\//i.test(row.attachment_type || '');
-      res.writeHead(200, {
-        'Content-Type': row.attachment_type || 'application/octet-stream',
-        'Content-Length': buf.length,
-        // images render inline in the Templates tab; documents download
-        'Content-Disposition': (isImg ? 'inline' : 'attachment') + '; filename="' + safeName + '"',
-        'Cache-Control': 'private, no-store',
-        'X-Content-Type-Options': 'nosniff'
-      });
-      return res.end(buf);
-    }
-
-    // ── ADMIN: GET /api/admin/traffic ────────────────────────────
-    if (req.method === 'GET' && url === '/api/admin/traffic') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
-      if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
-
-      const server = {
-        uptime: fmtUptime(Date.now() - STATS.boot),
-        apiCalls: STATS.apiCalls,
-        pageLoads: STATS.pageLoads,
-        imageCache: IMAGE_CACHE.size
-      };
-
-      if (!SUPA_ON) return jsonRes(res, 200, { server, note: 'Supabase is not configured, so only in-process counters are available.' });
-
-      const iso = d => new Date(Date.now() - d * 86400000).toISOString();
-      const d7 = iso(7), d14 = iso(14), d30 = iso(30);
-
-      // Everything below is derived from tables that already exist — no migration needed.
-      const [profAll, prof14, ledger30, topups] = await Promise.all([
-        supaFetch('/rest/v1/profiles?select=id&limit=100000', { service: true }),
-        supaFetch('/rest/v1/profiles?created_at=gte.' + d14 + '&select=id,created_at&order=created_at.asc&limit=5000', { service: true }),
-        supaFetch('/rest/v1/credit_ledger?created_at=gte.' + d30 + '&select=user_id,amount,reason,created_at&order=created_at.asc&limit=100000', { service: true }),
-        supaFetch('/rest/v1/topup_requests?created_at=gte.' + d30 + '&select=status,pack_credits,pack_price_mvr,created_at&limit=5000', { service: true })
-      ]);
-
-      const users = {
-        total:  (profAll.status === 200 && Array.isArray(profAll.data)) ? profAll.data.length : null,
-        new7:   0, new30: null
-      };
-      const prof14Rows = (prof14.status === 200 && Array.isArray(prof14.data)) ? prof14.data : [];
-      prof14Rows.forEach(r => { if (r.created_at >= d7) users.new7++; });
-      const signupSeries = fillSeries(prof14Rows, 'created_at', 14);
-
-      // Spends are negative ledger entries; each one is a generated document.
-      const led = (ledger30.status === 200 && Array.isArray(ledger30.data)) ? ledger30.data : [];
-      const spends = led.filter(r => Number(r.amount) < 0);
-      const gen7 = spends.filter(r => r.created_at >= d7);
-      const genSeries = fillSeries(spends.filter(r => r.created_at >= d14), 'created_at', 14);
-
-      const active = {};
-      gen7.forEach(r => { active[r.user_id] = true; });
-
-      const perUser = {};
-      spends.forEach(r => { perUser[r.user_id] = (perUser[r.user_id] || 0) + 1; });
-      const topUsers = Object.keys(perUser)
-        .map(k => ({ user_id: k, count: perUser[k] }))
-        .sort((a, b) => b.count - a.count).slice(0, 8);
-
-      // Attach emails to the busiest teachers, one lookup for all of them.
-      if (topUsers.length) {
-        const ids = topUsers.map(u => '"' + u.user_id + '"').join(',');
-        const pr = await supaFetch('/rest/v1/profiles?id=in.(' + encodeURIComponent(ids) + ')&select=id,email', { service: true });
-        const byId = {};
-        if (pr.status === 200 && Array.isArray(pr.data)) pr.data.forEach(p => { byId[p.id] = p.email; });
-        topUsers.forEach(u => { u.email = byId[u.user_id] || u.user_id.slice(0, 8) + '…'; delete u.user_id; });
-      }
-
-      const tp = (topups.status === 200 && Array.isArray(topups.data)) ? topups.data : [];
-      const credits = {
-        spent7: gen7.length ? gen7.reduce((s, r) => s + Math.abs(Number(r.amount) || 0), 0) : 0,
-        spent30: spends.reduce((s, r) => s + Math.abs(Number(r.amount) || 0), 0),
-        purchased30: led.filter(r => Number(r.amount) > 0).reduce((s, r) => s + Number(r.amount), 0),
-        revenue30: tp.filter(r => r.status === 'approved').reduce((s, r) => s + (parseInt(r.pack_price_mvr, 10) || 0), 0),
-        outstanding: null
-      };
-
-      const bal = await supaFetch('/rest/v1/profiles?select=credit_balance&limit=100000', { service: true });
-      if (bal.status === 200 && Array.isArray(bal.data)) {
-        credits.outstanding = bal.data.reduce((s, r) => s + (Number(r.credit_balance) || 0), 0);
-      }
-
-      return jsonRes(res, 200, {
-        users: { total: users.total, new7: users.new7, active7: Object.keys(active).length },
-        generations: { total7: gen7.length, total30: spends.length },
-        credits, topUsers, signupSeries, genSeries, server,
-        note: 'Page-level visitor numbers (sessions, sources, devices) live in Google Analytics — this tab reports what the FARUMA database itself can prove.'
+        messages: (msgs.status === 200 && Array.isArray(msgs.data)) ? msgs.data : []
       });
     }
 
     // ── ADMIN: POST /api/admin/topup/approve ─────────────────────
     if (req.method === 'POST' && url === '/api/admin/topup/approve') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const body = JSON.parse((await readBody(req)).toString());
       const id = parseInt(body.id);
@@ -949,8 +958,6 @@ const server = http.createServer(async (req, res) => {
 
     // ── ADMIN: POST /api/admin/topup/reject ──────────────────────
     if (req.method === 'POST' && url === '/api/admin/topup/reject') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const body = JSON.parse((await readBody(req)).toString());
       const id = parseInt(body.id);
@@ -964,8 +971,6 @@ const server = http.createServer(async (req, res) => {
 
     // ── ADMIN: POST /api/admin/message/read ──────────────────────
     if (req.method === 'POST' && url === '/api/admin/message/read') {
-      const wait = adminThrottled(req);
-      if (wait) return jsonRes(res, 429, { error: 'Too many attempts. Try again in ' + wait + 's.' });
       if (!isAdmin(req)) return jsonRes(res, 401, { error: 'Wrong admin password.' });
       const body = JSON.parse((await readBody(req)).toString());
       const id = parseInt(body.id);
@@ -986,8 +991,7 @@ const server = http.createServer(async (req, res) => {
         keyed: !!IMAGE_API_KEY,
         fallback: p === IMAGE_PROVIDERS.pollinations && IMAGE_PROVIDER !== 'pollinations',
         quality: IMAGE_QUALITY, cached: IMAGE_CACHE.size,
-        creditCost: IMAGE_CREDIT_COST, dailyCap: IMAGE_DAILY_CAP,
-        regenQuality: IMAGE_REGEN_QUALITY, regenCreditCost: IMAGE_REGEN_CREDIT_COST
+        creditCost: IMAGE_CREDIT_COST, dailyCap: IMAGE_DAILY_CAP
       });
     }
 
@@ -1000,15 +1004,9 @@ const server = http.createServer(async (req, res) => {
       const width  = Math.min(1024, Math.max(256, parseInt(body.width, 10)  || 1024));
       const height = Math.min(1024, Math.max(256, parseInt(body.height, 10) || 768));
 
-      // A regeneration is charged and rendered at higher quality; the images
-      // that arrive with a new deck are covered by the deck's own credits.
-      const isRegen = !!body.regen;
-      const quality = isRegen ? IMAGE_REGEN_QUALITY : IMAGE_QUALITY;
-      const cost    = isRegen ? IMAGE_REGEN_CREDIT_COST : IMAGE_CREDIT_COST;
-
       // a cache hit costs nothing, so serve it before touching credits.
       // "Regenerate" sends noCache, because the teacher wants a different picture.
-      const cacheKey = imageCacheKey(prompt, width, height, quality);
+      const cacheKey = imageCacheKey(prompt, width, height);
       if (!body.noCache) {
         const hit = imageCacheGet(cacheKey);
         if (hit) return jsonRes(res, 200, { image: hit, cached: true, provider: IMAGE_PROVIDER });
@@ -1022,8 +1020,8 @@ const server = http.createServer(async (req, res) => {
         if (!imageQuotaOk(userId)) {
           return jsonRes(res, 429, { error: { message: 'Daily image limit reached (' + IMAGE_DAILY_CAP + '). Try again tomorrow.' } });
         }
-        if (cost > 0) {
-          const d = await supaDeduct(userId, cost, isRegen ? 'slide-image-regen' : 'slide-image');
+        if (IMAGE_CREDIT_COST > 0) {
+          const d = await supaDeduct(userId, IMAGE_CREDIT_COST, 'slide-image');
           if (!d.ok) {
             if (d.insufficient) return jsonRes(res, 402, { error: { message: 'You have run out of credits. Tap "Top Up" to buy a credit pack.' } });
             return jsonRes(res, 500, { error: { message: 'Credit check failed. Please try again.' } });
@@ -1033,18 +1031,24 @@ const server = http.createServer(async (req, res) => {
 
       const p = activeImageProvider();
       if (IMAGE_MODEL_ENV) p.model = IMAGE_MODEL_ENV;
-      const out = await p.generate({ prompt, width, height, quality, seed: parseInt(body.seed, 10) || 0 });
+      const out = await p.generate({ prompt, width, height, seed: parseInt(body.seed, 10) || 0 });
 
       if (out.error) {
         // refund on provider failure so a teacher is never charged for nothing
-        if (SUPA_ON && cost > 0 && userId !== 'anon') {
-          try { await supaAddCredits(userId, cost, 'refund', 'slide-image-failed'); } catch (e) {}
+        if (SUPA_ON && IMAGE_CREDIT_COST > 0 && userId !== 'anon') {
+          try { await supaAddCredits(userId, IMAGE_CREDIT_COST, 'refund', 'slide-image-failed'); } catch (e) {}
         }
         return jsonRes(res, 502, { error: { message: 'Image provider failed: ' + out.error } });
       }
       imageCacheSet(cacheKey, out.dataUrl);
-      return jsonRes(res, 200, { image: out.dataUrl, cached: false, provider: IMAGE_PROVIDER,
-        model: p.model, quality: quality, charged: cost });
+      logApiUsage({
+        userId: userId === 'anon' ? null : userId,
+        provider: IMAGE_PROVIDER, model: p.model, job: 'slide-image',
+        inTok: 0, outTok: 0, images: 1,
+        usd: (IMAGE_PROVIDER === 'pollinations' ? 0 : IMAGE_USD_COST),
+        credits: IMAGE_CREDIT_COST
+      });
+      return jsonRes(res, 200, { image: out.dataUrl, cached: false, provider: IMAGE_PROVIDER, model: p.model });
     }
 
     if (req.method === 'POST' && url === '/api/messages') {
@@ -1080,6 +1084,26 @@ const server = http.createServer(async (req, res) => {
           }
           return jsonRes(res, 500, { error: { message: 'Credit check failed. Please try again.' } });
         }
+        // Reconcile the reserved credits against what the call really used,
+        // log the spend, and hand back anything the teacher over-paid.
+        const settle = async (inTok, outTok) => {
+          const usd = usdCost(body.model, inTok, outTok);
+          let actual = cost;
+          if (body.faruma_job !== 'slides-outline') {
+            actual = Math.min(cost, usdToCredits(usd));
+            const back = cost - actual;
+            if (back > 0) {
+              try { await supaAddCredits(su.id, back, 'adjust:actual_usage', null); } catch (e) {}
+            }
+          }
+          logApiUsage({
+            userId: su.id, email: su.email, provider: 'anthropic',
+            model: body.model, job: body.faruma_job || null,
+            inTok: inTok, outTok: outTok, usd: usd, credits: actual
+          });
+          return actual;
+        };
+
         try {
           if (wantStream) {
             const r = await callAnthropicStream(upstream, apiKey, res, {
@@ -1090,7 +1114,8 @@ const server = http.createServer(async (req, res) => {
               await supaAddCredits(su.id, cost, 'refund:api_error', null);
               return jsonRes(res, 400, { error: r.error });
             }
-            if (r.sawError) await supaAddCredits(su.id, cost, 'refund:api_error', null);
+            if (r.sawError) { await supaAddCredits(su.id, cost, 'refund:api_error', null); return; }
+            await settle(r.inTok || estInputTokens(body), r.outTok || 0);
             return;
           }
           const result = await callAnthropic(upstream, apiKey);
@@ -1098,7 +1123,9 @@ const server = http.createServer(async (req, res) => {
             await supaAddCredits(su.id, cost, 'refund:api_error', null);
             return jsonRes(res, 400, result);
           }
-          result.faruma_credits = { spent: cost, balance: d.balance };
+          const u = usageOf(result);
+          const actual = await settle(u.inTok || estInputTokens(body), u.outTok);
+          result.faruma_credits = { spent: actual, balance: d.balance + (cost - actual) };
           return jsonRes(res, 200, result);
         } catch (err) {
           await supaAddCredits(su.id, cost, 'refund:network_error', null);
@@ -1108,9 +1135,24 @@ const server = http.createServer(async (req, res) => {
       if (wantStream) {
         const r = await callAnthropicStream(upstream, apiKey, res);
         if (!r.ok) return jsonRes(res, 400, { error: r.error });
+        logApiUsage({
+          userId: su.id, email: su.email, provider: 'anthropic', model: body.model,
+          job: body.faruma_job || (body.faruma_sub ? 'sub' : null),
+          inTok: r.inTok || 0, outTok: r.outTok || 0,
+          usd: usdCost(body.model, r.inTok || 0, r.outTok || 0), credits: 0
+        });
         return;
       }
       const result = await callAnthropic(upstream, apiKey);
+      if (!result.error) {
+        const u0 = usageOf(result);
+        logApiUsage({
+          userId: su.id, email: su.email, provider: 'anthropic', model: body.model,
+          job: body.faruma_job || (body.faruma_sub ? 'sub' : null),
+          inTok: u0.inTok, outTok: u0.outTok,
+          usd: usdCost(body.model, u0.inTok, u0.outTok), credits: 0
+        });
+      }
       return jsonRes(res, result.error ? 400 : 200, result);
     }
 
