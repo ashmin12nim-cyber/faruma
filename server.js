@@ -653,7 +653,8 @@ function callAnthropicStream(body, apiKey, res, extraHeaders) {
   });
 }
 function serveStatic(req, res) {
-  const urlPath = req.url === '/' ? '/index.html' : req.url.split('?')[0];
+  const cleanPath = req.url.split('?')[0];
+  const urlPath = (cleanPath === '/' || cleanPath === '') ? '/index.html' : cleanPath;
   const filePath = path.join(__dirname, urlPath);
   if (!filePath.startsWith(__dirname)) { res.writeHead(403); res.end('Forbidden'); return; }
   fs.stat(filePath, (err, stat) => {
@@ -803,10 +804,27 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && url === '/api/auth/reset') {
       if (!SUPA_ON) return jsonRes(res, 500, { error: 'Server is not configured.' });
       const body = JSON.parse((await readBody(req)).toString());
-      const token = (body.token || '') + '';
+      let token = (body.token || '') + '';
       const password = (body.password || '') + '';
       if (!token) return jsonRes(res, 400, { error: 'Reset link is missing or expired. Please request a new one.' });
       if (password.length < 6) return jsonRes(res, 400, { error: 'Password must be at least 6 characters' });
+
+      // A token_hash (PKCE/verify flow) is not yet a session — exchange it for
+      // an access token first. Implicit-flow access tokens are used as-is.
+      // A recovery token_hash is short and lacks the JWT dots.
+      if (token.indexOf('.') < 0) {
+        const v = await supaFetch('/auth/v1/verify', {
+          method: 'POST',
+          body: { type: 'recovery', token_hash: token }
+        });
+        if (v.status === 200 && v.data && v.data.access_token) {
+          token = v.data.access_token;
+        } else {
+          const vmsg = (v.data && (v.data.msg || v.data.message)) || 'Reset link expired. Please request a new one.';
+          return jsonRes(res, 400, { error: vmsg });
+        }
+      }
+
       const r = await supaFetch('/auth/v1/user', { method: 'PUT', token: token, body: { password: password } });
       if (r.status !== 200) {
         const msg = (r.data && (r.data.msg || r.data.message)) || 'Reset link expired. Please request a new one.';

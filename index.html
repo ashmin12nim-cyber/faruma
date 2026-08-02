@@ -1884,6 +1884,27 @@ button[style*="background:white"][style*="color:white"]{
 @media(max-width:560px){ .wsz-list{columns:2;} }
 .as-puzzle-ans .xw-cluewrap{display:none;}
 .as-puzzle-ans .wsz-words{display:none;}
+
+/* ── Source-material upload box (Assessment & Slides) ── */
+.srcmat{position:relative;border:2px solid var(--coral,#e8734a);border-radius:16px;
+  background:linear-gradient(135deg,#fff6f1 0%,#fdfbf6 55%,#f2fbfa 100%);
+  padding:18px 18px 16px;margin:16px 0 18px;box-shadow:0 4px 18px rgba(232,115,74,.10);}
+.srcmat::before{content:"\2728";position:absolute;top:-14px;left:18px;background:var(--coral,#e8734a);
+  color:#fff;font-size:15px;line-height:1;padding:7px 9px;border-radius:9px;box-shadow:0 3px 8px rgba(232,115,74,.35);}
+.srcmat-title{font-size:16.5px;font-weight:800;color:#c24a26;margin:2px 0 3px;letter-spacing:.01em;}
+.srcmat-sub{font-size:13.8px;color:#7a6a60;margin-bottom:11px;line-height:1.5;}
+.srcmat textarea{width:100%;min-height:92px;border:1px solid #e7cdbf;border-radius:11px;
+  background:#fff;padding:11px 13px;font-size:14.5px;color:var(--text-dark,#2b2620);resize:vertical;font-family:inherit;}
+.srcmat textarea:focus{outline:none;border-color:var(--coral,#e8734a);box-shadow:0 0 0 3px rgba(232,115,74,.14);}
+.srcmat-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;}
+.srcmat-upload{cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-size:14.5px;font-weight:700;
+  color:#fff;background:var(--coral,#e8734a);border:none;padding:9px 15px;border-radius:10px;box-shadow:0 2px 7px rgba(232,115,74,.28);}
+.srcmat-upload:hover{filter:brightness(1.05);}
+.srcmat-hint{font-size:13px;color:#9a8a80;}
+.srcmat-file{display:none;align-items:center;gap:9px;margin-top:10px;background:#fff;border:1px solid #e7cdbf;
+  border-radius:10px;padding:8px 12px;font-size:14px;color:#5b6b63;}
+.srcmat-file .sf-x{cursor:pointer;color:#b4453a;background:#fdeeea;border:1px solid #eccdc9;padding:4px 9px;border-radius:8px;font-size:13px;margin-left:auto;}
+.srcmat-status{display:none;margin-top:8px;font-size:13.5px;color:#3a8f5c;}
 </style>
 </head>
 <body>
@@ -2611,7 +2632,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <option value="Game-Based">Game-Based Learning</option>
     <option value="Collaborative">Collaborative / Group Work</option>
   </select></div>
-  <div class="field"><label>Activity ideas</label><div class="sug-wrap" id="sug-wrap"></div><textarea id="f-activities" rows="3" placeholder="Add ideas, or paste an image here..."></textarea>
+  <div class="field"><label>Activity ideas</label><div class="sug-wrap" id="sug-wrap"></div><textarea id="f-activities" rows="7" style="min-height:150px" placeholder="Add ideas, or paste an image here..."></textarea>
     <div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
       <label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:14.5px;font-weight:600;color:#0f4c5c;border:1px solid #cfe0e2;background:#f4fbfb;padding:7px 12px;border-radius:9px">
         <span>&#128206;</span> Add image, PDF or Word
@@ -2764,6 +2785,21 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <div id="as-chip" style="margin-top:10px;"></div>
   </div>
 
+  <!-- Source material upload (assessment) -->
+  <div class="srcmat">
+    <div class="srcmat-title">Build it from YOUR material</div>
+    <div class="srcmat-sub">Paste a link or your own notes, or drop in a PDF / Word file &mdash; Faruma will craft the assessment around exactly what your class has been learning.</div>
+    <textarea id="as-src-note" placeholder="Paste a link (https://&hellip;) or type notes, key vocabulary, a passage&hellip;" oninput="srcNote('as',this.value)"></textarea>
+    <div class="srcmat-row">
+      <label class="srcmat-upload"><span>&#128206;</span> Add PDF or Word
+        <input type="file" accept="application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none" onchange="onSrcFile('as',this)">
+      </label>
+      <span class="srcmat-hint">Optional &mdash; everything you add here steers the questions.</span>
+    </div>
+    <div class="srcmat-status" id="as-src-status"></div>
+    <div class="srcmat-file" id="as-src-file"><span>&#128196;</span><span id="as-src-fname"></span><span class="sf-x" onclick="clearSrcFile('as')">Remove</span></div>
+  </div>
+
   <!-- Classic options (rubric / exit ticket / project) -->
   <div id="as-classic" style="display:none !important;" aria-hidden="true">
     <div class="g3">
@@ -2903,6 +2939,21 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <div class="field"><label>Indicators</label><div id="sl-inds" style="display:flex;flex-direction:column;gap:5px;max-height:150px;overflow:auto;font-size:14px;border:1px solid var(--ocean-pale,#e7f1f7);border-radius:9px;padding:9px 11px;background:#fff;"></div></div>
     </div>
     <div class="field"><label>Topic / lesson title</label><input type="text" id="sl-topic" placeholder="e.g. Equivalent Fractions"></div>
+  </div>
+
+  <!-- Source material upload (slides) -->
+  <div class="srcmat">
+    <div class="srcmat-title">Turn YOUR material into slides</div>
+    <div class="srcmat-sub">Paste a link or your notes, or drop in a PDF / Word file &mdash; Faruma will shape the presentation around your content, not a generic template.</div>
+    <textarea id="sl-src-note" placeholder="Paste a link (https://&hellip;) or type notes, an outline, key points&hellip;" oninput="srcNote('sl',this.value)"></textarea>
+    <div class="srcmat-row">
+      <label class="srcmat-upload"><span>&#128206;</span> Add PDF or Word
+        <input type="file" accept="application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none" onchange="onSrcFile('sl',this)">
+      </label>
+      <span class="srcmat-hint">Optional &mdash; everything you add here shapes the deck.</span>
+    </div>
+    <div class="srcmat-status" id="sl-src-status"></div>
+    <div class="srcmat-file" id="sl-src-file"><span>&#128196;</span><span id="sl-src-fname"></span><span class="sf-x" onclick="clearSrcFile('sl')">Remove</span></div>
   </div>
   <div class="field"><label>Design &mdash; pick a slide template</label><div class="pres-style-grid" id="sl-styles" style="margin-top:6px;"></div></div>
   <div class="field" style="margin-top:14px;"><label>Length</label><div class="pres-pills" id="sl-len" style="margin-top:6px;"></div></div>
@@ -3251,6 +3302,74 @@ function addTag(el,t){el.classList.toggle("on");var ta=document.getElementById("
 // ── Activity Ideas attachment (image / PDF / Word, upload or paste) ──
 // activityAttachment = { kind:'image'|'pdf'|'text', media_type, data(base64), text, name, dataUrl }
 var activityAttachment = null;
+
+/* ── Source material for Assessment & Slides ──────────────────────────
+   Teachers can paste a link or notes, or upload a PDF/Word file. The file
+   text is extracted server-side via /api/parse-template. Keyed by context
+   ('as' = assessment, 'sl' = slides). Folded into the generation prompt. */
+var srcMat = { as:{note:'',file:null}, sl:{note:'',file:null} };
+function srcNote(ctx, val){ if(srcMat[ctx]) srcMat[ctx].note = val||''; }
+async function onSrcFile(ctx, input){
+  var f = input && input.files && input.files[0];
+  if(!f) return;
+  var name=f.name||'', low=name.toLowerCase(), type=f.type||'';
+  var okPdf = (type==='application/pdf'||/\.pdf$/.test(low));
+  var okDoc = (/\.docx$/.test(low)||type.indexOf('officedocument.wordprocessingml')>=0);
+  if(/\.doc$/.test(low) && !okDoc){ alert('Old .doc files are not supported — save as .docx or PDF.'); input.value=''; return; }
+  if(!okPdf && !okDoc){ alert('Please upload a PDF or Word (.docx) file.'); input.value=''; return; }
+  if(f.size>20*1024*1024){ alert('That file is larger than 20 MB. Please choose a smaller one.'); input.value=''; return; }
+  var stId = ctx+'-src-status';
+  var st=document.getElementById(stId); if(st){ st.style.display='block'; st.textContent='Reading '+name+'\u2026'; }
+  try{
+    // .docx we can read in the browser; PDF (and .docx too) go to the server extractor.
+    var text='';
+    if(okDoc && typeof docxToText==='function'){
+      try{ text=await docxToText(f); }catch(e){ text=''; }
+    }
+    if(!text){
+      var fd=new FormData(); fd.append('template', f);
+      var key = (typeof serverHasKey!=='undefined' && serverHasKey) ? '' :
+                ((document.getElementById('as-key')||document.getElementById('api-key')||{}).value||'').trim();
+      var resp=await fetch('/api/parse-template',{ method:'POST', headers: key?{'x-api-key':key}:{}, body:fd });
+      var data=await resp.json();
+      if(!resp.ok || !data.success){ throw new Error(data.error||'Could not read that file.'); }
+      text=data.templateText||'';
+    }
+    if(!text || text.trim().length<10){ throw new Error('No readable text found (the file may be image-only/scanned).'); }
+    srcMat[ctx].file = { name:name, text:text.slice(0,8000) };
+    renderSrc(ctx);
+  }catch(e){
+    if(st){ st.style.display='block'; st.style.color='#b4453a'; st.textContent='\u26A0 '+(e.message||e); }
+    input.value='';
+  }
+}
+function clearSrcFile(ctx){ if(srcMat[ctx]) srcMat[ctx].file=null; renderSrc(ctx); }
+function renderSrc(ctx){
+  var box=document.getElementById(ctx+'-src-file');
+  var st=document.getElementById(ctx+'-src-status');
+  if(st){ st.style.display='none'; st.style.color=''; st.textContent=''; }
+  if(!box) return;
+  var m=srcMat[ctx];
+  if(m&&m.file){
+    box.style.display='flex';
+    var nm=document.getElementById(ctx+'-src-fname'); if(nm) nm.textContent=m.file.name;
+  } else { box.style.display='none'; }
+}
+/* Prompt text describing the teacher's source material, if any. */
+function srcMaterialDirective(ctx){
+  var m=srcMat[ctx]; if(!m) return '';
+  var note=(m.note||'').trim();
+  var parts=[];
+  var urls=note.match(/https?:\/\/[^\s]+/g);
+  if(urls&&urls.length){ parts.push('Reference link(s) the teacher provided: '+urls.join(', ')+'. Treat these as the intended source/topic focus.'); }
+  var noteText=note.replace(/https?:\/\/[^\s]+/g,'').trim();
+  if(noteText){ parts.push('Teacher notes to build from:\n"""\n'+noteText.slice(0,4000)+'\n"""'); }
+  if(m.file&&m.file.text){ parts.push('Content extracted from the uploaded file "'+m.file.name+'":\n"""\n'+m.file.text.slice(0,8000)+'\n"""'); }
+  if(!parts.length) return '';
+  var what = ctx==='sl' ? 'presentation' : 'assessment';
+  return '\n\nSOURCE MATERIAL PROVIDED BY THE TEACHER \u2014 base the '+what+' primarily on this. Draw the questions/content, examples and emphasis directly from it, while still aligning to the selected curriculum:\n'
+    + parts.join('\n\n') + '\n';
+}
 var activityImage = null; // kept for backward compatibility
 
 function fileToBase64(file){
@@ -3392,19 +3511,119 @@ var MNC_KC_EN=[
  ["Using Technology and the Media","using technology and the media productively, safely and confidently; analysing media messages"],
  ["Learning for Sustainable Development","social, economic and environmental responsibility; acting for a sustainable future"]
 ];
-function mncKcDirective(sub){
+function isThaanaSubject(sub){ return /^(Dhivehi|Islam|Quran)$/i.test((sub||"").trim()); }
+/* Progression of each Key Competency across key stages, verbatim (trimmed)
+   from the NIE guide's progression tables. Keyed by competency name then by
+   key stage. KS1 = grades 1-3, KS2 = grades 4-6, KS3 = grades 7-8. These let a
+   lesson cite the exact indicator the guide expects for that grade band. */
+var MNC_KC_PROG={
+ "Practising Islam":{
+   KS1:[["PI.KS1.a","Recite the supplications prescribed in the Hadith for certain situations (e.g., thunder and lightning, times of sadness)"],
+        ["PI.KS1.b","Learn to bathe on one's own to keep the body and clothes clean and neat"],
+        ["PI.KS1.c","Be interested in fasting and in performing the five prayers according to rules and regulations"]],
+   KS2:[["PI.KS2.a","Recite the supplications prescribed in the Hadith for certain situations (e.g., meeting friends, feeling sad and melancholy)"],
+        ["PI.KS2.b","Be able to perform ablution and take baths in situations where bathing is required for health and religious reasons"],
+        ["PI.KS2.c","Be able to perform prayers to Allah (swt) as prescribed in the religion in accordance with Ibadat"]],
+   KS3:[["PI.KS3.a","Recite supplications such as Virudhu given in the Hadith to be recited in the morning and evening regularly"],
+        ["PI.KS3.b","Keep self and environment clean and neat and be able to perform ablution and take baths when required for health and religious reasons"],
+        ["PI.KS3.c","Perform prayers to Allah (swt) as prescribed to satisfy the pillars of Islam"]]},
+ "Understanding and Managing Self":{
+   KS1:[["UMS.KS1.01","Use coping strategies when feeling upset, angry or grief (e.g., walk away, discuss with a trusted adult, deep breath, ablution, reciting relevant duas)"],
+        ["UMS.KS1.02","Set realistic short-term goals and demonstrate skills related to achieving them with support"],
+        ["UMS.KS1.03","Focus and maintain concentration over a reasonable time despite distractions and interruptions"]],
+   KS2:[["UMS.KS2.01","Apply coping strategies when feeling upset, angry or grief (e.g., walk away, discuss with a trusted adult, deep breath, exercise, ablution, reciting duas)"],
+        ["UMS.KS2.02","Set realistic short-term goals and demonstrate skills related to achieving them (e.g., follow the steps of goal setting)"],
+        ["UMS.KS2.03","Understand the importance of individual effort, hard work and persistence"]],
+   KS3:[["UMS.KS3.01","Manage their behaviour in a range of situations"],
+        ["UMS.KS3.02","Set realistic short-term goals, make plans for achieving them and monitor progress regularly for continued improvement"],
+        ["UMS.KS3.03","Focus, sustain attention and work with persistence to complete a task"]]},
+ "Living a Healthy Life":{
+   KS1:[["LHL.KS1.01","Follow safety procedures in the home, school and community (e.g., electrical safety, schoolyard rules)"],
+        ["LHL.KS1.02","Identify medicines and household products that are harmful to the body (e.g., from their symbols and labels)"],
+        ["LHL.KS1.03","Make connections between particular foods and their health benefits"]],
+   KS2:[["LHL.KS2.01","Follow safety procedures in the home, school and community (e.g., walk on the pavement)"],
+        ["LHL.KS2.02","Identify some of the harm associated with certain substances (e.g., tobacco)"],
+        ["LHL.KS2.03","Set a personal healthy eating goal"]],
+   KS3:[["LHL.KS3.01","Use appropriate strategies to prevent and reduce risks and promote well-being"],
+        ["LHL.KS3.02","Analyse the effects of addictive drugs on body systems (e.g., alcohol, tobacco, illegal drugs)"],
+        ["LHL.KS3.03","Analyse factors affecting healthy body weight (e.g., food intake, growth spurts, physical activity)"]]},
+ "Relating to People":{
+   KS1:[["RP.KS1.01","Participate in paired and group activities and discussions and become more adept at turn taking, sharing and co-operating"],
+        ["RP.KS1.02","Recognise personal strengths and weaknesses in terms of the various roles within a group"],
+        ["RP.KS1.03","Understand and learn to respond to feedback from others"]],
+   KS2:[["RP.KS2.01","Engage with others, be willing to interact and help others with their learning"],
+        ["RP.KS2.02","Take on different roles at different times (e.g., contributing as a member or as a leader when needed)"],
+        ["RP.KS2.03","Give and respond appropriately to feedback from others"]],
+   KS3:[["RP.KS3.01","Demonstrate independence in working collaboratively using a team approach"],
+        ["RP.KS3.02","Vary roles to play to their strengths and address those which could be improved"],
+        ["RP.KS3.03","Give and respond appropriately to feedback from others"]]},
+ "Thinking Critically and Creatively":{
+   KS1:[["TCC.KS1.01","Separate the whole into logical parts and study its parts"],
+        ["TCC.KS1.02","State an idea or hypothesis, give reasons to support it and state its limitations"],
+        ["TCC.KS1.03","Explore and identify different perspectives of looking into a task to form new ideas and concepts"]],
+   KS2:[["TCC.KS2.01","Hypothesise, forecast and find cause and effect of a given situation"],
+        ["TCC.KS2.02","Construct and develop logical arguments for a common situation"],
+        ["TCC.KS2.03","Explore and imagine possibilities in discovering originality and alternatives"]],
+   KS3:[["TCC.KS3.01","Compare, discriminate and contrast different situations"],
+        ["TCC.KS3.02","Assess information reasonableness, find relevance, uncover assumptions, draw inference and articulate reasoned judgements"],
+        ["TCC.KS3.03","Critically analyse a situation to imagine possibilities; elaborate, transform and create innovative ideas"]]},
+ "Making Meaning":{
+   KS1:[["MM.KS1.01","Identify some symbols used in different subjects and contexts and explain what they mean"],
+        ["MM.KS1.02","Interpret meaning from a variety of visual texts such as advertisements, photographs, videos and music scores"],
+        ["MM.KS1.03","Identify and categorise information according to similarities, differences and sequences"]],
+   KS2:[["MM.KS2.01","Use symbols to create text and form messages"],
+        ["MM.KS2.02","Interpret meaning from various sources of visual texts and relate to appropriate context"],
+        ["MM.KS2.03","Organise information and ideas into categories (e.g., who, what, where, when, why, how) using a variety of strategies"]],
+   KS3:[["MM.KS3.01","Evaluate the way symbols are used in specific contexts and suggest ways to improve them"],
+        ["MM.KS3.02","Interpret meaning from different sources of visual texts and choose the source relevant to the intended purpose"],
+        ["MM.KS3.03","Organise information using graphic organisers (e.g., comparing and contrasting)"]]},
+ "Using Technology and the Media":{
+   KS1:[["UTM.KS1.01","Recognise that media messages have multiple perspectives and different opinions"],
+        ["UTM.KS1.02","Recognise choices that photographers make when taking pictures"],
+        ["UTM.KS1.03","Locate and retrieve information from a specified source (e.g., classroom display, computer folder, book, website, DVD)"]],
+   KS2:[["UTM.KS2.01","Analyse media messages to identify different points of view"],
+        ["UTM.KS2.02","Compare and contrast news photographs for appropriateness and balance"],
+        ["UTM.KS2.03","Explore a variety of print or multimedia sources to meet the information needs of a particular task"]],
+   KS3:[["UTM.KS3.01","Explore points of view and opinions presented in different information sources"],
+        ["UTM.KS3.02","Recognise various techniques of persuasion used in advertising and be aware of making the right choices"],
+        ["UTM.KS3.03","Recognise when and how to use print, non-print and electronic resources (e.g., online catalogues, databases, search engines, websites)"]]},
+ "Learning for Sustainable Development":{
+   KS1:[["LSD.KS1.01","Explain unsafe situations related to the environment (e.g., floods, lightning) and safety rules to follow"],
+        ["LSD.KS1.02","Classify jobs according to the nature of work and skills required (e.g., outdoor, indoor)"],
+        ["LSD.KS1.03","Reduce, reuse and recycle materials during classroom learning (e.g., reuse books, use both sides of the paper)"]],
+   KS2:[["LSD.KS2.01","Differentiate between natural hazards (e.g., tsunami, coastal erosion, earthquakes) and human-made hazards (e.g., fires, road and sea accidents)"],
+        ["LSD.KS2.02","Explore different aspects of careers available in the community and their requirements"],
+        ["LSD.KS2.03","Plan and carry out a classroom course of action for minimising waste"]],
+   KS3:[["LSD.KS3.01","Develop a family disaster plan for a situation the Maldives experiences (e.g., thunder, lightning, floods)"],
+        ["LSD.KS3.02","Explore different careers and the skills, interests and school subjects helpful for success"],
+        ["LSD.KS3.03","Reduce, reuse and recycle materials and encourage others to minimise societal waste problems"]]}
+};
+function kcKeyStage(grade){
+  var m=String(grade||"").match(/(\d+)/); var g=m?parseInt(m[1],10):0;
+  if(g>=1&&g<=3) return "KS1";
+  if(g>=4&&g<=6) return "KS2";
+  if(g>=7&&g<=8) return "KS3";
+  return "KS2";
+}
+function mncKcDirective(sub, grade){
   if(typeof isThaanaSubject==="function"&&isThaanaSubject(sub))return "";
-  var L=MNC_KC_EN.map(function(k,i){return (i+1)+". "+k[0]+" \u2014 "+k[1];}).join("\n");
-  return "\n\nMALDIVES NATIONAL CURRICULUM \u2014 KEY COMPETENCIES (the ONLY valid list):\n"+L
-   +"\nRULES for the keyCompetencies field:\n"
+  var ks=kcKeyStage(grade);
+  var ksLabel=ks==="KS1"?"Key Stage 1 (grades 1-3)":(ks==="KS3"?"Key Stage 3 (grades 7-8)":"Key Stage 2 (grades 4-6)");
+  var blocks=MNC_KC_EN.map(function(k){
+    var prog=(MNC_KC_PROG[k[0]]&&MNC_KC_PROG[k[0]][ks])||[];
+    var inds=prog.map(function(p){return "     \u2022 ["+p[0]+"] "+p[1];}).join("\n");
+    return k[0]+" \u2014 "+k[1]+(inds?("\n"+inds):"");
+  }).join("\n\n");
+  return "\n\nMALDIVES NATIONAL CURRICULUM \u2014 KEY COMPETENCIES with the official "+ksLabel+" progression indicators from the NIE Key Competency guide (the ONLY valid list for this lesson):\n"+blocks
+   +"\n\nRULES for the keyCompetencies field:\n"
    +"- Pick ONLY 2-3 competencies from the list above that this specific lesson genuinely develops.\n"
    +"- Copy the competency name EXACTLY as written above. NEVER use renamed or invented competencies such as Communication, Collaboration, Critical Thinking, Creativity, Problem Solving, Digital Literacy or Citizenship.\n"
-   +"- Write each entry as: Exact name \u2014 one short clause on how THIS lesson develops it.\n"
+   +"- For each chosen competency, cite the SINGLE most relevant "+ks+" indicator code shown above and write how THIS lesson develops it. Format each entry as: Competency name (INDICATOR CODE) \u2014 one short clause grounded in that indicator.\n"
+   +"- Do NOT invent indicator codes; use only the codes listed above for this key stage.\n"
    +"RULES for the sharedValues field:\n"
    +"- Shared values are MNC value clusters that arise from the lesson content, phrased the way NIE syllabuses phrase them, e.g. Values related to the environment; Islamic values: honesty and kindness; Values related to family and community; Respect and care for others.\n"
    +"- Give 1-2 that genuinely fit THIS lesson. Do not list generic classroom rules.\n";
 }
-function isThaanaSubject(sub){ return /^(Dhivehi|Islam|Quran)$/i.test((sub||"").trim()); }
 function thaanaDirective(sub, grade){
   if(!isThaanaSubject(sub)) return "";
   // 8 Key Competencies (މައިގަނޑު ޤާބިލިއްޔަތުތައް) — verbatim from the MNC Key Competency framework
@@ -3555,7 +3774,7 @@ async function doGenerate() {
       +'\nRespond ONLY with valid JSON:\n{"lessonNo":"'+fname+'"'
       +',"learningIntentions":["We are learning to ..."]'
       +',"successCriteria":["I can ...","I can ..."]'
-      +',"keyCompetencies":["Thinking Critically and Creatively \u2014 how this lesson develops it","Making Meaning \u2014 how this lesson develops it"]'
+      +',"keyCompetencies":["Thinking Critically and Creatively (INDICATOR CODE) \u2014 how this lesson develops it","Making Meaning (INDICATOR CODE) \u2014 how this lesson develops it"]'
       +',"sharedValues":["Values related to the environment"]'
       +',"priorKnowledge":["Students already know..."]'
       +',"teachingAids":["Whiteboard","Worksheets"]'
@@ -3586,7 +3805,7 @@ async function doGenerate() {
       +"'specialEducationalNotes' are practical adjustments for learners with additional needs.\n\n"
       +"Return ONLY valid JSON, no markdown:\n"
       +'{'
-      +'"keyCompetencies":["Exact MNC key competency name \u2014 how this lesson develops it"],'
+      +'"keyCompetencies":["Exact MNC key competency name (INDICATOR CODE) \u2014 how this lesson develops it"],'
       +'"sharedValues":["an MNC shared value tied to this lesson, e.g. Values related to the environment"],'
       +'"priorKnowledge":["what students already know that this lesson builds on"],'
       +'"resources":["a teaching material","another resource"],'
@@ -3615,7 +3834,7 @@ async function doGenerate() {
       +"Write detailed, classroom-ready content for EACH field below. Use Bloom's progression and age-appropriate activities for "+grade+". Use real-world contexts that fit the topic naturally; keep examples universal and culture-neutral. The Teaching and Learning section must have four timed phases whose times add up to about "+dur+" minutes.\n\n"
       +"Return ONLY valid JSON, no markdown:\n"
       +'{'
-      +'"keyCompetencies":["Exact MNC key competency name \u2014 a sentence on how this lesson develops it"],'
+      +'"keyCompetencies":["Exact MNC key competency name (INDICATOR CODE) \u2014 a sentence on how this lesson develops it"],'
       +'"processSkill":["the process / thinking skill and how students use it in this lesson"],'
       +'"sharedValues":["an MNC shared value tied to this lesson, e.g. Values related to the environment"],'
       +'"priorKnowledge":["what students already know that this lesson builds on"],'
@@ -3635,8 +3854,8 @@ async function doGenerate() {
 
   // For Dhivehi, Islam and Quran, force all AI content into Thaana script (applies to every template/format path)
   prompt += thaanaDirective(currentSub, grade);
-  // English lessons: pin Key Competencies & Shared Values to the official MNC list
-  prompt += mncKcDirective(currentSub);
+  // Pin Key Competencies & Shared Values to the official MNC list + key-stage indicators
+  prompt += mncKcDirective(currentSub, grade);
 
   // If the teacher attached material (image / PDF / Word) to Activity Ideas, tell the model to design an activity around it
   var _att = activityAttachment;
@@ -3692,7 +3911,7 @@ async function doGenerate() {
     localStorage.setItem(FARUMA_KEYS.device,String(du+1));
     setProgress("gen-prog","gen-bar",100);
     window.lastLessonPlan = { plan:plan, subject:currentSub, grade:grade, topic:topic, outCode:outCode, outStmt:outStmt, indicators:inds, activities:activities, duration:dur, fname:fname };
-    setStatus("gen-status","done","&#10003; Done! <a class='dl-btn' href='"+url+"' download='"+fname+".docx'>&#8681; Download "+fname+".docx</a><button class='btn btn-sm btn-orange' style='margin-left:8px' onclick='openLessonAssessment()'>&#9998; Generate Assessment from this Lesson</button><button class='btn btn-sm pres-launch' onclick='presFromLesson()'>&#127916; Generate PowerPoint</button><button class='btn btn-sm fed-launch' style='margin-left:8px' onclick='fedOpenFromLesson()'>&#9998; Open in Editor</button><div id='lesson-assess-panel'></div>");
+    setStatus("gen-status","done","&#10003; Done! <a class='dl-btn' href='"+url+"' download='"+fname+".docx'>&#8681; Download "+fname+".docx</a><button class='btn btn-sm btn-orange' style='margin-left:8px' onclick='openLessonAssessment()'>&#9998; Generate Assessment from this Lesson</button><button class='btn btn-sm pres-launch' onclick='presFromLesson()'>&#127916; Generate PowerPoint</button><div id='lesson-assess-panel'></div>");
     if(typeof gaTrack==='function') gaTrack('lesson_plan_generate',{subject:currentSub,grade:grade,strand:strand,template:fmt,topic:topic,generation_type:(tplInPlace||hasTemplate?'custom_template':fmt)});
     renderHistory(); 
     // Refresh user usage count
@@ -4204,19 +4423,40 @@ async function doForgot() {
 }
 var recoveryToken = null;
 function detectRecoveryLink() {
-  // Supabase reset emails land back here with #access_token=...&type=recovery
-  var h = window.location.hash || '';
-  if (h.indexOf('type=recovery') < 0) return;
-  var m = h.match(/access_token=([^&]+)/);
-  if (!m) return;
-  recoveryToken = decodeURIComponent(m[1]);
+  // Supabase reset emails can land back here in several shapes:
+  //   #access_token=...&type=recovery            (implicit flow, in the hash)
+  //   ?access_token=...&type=recovery            (some proxies move it to the query)
+  //   ?token_hash=...&type=recovery              (PKCE / verify flow)
+  //   #error=...&error_description=... (expired) (show a friendly message)
+  var hash = (window.location.hash || '').replace(/^#/, '');
+  var query = (window.location.search || '').replace(/^\?/, '');
+  var raw = hash + '&' + query;
+  var params = {};
+  raw.split('&').forEach(function(kv){
+    if (!kv) return;
+    var i = kv.indexOf('=');
+    if (i < 0) { params[kv] = ''; return; }
+    params[decodeURIComponent(kv.slice(0, i))] = decodeURIComponent(kv.slice(i + 1));
+  });
+
+  // An expired or already-used link comes back as an error — tell the user plainly.
+  if (params.error || params.error_code || params.error_description) {
+    try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
+    if (typeof openAuth === 'function') openAuth('login');
+    var ov = document.getElementById('auth-overlay'); if (ov) ov.style.display = 'flex';
+    showAuthError((params.error_description || 'This reset link has expired or was already used.').replace(/\+/g, ' ') + ' Please request a new one.');
+    return;
+  }
+
+  if (params.type !== 'recovery') return;
+  var tok = params.access_token || params.token_hash || params.token || '';
+  if (!tok) return;
+  recoveryToken = tok;
   try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
   if (typeof openAuth === 'function') openAuth('login');
-  document.getElementById('auth-overlay').style.display = 'flex';
-  document.getElementById('form-login').style.display = 'none';
-  document.getElementById('form-register').style.display = 'none';
-  document.getElementById('form-forgot').style.display = 'none';
-  document.getElementById('form-reset').style.display = 'block';
+  var overlay = document.getElementById('auth-overlay'); if (overlay) overlay.style.display = 'flex';
+  ['form-login','form-register','form-forgot'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
+  var rf = document.getElementById('form-reset'); if (rf) rf.style.display = 'block';
 }
 async function doReset() {
   var p1 = document.getElementById('reset-pass').value;
@@ -4244,7 +4484,9 @@ async function doReset() {
   } catch(e) { showAuthError('Connection error. Please try again.'); }
   btn.disabled = false; btn.textContent = 'Set New Password';
 }
-document.addEventListener('DOMContentLoaded', detectRecoveryLink);
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', detectRecoveryLink);
+else detectRecoveryLink();
+window.addEventListener('hashchange', detectRecoveryLink);
 
 /* ── Privacy notice ── */
 function showPrivacy() { document.getElementById('privacy-modal').style.display = 'flex'; }
@@ -6401,6 +6643,11 @@ function assessSyllabusContext(grade, sub, topic){
 }
 
 function buildAssessmentPrompt(cfg){
+  var _src = (typeof srcMaterialDirective==='function') ? srcMaterialDirective('as') : '';
+  var _base = buildAssessmentPromptBase(cfg);
+  return _src ? (_src + '\n' + _base) : _base;
+}
+function buildAssessmentPromptBase(cfg){
   var ctx=assessSyllabusContext(cfg.grade,cfg.sub,cfg.topic);
   if(cfg.atype==='rubric'){
     return 'You are an expert '+cfg.sub+' teacher. Create a clear marking RUBRIC for '+cfg.grade+' on "'+cfg.topic+'".\n'+ctx+
@@ -7584,20 +7831,20 @@ var PRES_LENGTHS = [
   { id:'full',     label:'Full Lesson', slides:21, hint:'20+ slides', maxTok:14500 }
 ];
 var PRES_ENH = [
-  { id:'notes',      label:'Speaker Notes',        on:true },
-  { id:'script',     label:'Teacher Script',       on:true },
-  { id:'activities', label:'Student Activities',   on:true },
-  { id:'tps',        label:'Think-Pair-Share',     on:true },
-  { id:'discussion', label:'Discussion Questions', on:true },
-  { id:'quiz',       label:'Quiz',                 on:true },
-  { id:'homework',   label:'Homework',             on:true },
-  { id:'exit',       label:'Exit Ticket',          on:true },
-  { id:'images',     label:'AI Images',            on:true },
-  { id:'diagrams',   label:'Diagrams',             on:true },
-  { id:'icons',      label:'Icons',                on:true },
-  { id:'realworld',  label:'Real-World Examples',  on:true },
-  { id:'funfacts',   label:'Fun Facts',            on:true },
-  { id:'blooms',     label:"Bloom's Questions",    on:true }
+  { id:'notes',      label:'Speaker Notes',        on:false },
+  { id:'script',     label:'Teacher Script',       on:false },
+  { id:'activities', label:'Student Activities',   on:false },
+  { id:'tps',        label:'Think-Pair-Share',     on:false },
+  { id:'discussion', label:'Discussion Questions', on:false },
+  { id:'quiz',       label:'Quiz',                 on:false },
+  { id:'homework',   label:'Homework',             on:false },
+  { id:'exit',       label:'Exit Ticket',          on:false },
+  { id:'images',     label:'AI Images',            on:false },
+  { id:'diagrams',   label:'Diagrams',             on:false },
+  { id:'icons',      label:'Icons',                on:false },
+  { id:'realworld',  label:'Real-World Examples',  on:false },
+  { id:'funfacts',   label:'Fun Facts',            on:false },
+  { id:'blooms',     label:"Bloom's Questions",    on:false }
 ];
 
 /* ---------------- State ---------------- */
@@ -7689,7 +7936,7 @@ function presOpenWizard(src){
     return '<div class="pres-pill" id="pres-len-'+l.id+'" onclick="presPickLen(\''+l.id+'\')"><b>'+l.label+'</b><span>'+l.hint+'</span></div>';
   }).join('');
   var enhChips = PRES_ENH.map(function(e){
-    return '<div class="pres-chip on" id="pres-enh-'+e.id+'" onclick="presToggleEnh(\''+e.id+'\')">'+e.label+'</div>';
+    return '<div class="pres-chip'+(e.on?' on':'')+'" id="pres-enh-'+e.id+'" onclick="presToggleEnh(\''+e.id+'\')">'+e.label+'</div>';
   }).join('');
   ov.innerHTML =
     '<div class="pres-modal">'+
@@ -9142,7 +9389,129 @@ function presExportPDF(){
   function autosaveSoon(){ clearTimeout(_sv); _sv=setTimeout(autosave,1500); }
 
   function syncControls(){ el('fed-doc-title').value=S.title; el('fed-size').value=S.size; el('fed-orient').value=S.orient; el('fed-margin').value=S.margins; el('fed-zoom').value=S.zoom; el('fed-hdr').value=S.hdr||''; el('fed-ftr').value=S.ftr||''; el('fed-pageno').checked=!!S.pageno; }
-  function openWith(state){ ensureShell(); S=state; syncControls(); render(); var ab=document.getElementById('appbar'); if(ab) document.documentElement.style.setProperty('--fed-top', ab.offsetHeight+'px'); try{window.scrollTo(0,0);}catch(e){} document.body.classList.add('fed-active'); el('fed-ov').classList.add('open'); }
+  /* Split any page whose content is taller than the printable area across
+     multiple pages, breaking at block boundaries (and inside long lists and
+     tables). Runs after the shell exists so real CSS drives the measurement.
+     Objects/strokes stay on the first sub-page of each original page. */
+  function flowPages(){
+    try{
+      if(!S||!S.pages||!S.pages.length) return;
+      var d=pageDims();
+      var contentW=d[0]-S.margins*2;
+      var budget=d[1]-S.margins*2-6;               /* printable height */
+      if(contentW<60||budget<80) return;
+      var host=document.createElement('div');
+      host.className='fed-content';   /* inherit scoped h1/h2/ul/table sizing */
+      host.setAttribute('contenteditable','false');
+      host.style.cssText='position:static !important;left:auto;top:auto;'+
+        'width:'+contentW+'px;min-height:0;visibility:hidden;overflow:visible;';
+      /* park it off-screen without absolute positioning (which would zero scrollHeight) */
+      var park=document.createElement('div');
+      park.style.cssText='position:absolute;left:-99999px;top:0;width:'+contentW+'px;';
+      park.appendChild(host);
+      document.body.appendChild(park);
+      function fits(nodes){
+        host.innerHTML='';
+        nodes.forEach(function(n){ host.appendChild(n.cloneNode(true)); });
+        return host.scrollHeight<=budget;
+      }
+      function oneFits(node){ return fits([node]); }
+
+      /* Break a too-tall list or table into pieces that each fit. */
+      function splitTall(node){
+        var tag=node.tagName;
+        if(tag==='UL'||tag==='OL'){
+          var items=Array.prototype.slice.call(node.children);
+          if(items.length<2) return [node];
+          var chunks=[], cur=node.cloneNode(false);
+          items.forEach(function(li){
+            cur.appendChild(li.cloneNode(true));
+            if(!fits([cur])&&cur.children.length>1){
+              var last=cur.removeChild(cur.lastChild);
+              chunks.push(cur);
+              cur=node.cloneNode(false); cur.appendChild(last);
+            }
+          });
+          if(cur.children.length) chunks.push(cur);
+          return chunks;
+        }
+        if(tag==='TABLE'){
+          var head=node.querySelector('thead');
+          var bodyRows=[];
+          Array.prototype.forEach.call(node.querySelectorAll('tr'),function(tr){
+            if(!head||!head.contains(tr)) bodyRows.push(tr);
+          });
+          if(bodyRows.length<2) return [node];
+          var chunks2=[];
+          function freshTable(){
+            var t=node.cloneNode(false);
+            if(head) t.appendChild(head.cloneNode(true));
+            var tb=document.createElement('tbody'); t.appendChild(tb); return t;
+          }
+          var curT=freshTable(), curBody=curT.querySelector('tbody');
+          bodyRows.forEach(function(tr){
+            curBody.appendChild(tr.cloneNode(true));
+            if(!fits([curT])&&curBody.children.length>1){
+              var last=curBody.removeChild(curBody.lastChild);
+              chunks2.push(curT);
+              curT=freshTable(); curBody=curT.querySelector('tbody');
+              curBody.appendChild(last);
+            }
+          });
+          if(curBody.children.length) chunks2.push(curT);
+          return chunks2;
+        }
+        return [node];   /* unsplittable — let it have its own page */
+      }
+
+      var out=[];
+      S.pages.forEach(function(pg){
+        var tmp=document.createElement('div'); tmp.innerHTML=pg.html||'';
+        var blocks=[];
+        Array.prototype.forEach.call(tmp.childNodes,function(n){
+          if(n.nodeType===1) blocks.push(n);
+          else if(n.nodeType===3 && n.textContent.trim()){
+            var p=document.createElement('p'); p.textContent=n.textContent; blocks.push(p);
+          }
+        });
+        /* Nothing to measure, or already fits — keep the page as-is. */
+        if(!blocks.length || fits(blocks)){ out.push(pg); return; }
+
+        var subPages=[], cur=[];
+        function flush(){
+          if(!cur.length) return;
+          var wrap=document.createElement('div');
+          cur.forEach(function(n){ wrap.appendChild(n); });
+          subPages.push(wrap.innerHTML); cur=[];
+        }
+        blocks.forEach(function(node){
+          /* A single block taller than a page: flush, then split it. */
+          if(!oneFits(node)){
+            flush();
+            splitTall(node).forEach(function(piece){ subPages.push(piece.outerHTML||(''+piece)); });
+            return;
+          }
+          cur.push(node);
+          if(!fits(cur) && cur.length>1){
+            var last=cur.pop(); flush(); cur.push(last);
+          }
+        });
+        flush();
+        if(!subPages.length){ out.push(pg); return; }
+        /* First sub-page inherits objects/strokes; the rest are clean. */
+        subPages.forEach(function(html,idx){
+          out.push(idx===0
+            ? {html:html,objs:pg.objs||[],strokes:pg.strokes||[]}
+            : {html:html,objs:[],strokes:[]});
+        });
+      });
+      document.body.removeChild(park);
+      if(out.length) S.pages=out;
+      if(S.cur>=S.pages.length) S.cur=S.pages.length-1;
+    }catch(e){ /* never block opening the editor on a flow error */ }
+  }
+
+  function openWith(state){ ensureShell(); S=state; flowPages(); syncControls(); render(); var ab=document.getElementById('appbar'); if(ab) document.documentElement.style.setProperty('--fed-top', ab.offsetHeight+'px'); try{window.scrollTo(0,0);}catch(e){} document.body.classList.add('fed-active'); el('fed-ov').classList.add('open'); }
 
   /* entry points */
   window.fedOpenBlank=function(){ var prev=null; try{prev=JSON.parse(localStorage.getItem('faruma_fed_doc'));}catch(e){} if(prev&&prev.pages&&prev.pages.length&&confirm('Resume your last document? (Cancel for a blank one)')){openWith(prev);} else {openWith(defaultState('Untitled document'));} };
@@ -9577,8 +9946,9 @@ function presExportPDF(){
     var status=$('sl-status');
     if(!tp){ status.innerHTML='<span style="color:var(--coral,#e8624a);">Please enter a topic for the lesson.</span>'; return; }
     if(!oc){ status.innerHTML='<span style="color:var(--coral,#e8624a);">Please select a curriculum outcome first.</span>'; return; }
+    var slSrc=(typeof srcMaterialDirective==='function')?srcMaterialDirective('sl'):'';
     presSrc={ origin:'slides-tab', subject:s, grade:g, topic:tp, duration:'',
-      outCode:oc, outStmt:ostmt, indicators:inds, material:'',
+      outCode:oc, outStmt:ostmt, indicators:inds, material:(slSrc||''),
       lang:(typeof isThaanaSubject==='function'&&isThaanaSubject(s))?'dv':'en',
       fname:tp.replace(/[^\w\- ]+/g,'').trim()||'FARUMA' };
     presOpts={ theme:slTheme, length:slLen, enh:{} };
