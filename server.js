@@ -27,10 +27,10 @@ const GTM_CONTAINER_ID   = process.env.GTM_CONTAINER_ID   || '';
 
 // Credit packs: credits -> price in MVR
 // Priced so that every credit sold covers at least 2x its worst-case API cost.
-const PACKS = { 50: 120, 150: 320, 400: 780 };
+const PACKS = { 50: 99, 150: 320, 400: 780 };
 
 // Credits granted to a brand-new account (the free starter plan).
-const SIGNUP_CREDITS = parseInt(process.env.SIGNUP_CREDITS || '4', 10) || 4;
+const SIGNUP_CREDITS = parseInt(process.env.SIGNUP_CREDITS || '6', 10) || 6;
 
 /* ════════════════════════════════════════════════════════════════════
    CREDIT PRICING — margin-guaranteed
@@ -474,12 +474,26 @@ function creditCost(body) {
     if (body.faruma_job === 'slides-outline') {
       const deckTok = Math.max(4000, parseInt(body.faruma_deck_tokens) || 8500);
       // batches re-send the outline context, so input is charged ~1.6x
-      const usd = usdCost(model, inTok * 1.6 + deckTok * 0.35, deckTok * 1.25);
+      let usd = usdCost(model, inTok * 1.6 + deckTok * 0.35, deckTok * 1.25);
+      // Slide images are paid for here too: roughly one per slide. When the
+      // provider is keyless Pollinations this adds nothing.
+      if (!body.faruma_no_images && IMAGE_PROVIDER !== 'pollinations' && IMAGE_API_KEY) {
+        usd += Math.round(deckTok / 700) * IMAGE_USD_COST;
+      }
       return usdToCredits(usd);
     }
 
     // Parallel sub-requests of a job already paid for by its parent.
     if (body.faruma_sub === true) return 0;
+
+    // FARUMA's core product: a lesson plan is a FLAT 1 credit whenever even
+    // its worst case stays under what one credit earns, so it is never sold
+    // at a loss. Bigger jobs (school's own uploaded template, very long
+    // prompts) fall back to metered pricing automatically.
+    if (body.faruma_job === 'lesson-plan') {
+      const worst = usdCost(model, inTok, maxTok);
+      return worst <= USD_PER_CREDIT_FLOOR ? 1 : usdToCredits(worst);
+    }
 
     return usdToCredits(usdCost(model, inTok, maxTok));
   } catch (e) { return 2; }
@@ -685,7 +699,8 @@ const server = http.createServer(async (req, res) => {
         packs: PACKS,
         signupCredits: SIGNUP_CREDITS,
         bankAccount: BANK_ACCOUNT,
-        adminContact: ADMIN_CONTACT
+        adminContact: ADMIN_CONTACT,
+        imageUsd: (IMAGE_PROVIDER !== 'pollinations' && IMAGE_API_KEY) ? IMAGE_USD_COST : 0
       });
     }
 
