@@ -577,7 +577,44 @@ body::before {
 .t-green{ background:linear-gradient(158deg,#fce7e3 0%,#f2a89c 100%); }  .t-green .home-badge svg{ color:#bf3b2c; }
 .t-peach{ background:linear-gradient(158deg,#fcf1ca 0%,#f3d985 100%); }  .t-peach .home-badge svg{ color:#b07d12; }
 .t-rose { background:linear-gradient(158deg,#fdecc7 0%,#f6cd72 100%); }  .t-rose .home-badge svg { color:#cf9526; }
-.t-sand { background:linear-gradient(158deg,#ffeae0 0%,#ffc6a9 100%); }  .t-sand .home-badge svg { color:#df6d3c; }
+.t-sand { background:linear-gradient(158deg,#ffeae0 0%,#ffc6a9 100%); }
+/* Three tones for the new tools, built the same way as the six above and
+   keyed to the in-app tab colours: teal for Project Based Learning, indigo
+   for Projects, magenta for Games. */
+.t-pine   { background:linear-gradient(158deg,#dcefec 0%,#9ccfc8 100%); }
+.t-pine .home-badge svg   { color:#0e6f66; }
+.t-indigo { background:linear-gradient(158deg,#e6e9f9 0%,#b6bfee 100%); }
+.t-indigo .home-badge svg { color:#4a54a8; }
+.t-plum   { background:linear-gradient(158deg,#fbe3ee 0%,#f0b3d0 100%); }
+.t-plum .home-badge svg   { color:#c2417a; }
+
+/* ── landing feature marquee ──────────────────────────────────────
+   Layout only. Card padding, radius, gradients and badges are untouched. */
+.home-marquee{ position:relative; overflow:hidden; padding:6px 0 10px;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 34px,#000 calc(100% - 34px),transparent);
+          mask-image:linear-gradient(to right,transparent,#000 34px,#000 calc(100% - 34px),transparent); }
+.home-marquee .home-track{ flex-wrap:nowrap; width:max-content; max-width:none;
+  justify-content:flex-start; gap:0; margin:0;
+  animation:home-marq var(--home-marq-dur,54s) linear infinite; }
+.home-set{ display:flex; flex-wrap:nowrap; align-items:stretch; flex:none;
+  gap:clamp(16px,1.8vw,28px); padding-right:clamp(16px,1.8vw,28px); }
+.home-marquee .home-card{ flex:0 0 clamp(228px,18vw,268px); max-width:none; }
+.home-marquee:hover .home-track,
+.home-marquee:focus-within .home-track{ animation-play-state:paused; }
+.home-marquee.home-still{ -webkit-mask-image:none; mask-image:none; }
+.home-marquee.home-still .home-track{ animation:none; width:100%; }
+.home-marquee.home-still .home-set{ flex:1 1 auto; justify-content:center; padding-right:0; }
+.home-marquee.home-still #home-set-clone{ display:none; }
+@keyframes home-marq{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+@media (prefers-reduced-motion:reduce){
+  .home-marquee .home-track{ animation:none; }
+  .home-marquee{ overflow-x:auto; -webkit-mask-image:none; mask-image:none; }
+}
+.home-card{ position:relative; }
+.home-new{ position:absolute; top:14px; right:14px; font-size:9.5px; font-weight:800;
+  letter-spacing:.07em; padding:3px 8px; border-radius:20px;
+  background:rgba(255,255,255,.82); color:#14361a; z-index:2; }
+.home-card:focus-visible{ outline:3px solid var(--ocean-mid); outline-offset:3px; }  .t-sand .home-badge svg { color:#df6d3c; }
 
 .home-ribbon { flex:0 0 auto; border-top:1px solid #e8ebe7; text-align:center; padding:clamp(10px,1.4vh,16px); color:#5b6b63; font-size:14px; background:#fff; }
 
@@ -2500,7 +2537,7 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     <div class="home-hero">
       <h1 class="hero-logo"><span class="faruma-mark hero-mark" role="img" aria-label="FARUMA"></span></h1>
       <p class="hero-dv" lang="dv" dir="rtl" style="font-family:'MV Faseyha','Faruma','A Faruma','MV Boli','MV Elaaf Normal',sans-serif;direction:rtl;text-align:center;white-space:nowrap;font-size:26px;line-height:1.3;font-weight:800;letter-spacing:-.5px;color:var(--ocean-deep);margin:.3rem auto .6rem;text-shadow:0 2px 14px rgba(255,255,255,.65);">ދިވެހި މުދައްރިސުންނަށް އެހީއެއް</p>
-      <p>Everything you teach, aligned to the Maldives National Curriculum &mdash; lesson plans, schemes of work, project based learning, projects, classroom games, checklists, assessments, slides and report cards, all in one place.</p>
+      <p>Everything you teach, aligned to the Maldives National Curriculum &mdash; lessons, schemes, projects, games and assessments, all in one place.</p>
       <div class="fr-hero-cta" style="justify-content:center;margin-top:clamp(14px,2.4vh,24px);">
         <button class="fr-btn fr-btn-green fr-btn-lg" onclick="homeGetStarted()">Start planning &rarr;</button>
         <button class="fr-btn fr-btn-outline fr-btn-lg" onclick="scrollToFeatures()">See what's inside</button>
@@ -2524,32 +2561,114 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
       </div>
     </div>
   <section class="home-cards" id="home-features">
-    <div class="home-track">
-      <article class="home-card t-blue" onclick="openTool('generate')">
+    <!-- One row of feature cards. The track scrolls right-to-left only when the
+         set is wider than the rail; homeSizeMarquee() freezes it, hides the
+         duplicate and lets the cards spread when they all fit. Card size,
+         gradients, badges and icons are unchanged from the finalised design. -->
+    <div class="home-marquee" id="home-marquee">
+      <div class="home-track" id="home-track">
+        <div class="home-set">
+      <article class="home-card t-blue" role="button" tabindex="0" onclick="openTool('generate')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('generate');}">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v5h5"/><path d="M7 13h8M7 17h6"/></svg></div>
         <h3>Lesson Plan</h3><p>Generate full lesson plans in minutes</p>
       </article>
-      <article class="home-card t-mint" onclick="openTool('schemes')">
+      <article class="home-card t-mint" role="button" tabindex="0" onclick="openTool('schemes')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('schemes');}">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg></div>
         <h3>Scheme</h3><p>Build a full term scheme of work</p>
       </article>
-      <article class="home-card t-lilac" onclick="openTool('checklists')">
+      <article class="home-card t-pine" role="button" tabindex="0" onclick="openTool('pbl')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('pbl');}">
+        <span class="home-new">NEW</span>
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 13l2.5 2.5L16 10"/></svg></div>
+        <h3>Project Based Learning</h3><p>Driving question to public product</p>
+      </article>
+      <article class="home-card t-indigo" role="button" tabindex="0" onclick="openTool('projects')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('projects');}">
+        <span class="home-new">NEW</span>
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></div>
+        <h3>Projects</h3><p>Real-world task with a marking rubric</p>
+      </article>
+      <article class="home-card t-plum" role="button" tabindex="0" onclick="openTool('games')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('games');}">
+        <span class="home-new">NEW</span>
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 10v4M5 12h4M15.5 11.5h.01M18 13.5h.01"/></svg></div>
+        <h3>Games</h3><p>Printable puzzles and classroom games</p>
+      </article>
+      <article class="home-card t-lilac" role="button" tabindex="0" onclick="openTool('checklists')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('checklists');}">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16h4"/></svg></div>
         <h3>Checklists</h3><p>Outcome checklists for any class</p>
       </article>
-<article class="home-card t-green" onclick="openTool('assessment')">
+      <article class="home-card t-green" role="button" tabindex="0" onclick="openTool('assessment')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('assessment');}">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></div>
         <h3>Assessment</h3><p>Create assessments from outcomes</p>
       </article>
-      <article class="home-card t-lav" onclick="openTool('slides')">
+      <article class="home-card t-lav" role="button" tabindex="0" onclick="openTool('slides')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('slides');}">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8.5l4 2.5-4 2.5z"/><path d="M12 16v4"/><path d="M8 20h8"/></svg></div>
         <h3>Slides</h3><p>AI PowerPoint decks by design</p>
       </article>
-      <article class="home-card t-peach" onclick="openTool('calendar')">
+      <article class="home-card t-peach" role="button" tabindex="0" onclick="openTool('calendar')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('calendar');}">
         <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
         <h3>Calendar</h3><p>Plan around the school term</p>
       </article>
-</div>
+        </div>
+        <div class="home-set" aria-hidden="true" id="home-set-clone">
+      <article class="home-card t-blue" role="button" tabindex="0" onclick="openTool('generate')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('generate');}">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v5h5"/><path d="M7 13h8M7 17h6"/></svg></div>
+        <h3>Lesson Plan</h3><p>Generate full lesson plans in minutes</p>
+      </article>
+      <article class="home-card t-mint" role="button" tabindex="0" onclick="openTool('schemes')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('schemes');}">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg></div>
+        <h3>Scheme</h3><p>Build a full term scheme of work</p>
+      </article>
+      <article class="home-card t-pine" role="button" tabindex="0" onclick="openTool('pbl')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('pbl');}">
+        <span class="home-new">NEW</span>
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 13l2.5 2.5L16 10"/></svg></div>
+        <h3>Project Based Learning</h3><p>Driving question to public product</p>
+      </article>
+      <article class="home-card t-indigo" role="button" tabindex="0" onclick="openTool('projects')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('projects');}">
+        <span class="home-new">NEW</span>
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></div>
+        <h3>Projects</h3><p>Real-world task with a marking rubric</p>
+      </article>
+      <article class="home-card t-plum" role="button" tabindex="0" onclick="openTool('games')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('games');}">
+        <span class="home-new">NEW</span>
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 10v4M5 12h4M15.5 11.5h.01M18 13.5h.01"/></svg></div>
+        <h3>Games</h3><p>Printable puzzles and classroom games</p>
+      </article>
+      <article class="home-card t-lilac" role="button" tabindex="0" onclick="openTool('checklists')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('checklists');}">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16h4"/></svg></div>
+        <h3>Checklists</h3><p>Outcome checklists for any class</p>
+      </article>
+      <article class="home-card t-green" role="button" tabindex="0" onclick="openTool('assessment')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('assessment');}">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg></div>
+        <h3>Assessment</h3><p>Create assessments from outcomes</p>
+      </article>
+      <article class="home-card t-lav" role="button" tabindex="0" onclick="openTool('slides')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('slides');}">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8.5l4 2.5-4 2.5z"/><path d="M12 16v4"/><path d="M8 20h8"/></svg></div>
+        <h3>Slides</h3><p>AI PowerPoint decks by design</p>
+      </article>
+      <article class="home-card t-peach" role="button" tabindex="0" onclick="openTool('calendar')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('calendar');}">
+        <div class="home-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
+        <h3>Calendar</h3><p>Plan around the school term</p>
+      </article>
+        </div>
+      </div>
+    </div>
   </section>
     <div style="height:clamp(24px,4vw,44px);"></div>
   </section>
@@ -5593,6 +5712,9 @@ function goHome(){
   document.getElementById('auth-overlay').style.display = 'none';
   updateHomeNav();
   window.scrollTo(0,0);
+  /* the rail has no width until the landing page is on screen, so measure
+     after it becomes visible rather than only at load */
+  if(typeof homeSizeMarquee==='function') setTimeout(homeSizeMarquee, 60);
 }
 
 function enterTool(page){
@@ -11491,10 +11613,27 @@ function dbSizeMarquee(){
   /* keep a steady ~70px/second regardless of how many cards there are */
   track.style.setProperty('--db-marq-dur', Math.max(24, Math.round(setW/70))+'s');
 }
+/* Landing page feature row — same rule as the dashboard: only scroll when the
+   cards genuinely overflow, otherwise freeze and let them spread. */
+function homeSizeMarquee(){
+  var rail=document.getElementById('home-marquee'),
+      track=document.getElementById('home-track'),
+      set=track && track.firstElementChild;
+  if(!rail||!track||!set) return;
+  rail.classList.remove('home-still');
+  var setW=set.scrollWidth, railW=rail.clientWidth;
+  if(!railW) return;                       /* landing page not visible yet */
+  if(setW<=railW+4){ rail.classList.add('home-still'); return; }
+  track.style.setProperty('--home-marq-dur', Math.max(30, Math.round(setW/64))+'s');
+}
+window.homeSizeMarquee=homeSizeMarquee;
+
 window.addEventListener('resize', function(){
   clearTimeout(window.__dbMarqT);
-  window.__dbMarqT=setTimeout(dbSizeMarquee, 150);
+  window.__dbMarqT=setTimeout(function(){ dbSizeMarquee(); homeSizeMarquee(); }, 150);
 });
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', homeSizeMarquee);
+else homeSizeMarquee();
 
 /* ── My materials: everything generated on this device ──────────── */
 var dbLibKind = 'all';
