@@ -1855,6 +1855,72 @@ button[style*="background:white"][style*="color:white"]{
 .adm-utable tbody tr:hover{background:#f7fbfc;}
 
 /* ── Credit cost chips next to generate buttons ── */
+/* ══════════ PBL · Projects · Games ══════════ */
+.pg-prodgrid{ display:grid; grid-template-columns:repeat(5,1fr); gap:11px; }
+.pg-gamegrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:11px; margin-top:6px; }
+@media(max-width:900px){ .pg-prodgrid{grid-template-columns:repeat(3,1fr);} .pg-gamegrid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:560px){ .pg-prodgrid{grid-template-columns:repeat(2,1fr);} }
+.pg-pcard,.pg-gcard{ border:1.5px solid var(--line,#e7ecec); border-radius:13px; padding:13px 10px; background:#fff;
+  cursor:pointer; text-align:center; font-family:inherit; display:flex; flex-direction:column; align-items:center;
+  gap:3px; transition:border-color .15s,box-shadow .15s; min-height:44px; }
+.pg-pcard:hover,.pg-gcard:hover{ border-color:var(--ocean-light,#7fb8d4); }
+.pg-pcard.on,.pg-gcard.on{ border-color:var(--leaf-deep,#1f9e5a); box-shadow:0 0 0 3px rgba(31,158,90,.12); background:#fbfefc; }
+.pg-pcard b,.pg-gcard b{ font-size:13px; color:var(--ocean-deep,#13324e); line-height:1.3; }
+.pg-pcard small,.pg-gcard small{ font-size:11px; color:var(--text-light,#5f7d89); line-height:1.35; }
+.pg-pi,.pg-gi{ font-size:21px; }
+.pg-pcard.pg-choice{ grid-column:1/-1; flex-direction:row; text-align:left; gap:13px; border-style:dashed; }
+.pg-pcard.pg-choice b{ display:block; }
+.pg-terms{ display:flex; flex-wrap:wrap; gap:7px; }
+.pg-term{ font-size:13px; font-weight:600; background:#fff; border:1px solid var(--line,#e7ecec);
+  border-radius:7px; padding:6px 10px; color:var(--text-dark,#163049); cursor:pointer; }
+.pg-term:hover{ border-color:var(--coral,#e8624a); color:var(--coral,#e8624a); text-decoration:line-through; }
+
+/* result document */
+.pg-doc{ font-size:14.5px; line-height:1.65; color:var(--text-dark,#163049); }
+.pg-doc h1{ font-size:21px; color:var(--ocean-deep,#13324e); margin:0 0 4px; }
+.pg-doc h2{ font-size:16px; color:var(--ocean-deep,#13324e); margin:22px 0 8px; padding-bottom:4px; border-bottom:1px solid var(--line,#e7ecec); }
+.pg-doc h3{ font-size:14.5px; color:var(--ocean-mid,#1f5e7d); margin:14px 0 6px; }
+.pg-doc p{ margin:0 0 10px; }
+.pg-doc ul,.pg-doc ol{ margin:0 0 10px 20px; }
+.pg-doc li{ margin-bottom:4px; }
+.pg-meta{ color:var(--text-light,#5f7d89); font-size:13px; }
+.pg-note{ font-weight:400; font-size:12.5px; color:var(--text-light,#5f7d89); }
+.pg-dq{ font-family:Georgia,serif; font-size:17px; font-weight:600; color:var(--ocean-deep,#13324e); line-height:1.45; }
+.pg-ex{ background:#f4fbf7; border:1px solid #cdeadb; border-radius:10px; padding:13px 15px; color:#20573c; }
+.pg-tbl{ width:100%; border-collapse:collapse; font-size:13px; margin:8px 0 14px; }
+.pg-tbl th{ background:var(--ocean-pale,#e7f1f7); color:var(--ocean-deep,#13324e); text-align:left;
+  padding:8px 10px; font-weight:700; border:1px solid #d6e3ea; }
+.pg-tbl td{ padding:8px 10px; border:1px solid #e3eaee; vertical-align:top; }
+.pg-tbl tr.pg-hl td{ background:#fdf6e8; }
+.pg-curr td:first-child{ width:130px; font-weight:600; color:var(--text-mid,#4a6370); background:#fbfcfc; }
+.pg-rub td:first-child{ background:#fbfcfc; }
+.pg-rub td.pg-me,.pg-rub th.pg-me{ width:48px; text-align:center; font-size:16px; }
+.pg-tag{ font-size:10px; font-weight:800; letter-spacing:.05em; background:#fdf0d5; color:#8a6516; border-radius:20px; padding:2px 7px; }
+.pg-code{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; font-weight:700;
+  background:var(--ocean-pale,#e7f1f7); color:var(--ocean-mid,#1f5e7d); border-radius:5px; padding:2px 6px; }
+.pg-code.craft{ background:#f1f4f5; color:#7d919a; }
+.pg-qopt{ border:1.5px solid var(--line,#e7ecec); border-radius:12px; padding:13px 15px; margin-bottom:10px; cursor:pointer; background:#fff; }
+.pg-qopt.on{ border-color:var(--leaf-deep,#1f9e5a); box-shadow:0 0 0 3px rgba(31,158,90,.10); background:#fbfefc; }
+.pg-qn{ font-size:10.5px; font-weight:800; letter-spacing:.07em; color:var(--text-light,#5f7d89); }
+.pg-qm{ font-size:12.5px; color:var(--text-mid,#4a6370); }
+
+/* puzzle output */
+.pg-ws{ border-collapse:collapse; margin:10px 0; }
+.pg-ws td{ border:1px solid #c9d6dd; width:28px; height:28px; text-align:center;
+  font-family:ui-monospace,Menlo,monospace; font-weight:700; font-size:14px; color:var(--ocean-deep,#13324e); }
+.pg-wl{ display:flex; flex-wrap:wrap; gap:6px 16px; margin-bottom:10px; }
+.pg-wl span{ font-weight:600; font-size:13.5px; }
+.pg-cut{ width:100%; border-collapse:collapse; margin:10px 0; }
+.pg-cut td{ border:1px dashed #8fa3ad; padding:12px; font-size:13.5px; vertical-align:middle; }
+.pg-cut td.pg-cw{ font-weight:700; width:32%; font-size:15px; color:var(--ocean-deep,#13324e); }
+.pg-cut td.pg-loop{ line-height:1.7; }
+.pg-fl{ width:100%; border-collapse:collapse; }
+.pg-fl td{ border:1px solid #c9d6dd; padding:14px 10px; font-weight:600; text-align:center; }
+.pg-bingo{ display:inline-block; width:48%; margin:1%; vertical-align:top; }
+.pg-bhead{ font-size:11px; font-weight:800; letter-spacing:.08em; color:var(--ocean-mid,#1f5e7d); margin-bottom:3px; }
+.pg-bingo table{ width:100%; border-collapse:collapse; }
+.pg-bingo td{ border:1px solid #9fb2bb; padding:12px 4px; text-align:center; font-size:12.5px; font-weight:600; }
+
 .fr-costrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 10px;}
 .fr-costchip{display:inline-flex;align-items:center;gap:6px;background:#fff4ee;
   border:1px solid #f3c9b5;color:#b8501f;font-size:14px;font-weight:700;
@@ -1945,6 +2011,9 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
       <button class="sh-nav on" data-page="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</button>
       <button class="sh-nav" data-page="generate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v5h5"/><path d="M7 13h8M7 17h6"/></svg>Lesson Plan</button>
       <button class="sh-nav" data-page="schemes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg>Scheme</button>
+      <button class="sh-nav" data-page="pbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 13l2.5 2.5L16 10"/></svg>Project Based Learning</button>
+      <button class="sh-nav" data-page="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>Projects</button>
+      <button class="sh-nav" data-page="games"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 10v4M5 12h4M15.5 11.5h.01M18 13.5h.01"/></svg>Games</button>
       <button class="sh-nav" data-page="checklists"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16h4"/></svg>Checklists</button>
       <button class="sh-nav" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h6"/></svg>Assessment</button>
       <button class="sh-nav" data-page="slides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8.5l4 2.5-4 2.5z"/><path d="M12 16v4M8 20h8"/></svg>Slides</button>
@@ -2677,6 +2746,238 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
     </select>
   </section>
   <iframe id="sow-frame" title="Scheme of Work Generator" style="width:100%;height:calc(100vh - 260px);min-height:640px;border:0;border-radius:14px;background:#fff;box-shadow:0 1px 2px rgba(15,76,92,.06),0 8px 24px rgba(15,76,92,.07);"></iframe>
+</div>
+
+<!-- ══════════ PROJECT BASED LEARNING ══════════ -->
+<div class="page" id="page-pbl">
+<div class="card">
+  <div class="card-title">Project Based Learning</div>
+  <p style="font-size:14.5px;color:var(--text-mid);line-height:1.6;margin:-4px 0 4px;">Plan a multi-week unit &mdash; driving question, entry event, milestones with a critique round, a public product and a separate knowledge check. Group size and length are set automatically by key stage. For a single task with one product and one rubric, use <b>Projects</b>.</p>
+</div>
+
+<div class="card">
+  <div class="curr-panel">
+    <div class="curr-title">&#128218; Select National Curriculum Standard</div>
+    <div class="curr-sub" style="margin-bottom:12px;">Choose grade, subject, strand &amp; outcome &mdash; the whole project is built from these codes.</div>
+    <div class="g3">
+      <div class="field"><label>Grade</label><select id="pbl-grade" onchange="pgOnGrade('pbl')">
+        <option value="">-- Select Grade --</option>
+        <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+        <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+        <option>Grade 7</option><option>Grade 8</option>
+      </select></div>
+      <div class="field"><label>Lead subject</label><select id="pbl-sub" onchange="pgOnSub('pbl')" disabled>
+        <option value="">-- Select Subject --</option>
+      </select></div>
+      <div class="field"><label>Supporting subject <span style="font-weight:400;color:var(--text-light);">(optional)</span></label><select id="pbl-sub2">
+        <option value="">-- none --</option>
+      </select></div>
+    </div>
+    <button class="btn btn-orange" type="button" style="width:auto;padding:11px 18px;" onclick="cbOpen('pbl')">&#128218; Select outcome &amp; indicators</button>
+    <div id="cb-pbl-chip" style="margin-top:12px;"></div>
+  </div>
+  <div id="pbl-ks" style="display:none;background:var(--ocean-pale);border-radius:8px;padding:12px;margin-top:12px;font-size:14px;line-height:1.7;"></div>
+</div>
+
+<div class="card">
+  <div class="card-title">Project shape</div>
+  <div class="g3">
+    <div class="field"><label>Lessons available</label><select id="pbl-lessons"></select></div>
+    <div class="field"><label>Public audience</label><select id="pbl-aud">
+      <option>Another class in school</option>
+      <option>Parents at assembly</option>
+      <option>Whole school display</option>
+      <option>Island council</option>
+      <option>A local business or guesthouse</option>
+      <option>Community group / NGO</option>
+    </select></div>
+    <div class="field"><label>Context</label><select id="pbl-theme">
+      <option>Island &amp; community</option>
+      <option>Sustainability &amp; environment</option>
+      <option>Heritage &amp; oral history</option>
+      <option>Health campaign</option>
+      <option>Design &amp; make</option>
+      <option>Media campaign</option>
+    </select></div>
+  </div>
+  <div class="field"><label>Anything you already know <span style="font-weight:400;color:var(--text-light);">(optional &mdash; a visitor you can arrange, a place you can walk to, a problem your class is talking about)</span></label>
+    <input type="text" id="pbl-hook" placeholder="e.g. the Grade 1 teacher says her children walk near the harbour">
+  </div>
+</div>
+
+<div class="card">
+  <div class="fr-costrow"><span class="fr-costchip" id="pbl-cost">&#9679; 2 credits</span><span class="fr-costnote">Charged only if the plan is generated. Unused credits are returned automatically.</span></div>
+  <button class="btn btn-blue" id="pbl-btn" onclick="doPBL()">&#9998; Generate project plan</button>
+  <div class="status" id="pbl-status"></div>
+</div>
+
+<div class="card" id="pbl-outwrap" style="display:none;">
+  <div class="card-title">Your project plan</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+    <button class="btn btn-sm btn-navy" style="width:auto;" onclick="pgPrint('pbl-out','Project plan')">&#128424; Print / PDF</button>
+    <button class="btn btn-sm btn-navy" style="width:auto;" onclick="pgDocx('pbl-out','Project_plan')">&#11015; Word (.docx)</button>
+  </div>
+  <div id="pbl-out" class="pg-doc"></div>
+</div>
+</div>
+
+<!-- ══════════ PROJECTS ══════════ -->
+<div class="page" id="page-projects">
+<div class="card">
+  <div class="card-title">Projects</div>
+  <p style="font-size:14.5px;color:var(--text-mid);line-height:1.6;margin:-4px 0 4px;">One task, one product, one rubric. Pick your outcomes and what students will make &mdash; FARUMA writes a real-world question and a rubric with a criterion for every indicator, in &ldquo;I can&hellip;&rdquo; success-criteria language.</p>
+</div>
+
+<div class="card">
+  <div class="curr-panel">
+    <div class="curr-title">&#128218; Select National Curriculum Standard</div>
+    <div class="curr-sub" style="margin-bottom:12px;">Every indicator you select becomes one row of the rubric. Three to five is the sweet spot.</div>
+    <div class="g3">
+      <div class="field"><label>Grade</label><select id="pj-grade" onchange="pgOnGrade('pj')">
+        <option value="">-- Select Grade --</option>
+        <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+        <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+        <option>Grade 7</option><option>Grade 8</option>
+      </select></div>
+      <div class="field"><label>Lead subject</label><select id="pj-sub" onchange="pgOnSub('pj')" disabled>
+        <option value="">-- Select Subject --</option>
+      </select></div>
+      <div class="field"><label>Supporting subject <span style="font-weight:400;color:var(--text-light);">(optional)</span></label><select id="pj-sub2">
+        <option value="">-- none --</option>
+      </select></div>
+    </div>
+    <button class="btn btn-orange" type="button" style="width:auto;padding:11px 18px;" onclick="cbOpen('pj')">&#128218; Select outcome &amp; indicators</button>
+    <div id="cb-pj-chip" style="margin-top:12px;"></div>
+  </div>
+  <div id="pj-ks" style="display:none;background:var(--ocean-pale);border-radius:8px;padding:12px;margin-top:12px;font-size:14px;line-height:1.7;"></div>
+</div>
+
+<div class="card">
+  <div class="card-title">Final product</div>
+  <div class="curr-sub" style="margin-bottom:12px;">What will students actually make? This shapes the question, the craft criterion and the time estimate.</div>
+  <div class="pg-prodgrid" id="pj-prodgrid"></div>
+  <div id="pj-warn" style="display:none;background:#fdf6e8;border:1px solid #f0dfae;border-radius:10px;padding:12px 14px;font-size:13.5px;color:#7d5f1d;line-height:1.6;margin-top:14px;"></div>
+</div>
+
+<div class="card">
+  <div class="card-title">Rubric</div>
+  <div class="g3">
+    <div class="field"><label>Scale points</label><select id="pj-points" onchange="pjRefreshScales()">
+      <option value="3">3 levels</option>
+      <option value="4" selected>4 levels</option>
+      <option value="5">5 levels</option>
+      <option value="1">Single point</option>
+    </select></div>
+    <div class="field"><label>Students work</label><select id="pj-group">
+      <option>In pairs</option><option>In threes</option><option>Individually</option>
+    </select></div>
+    <div class="field"><label>Craft criterion</label><select id="pj-craft">
+      <option value="1">Add 1 (layout &amp; audience)</option>
+      <option value="0">None &mdash; outcomes only</option>
+    </select></div>
+  </div>
+  <div class="field" style="margin-bottom:6px;"><label>Scale <span style="font-weight:400;color:var(--text-light);">&mdash; you can change this after generating, free of charge</span></label>
+    <select id="pj-scale" onchange="pjRelabel()"></select>
+  </div>
+  <div id="pj-scalenote" style="font-size:13px;color:var(--text-mid);line-height:1.6;"></div>
+</div>
+
+<div class="card">
+  <div class="fr-costrow"><span class="fr-costchip" id="pj-cost">&#9679; 1 credit</span><span class="fr-costnote">Charged only if the task is generated. Unused credits are returned automatically.</span></div>
+  <button class="btn btn-blue" id="pj-btn" onclick="doProject()">&#9998; Generate question &amp; rubric</button>
+  <div class="status" id="pj-status"></div>
+</div>
+
+<div class="card" id="pj-outwrap" style="display:none;">
+  <div class="card-title">Your task</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;">
+    <button class="btn btn-sm btn-navy" style="width:auto;" onclick="pgPrint('pj-out','Project task')">&#128424; Print / PDF</button>
+    <button class="btn btn-sm btn-navy" style="width:auto;" onclick="pgDocx('pj-out','Project_task')">&#11015; Word (.docx)</button>
+    <button class="btn btn-sm" style="width:auto;background:none;border:1.5px solid var(--sand-dark);color:var(--text-mid);" onclick="pjToggleView()"><span id="pj-viewlbl">Show teacher version</span></button>
+  </div>
+  <div id="pj-out" class="pg-doc"></div>
+</div>
+</div>
+
+<!-- ══════════ GAMES ══════════ -->
+<div class="page" id="page-games">
+<div class="card">
+  <div class="card-title">Games</div>
+  <p style="font-size:14.5px;color:var(--text-mid);line-height:1.6;margin:-4px 0 4px;">Printable puzzles are built on your device straight from the syllabus vocabulary &mdash; no AI, no credits, works offline. Classroom games are written for you and always come with a debrief step.</p>
+</div>
+
+<div class="card">
+  <div class="curr-panel">
+    <div class="curr-title">&#128218; Select National Curriculum Standard</div>
+    <div class="curr-sub" style="margin-bottom:12px;">Choose grade, subject, strand &amp; outcome &mdash; the word bank and the game are built from these codes.</div>
+    <div class="g2">
+      <div class="field"><label>Grade</label><select id="gm-grade" onchange="pgOnGrade('gm')">
+        <option value="">-- Select Grade --</option>
+        <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+        <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+        <option>Grade 7</option><option>Grade 8</option>
+      </select></div>
+      <div class="field"><label>Subject</label><select id="gm-sub" onchange="pgOnSub('gm')" disabled>
+        <option value="">-- Select Subject --</option>
+      </select></div>
+    </div>
+    <button class="btn btn-orange" type="button" style="width:auto;padding:11px 18px;" onclick="cbOpen('gm')">&#128218; Select outcome &amp; indicators</button>
+    <div id="cb-gm-chip" style="margin-top:12px;"></div>
+  </div>
+  <div id="gm-ks" style="display:none;background:var(--ocean-pale);border-radius:8px;padding:12px;margin-top:12px;font-size:14px;line-height:1.7;"></div>
+</div>
+
+<div class="card" id="gm-bankcard" style="display:none;">
+  <div class="card-title">Word bank</div>
+  <div class="curr-sub" style="margin-bottom:10px;">Pulled from your indicators. Click a word to remove it. Add your own below.</div>
+  <div id="gm-bank" class="pg-terms"></div>
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:12px;">
+    <div class="field" style="margin:0;flex:1 1 240px;"><label>Add words (comma separated)</label><input type="text" id="gm-add" placeholder="reef, habitat, offspring"></div>
+    <button class="btn btn-sm btn-navy" style="width:auto;margin-bottom:2px;" onclick="gmAddTerms()">Add</button>
+    <button class="btn btn-sm" style="width:auto;margin-bottom:2px;background:none;border:1.5px solid var(--sand-dark);color:var(--text-mid);" onclick="gmRebuildBank()">Reset</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Printable puzzles</div>
+  <div class="fr-costrow" style="margin-top:0;"><span class="fr-costchip fr-costfree">&#9679; Free &mdash; no credits</span><span class="fr-costnote">Built on your device. Every word is checked before the sheet prints.</span></div>
+  <div class="pg-gamegrid" id="gm-puzzgrid"></div>
+  <div class="g3" style="margin-top:14px;">
+    <div class="field"><label>Grid size</label><select id="gm-size">
+      <option value="8">8 &times; 8</option><option value="10">10 &times; 10</option>
+      <option value="12" selected>12 &times; 12</option><option value="15">15 &times; 15</option>
+    </select></div>
+    <div class="field"><label>Directions</label><select id="gm-dir">
+      <option value="1">Across and down only</option>
+      <option value="2">Include diagonals</option>
+      <option value="3">Include backwards</option>
+    </select></div>
+    <div class="field"><label>Bingo cards</label><select id="gm-cards">
+      <option>15</option><option selected>30</option><option>40</option>
+    </select></div>
+  </div>
+  <button class="btn btn-blue" id="gm-buildbtn" onclick="gmBuild()">&#127922; Build puzzle</button>
+  <div class="status" id="gm-status"></div>
+</div>
+
+<div class="card">
+  <div class="card-title">Classroom games</div>
+  <div class="curr-sub" style="margin-bottom:12px;">Written for you, with rules, materials, a no-tech version and a mandatory debrief tying strategy back to the concept.</div>
+  <div class="pg-gamegrid" id="gm-aigrid"></div>
+  <div class="fr-costrow"><span class="fr-costchip" id="gm-cost">&#9679; 1 credit</span><span class="fr-costnote">Charged only if the game is generated. Unused credits are returned automatically.</span></div>
+  <button class="btn btn-blue" id="gm-aibtn" onclick="doGame()">&#9998; Generate classroom game</button>
+  <div class="status" id="gm-aistatus"></div>
+</div>
+
+<div class="card" id="gm-outwrap" style="display:none;">
+  <div class="card-title">Your game</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+    <button class="btn btn-sm btn-navy" style="width:auto;" onclick="pgPrint('gm-out','Game')">&#128424; Print / PDF</button>
+    <button class="btn btn-sm btn-navy" style="width:auto;" onclick="pgDocx('gm-out','Game')">&#11015; Word (.docx)</button>
+    <button class="btn btn-sm" id="gm-keybtn" style="width:auto;display:none;background:none;border:1.5px solid var(--sand-dark);color:var(--text-mid);" onclick="gmToggleKey()">Show answer key</button>
+  </div>
+  <div id="gm-out" class="pg-doc"></div>
+</div>
 </div>
 
 <div class="page" id="page-checklists">
@@ -3486,7 +3787,7 @@ var FR_DETAIL = {
   },
   comprehensive: {
     label:'Comprehensive',
-    rule:'DETAIL LEVEL: COMPREHENSIVE. Write the plan out in full — 4-6 bullets per field, every activity described step by step with what the teacher says and does, what pupils do, the materials at each step, likely misconceptions and how to address them, and specific questions to ask. A trainee teacher or a relief teacher should be able to deliver this lesson from the page alone. Be thorough, but never repeat yourself.\n'
+    rule:'DETAIL LEVEL: COMPREHENSIVE. Write the plan out in full — 4-6 bullets per field, every activity described step by step with what the teacher says and does, what students do, the materials at each step, likely misconceptions and how to address them, and specific questions to ask. A trainee teacher or a relief teacher should be able to deliver this lesson from the page alone. Be thorough, but never repeat yourself.\n'
   }
 };
 function frDetailRule(){
@@ -3864,7 +4165,7 @@ async function doGenerate() {
       prompt += "\n\nATTACHED WORD DOCUMENT (\"" + _att.name + "\") — its content is below; use it as the basis for a teaching activity:\n\"\"\"\n" + String(_att.text).slice(0, 6000) + "\n\"\"\"";
     }
     var what = _att.kind === 'image' ? 'an image' : _att.kind === 'pdf' ? 'a PDF document (attached with this message)' : 'a Word document (content shown above)';
-    prompt += "\n\nATTACHED MATERIAL: The teacher attached " + what + " as an activity idea. Design at least one concrete teaching & learning activity that directly uses this material — describe exactly what pupils do with it (observe, read, discuss, label, sort, compare, answer questions on it, write about it, role-play, etc.), refer to what it actually contains, weave it into the main body of the lesson, and keep it appropriate for the grade and subject." + (isThaanaSubject(currentSub) ? " Write this activity in Thaana like the rest of the content." : "");
+    prompt += "\n\nATTACHED MATERIAL: The teacher attached " + what + " as an activity idea. Design at least one concrete teaching & learning activity that directly uses this material — describe exactly what students do with it (observe, read, discuss, label, sort, compare, answer questions on it, write about it, role-play, etc.), refer to what it actually contains, weave it into the main body of the lesson, and keep it appropriate for the grade and subject." + (isThaanaSubject(currentSub) ? " Write this activity in Thaana like the rest of the content." : "");
   }
 
   try {
@@ -5710,6 +6011,851 @@ function clReset(from){
   document.getElementById('cl-btn').disabled=true;
   clCurrentOutcomeData=[];
 }
+/* ══════════════════════════════════════════════════════════════════
+   FARUMA — Project Based Learning · Projects · Games
+   Shared state, curriculum wiring, generation and export.
+   ══════════════════════════════════════════════════════════════════ */
+
+var PG = { pbl:{}, pj:{}, gm:{} };
+var PG_LABEL = { pbl:'Project Based Learning', pj:'Projects', gm:'Games' };
+
+/* ── Key stage ─────────────────────────────────────────────────── */
+function pgGradeNum(g){ var m=/(\d+)/.exec(g||''); return m?parseInt(m[1],10):0; }
+function pgKS(g){ var n=pgGradeNum(g); if(n<=3)return 1; if(n<=6)return 2; return 3; }
+function pgKSInfo(g){
+  var ks=pgKS(g);
+  if(ks===1) return { ks:1, group:'pairs', groupN:2, roles:'Doer / Recorder, swapped halfway',
+      minL:3, maxL:8, lenText:'3\u20138 lessons', inquiry:'structured inquiry (teacher gives the question and the method; students generate the explanation)',
+      points:3, maxCrit:4, kc:'RP.KS1.01 \u00b7 TCC.KS1.02 \u00b7 LSD.KS1.01', tpl:'Micro-project' };
+  if(ks===2) return { ks:2, group:'threes', groupN:3, roles:'Organiser / Recorder / Presenter',
+      minL:6, maxL:15, lenText:'2\u20133 weeks', inquiry:'guided inquiry (teacher gives the question; students design the method)',
+      points:4, maxCrit:5, kc:'RP.KS2.02 \u00b7 TCC.KS2.01 \u00b7 LSD.KS2.03', tpl:'Unit project' };
+  return { ks:3, group:'threes to fours', groupN:4, roles:'Organiser / Recorder / Presenter / Time-keeper',
+      minL:9, maxL:24, lenText:'3\u20136 weeks', inquiry:'guided-to-open inquiry (students refine the question inside a teacher-set problem space)',
+      points:4, maxCrit:6, kc:'RP.KS3.01 \u00b7 TCC.KS3.02 \u00b7 LSD.KS3.03', tpl:'Extended project' };
+}
+
+/* ── Rubric scale library ──────────────────────────────────────── */
+var PG_SCALES = [
+ {id:'standards', name:'Standards', tone:'Neutral', pts:4, safe:true,  lv:{L1:'Beginning',L3:'Developing',L4:'Secure',L5:'Extending'}},
+ {id:'expect',    name:'Expectations', tone:'Neutral', pts:4, safe:true, lv:{L1:'Not yet meeting',L3:'Approaching',L4:'Meeting',L5:'Exceeding'}},
+ {id:'three',     name:'Three level', tone:'Neutral', pts:3, safe:true, lv:{L1:'Not yet',L3:'Developing',L4:'Secure'}},
+ {id:'notyet',    name:'Not Yet', tone:'Growth', pts:4, safe:false, lv:{L1:'Not yet',L3:'Getting there',L4:'Got it',L5:'Got it and more'}},
+ {id:'notyet3',   name:'Not Yet (3)', tone:'Growth', pts:3, safe:false, lv:{L1:'Not yet',L3:'Getting there',L4:'I can do it'}},
+ {id:'almost',    name:'Almost There', tone:'Growth', pts:4, safe:false, lv:{L1:'Just starting',L3:'Almost there',L4:'Just right',L5:'Just right and beyond'}},
+ {id:'growing',   name:'Growing', tone:'Growth', pts:4, safe:false, lv:{L1:'Planting',L3:'Sprouting',L4:'Growing strong',L5:'Bearing fruit'}},
+ {id:'help',      name:'Help Level', tone:'Independence', pts:4, safe:false, lv:{L1:'With my teacher',L3:'With reminders',L4:'With a little help',L5:'On my own'}},
+ {id:'onmyown',   name:'On My Own', tone:'Independence', pts:4, safe:false, lv:{L1:'Show me',L3:'Help me',L4:'Watch me',L5:'I\u2019ve got this'}},
+ {id:'release',   name:'Gradual Release', tone:'Independence', pts:4, safe:true, lv:{L1:'Modelled',L3:'Guided',L4:'Supported',L5:'Independent'}},
+ {id:'ican',      name:'I Can', tone:'Student voice', pts:4, safe:false, lv:{L1:'I\u2019m learning this',L3:'I can with help',L4:'I can on my own',L5:'I can teach someone'}},
+ {id:'traffic',   name:'Traffic Light', tone:'Student voice', pts:3, safe:false, lv:{L1:'Red \u2014 I need help',L3:'Amber \u2014 getting there',L4:'Green \u2014 I can do it'}},
+ {id:'ideas5',    name:'Ideas (SOLO)', tone:'Depth', pts:5, safe:false, lv:{L1:'No idea yet',L2:'One idea',L3:'Several ideas',L4:'Ideas connected',L5:'Ideas extended'}},
+ {id:'ideas4',    name:'Ideas (short)', tone:'Depth', pts:4, safe:false, lv:{L1:'One idea',L3:'Several ideas',L4:'Ideas connected',L5:'Ideas extended'}},
+ {id:'diving',    name:'Diving Deeper', tone:'Depth', pts:4, safe:false, lv:{L1:'In the shallows',L3:'At the reef edge',L4:'In the blue',L5:'Beyond the reef'}},
+ {id:'dhoni',     name:'Dhoni Voyage', tone:'Themed', pts:4, safe:false, lv:{L1:'At the harbour',L3:'Sailing out',L4:'Under full sail',L5:'Reached the island'}},
+ {id:'palm',      name:'Coconut Palm', tone:'Themed', pts:4, safe:false, lv:{L1:'Seed',L3:'Shoot',L4:'Young palm',L5:'Full palm'}},
+ {id:'reef',      name:'Coral Reef', tone:'Themed', pts:4, safe:false, lv:{L1:'New coral',L3:'Growing coral',L4:'Healthy reef',L5:'Thriving reef'}},
+ {id:'journey',   name:'Island Journey', tone:'Themed', pts:4, safe:false, lv:{L1:'Setting off',L3:'On the path',L4:'Nearly there',L5:'Arrived'}},
+ {id:'climb',     name:'Climbing', tone:'Themed', pts:4, safe:false, lv:{L1:'Base camp',L3:'On the trail',L4:'Near the top',L5:'At the summit'}},
+ {id:'build',     name:'Building It', tone:'Themed', pts:4, safe:false, lv:{L1:'Foundation',L3:'Walls up',L4:'Roof on',L5:'Finishing touches'}},
+ {id:'puzzle',    name:'Puzzle', tone:'Themed', pts:4, safe:false, lv:{L1:'A few pieces',L3:'Half the picture',L4:'Picture complete',L5:'Picture plus extra'}},
+ {id:'torch',     name:'Torchlight', tone:'Themed', pts:4, safe:false, lv:{L1:'Spark',L3:'Glow',L4:'Bright',L5:'Beacon'}},
+ {id:'single',    name:'Single point', tone:'Neutral', pts:1, safe:true, lv:{L4:'The target'}}
+];
+function pgScale(id){ for(var i=0;i<PG_SCALES.length;i++) if(PG_SCALES[i].id===id) return PG_SCALES[i]; return PG_SCALES[0]; }
+function pgAnchors(pts){
+  if(pts===1) return ['L4'];
+  if(pts===3) return ['L1','L3','L4'];
+  if(pts===5) return ['L1','L2','L3','L4','L5'];
+  return ['L1','L3','L4','L5'];
+}
+
+/* ── Product profiles ──────────────────────────────────────────── */
+var PG_PRODUCTS = [
+ {id:'leaflet',  name:'Leaflet',   emoji:'\uD83D\uDCDC', mode:'written+visual', lessons:'2\u20133 lessons', tech:false,
+   evid:'short explanations, labelled diagrams, information for a reader', weak:'extended argument, sequencing over time'},
+ {id:'brochure', name:'Brochure',  emoji:'\uD83D\uDCC3', mode:'written+visual', lessons:'3 lessons', tech:false,
+   evid:'persuasion, describing places and features, organising information into sections', weak:'detailed reasoning'},
+ {id:'poster',   name:'Poster',    emoji:'\uD83D\uDDBC\uFE0F', mode:'visual', lessons:'2 lessons', tech:false,
+   evid:'key facts, a single clear message, labelled visuals', weak:'explaining, sequencing, comparing'},
+ {id:'video',    name:'Video',     emoji:'\uD83C\uDFA5', mode:'oral+visual', lessons:'4 lessons', tech:true,
+   evid:'explaining, demonstrating a process, speaking to an audience', weak:'written accuracy, detailed data'},
+ {id:'slides',   name:'Presentation', emoji:'\uD83D\uDCCA', mode:'oral+visual', lessons:'3 lessons', tech:true,
+   evid:'structured explanation, data display, speaking to an audience', weak:'depth of written detail'},
+ {id:'booklet',  name:'Booklet',   emoji:'\uD83D\uDCD3', mode:'written', lessons:'4 lessons', tech:false,
+   evid:'extended writing, sequencing, several linked ideas', weak:'oral fluency'},
+ {id:'roleplay', name:'Role play',  emoji:'\uD83C\uDFAD', mode:'oral', lessons:'2 lessons', tech:false,
+   evid:'understanding of viewpoints, cause and effect, speaking and listening', weak:'factual accuracy, recorded data'},
+ {id:'organizer',name:'Graphic organizer', emoji:'\uD83E\uDDE9', mode:'visual', lessons:'1\u20132 lessons', tech:false,
+   evid:'sorting, classifying, showing relationships between ideas', weak:'extended explanation, persuasion'},
+ {id:'diorama',  name:'Diorama',   emoji:'\uD83C\uDFDE\uFE0F', mode:'physical', lessons:'3 lessons', tech:false,
+   evid:'spatial understanding, habitats, settings, physical relationships', weak:'explaining WHY \u2014 needs caption cards or a spoken explanation'},
+ {id:'choice',   name:'Students choose', emoji:'\u2728', mode:'any', lessons:'varies', tech:false,
+   evid:'whatever the student selects', weak:'\u2014'}
+];
+function pgProduct(id){ for(var i=0;i<PG_PRODUCTS.length;i++) if(PG_PRODUCTS[i].id===id) return PG_PRODUCTS[i]; return PG_PRODUCTS[0]; }
+
+/* verbs that a visual-only / physical product struggles to evidence */
+var PG_EXPLAIN_VERBS = /(explain|describ|justif|compar|discuss|reason|analys|analyz|evaluat|reflect|investigat|interpret)/i;
+
+/* ── Grade / subject wiring ────────────────────────────────────── */
+function pgOnGrade(p){
+  var g = (document.getElementById(p+'-grade')||{}).value || '';
+  PG[p].grade = g; PG[p].outcome = null; PG[p].inds = [];
+  if(typeof cbClearSel==='function') try{ cbClearSel(p); }catch(e){}
+  var subs=[];
+  if(g) SYLLABUS.forEach(function(d){ if(d.grade===g && subs.indexOf(d.subject)<0) subs.push(d.subject); });
+  var s=document.getElementById(p+'-sub');
+  if(s){ s.innerHTML='<option value="">-- Select Subject --</option>'+subs.map(function(x){return '<option>'+x+'</option>';}).join(''); s.disabled=!g; }
+  var s2=document.getElementById(p+'-sub2');
+  if(s2) s2.innerHTML='<option value="">-- none --</option>'+subs.map(function(x){return '<option>'+x+'</option>';}).join('');
+  pgRenderKS(p);
+  if(p==='pbl') pblFillLessons();
+  if(p==='pj')  pjRefreshScales();
+  if(p==='gm')  gmRebuildBank();
+  pgUpdateCosts();
+}
+function pgOnSub(p){
+  PG[p].sub = (document.getElementById(p+'-sub')||{}).value || '';
+  PG[p].outcome=null; PG[p].inds=[];
+  if(typeof cbClearSel==='function') try{ cbClearSel(p); }catch(e){}
+  pgRenderKS(p);
+  if(p==='gm') gmRebuildBank();
+  pgUpdateCosts();
+}
+function pgRenderKS(p){
+  var box=document.getElementById(p+'-ks'); if(!box) return;
+  var g=PG[p].grade||''; if(!g){ box.style.display='none'; return; }
+  var k=pgKSInfo(g);
+  var html='<b>Key Stage '+k.ks+'</b> &mdash; ';
+  if(p==='gm'){
+    html += 'games run '+(k.ks===1?'10\u201315 minutes with one-sentence rules':(k.ks===2?'up to a full lesson, team-based':'full lesson, simulations and student-designed games'))
+          + '. '+(k.ks<3?'No individual leaderboards at this key stage \u2014 cooperative or &ldquo;beat our class record&rdquo; framing only.':'Team or individual scoring both fine.');
+  } else {
+    html += 'students work in <b>'+k.group+'</b> ('+k.roles+') &middot; '+k.tpl+' &middot; '+k.lenText
+          + '<br>Inquiry level: '+k.inquiry
+          + '<br>Key Competencies: <b>'+k.kc+'</b>';
+  }
+  box.innerHTML=html; box.style.display='block';
+}
+
+/* ── Selection summary shared by all three tabs ────────────────── */
+function pgSel(p){
+  var o=PG[p].outcome, inds=PG[p].inds||[];
+  return { grade:PG[p].grade||'', sub:PG[p].sub||'',
+           sub2:(document.getElementById(p+'-sub2')||{}).value||'',
+           outcome:o, inds:inds };
+}
+function pgSelOK(p, min){
+  var s=pgSel(p);
+  if(!s.grade||!s.sub){ setStatus(p+'-status','error','Please choose a grade and subject first.'); return null; }
+  if(!s.outcome){ setStatus(p+'-status','error','Please select an outcome and its indicators using the curriculum button.'); return null; }
+  if(s.inds.length < (min||1)){ setStatus(p+'-status','error','Please tick at least '+(min||1)+' indicator'+((min||1)>1?'s':'')+'.'); return null; }
+  return s;
+}
+function pgCurrBlock(s){
+  return 'CURRICULUM (Maldives National Curriculum, NIE):\n'
+    + 'Grade: '+s.grade+'\nLead subject: '+s.sub+(s.sub2?('\nSupporting subject: '+s.sub2):'')
+    + '\nStrand: '+(s.outcome.strand||'')+'\nSub-strand: '+(s.outcome.sub||'')
+    + '\nOutcome '+s.outcome.code+': '+s.outcome.stmt+'\n'
+    + 'Indicators to be assessed (one rubric criterion per indicator):\n'
+    + s.inds.map(function(x){ return '  - '+x.code+': '+x.text; }).join('\n') + '\n';
+}
+function pgPedagogy(g){
+  var k=pgKSInfo(g);
+  return '\nNON-NEGOTIABLE PEDAGOGY RULES (Key Stage '+k.ks+'):\n'
+    + '- Say "students", never "pupils", anywhere in the output.\n'
+    + '- Group size is '+k.group+'. Do not suggest larger groups.\n'
+    + '- Inquiry level must be '+k.inquiry+'.\n'
+    + '- Every level of a rubric must change WHAT THE STUDENT DOES, not merely add an adverb. Never write ladders like "clearly / very clearly / extremely clearly".\n'
+    + '- The lowest level must be dignified. Never shaming.\n'
+    + '- Assume no internet, no printer and no devices. Paper, card, chart paper, a walk outside.\n'
+    + '- Use Maldivian island contexts where a context is needed (harbour, reef, health centre, island council, magu, Nakaiy, waste barge, guesthouse).\n'
+    + '- Reading level must match '+g+'.\n';
+}
+
+/* ── Cost chips ────────────────────────────────────────────────── */
+function pgUpdateCosts(){
+  try{
+    frSetChip('pbl-cost', frCreditsFor('claude-sonnet-4-6', 3000, 7000));
+    frSetChip('pj-cost',  frCreditsFor('claude-sonnet-4-6', 2400, 4500));
+    frSetChip('gm-cost',  frCreditsFor('claude-sonnet-4-6', 2200, 3500));
+  }catch(e){}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PROJECT BASED LEARNING
+   ══════════════════════════════════════════════════════════════ */
+function pblFillLessons(){
+  var sel=document.getElementById('pbl-lessons'); if(!sel) return;
+  var k=pgKSInfo(PG.pbl.grade||'Grade 4'); var out='';
+  for(var n=k.minL;n<=k.maxL;n++) out+='<option value="'+n+'"'+(n===Math.round((k.minL+k.maxL)/2)?' selected':'')+'>'+n+' lessons</option>';
+  sel.innerHTML=out;
+}
+
+async function doPBL(){
+  var s=pgSelOK('pbl',2); if(!s) return;
+  var k=pgKSInfo(s.grade);
+  var btn=document.getElementById('pbl-btn'); btn.disabled=true;
+  setStatus('pbl-status','info','Writing your project plan\u2026 this takes about 40 seconds.');
+  var lessons=(document.getElementById('pbl-lessons')||{}).value||k.minL;
+  var prompt = 'You are an expert Maldivian primary/lower-secondary curriculum designer. Write a complete PROJECT BASED LEARNING unit plan.\n\n'
+    + pgCurrBlock(s)
+    + '\nPROJECT SHAPE:\nLessons available: '+lessons+'\nPublic audience: '+((document.getElementById('pbl-aud')||{}).value||'')
+    + '\nContext: '+((document.getElementById('pbl-theme')||{}).value||'')
+    + '\nTeacher note: '+(((document.getElementById('pbl-hook')||{}).value||'').trim()||'none')
+    + pgPedagogy(s.grade)
+    + '- The project MUST contain a critique-and-revision milestone. This is not optional.\n'
+    + '- The project MUST have a named public product and a named real audience.\n'
+    + '- Every student must produce at least one artefact that is theirs alone.\n'
+    + '- The knowledge check is SEPARATE from the product and maps to the outcome codes.\n'
+    + '\nReturn ONLY valid JSON, no markdown fence, in exactly this shape:\n'
+    + '{"title":"","drivingQuestion":"","problemStatement":{"weAre":"","whoWill":"","soThat":""},'
+    + '"entryEvent":{"title":"","what":"","why":""},"needToKnowPrompts":["",""],'
+    + '"publicProduct":"","audience":"","priorKnowledge":["",""],"successSkills":["",""],'
+    + '"milestones":[{"n":1,"title":"","when":"","handIn":"","type":"plan|research|critique|product|presentation"}],'
+    + '"lessons":[{"n":1,"focus":"","activities":"","milestone":""}],'
+    + '"scaffolds":[{"title":"","what":""}],'
+    + '"differentiation":{"support":"","stretch":"","icp":""},'
+    + '"individualArtefacts":["",""],'
+    + '"knowledgeCheck":[{"q":"","code":""}],'
+    + '"rubric":[{"indicatorCode":"","learningIntention":"","levels":{"L1":"","L3":"","L4":"","L5":""}}],'
+    + '"reflectionPrompts":["",""],"resourcesNoTech":["",""]}\n'
+    + 'Rules: milestones must include exactly one with type "critique". lessons array must have exactly '+lessons+' entries. '
+    + 'rubric must have one entry per indicator listed above, using that indicator code, written as an "I can\u2026" success criterion. '
+    + 'Rubric levels use keys L1, L3, L4, L5.';
+  try{
+    var d = await callAPI(pgKey(), prompt, 7000, null, { extraBody:{ faruma_job:'pbl-plan' } });
+    PG.pbl.data = d; PG.pbl.sel = s;
+    renderPBL(d, s);
+    setStatus('pbl-status','success','Project plan ready.');
+    pgShow('pbl-outwrap');
+  }catch(e){
+    setStatus('pbl-status','error','Could not generate: '+(e.message||e));
+  }
+  btn.disabled=false;
+}
+
+function renderPBL(d,s){
+  var k=pgKSInfo(s.grade);
+  var h='<h1>'+pgEsc(d.title||'Project plan')+'</h1>';
+  h+='<p class="pg-meta">'+pgEsc(s.grade)+' &middot; '+pgEsc(s.sub)+(s.sub2?' + '+pgEsc(s.sub2):'')+' &middot; Key Stage '+k.ks+' &middot; '+pgEsc(String((d.lessons||[]).length))+' lessons &middot; students work in '+k.group+'</p>';
+  h+=pgCurrTable(s);
+  h+='<h2>Driving question</h2><p class="pg-dq">'+pgEsc(d.drivingQuestion||'')+'</p>';
+  var ps=d.problemStatement||{};
+  h+='<h2>Problem statement</h2><p><b>We are</b> '+pgEsc(ps.weAre||'')+'<br><b>who will</b> '+pgEsc(ps.whoWill||'')+'<br><b>so that</b> '+pgEsc(ps.soThat||'')+'</p>';
+  var ee=d.entryEvent||{};
+  h+='<h2>Entry event &mdash; '+pgEsc(ee.title||'')+'</h2><p>'+pgEsc(ee.what||'')+'</p>'+(ee.why?'<p><i>'+pgEsc(ee.why)+'</i></p>':'');
+  if(d.needToKnowPrompts&&d.needToKnowPrompts.length) h+='<h3>Need-to-know board &mdash; questions to expect</h3>'+pgUL(d.needToKnowPrompts);
+  h+='<h2>Public product &amp; audience</h2><p><b>Product:</b> '+pgEsc(d.publicProduct||'')+'<br><b>Audience:</b> '+pgEsc(d.audience||'')+'</p>';
+  if(d.priorKnowledge&&d.priorKnowledge.length) h+='<h2>Pre-teach before the project opens</h2>'+pgUL(d.priorKnowledge);
+  if(d.milestones&&d.milestones.length){
+    h+='<h2>Milestones</h2><table class="pg-tbl"><tr><th>#</th><th>Milestone</th><th>When</th><th>Handed in</th></tr>';
+    d.milestones.forEach(function(m){
+      var crit=(m.type==='critique');
+      h+='<tr'+(crit?' class="pg-hl"':'')+'><td>'+pgEsc(String(m.n||''))+'</td><td><b>'+pgEsc(m.title||'')+'</b>'+(crit?' <span class="pg-tag">critique &amp; revision</span>':'')+'</td><td>'+pgEsc(m.when||'')+'</td><td>'+pgEsc(m.handIn||'')+'</td></tr>';
+    });
+    h+='</table>';
+  }
+  if(d.lessons&&d.lessons.length){
+    h+='<h2>Lesson by lesson</h2><table class="pg-tbl"><tr><th>Lesson</th><th>Focus</th><th>Activities</th><th>Milestone</th></tr>';
+    d.lessons.forEach(function(l){ h+='<tr><td>'+pgEsc(String(l.n||''))+'</td><td><b>'+pgEsc(l.focus||'')+'</b></td><td>'+pgEsc(l.activities||'')+'</td><td>'+pgEsc(l.milestone||'')+'</td></tr>'; });
+    h+='</table>';
+  }
+  if(d.scaffolds&&d.scaffolds.length){
+    h+='<h2>Scaffolds</h2><ul>'+d.scaffolds.map(function(x){return '<li><b>'+pgEsc(x.title||'')+'</b> &mdash; '+pgEsc(x.what||'')+'</li>';}).join('')+'</ul>';
+  }
+  var df=d.differentiation||{};
+  h+='<h2>Differentiation</h2><ul>'
+    +'<li><b>Needs more support:</b> '+pgEsc(df.support||'')+'</li>'
+    +'<li><b>Ready for more:</b> '+pgEsc(df.stretch||'')+'</li>'
+    +'<li><b>ICP students:</b> '+pgEsc(df.icp||'')+'</li></ul>';
+  if(d.individualArtefacts&&d.individualArtefacts.length) h+='<h2>Individual accountability</h2>'+pgUL(d.individualArtefacts);
+  if(d.rubric&&d.rubric.length) h+='<h2>Product rubric</h2>'+pgRubricTable(d.rubric, pgScale(k.ks===1?'notyet3':'notyet'));
+  if(d.knowledgeCheck&&d.knowledgeCheck.length){
+    h+='<h2>Knowledge check <span class="pg-note">(separate from the product)</span></h2><ol>'
+      + d.knowledgeCheck.map(function(q){ return '<li>'+pgEsc(q.q||'')+(q.code?' <span class="pg-code">'+pgEsc(q.code)+'</span>':'')+'</li>'; }).join('')+'</ol>';
+  }
+  if(d.reflectionPrompts&&d.reflectionPrompts.length) h+='<h2>Reflection</h2>'+pgUL(d.reflectionPrompts);
+  if(d.resourcesNoTech&&d.resourcesNoTech.length) h+='<h2>Resources (no technology needed)</h2>'+pgUL(d.resourcesNoTech);
+  document.getElementById('pbl-out').innerHTML=h;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PROJECTS
+   ══════════════════════════════════════════════════════════════ */
+function pjBuildProductGrid(){
+  var g=document.getElementById('pj-prodgrid'); if(!g) return;
+  g.innerHTML = PG_PRODUCTS.map(function(p){
+    return '<button type="button" class="pg-pcard'+(p.id==='choice'?' pg-choice':'')+(p.id==='leaflet'?' on':'')+'" data-prod="'+p.id+'" onclick="pjPickProduct(\''+p.id+'\')">'
+      + '<span class="pg-pi">'+p.emoji+'</span><b>'+p.name+'</b><small>'+(p.id==='choice'?'FARUMA drops the craft criterion and prints a choice menu':p.lessons+(p.tech?' \u00b7 needs a device':''))+'</small></button>';
+  }).join('');
+  PG.pj.product='leaflet';
+  pjWarn();
+}
+function pjPickProduct(id){
+  PG.pj.product=id;
+  Array.prototype.forEach.call(document.querySelectorAll('#pj-prodgrid .pg-pcard'),function(b){
+    b.classList.toggle('on', b.getAttribute('data-prod')===id);
+  });
+  pjWarn();
+}
+function pjWarn(){
+  var box=document.getElementById('pj-warn'); if(!box) return;
+  var p=pgProduct(PG.pj.product||'leaflet');
+  var inds=PG.pj.inds||[];
+  if(p.id==='choice'||!inds.length){ box.style.display='none'; return; }
+  var risky = (p.mode==='visual'||p.mode==='physical');
+  var hits = inds.filter(function(x){ return PG_EXPLAIN_VERBS.test(x.text||''); });
+  if(risky && hits.length){
+    box.innerHTML='<b>&#9888;&#65039; Check before you generate.</b> '+pgEsc(hits[0].code)+' asks students to <b>'
+      + pgEsc((/(\w+)/.exec(hits[0].text)||[''])[0].toLowerCase()) + '</b> \u2014 a '+p.name.toLowerCase()
+      + ' shows well but '+pgEsc(p.weak)+'. Add caption cards or a short spoken explanation, or this indicator will be hard to evidence.';
+    box.style.display='block';
+  } else { box.style.display='none'; }
+}
+function pjRefreshScales(){
+  var pts=parseInt((document.getElementById('pj-points')||{}).value||'4',10);
+  var sel=document.getElementById('pj-scale'); if(!sel) return;
+  var list=PG_SCALES.filter(function(x){ return x.pts===pts; });
+  var groups={}; list.forEach(function(x){ (groups[x.tone]=groups[x.tone]||[]).push(x); });
+  var html='';
+  Object.keys(groups).forEach(function(t){
+    html+='<optgroup label="'+t+'">'+groups[t].map(function(x){ return '<option value="'+x.id+'">'+x.name+(x.safe?'':'')+'</option>'; }).join('')+'</optgroup>';
+  });
+  sel.innerHTML=html;
+  pjRelabel();
+}
+function pjRelabel(){
+  var id=(document.getElementById('pj-scale')||{}).value;
+  var sc=pgScale(id||'standards');
+  var note=document.getElementById('pj-scalenote');
+  if(note) note.innerHTML = sc.safe
+    ? '<b>'+pgEsc(sc.name)+'</b> is reporting safe \u2014 work marked with it can go straight onto a report card.'
+    : '<b>'+pgEsc(sc.name)+'</b> is a classroom scale. For anything that feeds a report card, switch to <b>Standards</b> or <b>Expectations</b> \u2014 the descriptions stay identical.';
+  if(PG.pj.data) pjRender();
+}
+function pjToggleView(){
+  PG.pj.teacher = !PG.pj.teacher;
+  var l=document.getElementById('pj-viewlbl'); if(l) l.textContent = PG.pj.teacher?'Show student version':'Show teacher version';
+  if(PG.pj.data) pjRender();
+}
+
+async function doProject(){
+  var s=pgSelOK('pj',1); if(!s) return;
+  var k=pgKSInfo(s.grade);
+  var prod=pgProduct(PG.pj.product||'leaflet');
+  var pts=parseInt((document.getElementById('pj-points')||{}).value||'4',10);
+  var craft=(document.getElementById('pj-craft')||{}).value==='1' && prod.id!=='choice';
+  var group=(document.getElementById('pj-group')||{}).value||'In pairs';
+  var anchors=pgAnchors(pts);
+  var btn=document.getElementById('pj-btn'); btn.disabled=true;
+  setStatus('pj-status','info','Writing the question and rubric\u2026 about 25 seconds.');
+  var prompt='You are an expert Maldivian curriculum designer. Write a real-world project task and its marking rubric.\n\n'
+    + pgCurrBlock(s)
+    + '\nTASK SHAPE:\nFinal product: '+(prod.id==='choice'?'STUDENTS CHOOSE their own product':prod.name)
+    + '\nStudents work: '+group+'\nRubric levels: '+pts+' ('+anchors.join(', ')+')\n'
+    + (craft?('Add ONE extra craft criterion about layout/audience for the '+prod.name.toLowerCase()+'. Mark its indicatorCode as "craft".\n'):'Do NOT add any craft criteria \u2014 outcomes only.\n')
+    + pgPedagogy(s.grade)
+    + '- Maximum '+k.maxCrit+' rubric criteria in total.\n'
+    + (prod.id==='choice'?'- The driving question must be product-free (it must not name a format).\n':'')
+    + '\nReturn ONLY valid JSON, no markdown fence, in exactly this shape:\n'
+    + '{"title":"","questions":[{"text":"","audience":"","purpose":""},{"text":"","audience":"","purpose":""},{"text":"","audience":"","purpose":""}],'
+    + '"productBrief":{"whatToMake":"","size":"","mustInclude":["",""]},'
+    + '"exemplar":"",'
+    + '"rubric":[{"indicatorCode":"","learningIntention":"","levels":{'+anchors.map(function(a){return '"'+a+'":""';}).join(',')+'}}],'
+    + (prod.id==='choice'?'"choiceMenu":[{"product":"","suitsYouIf":""}],':'')
+    + '"resourcesNoTech":["",""],"timeEstimate":""}\n'
+    + 'Rules: exactly 3 questions. One rubric row per indicator listed above using that exact indicator code, '
+    + 'plus the craft row if requested. learningIntention must be an "I can\u2026" statement in '+s.grade+' language. '
+    + 'exemplar is ONE paragraph describing what a strong finished piece looks like.';
+  try{
+    var d=await callAPI(pgKey(), prompt, 4500, null, { extraBody:{ faruma_job:'project-task' } });
+    PG.pj.data=d; PG.pj.sel=s; PG.pj.pick=0; PG.pj.teacher=false;
+    var l=document.getElementById('pj-viewlbl'); if(l) l.textContent='Show teacher version';
+    pjRender();
+    setStatus('pj-status','success','Task and rubric ready. Changing the scale below is free.');
+    pgShow('pj-outwrap');
+  }catch(e){
+    setStatus('pj-status','error','Could not generate: '+(e.message||e));
+  }
+  btn.disabled=false;
+}
+
+function pjPick(i){ PG.pj.pick=i; pjRender(); }
+
+function pjRender(){
+  var d=PG.pj.data, s=PG.pj.sel; if(!d||!s) return;
+  var prod=pgProduct(PG.pj.product||'leaflet');
+  var sc=pgScale((document.getElementById('pj-scale')||{}).value||'standards');
+  var teacher=!!PG.pj.teacher;
+  var h='<h1>'+pgEsc(d.title||'Project task')+'</h1>';
+  h+='<p class="pg-meta">'+pgEsc(s.grade)+' &middot; '+pgEsc(s.sub)+(s.sub2?' + '+pgEsc(s.sub2):'')
+    +' &middot; '+pgEsc(prod.id==='choice'?'students choose the product':prod.name)
+    +' &middot; '+pgEsc((document.getElementById('pj-group')||{}).value||'')
+    +' &middot; '+pgEsc(d.timeEstimate||prod.lessons)+'</p>';
+  if(teacher) h+=pgCurrTable(s);
+  h+='<h2>Real-world question</h2>';
+  (d.questions||[]).forEach(function(q,i){
+    var on=(PG.pj.pick===i);
+    h+='<div class="pg-qopt'+(on?' on':'')+'" onclick="pjPick('+i+')"><div class="pg-qn">OPTION '+(i+1)+(on?' &mdash; chosen':'')+'</div>'
+      +'<p class="pg-dq">'+pgEsc(q.text||'')+'</p>'
+      +'<div class="pg-qm"><b>Audience:</b> '+pgEsc(q.audience||'')+' &nbsp;&middot;&nbsp; <b>Purpose:</b> '+pgEsc(q.purpose||'')+'</div></div>';
+  });
+  var pb=d.productBrief||{};
+  if(prod.id!=='choice'){
+    h+='<h2>What to make</h2><p>'+pgEsc(pb.whatToMake||'')+(pb.size?(' <i>'+pgEsc(pb.size)+'</i>'):'')+'</p>';
+    if(pb.mustInclude&&pb.mustInclude.length) h+='<p><b>Must include:</b></p>'+pgUL(pb.mustInclude);
+  }
+  if(d.choiceMenu&&d.choiceMenu.length){
+    h+='<h2>Choose your product</h2><table class="pg-tbl"><tr><th>You could make\u2026</th><th>This suits you if\u2026</th></tr>'
+      + d.choiceMenu.map(function(c){ return '<tr><td><b>'+pgEsc(c.product||'')+'</b></td><td>'+pgEsc(c.suitsYouIf||'')+'</td></tr>'; }).join('')+'</table>';
+  }
+  h+='<h2>Marking rubric <span class="pg-note">('+pgEsc(sc.name)+')</span></h2>'+pgRubricTable(d.rubric||[], sc, teacher);
+  if(d.exemplar) h+='<h2>What a good one looks like</h2><div class="pg-ex">'+pgEsc(d.exemplar)+'</div>';
+  if(d.resourcesNoTech&&d.resourcesNoTech.length) h+='<h2>Resources (no technology needed)</h2>'+pgUL(d.resourcesNoTech);
+  document.getElementById('pj-out').innerHTML=h;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GAMES
+   ══════════════════════════════════════════════════════════════ */
+var GM_PUZZLES=[
+ {id:'wordsearch',name:'Wordsearch',emoji:'\uD83D\uDD0D',hint:'8\u00d78 to 15\u00d715'},
+ {id:'matching',  name:'Matching pairs',emoji:'\uD83C\uDCCF',hint:'Term &amp; meaning'},
+ {id:'bingo',     name:'Bingo',emoji:'\uD83C\uDFB2',hint:'Unique cards'},
+ {id:'loop',      name:'Loop cards',emoji:'\uD83D\uDD01',hint:'I have\u2026 who has\u2026'},
+ {id:'sort',      name:'Card sort',emoji:'\uD83D\uDCCB',hint:'Cut-and-sort set'},
+ {id:'fluency',   name:'Fluency grid',emoji:'\u26A1',hint:'Timed recall sheet'}
+];
+var GM_AIGAMES=[
+ {id:'roleplay',name:'Role play',emoji:'\uD83C\uDFAD'},{id:'simulation',name:'Simulation',emoji:'\uD83C\uDF0D'},
+ {id:'movement',name:'Movement game',emoji:'\uD83C\uDFC3'},{id:'quizrelay',name:'Quiz relay',emoji:'\uD83C\uDFC6'},
+ {id:'escape',name:'Escape room',emoji:'\uD83D\uDD11'},{id:'barrier',name:'Barrier game',emoji:'\uD83D\uDDE3'},
+ {id:'guessrule',name:'Guess the rule',emoji:'\uD83E\uDD14'},{id:'jigsaw',name:'Expert jigsaw',emoji:'\uD83E\uDDE9'}
+];
+function gmBuildGrids(){
+  var a=document.getElementById('gm-puzzgrid');
+  if(a) a.innerHTML=GM_PUZZLES.map(function(g,i){
+    return '<button type="button" class="pg-gcard'+(i===0?' on':'')+'" data-g="'+g.id+'" onclick="gmPick(\''+g.id+'\')"><span class="pg-gi">'+g.emoji+'</span><b>'+g.name+'</b><small>'+g.hint+'</small></button>';
+  }).join('');
+  var b=document.getElementById('gm-aigrid');
+  if(b) b.innerHTML=GM_AIGAMES.map(function(g,i){
+    return '<button type="button" class="pg-gcard'+(i===0?' on':'')+'" data-ai="'+g.id+'" onclick="gmPickAI(\''+g.id+'\')"><span class="pg-gi">'+g.emoji+'</span><b>'+g.name+'</b></button>';
+  }).join('');
+  PG.gm.puzzle='wordsearch'; PG.gm.ai='roleplay';
+}
+function gmPick(id){ PG.gm.puzzle=id; Array.prototype.forEach.call(document.querySelectorAll('#gm-puzzgrid .pg-gcard'),function(b){ b.classList.toggle('on', b.getAttribute('data-g')===id); }); }
+function gmPickAI(id){ PG.gm.ai=id; Array.prototype.forEach.call(document.querySelectorAll('#gm-aigrid .pg-gcard'),function(b){ b.classList.toggle('on', b.getAttribute('data-ai')===id); }); }
+
+/* Word bank — built on device, no AI. */
+var GM_STOP = (function(){
+  var s={};
+  ('a an the and or of to in on for with by from as at is are be being been that this these those '
+  +'their there them they it its his her our your my me him us we you he she who whom whose which '
+  +'what when where why how whether while whilst if then than so but nor yet '
+  +'was were am do does did done doing have has had having will would shall should can could may '
+  +'might must ought about into through between among across against along around behind beside '
+  +'beyond during before after since until under over above below within without toward towards '
+  +'down off out up per via not no none nothing all any both each either every few many more most '
+  +'much other others same own one two three four five six seven eight nine ten first second third '
+  +'student students pupil pupils teacher teachers class classroom lesson lessons school schools '
+  +'group groups pair pairs work works working task tasks activity activities example examples etc '
+  +'guidance guided support supported help helps helping way ways idea ideas thing things people '
+  +'person part parts type types kind kinds level levels stage stages step steps point points item '
+  +'items topic topics context contexts situation situations event events experience experiences '
+  +'appropriate suitable simple basic common familiar everyday daily general specific relevant '
+  +'related relating relate possible correct incorrect accurate given range list various variety '
+  +'different differences similarities several well better best good poor increasing increasingly '
+  +'also just even only less able perhaps possibly usually often sometimes always never generally '
+  +'including include includes included amount amounts order aspect aspects particular purpose '
+  +'purposes ability factors loss visual exist exists affect affects occur occurs occurring '
+  +'went gone goes going come comes came whole wholly prior based base bases regarding regard '
+  +'regards according accord means meant meaning meanings stay stays stayed set sets setting '
+  +'view views viewed viewing seen sees real really actual actually proper properly further '
+  +'however therefore thus hence moreover overall together apart throughout very '
+  +'such some someone something themselves itself himself herself another need needs needed '
+  +'made take takes taking put puts feel feels felt live lives lived suit suits suited').split(/\s+/)
+  .forEach(function(w){ if(w) s[w]=1; });
+  return s;
+})();
+/* Verb and process-word families: this is how indicators are PHRASED, not what
+   they are about. A puzzle built from "identifying" and "discussing" teaches
+   nothing. Prefix match because the syllabus mixes -s, -es and -ing endings. */
+var GM_STOP_PREFIX = new RegExp('^(' + [
+  'ask','identif','discuss','describ','explain','recognis','recogniz','observ','investigat',
+  'explor','compar','classif','demonstrat','understand','becom','develop','appl',
+  'creat','mak','us','usin','show','stat','list','nam','talk','shar','reflect',
+  'plan','carry','carri','record','suggest','present','begin','begun','aware',
+  'perform','particip','engag','express','respond','respons','communicat',
+  'select','choos','chose','decid','determin','establish','examin','experiment',
+  'practis','practic','produc','provid','review','revis','follow',
+  'organis','organiz','arrang','collect','gather','measur','estimat','predict',
+  'interpret','analys','analyz','evaluat','assess','justif','argu','persuad',
+  'sequenc','summar','conclud','construct','build','built','design','draw','drew',
+  'writ','read','speak','spok','listen','watch','look','find','found','learn',
+  'know','knew','think','thought','discover','ensur','enabl','allow','requir',
+  'consid','includ','contain','involv','indicat','illustrat','highlight',
+  'improv','enhanc','extend','increas','decreas','continu','complet','achiev',
+  'attempt','start','finish','repeat','return','remember','recall',
+  'scientist','method','procedur','process','result','finding','evidenc',
+  'question','answer','discussion','presentation','explanation','instruction',
+  'skill','knowledge','learning','teaching','assessment','outcome','indicator',
+  'appropriat','effectiv','successful','confiden','independ','collaborat',
+  'respect','encourag','remind','notic','mention','refer','give','giv','gave'
+].join('|') + ')');
+function gmIsWord(w){
+  if(w.length<4||w.length>12) return false;   /* 3-letter words are grid noise */
+  if(!/^[a-z]+$/.test(w)) return false;
+  if(GM_STOP[w]) return false;
+  if(GM_STOP_PREFIX.test(w)) return false;
+  if(/ly$/.test(w)) return false;             /* adverbs are never content words */
+  return true;
+}
+function gmExtractTerms(inds){
+  var freq={}, order=[];
+  (inds||[]).forEach(function(x){
+    var t=(x.text||'').toLowerCase().replace(/[^a-z\s-]/g,' ');
+    t.split(/[\s-]+/).forEach(function(w){
+      if(!gmIsWord(w)) return;
+      if(!freq[w]){ freq[w]=0; order.push(w); }
+      freq[w]++;
+    });
+  });
+  order.sort(function(a,b){ return freq[b]-freq[a] || a.length-b.length; });
+  return order.slice(0,24);
+}
+function gmRebuildBank(){
+  var s=pgSel('gm');
+  PG.gm.terms = s.inds && s.inds.length ? gmExtractTerms(s.inds) : [];
+  gmRenderBank();
+}
+function gmRenderBank(){
+  var card=document.getElementById('gm-bankcard'), box=document.getElementById('gm-bank');
+  if(!card||!box) return;
+  var t=PG.gm.terms||[];
+  if(!t.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  box.innerHTML=t.map(function(w,i){ return '<span class="pg-term" onclick="gmDropTerm('+i+')">'+pgEsc(w)+'</span>'; }).join('');
+}
+function gmDropTerm(i){ (PG.gm.terms||[]).splice(i,1); gmRenderBank(); }
+function gmAddTerms(){
+  var el=document.getElementById('gm-add'); if(!el) return;
+  (el.value||'').split(',').forEach(function(w){
+    w=w.trim().toLowerCase();
+    if(w && /^[a-z ]+$/.test(w) && (PG.gm.terms||[]).indexOf(w)<0) (PG.gm.terms=PG.gm.terms||[]).push(w);
+  });
+  el.value=''; gmRenderBank();
+}
+
+/* ---- Wordsearch: placement with validation ---- */
+function gmMakeWordsearch(words, size, dirMode){
+  var DIRS=[[0,1],[1,0]];
+  if(dirMode>=2) DIRS=DIRS.concat([[1,1],[1,-1]]);
+  if(dirMode>=3) DIRS=DIRS.concat([[0,-1],[-1,0],[-1,-1],[-1,1]]);
+  var A='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(var attempt=0;attempt<60;attempt++){
+    var grid=[], i, j;
+    for(i=0;i<size;i++){ grid.push([]); for(j=0;j<size;j++) grid[i].push(''); }
+    var placed=[], ok=true;
+    var list=words.slice().sort(function(a,b){ return b.length-a.length; });
+    for(var w=0;w<list.length;w++){
+      var word=list[w].toUpperCase().replace(/[^A-Z]/g,'');
+      if(!word||word.length>size){ ok=false; break; }
+      var spots=[];
+      for(var d=0;d<DIRS.length;d++){
+        for(i=0;i<size;i++) for(j=0;j<size;j++){
+          var r=i, c=j, fits=true;
+          for(var q=0;q<word.length;q++){
+            if(r<0||c<0||r>=size||c>=size){ fits=false; break; }
+            var cur=grid[r][c];
+            if(cur!==''&&cur!==word[q]){ fits=false; break; }
+            r+=DIRS[d][0]; c+=DIRS[d][1];
+          }
+          if(fits) spots.push([i,j,d]);
+        }
+      }
+      if(!spots.length){ ok=false; break; }
+      var pick=spots[Math.floor(Math.random()*spots.length)];
+      var rr=pick[0], cc=pick[1], dd=DIRS[pick[2]];
+      for(var q2=0;q2<word.length;q2++){ grid[rr][cc]=word[q2]; rr+=dd[0]; cc+=dd[1]; }
+      placed.push({word:word,r:pick[0],c:pick[1],d:pick[2]});
+    }
+    if(!ok) continue;
+    for(i=0;i<size;i++) for(j=0;j<size;j++) if(grid[i][j]==='') grid[i][j]=A[Math.floor(Math.random()*26)];
+    if(gmVerify(grid,placed,size,DIRS)) return {grid:grid, placed:placed, size:size};
+  }
+  return null;
+}
+function gmVerify(grid,placed,size,DIRS){
+  for(var p=0;p<placed.length;p++){
+    var it=placed[p], r=it.r, c=it.c, d=DIRS[it.d], s='';
+    for(var q=0;q<it.word.length;q++){ if(r<0||c<0||r>=size||c>=size) return false; s+=grid[r][c]; r+=d[0]; c+=d[1]; }
+    if(s!==it.word) return false;
+  }
+  return true;
+}
+
+function gmBuild(){
+  var s=pgSel('gm');
+  if(!s.outcome){ setStatus('gm-status','error','Please select an outcome and its indicators first.'); return; }
+  var terms=(PG.gm.terms||[]).filter(Boolean);
+  if(terms.length<4){ setStatus('gm-status','error','You need at least 4 words in the bank. Add some above.'); return; }
+  var kind=PG.gm.puzzle||'wordsearch';
+  var head='<h1>'+({wordsearch:'Wordsearch',matching:'Matching pairs',bingo:'Bingo',loop:'Loop cards',sort:'Card sort',fluency:'Fluency grid'}[kind])+'</h1>'
+    + '<p class="pg-meta">'+pgEsc(s.grade)+' &middot; '+pgEsc(s.sub)+' &middot; '+pgEsc(s.outcome.code)+' &middot; '+terms.length+' words</p>'
+    + pgCurrTable(s);
+  var body='', key='';
+  if(kind==='wordsearch'){
+    var size=parseInt((document.getElementById('gm-size')||{}).value||'12',10);
+    var dir=parseInt((document.getElementById('gm-dir')||{}).value||'1',10);
+    var use=terms.filter(function(w){ return w.replace(/[^a-z]/g,'').length<=size; }).slice(0,14);
+    var res=gmMakeWordsearch(use,size,dir);
+    if(!res){ setStatus('gm-status','error','Those words will not fit in a '+size+'\u00d7'+size+' grid. Try a bigger grid or remove the longest words.'); return; }
+    body='<table class="pg-ws">'+res.grid.map(function(row){ return '<tr>'+row.map(function(ch){return '<td>'+ch+'</td>';}).join('')+'</tr>'; }).join('')+'</table>'
+       + '<h3>Find these words</h3><div class="pg-wl">'+res.placed.map(function(p){return '<span>'+pgEsc(p.word)+'</span>';}).join('')+'</div>';
+    key='<h3>Answer key</h3><table class="pg-tbl"><tr><th>Word</th><th>Row</th><th>Column</th><th>Direction</th></tr>'
+       + res.placed.map(function(p){ return '<tr><td>'+pgEsc(p.word)+'</td><td>'+(p.r+1)+'</td><td>'+(p.c+1)+'</td><td>'+['across','down','diagonal down-right','diagonal up-right','backwards','up','diagonal up-left','diagonal down-left'][p.d]+'</td></tr>'; }).join('')+'</table>';
+    setStatus('gm-status','success', res.placed.length+' of '+use.length+' words placed and verified.');
+  } else if(kind==='matching'){
+    var defs=gmDefs(terms.slice(0,12), s);
+    body='<p>Cut along the lines. Shuffle the cards. Match each word to its meaning.</p><table class="pg-cut">'
+      + defs.map(function(d){ return '<tr><td class="pg-cw">'+pgEsc(d.w)+'</td><td class="pg-cd">'+pgEsc(d.d)+'</td></tr>'; }).join('')+'</table>';
+    key='<h3>Answer key</h3>'+pgUL(defs.map(function(d){ return d.w+' \u2014 '+d.d; }));
+    setStatus('gm-status','success', defs.length+' pairs built.');
+  } else if(kind==='bingo'){
+    var n=parseInt((document.getElementById('gm-cards')||{}).value||'30',10);
+    var pool=terms.slice(0,Math.max(9,terms.length));
+    if(pool.length<9){ setStatus('gm-status','error','Bingo needs at least 9 words. Add a few more.'); return; }
+    var cards=[];
+    for(var c=0;c<n;c++){
+      var sh=pool.slice(); for(var i=sh.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=sh[i]; sh[i]=sh[j]; sh[j]=t; }
+      cards.push(sh.slice(0,9));
+    }
+    body=cards.map(function(cd,ix){
+      return '<div class="pg-bingo"><div class="pg-bhead">BINGO \u2014 card '+(ix+1)+'</div><table>'
+        + [0,1,2].map(function(r){ return '<tr>'+[0,1,2].map(function(cc){ return '<td>'+pgEsc(cd[r*3+cc])+'</td>'; }).join('')+'</tr>'; }).join('')
+        + '</table></div>';
+    }).join('');
+    key='<h3>Caller list</h3>'+pgUL(gmDefs(pool,s).map(function(d){ return d.d+'  \u2192  '+d.w; }));
+    setStatus('gm-status','success', n+' unique cards built.');
+  } else if(kind==='loop'){
+    var lp=gmDefs(terms.slice(0,Math.min(terms.length,20)), s);
+    body='<p>Hand one card to each student. The first student reads their question. Whoever holds the answer reads it out, then reads their own question. The last card loops back to the first.</p>'
+      + '<table class="pg-cut">'+lp.map(function(d,i){
+          var next=lp[(i+1)%lp.length];
+          return '<tr><td class="pg-loop"><b>I have</b> '+pgEsc(d.w)+'<br><b>Who has</b> '+pgEsc(next.d)+'?</td></tr>';
+        }).join('')+'</table>';
+    key='<h3>Correct order</h3><ol>'+lp.map(function(d){ return '<li>'+pgEsc(d.w)+'</li>'; }).join('')+'</ol>';
+    setStatus('gm-status','success', lp.length+' loop cards built \u2014 the loop closes.');
+  } else if(kind==='sort'){
+    body='<p>Cut out the cards. In your group, sort them into groups that belong together, then give each group a heading. Be ready to say why.</p>'
+      + '<table class="pg-cut">'+chunk(terms,3).map(function(row){ return '<tr>'+row.map(function(w){ return '<td class="pg-cw">'+pgEsc(w)+'</td>'; }).join('')+'</tr>'; }).join('')+'</table>'
+      + '<h3>Then</h3><p>Now sort them a <b>different</b> way. Which grouping helps you understand the topic better, and why?</p>';
+    key='<h3>Teacher notes</h3><p>There is no single correct sort. Look for groupings students can justify from the indicator, and press for the reason rather than the grouping.</p>';
+    setStatus('gm-status','success','Card sort built.');
+  } else {
+    body='<p>Say or write the meaning of each word. Time yourself. Try to beat your own time tomorrow.</p><table class="pg-fl">'
+      + chunk(terms,4).map(function(row){ return '<tr>'+row.map(function(w){ return '<td>'+pgEsc(w)+'</td>'; }).join('')+'</tr>'; }).join('')+'</table>';
+    key='<h3>Answer key</h3>'+pgUL(gmDefs(terms,s).map(function(d){ return d.w+' \u2014 '+d.d; }));
+    setStatus('gm-status','success','Fluency grid built.');
+  }
+  PG.gm.key=key; PG.gm.showKey=false;
+  document.getElementById('gm-out').innerHTML=head+body+'<div id="gm-keybox" style="display:none;">'+key+'</div>';
+  var kb=document.getElementById('gm-keybtn'); if(kb){ kb.style.display='inline-flex'; kb.textContent='Show answer key'; }
+  pgShow('gm-outwrap');
+}
+function gmToggleKey(){
+  PG.gm.showKey=!PG.gm.showKey;
+  var b=document.getElementById('gm-keybox'), t=document.getElementById('gm-keybtn');
+  if(b) b.style.display=PG.gm.showKey?'block':'none';
+  if(t) t.textContent=PG.gm.showKey?'Hide answer key':'Show answer key';
+}
+function gmDefs(words, s){
+  var inds=s.inds||[];
+  return words.map(function(w){
+    var hit=null;
+    for(var i=0;i<inds.length;i++){ if((inds[i].text||'').toLowerCase().indexOf(w)>=0){ hit=inds[i]; break; } }
+    var d = hit ? gmClue(hit.text, w) : ('a key word from '+(s.outcome?s.outcome.code:'this outcome'));
+    return { w:w, d:d };
+  });
+}
+function gmClue(text, w){
+  var t=String(text||'').replace(/\s+/g,' ').trim();
+  var sentences=t.replace(/\.\s+/g,'.|').split('|');
+  for(var i=0;i<sentences.length;i++) if(sentences[i].toLowerCase().indexOf(w)>=0) t=sentences[i];
+  t=t.replace(new RegExp('\\b'+w+'\\b','ig'),'______');
+  if(t.length>140) t=t.slice(0,137)+'\u2026';
+  return t;
+}
+function chunk(a,n){ var out=[]; for(var i=0;i<a.length;i+=n) out.push(a.slice(i,i+n)); return out; }
+
+async function doGame(){
+  var s=pgSelOK('gm',1); if(!s) return;
+  var k=pgKSInfo(s.grade);
+  var kind=PG.gm.ai||'roleplay';
+  var name=(GM_AIGAMES.filter(function(x){return x.id===kind;})[0]||{}).name||'game';
+  var btn=document.getElementById('gm-aibtn'); btn.disabled=true;
+  setStatus('gm-aistatus','info','Writing your '+name.toLowerCase()+'\u2026');
+  var prompt='You are an expert Maldivian primary teacher. Design a classroom '+name.toUpperCase()+' that teaches the curriculum below through play.\n\n'
+    + pgCurrBlock(s) + pgPedagogy(s.grade)
+    + '- '+(k.ks===1?'The rules must fit in ONE sentence a Grade 1-3 child can follow.':'Rules may use two or three interacting mechanics.')+'\n'
+    + '- '+(k.ks<3?'Cooperative or "beat our class record" framing. NO individual leaderboards or public ranking of children.':'Team or individual scoring both acceptable.')+'\n'
+    + '- The game MUST end with a debrief that ties the winning strategy back to the concept. This is not optional.\n'
+    + '- Materials must be paper, card, dice, bottle caps, shells, chalk or the school yard. No devices.\n'
+    + '\nReturn ONLY valid JSON, no markdown fence:\n'
+    + '{"title":"","learningPurpose":"","mechanic":"","players":"","time":"","materials":["",""],'
+    + '"setup":["",""],"rules":["",""],"roundFlow":"","differentiation":{"support":"","stretch":""},'
+    + '"debrief":{"prompts":["",""],"conceptLink":""},"assessmentLook4":["",""],"variation":""}';
+  try{
+    var d=await callAPI(pgKey(), prompt, 3500, null, { extraBody:{ faruma_job:'classroom-game' } });
+    var h='<h1>'+pgEsc(d.title||name)+'</h1>'
+      + '<p class="pg-meta">'+pgEsc(s.grade)+' &middot; '+pgEsc(s.sub)+' &middot; '+pgEsc(name)+' &middot; '+pgEsc(d.players||'')+' &middot; '+pgEsc(d.time||'')+'</p>'
+      + pgCurrTable(s)
+      + '<h2>What this teaches</h2><p>'+pgEsc(d.learningPurpose||'')+'</p>'
+      + (d.mechanic?'<p><b>Mechanic:</b> '+pgEsc(d.mechanic)+'</p>':'')
+      + '<h2>You will need</h2>'+pgUL(d.materials||[])
+      + '<h2>Set up</h2>'+pgOL(d.setup||[])
+      + '<h2>Rules</h2>'+pgOL(d.rules||[])
+      + (d.roundFlow?'<h2>How a round goes</h2><p>'+pgEsc(d.roundFlow)+'</p>':'')
+      + '<h2>Debrief <span class="pg-note">(do not skip this)</span></h2>'+pgUL((d.debrief||{}).prompts||[])
+      + '<p><b>The point:</b> '+pgEsc((d.debrief||{}).conceptLink||'')+'</p>'
+      + '<h2>Differentiation</h2><ul><li><b>Needs more support:</b> '+pgEsc((d.differentiation||{}).support||'')+'</li>'
+      + '<li><b>Ready for more:</b> '+pgEsc((d.differentiation||{}).stretch||'')+'</li></ul>'
+      + (d.assessmentLook4&&d.assessmentLook4.length?('<h2>What to look for</h2>'+pgUL(d.assessmentLook4)):'')
+      + (d.variation?'<h2>Variation</h2><p>'+pgEsc(d.variation)+'</p>':'');
+    document.getElementById('gm-out').innerHTML=h;
+    var kb=document.getElementById('gm-keybtn'); if(kb) kb.style.display='none';
+    setStatus('gm-aistatus','success','Game ready.');
+    pgShow('gm-outwrap');
+  }catch(e){
+    setStatus('gm-aistatus','error','Could not generate: '+(e.message||e));
+  }
+  btn.disabled=false;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Shared render helpers + export
+   ══════════════════════════════════════════════════════════════ */
+function pgKey(){ var el=document.getElementById('api-key'); return el?el.value.trim():''; }
+function pgEsc(x){ return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function pgShow(id){
+  var w=document.getElementById(id); if(!w) return;
+  w.style.display='block';
+  try{ if(w.scrollIntoView) w.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){}
+}
+function pgUL(a){ return '<ul>'+(a||[]).map(function(x){ return '<li>'+pgEsc(x)+'</li>'; }).join('')+'</ul>'; }
+function pgOL(a){ return '<ol>'+(a||[]).map(function(x){ return '<li>'+pgEsc(x)+'</li>'; }).join('')+'</ol>'; }
+function pgCurrTable(s){
+  var h='<table class="pg-tbl pg-curr"><tr><th colspan="2">National Curriculum Standard</th></tr>'
+    + '<tr><td>Grade</td><td>'+pgEsc(s.grade)+'</td></tr>'
+    + '<tr><td>Subject</td><td>'+pgEsc(s.sub)+(s.sub2?(' <i>(with '+pgEsc(s.sub2)+')</i>'):'')+'</td></tr>'
+    + '<tr><td>Strand</td><td>'+pgEsc(s.outcome.strand||'')+'</td></tr>'
+    + '<tr><td>Sub-strand</td><td>'+pgEsc(s.outcome.sub||'')+'</td></tr>'
+    + '<tr><td>Outcome</td><td><b>'+pgEsc(s.outcome.code)+'</b> &mdash; '+pgEsc(s.outcome.stmt)+'</td></tr>'
+    + '<tr><td>Indicators</td><td>'+s.inds.map(function(x){ return '<b>'+pgEsc(x.code)+'</b> '+pgEsc(x.text); }).join('<br>')+'</td></tr>'
+    + '</table>';
+  return h;
+}
+function pgRubricTable(rows, sc, teacher){
+  if(!rows||!rows.length) return '';
+  var anchors=pgAnchors(sc.pts);
+  var h='<table class="pg-tbl pg-rub"><tr><th>Success criteria</th>'
+    + anchors.map(function(a){ return '<th>'+pgEsc(sc.lv[a]||a)+'</th>'; }).join('')
+    + (teacher?'':'<th class="pg-me">Me</th>')+'</tr>';
+  rows.forEach(function(r){
+    var code=r.indicatorCode||'';
+    h+='<tr><td><b>'+pgEsc(r.learningIntention||'')+'</b>'
+      + (teacher&&code?(' <span class="pg-code'+(code==='craft'?' craft':'')+'">'+pgEsc(code)+'</span>'):'')+'</td>'
+      + anchors.map(function(a){ return '<td>'+pgEsc((r.levels||{})[a]||'')+'</td>'; }).join('')
+      + (teacher?'':'<td class="pg-me">&#9744;</td>')+'</tr>';
+  });
+  return h+'</table>';
+}
+function pgPrint(id,title){
+  var el=document.getElementById(id); if(!el) return;
+  var w=window.open('','_blank'); if(!w){ alert('Please allow pop-ups to print.'); return; }
+  w.document.write('<html><head><title>'+pgEsc(title)+'</title><meta charset="utf-8">'
+    + '<style>body{font-family:Georgia,serif;color:#12283c;margin:28px;line-height:1.55}'
+    + 'h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:20px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}'
+    + 'h3{font-size:14px;margin:14px 0 5px}.pg-meta{color:#555;font-size:12.5px;margin:0 0 14px}'
+    + 'table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}'
+    + 'td,th{border:1px solid #999;padding:6px 8px;text-align:left;vertical-align:top}th{background:#eef3f6}'
+    + '.pg-ws td{text-align:center;font-family:monospace;font-weight:700;padding:4px;width:24px}'
+    + '.pg-dq{font-size:15px;font-weight:600}.pg-ex{background:#f4faf6;padding:10px;border:1px solid #cde6d7}'
+    + '.pg-qopt{border:1px solid #ccc;padding:8px;margin:6px 0}.pg-qn{font-size:10px;letter-spacing:.06em;color:#777}'
+    + '.pg-code{font-family:monospace;font-size:10px;background:#eef3f6;padding:1px 4px}'
+    + '.pg-wl span{display:inline-block;margin:2px 10px 2px 0;font-weight:600}'
+    + '.pg-bingo{page-break-inside:avoid;display:inline-block;width:48%;margin:1%}'
+    + '.pg-cut td{height:46px}@media print{.pg-qopt{break-inside:avoid}}</style></head><body>'
+    + el.innerHTML + '</body></html>');
+  w.document.close(); setTimeout(function(){ w.focus(); w.print(); }, 400);
+}
+async function pgDocx(id,name){
+  var el=document.getElementById(id); if(!el) return;
+  if(!window.docx){ alert('The Word library has not loaded yet. Try Print / PDF, or refresh the page.'); return; }
+  var D=window.docx, kids=[];
+  function runs(node){
+    var out=[];
+    Array.prototype.forEach.call(node.childNodes,function(c){
+      if(c.nodeType===3){ if(c.textContent) out.push(new D.TextRun(c.textContent)); return; }
+      if(c.nodeType!==1) return;
+      var bold=/^(B|STRONG|TH)$/.test(c.nodeName), ital=/^(I|EM)$/.test(c.nodeName);
+      var txt=c.textContent||'';
+      if(txt) out.push(new D.TextRun({text:txt,bold:bold,italics:ital}));
+    });
+    if(!out.length) out.push(new D.TextRun(node.textContent||''));
+    return out;
+  }
+  function walk(node){
+    if(node.nodeType===3){ if(node.textContent.trim()) kids.push(new D.Paragraph({children:[new D.TextRun(node.textContent.trim())]})); return; }
+    if(node.nodeType!==1) return;
+    var nm=node.nodeName;
+    if(nm==='H1'){ kids.push(new D.Paragraph({heading:D.HeadingLevel.HEADING_1,children:runs(node)})); return; }
+    if(nm==='H2'){ kids.push(new D.Paragraph({heading:D.HeadingLevel.HEADING_2,children:runs(node)})); return; }
+    if(nm==='H3'){ kids.push(new D.Paragraph({heading:D.HeadingLevel.HEADING_3,children:runs(node)})); return; }
+    if(nm==='P'||nm==='DIV'&&!node.children.length){ kids.push(new D.Paragraph({children:runs(node)})); return; }
+    if(nm==='UL'||nm==='OL'){
+      Array.prototype.forEach.call(node.children,function(li){
+        kids.push(new D.Paragraph({children:runs(li), bullet:{level:0}}));
+      }); return;
+    }
+    if(nm==='TABLE'){
+      var rows=[];
+      Array.prototype.forEach.call(node.querySelectorAll('tr'),function(tr){
+        var cells=[];
+        Array.prototype.forEach.call(tr.children,function(td){
+          cells.push(new D.TableCell({children:[new D.Paragraph({children:runs(td)})]}));
+        });
+        if(cells.length) rows.push(new D.TableRow({children:cells}));
+      });
+      if(rows.length) kids.push(new D.Table({rows:rows,width:{size:100,type:D.WidthType.PERCENTAGE}}));
+      kids.push(new D.Paragraph('')); return;
+    }
+    Array.prototype.forEach.call(node.childNodes,walk);
+  }
+  Array.prototype.forEach.call(el.childNodes,walk);
+  try{
+    var doc=new D.Document({ sections:[{ properties:{}, children:kids }] });
+    var blob=await D.Packer.toBlob(doc);
+    var b64=await blobToB64(blob);
+    dlBlob(b64, name+'_'+(new Date().toISOString().slice(0,10)));
+  }catch(e){ alert('Could not build the Word file: '+(e.message||e)); }
+}
+
+/* ── Boot ──────────────────────────────────────────────────────── */
+function pgBoot(){
+  try{
+    pjBuildProductGrid();
+    gmBuildGrids();
+    pblFillLessons();
+    pjRefreshScales();
+    pgUpdateCosts();
+  }catch(e){}
+}
+if(document.readyState!=='loading') pgBoot(); else document.addEventListener('DOMContentLoaded', pgBoot);
+
+
 function clOnGradeChange(){
   clReset(0);
   var grade=document.getElementById('cl-grade').value;
@@ -6670,10 +7816,10 @@ function buildAssessmentPromptBase(cfg){
     return 'You are an expert '+cfg.sub+' teacher preparing a MATH DRILL WORKSHEET for '+cfg.grade+'.\n'+dCurr+
       'A drill worksheet builds speed and accuracy through repetition. Produce exactly '+drillTotal+' short computation items worth '+(asBP[0].marks||1)+' mark each.\n'+
       'STRICT RULES:\n'+
-      '- Each item is a bare calculation or a very short prompt a pupil can answer in under 20 seconds. Examples of the right shape: "34 + 27 =", "8 x 7 =", "3/4 - 1/4 =", "Round 468 to the nearest 10", "Write 0.6 as a fraction".\n'+
+      '- Each item is a bare calculation or a very short prompt a student can answer in under 20 seconds. Examples of the right shape: "34 + 27 =", "8 x 7 =", "3/4 - 1/4 =", "Round 468 to the nearest 10", "Write 0.6 as a fraction".\n'+
       '- NO word problems, NO scenarios, NO real-life contexts, NO multiple choice, NO explanations, NO "show your working" prompts.\n'+
       '- Every item must be a DIFFERENT calculation. Never repeat the same numbers.\n'+
-      '- Order items so difficulty climbs gently: start with the easiest numbers and build up. Keep every number inside the range a '+cfg.grade+' pupil works with.\n'+
+      '- Order items so difficulty climbs gently: start with the easiest numbers and build up. Keep every number inside the range a '+cfg.grade+' student works with.\n'+
       '- "answer" must be the exact final answer only (e.g. "61", "56", "1/2"). No sentences.\n'+
       '- Set "type" to "drill" for every item.\n'+
       'Return ONLY JSON (no markdown, no commentary): {"title":"'+cfg.title+'","instructions":"Work through each one. Show your answer in the box.","totalMarks":'+drillMarks+',"drill":true,"questions":[{"section":"A","num":1,"type":"drill","question":"34 + 27 =","answer":"61","marks":1,"difficulty":"Easy","bloom":"Apply"'+(dOuts.length?',"outcomeCode":"...","indicatorCode":"..."':'')+',"objective":"..."}]}';
@@ -8078,7 +9224,7 @@ function presBuildPrompt(){
   'TASK\nDesign a complete, professionally sequenced slide deck of about '+len.slides+' slides.\n'+
   'FIXED OPENING (never change these two):\n'+
   '- Slide 1 = Title slide.\n'+
-  '- Slide 2 = "Learning Intention & Success Criteria", layout "twocol". Left column: the learning intentions as "We are learning to ..." statements. Right column: the success criteria as "I can ..." statements. Draw both from the lesson outcome and indicators above, in pupil-facing language.\n'+
+  '- Slide 2 = "Learning Intention & Success Criteria", layout "twocol". Left column: the learning intentions as "We are learning to ..." statements. Right column: the success criteria as "I can ..." statements. Draw both from the lesson outcome and indicators above, in student-facing language.\n'+
   'Design the remaining slides from slide 3 onward. '+
   'Pick the most appropriate slides for THIS lesson from this menu: Hook Activity, Starter Question, Prior Knowledge, Key Vocabulary, Concept Explanation, Visual Diagram, Worked Example, Interactive Question, Group Activity, Think-Pair-Share, Real-World Connection, Common Misconceptions, Assessment Checkpoint, Quiz, Exit Ticket, Homework, Summary. Order them like a real lesson: open, teach, practise, check, close.\n\n'+
   'SLIDE TEXT RULES (visual-first)\n- Max 5 bullets per slide, max 10 words per bullet. Never write paragraphs on a slide.\n- Age-appropriate language for '+s.grade+'.\n- Use concrete everyday contexts a child anywhere would recognise; keep examples culture-neutral.\n'+
@@ -8211,7 +9357,7 @@ function presBuildOutlinePrompt(){
   'TASK\nPlan \u2014 do not write \u2014 a professionally sequenced deck of exactly '+len.slides+' slides.\n'+
   'FIXED OPENING (never change these two):\n'+
   '- Slide 1 = Title slide.\n'+
-  '- Slide 2 = kind "Learning Intention & Success Criteria", layout "twocol". Left column lists the learning intentions as "We are learning to ..." statements; right column lists the success criteria as "I can ..." statements. Take them from the lesson outcome and indicators above. Its purpose is to tell pupils what they are learning and how they will know they have succeeded.\n'+
+  '- Slide 2 = kind "Learning Intention & Success Criteria", layout "twocol". Left column lists the learning intentions as "We are learning to ..." statements; right column lists the success criteria as "I can ..." statements. Take them from the lesson outcome and indicators above. Its purpose is to tell students what they are learning and how they will know they have succeeded.\n'+
   'Plan the remaining '+Math.max(0,len.slides-2)+' slides from slide 3 onward. '+
   'Pick the most appropriate slides for THIS lesson from this menu: Hook Activity, Starter Question, Prior Knowledge, Key Vocabulary, Concept Explanation, Visual Diagram, Worked Example, Interactive Question, Group Activity, Think-Pair-Share, Real-World Connection, Common Misconceptions, Assessment Checkpoint, Quiz, Exit Ticket, Homework, Summary. Order them like a real lesson: open, teach, practise, check, close.\n\n'+
   'MUST-INCLUDE SLIDES (only those switched on):\n'+
@@ -8230,7 +9376,7 @@ function presBuildOutlinePrompt(){
 }
 function presBuildBatchPrompt(info, items, from, to){
   /* Slide 2 is contractual: learning intentions on the left, success
-     criteria on the right, in pupil-facing language. */
+     criteria on the right, in student-facing language. */
   function line(it,i){ return (i+1)+'. ['+(it.kind||'')+' / '+(it.layout||'content')+'] '+(it.title||'')+(it.purpose?' \u2014 '+it.purpose:''); }
   var plan=items.map(line).join('\n');
   var mine=items.slice(from,to).map(function(it,i){ return line(it,from+i); }).join('\n');
@@ -9749,8 +10895,30 @@ function presExportPDF(){
           lock:true, apply:cbApplyCl, chip:'cb-cl-chip' },
     sl:{ grade:function(){return cbVal('sl-grade');}, sub:function(){return cbVal('sl-sub');},
           setGrade:function(v){ cbSetVal('sl-grade',v); }, setSub:function(v){ cbSetVal('sl-sub',v); },
-          lock:false, apply:cbApplySl, chip:'cb-sl-chip' }
+          lock:false, apply:cbApplySl, chip:'cb-sl-chip' },
+    pbl:cbPG('pbl'), pj:cbPG('pj'), gm:cbPG('gm')
   };
+  /* Project Based Learning / Projects / Games all share one simple shape:
+     a grade select, a subject select, and a selection held in PG[key]. */
+  function cbPG(k){
+    return {
+      grade:function(){ return cbVal(k+'-grade'); },
+      sub:function(){ return cbVal(k+'-sub'); },
+      setGrade:function(v){ var s=$(k+'-grade'); if(s&&s.value!==v){ cbOptEnsure(s,v); s.value=v; cbFireEl(k+'-grade'); } },
+      setSub:function(v){ var s=$(k+'-sub'); if(s){ cbOptEnsure(s,v); if(s.value!==v){ s.value=v; cbFireEl(k+'-sub'); } } },
+      lock:true,
+      apply:function(o,inds){
+        if(!window.PG) return;
+        PG[k].outcome = o ? {code:o.code, stmt:o.stmt, strand:o.strand, sub:o.sub} : null;
+        PG[k].inds = (inds||[]).map(function(x){ return {code:x.code, text:x.text}; });
+        PG[k].grade = cbVal(k+'-grade'); PG[k].sub = cbVal(k+'-sub');
+        if(k==='gm' && typeof gmRebuildBank==='function') gmRebuildBank();
+        if(k==='pj' && typeof pjWarn==='function') pjWarn();
+        if(typeof pgRenderKS==='function') pgRenderKS(k);
+      },
+      chip:'cb-'+k+'-chip'
+    };
+  }
 
   window.cbOpen=function(k){
     var cfg=CB_DEF[k]; if(!cfg)return; cbKey=k;
@@ -9842,7 +11010,7 @@ function presExportPDF(){
   }
   window.cbClearSel=function(k){ var st=cbState[k]; if(st){st.sel=-1;st.inds={};} cbChip(k,null,[]); };
   function cbInitChips(){
-    ['gen','cl','sl'].forEach(function(k){ var chip=$(CB_DEF[k].chip); if(chip&&!chip.innerHTML)chip.innerHTML='<span class="cb-empty">No outcome selected yet &mdash; tap the button above.</span>'; });
+    ['gen','cl','sl','pbl','pj','gm'].forEach(function(k){ var chip=$(CB_DEF[k].chip); if(chip&&!chip.innerHTML)chip.innerHTML='<span class="cb-empty">No outcome selected yet &mdash; tap the button above.</span>'; });
   }
 
   function cbSetSel(sel,val){ if(!sel)return false; for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===val){ sel.selectedIndex=i; return true; } } return false; }
