@@ -13,7 +13,7 @@ const ADMIN_PASS = process.env.ADMIN_PASSWORD || DEFAULT_ADMIN_PASS;
 // BANK_ACCOUNT = "BML MVR account 7730-XXXXXXX-101 — Hawwa Nimsha"
 const BANK_ACCOUNT = process.env.BANK_ACCOUNT || 'BML account 90401480027961000 — CARTHAGE PVT LTD';
 // Optional contact line shown with the bank details, e.g. "Viber/WhatsApp: 7XXXXXX"
-const ADMIN_CONTACT = process.env.ADMIN_CONTACT || '';
+const ADMIN_CONTACT = process.env.ADMIN_CONTACT || 'edu.carthage@gmail.com';
 
 // ── Supabase configuration (required) ───────────────────────────────
 const SUPA_URL = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
