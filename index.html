@@ -2008,6 +2008,30 @@ button[style*="background:white"][style*="color:white"]{
   border-radius:10px;padding:8px 12px;font-size:14px;color:#5b6b63;}
 .srcmat-file .sf-x{cursor:pointer;color:#b4453a;background:#fdeeea;border:1px solid #eccdc9;padding:4px 9px;border-radius:8px;font-size:13px;margin-left:auto;}
 .srcmat-status{display:none;margin-top:8px;font-size:13.5px;color:#3a8f5c;}
+.as-acts{ margin-top:22px; border-top:1.5px solid var(--line,#e7ecec); padding-top:16px; }
+.as-acts h3{ font-family:'Fraunces',serif; font-size:16px; color:var(--ocean-deep); margin-bottom:10px; }
+.as-act{ display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid #f0f4f4; }
+.as-act:last-child{ border-bottom:0; }
+.as-act-n{ flex:none; width:26px; height:26px; border-radius:50%; background:var(--ocean-pale);
+  color:var(--ocean-mid); font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.as-act b{ font-size:14.5px; color:var(--text-dark); }
+.as-act p{ font-size:14px; color:var(--text-mid); line-height:1.6; margin-top:3px; }
+.as-act-look{ color:var(--text-light) !important; font-size:13px !important; }
+/* ── after-the-lesson follow-up ─────────────────────────────────── */
+.lf-card{ margin-top:14px; border:1.5px solid var(--ocean-light); border-radius:14px;
+  padding:18px 20px; background:linear-gradient(158deg,#f2fbf8 0%,#eaf4fa 100%); }
+.lf-q{ font-family:'Fraunces',serif; font-size:17px; font-weight:600; color:var(--ocean-deep); line-height:1.4; }
+.lf-sub{ font-size:13.5px; color:var(--text-mid); line-height:1.55; margin:6px 0 14px; }
+.lf-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.lf-actions .btn{ width:auto; margin:0; display:inline-flex; align-items:center; gap:8px; }
+.lf-cost{ font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:2px 7px;
+  border-radius:20px; background:rgba(255,255,255,.35); }
+.lf-skip{ background:none; border:1.5px solid var(--sand-dark,#dfe5e5); color:var(--text-mid); }
+.la-check{ display:flex; align-items:flex-start; gap:9px; font-size:13.5px; color:var(--text-dark);
+  margin:10px 0 2px; cursor:pointer; flex-wrap:wrap; }
+.la-check input{ width:17px; height:17px; margin-top:1px; accent-color:var(--ocean-mid); }
+.la-actlist{ flex:1 1 100%; font-size:12px; color:var(--text-light); padding-left:26px; line-height:1.5; }
+@media (max-width:640px){ .lf-actions .btn{ width:100%; justify-content:center; } }
 /* ── Dashboard feature marquee ─────────────────────────────────────
    Cards keep their normal size. The track only animates when the set is
    wider than the rail; db-marquee-still is added by JS when it all fits. */
@@ -2890,6 +2914,10 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
   <button class="btn btn-navy" id="gen-btn" onclick="doGenerate()">&#9889; Generate Lesson Plan</button>
   <div class="prog" id="gen-prog"><div class="prog-bar" id="gen-bar" style="width:0%"></div></div>
   <div class="status" id="gen-status"></div>
+  <!-- Appears only after a plan is generated: offers the two follow-on
+       documents, both built from the lesson that was just written. -->
+  <div id="lesson-followup" style="display:none;"></div>
+  <div id="lesson-assess-panel"></div>
 </div></div>
 
 <!-- SCHEMES -->
@@ -4387,7 +4415,8 @@ async function doGenerate() {
     localStorage.setItem(FARUMA_KEYS.device,String(du+1));
     setProgress("gen-prog","gen-bar",100);
     window.lastLessonPlan = { plan:plan, subject:currentSub, grade:grade, topic:topic, outCode:outCode, outStmt:outStmt, indicators:inds, activities:activities, duration:dur, fname:fname };
-    setStatus("gen-status","done","&#10003; Done! <a class='dl-btn' href='"+url+"' download='"+fname+".docx'>&#8681; Download "+fname+".docx</a><button class='btn btn-sm btn-orange' style='margin-left:8px' onclick='openLessonAssessment()'>&#9998; Generate Assessment from this Lesson</button><button class='btn btn-sm pres-launch' onclick='presFromLesson()'>&#127916; Generate PowerPoint</button><div id='lesson-assess-panel'></div>");
+    setStatus("gen-status","done","&#10003; Done! <a class='dl-btn' href='"+url+"' download='"+fname+".docx'>&#8681; Download "+fname+".docx</a>");
+    lessonFollowUp();
     if(typeof gaTrack==='function') gaTrack('lesson_plan_generate',{subject:currentSub,grade:grade,strand:strand,template:fmt,topic:topic,generation_type:(tplInPlace||hasTemplate?'custom_template':fmt)});
     renderHistory(); 
     // Refresh user usage count
@@ -8803,9 +8832,27 @@ function renderAssessment(data, el, cfg){
     h+='<tr><td>'+aEsc(q.num)+'</td><td>'+aEsc(ans)+'</td><td>'+aEsc(q.marks)+'</td><td>'+aEsc(q.objective||'')+'</td></tr>';
   });
   h+='</tbody></table>'+(data.totalMarks?('<div class="as-total">Total: '+aEsc(data.totalMarks)+' marks</div>'):'')+'</div>';
+  h+=asActivitiesHTML(data);
   h+=asBuildMappingHTML(qs);
   h+='</div>';
   el.innerHTML=h;
+}
+
+/* Worksheets built from a lesson can carry follow-on activities that repeat or
+   extend what students actually did. Absent on a plain assessment, so this
+   renders nothing unless the array is there. */
+function asActivitiesHTML(data){
+  var acts=(data&&data.activities)||[];
+  if(!acts.length) return '';
+  var h='<div class="as-acts"><h3>Activities</h3>';
+  acts.forEach(function(a,i){
+    h+='<div class="as-act"><div class="as-act-n">'+(i+1)+'</div><div>'
+      +'<b>'+aEsc(a.title||('Activity '+(i+1)))+'</b>'
+      +'<p>'+aEsc(a.whatToDo||a.what||'')+'</p>'
+      +(a.lookFor?('<p class="as-act-look"><b>Teacher looks for:</b> '+aEsc(a.lookFor)+'</p>'):'')
+      +'</div></div>';
+  });
+  return h+'</div>';
 }
 
 /* ---- Per-question remapping + result-analysis export ---- */
@@ -9133,25 +9180,116 @@ function assessmentPrintPdf(){
 }
 
 /* ===================== ASSESSMENT FROM LESSON ===================== */
+/* ════════════════════════════════════════════════════════════════════
+   AFTER THE LESSON PLAN — worksheet and presentation
+   Both are built from the lesson that was just generated: its outcome,
+   indicators, and crucially the ACTIVITIES it contains, so the worksheet
+   asks about what students actually did rather than the topic in general.
+   Both bill separately through callAPI and both land in My materials.
+   ════════════════════════════════════════════════════════════════════ */
+function lessonFollowUp(){
+  var box=document.getElementById('lesson-followup');
+  var L=window.lastLessonPlan;
+  if(!box||!L) return;
+  box.style.display='block';
+  box.innerHTML=
+    '<div class="lf-card">'
+    + '<div class="lf-q">Do you want to generate a worksheet and lesson presentation?</div>'
+    + '<p class="lf-sub">Both are built from the lesson you just generated \u2014 the same outcome, indicators and activities. Each is charged separately.</p>'
+    + '<div class="lf-actions">'
+    +   '<button class="btn btn-sm btn-orange" onclick="openLessonAssessment()">&#9998; Generate worksheet'
+    +     '<span class="lf-cost" id="lf-ws-cost">\u2248 1 credit</span></button>'
+    +   '<button class="btn btn-sm pres-launch" onclick="presFromLesson()">&#127916; Generate presentation'
+    +     '<span class="lf-cost">\u2248 2 credits</span></button>'
+    +   '<button class="btn btn-sm lf-skip" onclick="lessonFollowUpDismiss()">No thanks</button>'
+    + '</div></div>';
+  var p=document.getElementById('lesson-assess-panel'); if(p){ p.innerHTML=''; p.dataset.open='0'; }
+}
+function lessonFollowUpDismiss(){
+  var box=document.getElementById('lesson-followup');
+  if(box){ box.style.display='none'; box.innerHTML=''; }
+  var p=document.getElementById('lesson-assess-panel'); if(p){ p.innerHTML=''; p.dataset.open='0'; }
+}
+
 function openLessonAssessment(){
   var panel=document.getElementById('lesson-assess-panel');
   if(!panel){ return; }
   if(!window.lastLessonPlan){ alert('Generate a lesson plan first.'); return; }
   if(panel.dataset.open==='1'){ panel.innerHTML=''; panel.dataset.open='0'; return; }
   panel.dataset.open='1';
+  var L=window.lastLessonPlan;
+  var acts=lessonActivityNames(L);
   panel.innerHTML=''+
     '<div class="la-panel"><div class="la-row">'+
-    '<div class="field"><label>Difficulty</label><select id="la-diff"><option>Easy</option><option selected>Medium</option><option>Challenging</option><option>Mixed</option></select></div>'+
-    '<div class="field"><label>Questions</label><select id="la-count"><option>10</option><option>20</option><option>30</option><option value="custom">Custom…</option></select></div>'+
+    '<div class="field"><label>Difficulty</label><select id="la-diff" onchange="lfWorksheetCost()"><option>Easy</option><option selected>Medium</option><option>Challenging</option><option>Mixed</option></select></div>'+
+    '<div class="field"><label>Questions</label><select id="la-count" onchange="lfWorksheetCost()"><option>10</option><option>20</option><option>30</option><option value="custom">Custom\u2026</option></select></div>'+
     '<div class="field"><label>Types</label><select id="la-types"><option value="mixed" selected>Mixed</option><option value="mcq">MCQ</option><option value="short">Short answer</option><option value="structured">Structured</option><option value="essay">Essay</option></select></div>'+
-    '<div class="field" id="la-custom-wrap" style="display:none"><label>Custom no.</label><input type="number" id="la-custom" value="15" min="3" max="60" style="width:100%;padding:7px;border:1px solid #cfe0e2;border-radius:8px"></div>'+
+    '<div class="field" id="la-custom-wrap" style="display:none"><label>Custom no.</label><input type="number" id="la-custom" value="15" min="3" max="60" oninput="lfWorksheetCost()" style="width:100%;padding:7px;border:1px solid #cfe0e2;border-radius:8px"></div>'+
     '</div>'+
-    '<button class="btn btn-sm btn-navy" onclick="generateLessonAssessment()">&#9889; Create assessment</button>'+
+    '<label class="la-check"><input type="checkbox" id="la-acts" checked onchange="lfWorksheetCost()"> Include a section for the lesson\u2019s activities'
+      + (acts.length?('<span class="la-actlist">'+acts.slice(0,4).map(function(a){return escHtmlSafe(a);}).join(' &middot; ')+(acts.length>4?(' &middot; +'+(acts.length-4)+' more'):'')+'</span>'):'')
+    +'</label>'+
+    '<div class="fr-costrow" style="margin:10px 0 8px;"><span class="fr-costchip" id="la-cost">&#9679; \u2248 1 credit</span><span class="fr-costnote">Charged only if the worksheet is generated. Unused credits are returned automatically.</span></div>'+
+    '<button class="btn btn-sm btn-navy" id="la-btn" onclick="generateLessonAssessment()">&#9889; Create worksheet</button>'+
     '<div class="prog" id="la-prog" style="display:none;margin-top:8px"><div class="prog-bar" id="la-bar" style="width:0%"></div></div>'+
     '<div class="status" id="la-status" style="display:none"></div>'+
     '<div id="la-out"></div></div>';
-  var cs=document.getElementById('la-count'); if(cs){ cs.addEventListener('change',function(){ document.getElementById('la-custom-wrap').style.display=(this.value==='custom'?'block':'none'); }); }
+  var cs=document.getElementById('la-count');
+  if(cs){ cs.addEventListener('change',function(){ document.getElementById('la-custom-wrap').style.display=(this.value==='custom'?'block':'none'); }); }
+  lfWorksheetCost();
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+
+function escHtmlSafe(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+/* Pull the activity names out of whatever shape the template produced.
+   Templates differ, so walk the plan for anything activity-like rather than
+   assuming one key. */
+function lessonActivityNames(L){
+  var out=[], seen={};
+  function push(v){
+    if(!v) return;
+    var t=String(v).replace(/\s+/g,' ').trim();
+    if(t.length<4 || t.length>90) return;
+    var k=t.toLowerCase(); if(seen[k]) return; seen[k]=1; out.push(t);
+  }
+  function walk(node, keyHint){
+    if(node==null) return;
+    if(typeof node==='string'){ if(/activit|task|practice|group work|starter|plenary/i.test(keyHint||'')) push(node); return; }
+    if(Array.isArray(node)){ node.forEach(function(x){ walk(x, keyHint); }); return; }
+    if(typeof node==='object'){
+      Object.keys(node).forEach(function(k){
+        if(/^(activity|activities|task|tasks|steps?|procedure|body|development|main)$/i.test(k)) walk(node[k], 'activity');
+        else if(/(title|name|heading)$/i.test(k) && /activit|task/i.test(keyHint||'')) push(node[k]);
+        else walk(node[k], k);
+      });
+    }
+  }
+  try{ walk((L&&L.plan)||{}, ''); }catch(e){}
+  if(!out.length && L && L.activities) push(L.activities);
+  return out;
+}
+
+/* Cost preview. Mirrors the server's meter closely enough to set expectations;
+   the real charge is reconciled against actual tokens and any excess refunded. */
+function lfWorksheetCost(){
+  var chip=document.getElementById('la-cost'); if(!chip) return;
+  var cs=(document.getElementById('la-count')||{}).value||'10';
+  var n=cs==='custom'?(parseInt((document.getElementById('la-custom')||{}).value,10)||15):parseInt(cs,10);
+  var acts=(document.getElementById('la-acts')||{}).checked?700:0;
+  var out=Math.min(8000, 900+n*170+acts);
+  var credits=(typeof frCreditsFor==='function')
+    ? frCreditsFor('claude-sonnet-4-6', 2600, out)
+    : Math.max(1, Math.ceil((2600+out)/6000));
+  chip.innerHTML='&#9679; \u2248 '+credits+(credits===1?' credit':' credits');
+  var mini=document.getElementById('lf-ws-cost');
+  if(mini) mini.textContent='\u2248 '+credits+(credits===1?' credit':' credits');
+}
+
 async function generateLessonAssessment(){
   var L=window.lastLessonPlan; if(!L){ alert('Generate a lesson plan first.'); return; }
   var key=(document.getElementById('api-key')||document.getElementById('as-key')||{}).value||'';
@@ -9159,31 +9297,72 @@ async function generateLessonAssessment(){
   var cntSel=(document.getElementById('la-count')||{}).value||'10';
   var count=cntSel==='custom'?(parseInt((document.getElementById('la-custom')||{}).value,10)||15):parseInt(cntSel,10);
   var types=(document.getElementById('la-types')||{}).value||'mixed';
+  var wantActs=!(document.getElementById('la-acts')) || document.getElementById('la-acts').checked;
+  var acts=lessonActivityNames(L);
+  var btn=document.getElementById('la-btn'); if(btn) btn.disabled=true;
   var t0=Date.now();
   setProgress('la-prog','la-bar',30);
-  var st=document.getElementById('la-status'); if(st){ st.style.display='block'; st.className='status'; st.innerHTML='Generating assessment from this lesson&hellip;'; }
-  gaTrack('assessment_from_lesson_start',{subject:L.subject,grade:L.grade,difficulty:diff,count:count,types:types});
+  var st=document.getElementById('la-status');
+  if(st){ st.style.display='block'; st.className='status'; st.innerHTML='<span class="spin"></span> Building the worksheet from your lesson&hellip;'; }
+  /* Same full-screen generation animation as the lesson plan itself. */
+  if(window.fxStart) fxStart('Generating your worksheet',
+    ['Re-reading the lesson you just made\u2026','Pulling out the activities\u2026',
+     'Writing questions on what students did\u2026','Matching difficulty to the grade\u2026',
+     'Adding the answer key\u2026']);
+  if(typeof gaTrack==='function') gaTrack('worksheet_from_lesson_start',{subject:L.subject,grade:L.grade,difficulty:diff,count:count,types:types});
   try{
     var plan=L.plan||{};
     var planTxt='';
-    try{ planTxt=JSON.stringify(plan).slice(0,4000); }catch(e){}
-    var typeLine = types==='mixed' ? 'Use an appropriate MIX of MCQ, short-answer, structured and (where suitable) essay questions.' : 'Use mainly '+types+' questions.';
-    var prompt='You are an expert '+L.subject+' teacher. A '+L.grade+' lesson has just been taught. Create an assessment of '+count+' questions at '+diff+' difficulty that aligns EXACTLY with what this lesson taught — its learning outcome, indicators, activities and skills. '+typeLine+'\n\n'+
-      'LESSON CONTEXT:\nSubject: '+L.subject+'\nGrade: '+L.grade+'\nTopic: '+(L.topic||'')+'\nOutcome: '+(L.outCode||'')+' '+(L.outStmt||'')+'\nIndicators: '+((L.indicators||[]).join(' | '))+'\nLesson plan (JSON excerpt): '+planTxt+'\n\n'+
-      'For each question give the question, (mcq) options A-D, the correct/model answer, marks, and the assessment objective. Number sequentially. Provide a total marks figure.\n'+
-      'Return ONLY JSON (no markdown): {"title":"'+((L.topic||'Lesson')+' — Assessment')+'","instructions":"...","totalMarks":0,"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"...","marks":1,"objective":"..."}]}';
+    try{ planTxt=JSON.stringify(plan).slice(0,4500); }catch(e){}
+    var typeLine = types==='mixed'
+      ? 'Use an appropriate MIX of MCQ, short-answer and structured questions.'
+      : 'Use mainly '+types+' questions.';
+    var actLine = acts.length
+      ? ('ACTIVITIES THAT WERE DONE IN THIS LESSON (questions must refer to these, by name where natural):\n- '+acts.slice(0,12).join('\n- ')+'\n')
+      : '';
+    var prompt='You are an expert '+L.subject+' teacher. A '+L.grade+' lesson has just been taught. '
+      + 'Write a WORKSHEET of '+count+' questions at '+diff+' difficulty for students to complete after the lesson. '
+      + typeLine+'\n\n'
+      + 'LESSON CONTEXT:\nSubject: '+L.subject+'\nGrade: '+L.grade+'\nTopic: '+(L.topic||'')+'\n'
+      + 'Outcome: '+(L.outCode||'')+' '+(L.outStmt||'')+'\n'
+      + 'Indicators: '+((L.indicators||[]).join(' | '))+'\n'
+      + actLine
+      + 'Lesson plan (JSON excerpt): '+planTxt+'\n\n'
+      + 'STRICT RULES:\n'
+      + '- Every question must be answerable from THIS lesson. Do not test anything the lesson did not cover.\n'
+      + '- Ground questions in the lesson\u2019s own activities, examples and vocabulary, not the topic in general.\n'
+      + '- Write at a reading level a '+L.grade+' student can manage on their own.\n'
+      + '- Say "students", never "pupils".\n'
+      + (wantActs && acts.length
+          ? '- After the questions, add an "activities" array: 2 to 4 short tasks that repeat or extend what students DID in the lesson (a drawing, a sort, a short investigation, a practice set). Each needs a title, what to do, and what the teacher looks for.\n'
+          : '- Return an empty "activities" array.\n')
+      + '- Give every question a mark value and the model answer, and give a total marks figure.\n'
+      + '\nReturn ONLY JSON (no markdown): {"title":"'+((L.topic||'Lesson')+' \u2014 Worksheet')+'","instructions":"...","totalMarks":0,'
+      + '"questions":[{"num":1,"type":"mcq","question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"...","marks":1,"objective":"..."}],'
+      + '"activities":[{"title":"...","whatToDo":"...","lookFor":"..."}]}';
     setProgress('la-prog','la-bar',60);
-    var data=await callAPI(key, prompt, 6000);
-    lastAssessment={data:data,cfg:{grade:L.grade,sub:L.subject,topic:(L.topic||'Lesson'),atype:'quiz',title:data.title||((L.topic||'Lesson')+' — Assessment')}};
+    var data=await callAPI(key, prompt, 6500, null, { extraBody:{ faruma_job:'lesson-worksheet' } });
+    var title=data.title||((L.topic||'Lesson')+' \u2014 Worksheet');
+    lastAssessment={data:data,cfg:{grade:L.grade,sub:L.subject,topic:(L.topic||'Lesson'),atype:'worksheet',title:title}};
     renderAssessment(data, document.getElementById('as-win-body'), lastAssessment.cfg);
     asOpenWin(lastAssessment.cfg);
+    /* Put it in My materials straight away, not only if the teacher exports. */
+    try{
+      saveHist({ ts:Date.now(), kind:'assess', sub:L.subject||'', grade:L.grade||'',
+        topic:title, fname:(L.fname||'worksheet')+'_worksheet',
+        date:new Date().toISOString().slice(0,10) });
+      if(typeof renderDashboard==='function') renderDashboard();
+      if(typeof renderHistory==='function') renderHistory();
+    }catch(e){}
     setProgress('la-prog','la-bar',100);
-    if(st){ st.className='status done'; st.innerHTML='&#10003; Assessment created from this lesson.'; }
-    gaTrack('assessment_from_lesson',{subject:L.subject,grade:L.grade,difficulty:diff,count:count,types:types,generation_duration:Math.round((Date.now()-t0)/1000)});
+    if(st){ st.className='status done'; st.innerHTML='&#10003; Worksheet created from this lesson and saved to <b>My materials</b>.'; }
+    if(typeof gaTrack==='function') gaTrack('worksheet_from_lesson',{subject:L.subject,grade:L.grade,difficulty:diff,count:count,types:types,generation_duration:Math.round((Date.now()-t0)/1000)});
   }catch(e){
     if(st){ st.className='status error'; st.innerHTML='&#9888; '+(e.message||e); }
-    gaTrack('ai_generation_failure',{feature:'assessment_from_lesson',subject:L.subject,grade:L.grade});
+    if(typeof gaTrack==='function') gaTrack('ai_generation_failure',{feature:'worksheet_from_lesson',subject:L.subject,grade:L.grade});
   }
+  if(window.fxStop) fxStop();
+  if(btn) btn.disabled=false;
 }
 </script>
 <script>
