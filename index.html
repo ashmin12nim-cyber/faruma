@@ -599,8 +599,13 @@ body::before {
 .home-set{ display:flex; flex-wrap:nowrap; align-items:stretch; flex:none;
   gap:clamp(16px,1.8vw,28px); padding-right:clamp(16px,1.8vw,28px); }
 .home-marquee .home-card{ flex:0 0 clamp(228px,18vw,268px); max-width:none; }
-.home-marquee:hover .home-track,
+/* Hovering hands steering to the pointer: the auto-scroll stops and the
+   position follows the cursor left/right across the rail, so a teacher can
+   look at any card instead of waiting for it to come round again. */
+.home-marquee.home-scrub .home-track{ animation:none; will-change:transform;
+  transition:transform .28s cubic-bezier(.22,.7,.3,1); }
 .home-marquee:focus-within .home-track{ animation-play-state:paused; }
+.home-marquee.home-scrub{ cursor:ew-resize; }
 .home-marquee.home-still{ -webkit-mask-image:none; mask-image:none; }
 .home-marquee.home-still .home-track{ animation:none; width:100%; }
 .home-marquee.home-still .home-set{ flex:1 1 auto; justify-content:center; padding-right:0; }
@@ -2018,15 +2023,29 @@ button[style*="background:white"][style*="color:white"]{
 .as-act p{ font-size:14px; color:var(--text-mid); line-height:1.6; margin-top:3px; }
 .as-act-look{ color:var(--text-light) !important; font-size:13px !important; }
 /* ── after-the-lesson follow-up ─────────────────────────────────── */
-.lf-card{ margin-top:14px; border:1.5px solid var(--ocean-light); border-radius:14px;
-  padding:18px 20px; background:linear-gradient(158deg,#f2fbf8 0%,#eaf4fa 100%); }
-.lf-q{ font-family:'Fraunces',serif; font-size:17px; font-weight:600; color:var(--ocean-deep); line-height:1.4; }
-.lf-sub{ font-size:13.5px; color:var(--text-mid); line-height:1.55; margin:6px 0 14px; }
-.lf-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+#lf-modal{ position:fixed; inset:0; background:rgba(10,30,45,.5); z-index:12300;
+  display:none; align-items:center; justify-content:center; padding:18px;
+  animation:lf-fade .18s ease; }
+@keyframes lf-fade{ from{opacity:0} to{opacity:1} }
+.lf-card{ position:relative; background:#fff; border-radius:18px; max-width:520px; width:100%;
+  padding:30px 28px 24px; text-align:center; box-shadow:0 26px 60px rgba(10,30,45,.3);
+  animation:lf-pop .22s cubic-bezier(.2,.9,.3,1.2); }
+@keyframes lf-pop{ from{opacity:0;transform:translateY(14px) scale(.97)} to{opacity:1;transform:none} }
+.lf-x{ position:absolute; top:12px; right:14px; border:none; background:none; font-size:19px;
+  color:#9db3bf; cursor:pointer; line-height:1; padding:4px; }
+.lf-tick{ width:52px; height:52px; border-radius:50%; margin:0 auto 14px;
+  background:#e4f5e9; color:var(--leaf-deep); font-size:26px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; }
+.lf-q{ font-family:'Fraunces',serif; font-size:20px; font-weight:600; color:var(--ocean-deep); line-height:1.35; }
+.lf-sub{ font-size:14px; color:var(--text-mid); line-height:1.6; margin:9px 0 20px; }
+.lf-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; }
 .lf-actions .btn{ width:auto; margin:0; display:inline-flex; align-items:center; gap:8px; }
 .lf-cost{ font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:2px 7px;
-  border-radius:20px; background:rgba(255,255,255,.35); }
-.lf-skip{ background:none; border:1.5px solid var(--sand-dark,#dfe5e5); color:var(--text-mid); }
+  border-radius:20px; background:rgba(255,255,255,.32); }
+.lf-skip{ margin-top:16px; background:none; border:none; color:var(--text-light);
+  font-family:inherit; font-size:13.5px; cursor:pointer; text-decoration:underline; }
+.lf-skip:hover{ color:var(--text-mid); }
+@media (max-width:560px){ .lf-actions .btn{ width:100%; justify-content:center; } .lf-q{ font-size:18px; } }
 .la-check{ display:flex; align-items:flex-start; gap:9px; font-size:13.5px; color:var(--text-dark);
   margin:10px 0 2px; cursor:pointer; flex-wrap:wrap; }
 .la-check input{ width:17px; height:17px; margin-top:1px; accent-color:var(--ocean-mid); }
@@ -2916,7 +2935,6 @@ var FARUMA_KEYS = { token:'faruma_token', user:'faruma_user',
   <div class="status" id="gen-status"></div>
   <!-- Appears only after a plan is generated: offers the two follow-on
        documents, both built from the lesson that was just written. -->
-  <div id="lesson-followup" style="display:none;"></div>
   <div id="lesson-assess-panel"></div>
 </div></div>
 
@@ -5743,7 +5761,7 @@ function goHome(){
   window.scrollTo(0,0);
   /* the rail has no width until the landing page is on screen, so measure
      after it becomes visible rather than only at load */
-  if(typeof homeSizeMarquee==='function') setTimeout(homeSizeMarquee, 60);
+  if(typeof homeSizeMarquee==='function') setTimeout(function(){ homeSizeMarquee(); if(typeof homeScrubInit==='function') homeScrubInit(); }, 60);
 }
 
 function enterTool(page){
@@ -5849,6 +5867,16 @@ async function checkAuth() {
     updateHomeNav();
     return;
   }
+  // Trust the cached profile immediately so the app is usable on the first
+  // paint; the verification below then corrects or clears it.
+  if (savedUser && !currentUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      document.getElementById('auth-overlay').style.display = 'none';
+      updateUserBar();
+      updateHomeNav();
+    } catch(e) { currentUser = null; }
+  }
   // Verify token is still valid
   try {
     var resp = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
@@ -5860,10 +5888,13 @@ async function checkAuth() {
       updateUserBar();
       updateHomeNav();
     } else {
-      // Token expired
+      // Token expired — clear the optimistically-restored profile too,
+      // otherwise a stale currentUser would keep the app looking logged in.
+      currentUser = null;
       localStorage.removeItem(FARUMA_KEYS.token);
       localStorage.removeItem(FARUMA_KEYS.user);
       document.getElementById('auth-overlay').style.display = 'none';
+      updateUserBar();
       updateHomeNav();
     }
   } catch(e) {
@@ -6116,7 +6147,36 @@ function renderSavedTemplates() {
 // =====================================================================
 async function callAPI(key, prompt, maxTokens, attachment, opts) {
   // Explore-first: only require login at the point of generating/saving.
-  if (!currentUser) { if (typeof openAuth === 'function') openAuth('login'); throw new Error('Please log in to generate. Your inputs are kept — just log in and try again.'); }
+  // Gate on whether a session token exists, NOT on whether the async
+  // /api/auth/me check has finished. Otherwise a teacher who clicks Generate
+  // before that round-trip returns is told to log in while already logged in.
+  var _tok = localStorage.getItem(FARUMA_KEYS.token);
+  if (!currentUser && _tok) {
+    // Rehydrate from the cached profile so the rest of the app has a user.
+    try {
+      var _cached = localStorage.getItem(FARUMA_KEYS.user);
+      if (_cached) { currentUser = JSON.parse(_cached); if (typeof updateUserBar==='function') updateUserBar(); }
+    } catch(e) {}
+    // Still nothing cached? Verify once, in-line, before giving up.
+    if (!currentUser) {
+      try {
+        var _r = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + _tok } });
+        if (_r.ok) {
+          var _d = await _r.json();
+          currentUser = _d.user;
+          try { localStorage.setItem(FARUMA_KEYS.user, JSON.stringify(currentUser)); } catch(e) {}
+          if (typeof updateUserBar==='function') updateUserBar();
+        } else if (_r.status === 401) {
+          localStorage.removeItem(FARUMA_KEYS.token);
+          localStorage.removeItem(FARUMA_KEYS.user);
+        }
+      } catch(e) { /* offline: fall through and let the request itself decide */ }
+    }
+  }
+  if (!currentUser && !localStorage.getItem(FARUMA_KEYS.token)) {
+    if (typeof openAuth === 'function') openAuth('login');
+    throw new Error('Please log in to generate. Your inputs are kept — just log in and try again.');
+  }
   opts = opts || {};
   var headers = { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' };
   // Send auth token if logged in
@@ -9188,27 +9248,46 @@ function assessmentPrintPdf(){
    Both bill separately through callAPI and both land in My materials.
    ════════════════════════════════════════════════════════════════════ */
 function lessonFollowUp(){
-  var box=document.getElementById('lesson-followup');
   var L=window.lastLessonPlan;
-  if(!box||!L) return;
-  box.style.display='block';
-  box.innerHTML=
-    '<div class="lf-card">'
-    + '<div class="lf-q">Do you want to generate a worksheet and lesson presentation?</div>'
-    + '<p class="lf-sub">Both are built from the lesson you just generated \u2014 the same outcome, indicators and activities. Each is charged separately.</p>'
+  if(!L) return;
+  var ov=document.getElementById('lf-modal');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='lf-modal';
+    ov.className='fr-centre-modal';
+    ov.setAttribute('role','dialog');
+    ov.setAttribute('aria-modal','true');
+    ov.setAttribute('aria-labelledby','lf-modal-q');
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML=
+    '<div class="lf-card" role="document">'
+    + '<button class="lf-x" aria-label="Close" onclick="lessonFollowUpDismiss()">&#10005;</button>'
+    + '<div class="lf-tick">&#10003;</div>'
+    + '<div class="lf-q" id="lf-modal-q">Do you want to generate a worksheet and lesson presentation?</div>'
+    + '<p class="lf-sub">Both are built from the lesson you just generated \u2014 the same outcome, indicators and activities. Each is charged separately and both are saved to <b>My materials</b>.</p>'
     + '<div class="lf-actions">'
-    +   '<button class="btn btn-sm btn-orange" onclick="openLessonAssessment()">&#9998; Generate worksheet'
+    +   '<button class="btn btn-sm btn-orange" onclick="lessonFollowUpPick(\'worksheet\')">&#9998; Generate worksheet'
     +     '<span class="lf-cost" id="lf-ws-cost">\u2248 1 credit</span></button>'
-    +   '<button class="btn btn-sm pres-launch" onclick="presFromLesson()">&#127916; Generate presentation'
+    +   '<button class="btn btn-sm pres-launch" onclick="lessonFollowUpPick(\'slides\')">&#127916; Generate presentation'
     +     '<span class="lf-cost">\u2248 2 credits</span></button>'
-    +   '<button class="btn btn-sm lf-skip" onclick="lessonFollowUpDismiss()">No thanks</button>'
-    + '</div></div>';
+    + '</div>'
+    + '<button class="lf-skip" onclick="lessonFollowUpDismiss()">No thanks, just the lesson plan</button>'
+    + '</div>';
+  ov.style.display='flex';
+  document.addEventListener('keydown', lfEscClose);
   var p=document.getElementById('lesson-assess-panel'); if(p){ p.innerHTML=''; p.dataset.open='0'; }
 }
+function lfEscClose(e){ if(e.key==='Escape') lessonFollowUpDismiss(); }
 function lessonFollowUpDismiss(){
-  var box=document.getElementById('lesson-followup');
-  if(box){ box.style.display='none'; box.innerHTML=''; }
-  var p=document.getElementById('lesson-assess-panel'); if(p){ p.innerHTML=''; p.dataset.open='0'; }
+  var ov=document.getElementById('lf-modal');
+  if(ov){ ov.style.display='none'; ov.innerHTML=''; }
+  document.removeEventListener('keydown', lfEscClose);
+}
+function lessonFollowUpPick(what){
+  lessonFollowUpDismiss();
+  if(what==='slides'){ presFromLesson(); return; }
+  openLessonAssessment();
 }
 
 function openLessonAssessment(){
@@ -11794,6 +11873,72 @@ function dbSizeMarquee(){
 }
 /* Landing page feature row — same rule as the dashboard: only scroll when the
    cards genuinely overflow, otherwise freeze and let them spread. */
+/* Pointer scrubbing for the landing feature row.
+   On pointer entry the CSS animation is swapped for a transform driven by
+   cursor position: far left shows the start of the set, far right the end.
+   On exit the animation resumes from wherever the cursor left it, so the row
+   never jumps. Touch devices and reduced-motion users are left alone. */
+function homeScrubInit(){
+  var rail=document.getElementById('home-marquee'),
+      track=document.getElementById('home-track');
+  if(!rail||!track||rail.dataset.scrub==='1') return;
+  rail.dataset.scrub='1';
+
+  var reduce=false;
+  try{ reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+
+  function maxShift(){
+    var set=track.firstElementChild;
+    return set ? Math.max(0, set.scrollWidth - rail.clientWidth) : 0;
+  }
+  /* Where is the animation right now? Read the live transform so handing over
+     to the pointer is seamless rather than snapping to zero. */
+  function currentX(){
+    try{
+      var m=new DOMMatrixReadOnly(getComputedStyle(track).transform);
+      return m.m41 || 0;
+    }catch(e){ return 0; }
+  }
+  function enter(e){
+    if(reduce || rail.classList.contains('home-still')) return;
+    if(e && e.pointerType==='touch') return;
+    var x=currentX();
+    rail.classList.add('home-scrub');
+    track.style.transform='translateX('+x+'px)';
+    /* let the browser apply the frozen position before we start easing */
+    void track.offsetWidth;
+    move(e);
+  }
+  function move(e){
+    if(!rail.classList.contains('home-scrub')) return;
+    var r=rail.getBoundingClientRect();
+    if(!r.width) return;
+    var p=Math.min(1, Math.max(0, ((e && e.clientX!=null ? e.clientX : r.left) - r.left)/r.width));
+    /* small dead zones at each end so the row settles instead of twitching */
+    p=Math.min(1, Math.max(0, (p-0.08)/0.84));
+    track.style.transform='translateX('+(-p*maxShift())+'px)';
+  }
+  function leave(){
+    if(!rail.classList.contains('home-scrub')) return;
+    var x=currentX(), set=track.firstElementChild;
+    var setW=set?set.scrollWidth:0;
+    rail.classList.remove('home-scrub');
+    track.style.transform='';
+    /* Resume the loop from where the pointer left it by offsetting the
+       animation's start time, so there is no visible jump back. */
+    if(setW>0){
+      var dur=parseFloat(getComputedStyle(track).animationDuration)||42;
+      var progressed=Math.min(1, Math.max(0, (-x)/setW));
+      track.style.animationDelay=(-progressed*dur)+'s';
+    }
+  }
+  rail.addEventListener('pointerenter', enter);
+  rail.addEventListener('pointermove', move);
+  rail.addEventListener('pointerleave', leave);
+  rail.addEventListener('pointercancel', leave);
+}
+window.homeScrubInit=homeScrubInit;
+
 function homeSizeMarquee(){
   var rail=document.getElementById('home-marquee'),
       track=document.getElementById('home-track'),
@@ -11811,8 +11956,9 @@ window.addEventListener('resize', function(){
   clearTimeout(window.__dbMarqT);
   window.__dbMarqT=setTimeout(function(){ dbSizeMarquee(); homeSizeMarquee(); }, 150);
 });
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', homeSizeMarquee);
-else homeSizeMarquee();
+function homeMarqueeBoot(){ homeSizeMarquee(); homeScrubInit(); }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', homeMarqueeBoot);
+else homeMarqueeBoot();
 
 /* ── My materials: everything generated on this device ──────────── */
 var dbLibKind = 'all';
